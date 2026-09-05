@@ -1211,6 +1211,9 @@ for term in \
   'data-adlaire-dismiss' \
   'data-adlaire-carousel-action' \
   'data-adlaire-carousel-index' \
+  'data-adlaire-sidebar-toggle' \
+  'adlaire-sidebar-collapsed' \
+  'aria-controls' \
   '[data-adlaire-toggle][href]' \
   'containFocus' \
   'is-current' \

@@ -1430,6 +1430,8 @@ WYSIWYG Editor UIの拡充では、エディター外枠、ツールバー、ブ
 
 JavaScriptあり汎用部品は、CSS表示契約を壊さない範囲で操作状態のみを管理する。モーダルとドロワーは `aria-expanded`、`hidden`、`.is-open`、フォーカス入退場、Tabフォーカス循環、Escapeまたはdismissによる閉鎖を同期する。カルーセルはスライド幅を維持するため、移動時にスライドへ `hidden` を付与せず、`.is-current` と `aria-hidden` で現在状態を表す。ソート可能テーブルは明示的な数値/日付ソートで空値または不正値を昇順/降順にかかわらず末尾に送る。検索/絞り込みUIは、`data-adlaire-filter-item` の空白区切り複数分類を扱えるものとする。無効ページリンクは視覚状態だけでなくポインター操作も無効化する。
 
+App shell / Sidebar layoutは、`data-adlaire-sidebar-toggle` を持つ操作要素から `.adlaire-app-shell`、`data-adlaire-sidebar-toggle`、`data-adlaire-target`、`aria-controls` で指定した対象へ `.adlaire-sidebar-collapsed` を同期する。折りたたみ時は操作要素の `aria-expanded` を `false`、`aria-pressed` を `true` とし、展開時は `aria-expanded` を `true`、`aria-pressed` を `false` とする。
+
 エラーページ部品は、`.adlaire-error-page`、`.adlaire-error-page-inner`、`.adlaire-error-page-code`、`.adlaire-error-page-title`、`.adlaire-error-page-text`、`.adlaire-error-page-actions` で構成し、400、401、403、404、500、510などの静的エラー画面を表示する。ステータスコード別の表示には、`.adlaire-error-page-400`、`.adlaire-error-page-401`、`.adlaire-error-page-403`、`.adlaire-error-page-404`、`.adlaire-error-page-500`、`.adlaire-error-page-510` を併用する。500系のサーバーエラーページでは `.adlaire-error-page-server` も使用できる。エラー判定、リダイレクト、ログ送信、翻訳、動的メッセージ生成は対象外とする。
 
 本実装の非対象は以下とする。
@@ -1969,6 +1971,8 @@ Filter UIは、フィルター条件、保存済みフィルター、絞り込�
 Search UIは、検索ボックス、検索候補、検索結果、検索なし状態を扱う。対象classは `.adlaire-search-box`、`.adlaire-search-input`、`.adlaire-search-suggest`、`.adlaire-search-suggest-item`、`.adlaire-search-results`、`.adlaire-search-result-item`、`.adlaire-search-empty` とする。主な管理先は `UI/components.css`、`UI/content.css`、必要な `UI/components.js` とする。
 
 Pagination UIは、ページネーション、件数表示、前後移動、無効状態、現在ページ表示を扱う。対象classは `.adlaire-pagination`、`.adlaire-pagination-count`、`.adlaire-page-prev`、`.adlaire-page-next`、`.adlaire-page-link`、`.adlaire-page-link-current`、`.adlaire-page-link-disabled` とする。主な管理先は `UI/components.css` とする。
+
+App shell / Sidebar layoutは、アプリケーション外枠、サイドバー、メイン領域、サイドバー折りたたみ状態を扱う。対象classは `.adlaire-app-shell`、`.adlaire-app-sidebar`、`.adlaire-app-main`、`.adlaire-sidebar-collapsed` とする。主な管理先は `UI/layout.css`、`UI/components.css`、必要な `UI/components.js` とする。サイドバー折りたたみ操作は、`data-adlaire-sidebar-toggle`、`data-adlaire-target`、`aria-controls` で対象shellを指定できる。
 
 Settings UIは、設定グループ、設定行、トグル、補助説明、危険操作領域を扱う。対象classは `.adlaire-settings-group`、`.adlaire-settings-row`、`.adlaire-settings-label`、`.adlaire-settings-help`、`.adlaire-toggle`、`.adlaire-danger-zone` とする。主な管理先は `UI/components.css`、`UI/forms.css`、必要な `UI/forms.js` とする。
 

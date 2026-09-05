@@ -177,6 +177,7 @@
     const copy = source?.closest("[data-adlaire-copy]");
     const remove = source?.closest("[data-adlaire-remove]");
     const select = source?.closest("[data-adlaire-select]");
+    const sidebarToggle = source?.closest("[data-adlaire-sidebar-toggle]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -198,7 +199,34 @@
         item.setAttribute("aria-selected", item === select ? "true" : "false");
       });
     }
+
+    if (sidebarToggle) {
+      event.preventDefault();
+      toggleSidebar(sidebarToggle);
+    }
   });
+
+  function toggleSidebar(trigger: Element): void {
+    const selector = trigger.getAttribute("data-adlaire-sidebar-toggle") || trigger.getAttribute("data-adlaire-target");
+    const controlled = trigger.getAttribute("aria-controls");
+    const shell = querySidebarShell(selector) ?? (controlled ? document.getElementById(controlled) : trigger.closest<HTMLElement>(".adlaire-app-shell"));
+    if (!shell) return;
+
+    const collapsed = !shell.classList.contains("adlaire-sidebar-collapsed");
+    shell.classList.toggle("adlaire-sidebar-collapsed", collapsed);
+    if (shell.id && !trigger.getAttribute("aria-controls")) trigger.setAttribute("aria-controls", shell.id);
+    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+  }
+
+  function querySidebarShell(selector: string | null): HTMLElement | null {
+    if (!selector) return null;
+    try {
+      return document.querySelector<HTMLElement>(selector);
+    } catch {
+      return null;
+    }
+  }
 
   document.addEventListener("input", (event) => {
     const source = targetElement(event.target);

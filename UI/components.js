@@ -220,6 +220,7 @@
     var copy = event.target.closest("[data-adlaire-copy]");
     var remove = event.target.closest("[data-adlaire-remove]");
     var select = event.target.closest("[data-adlaire-select]");
+    var sidebarToggle = event.target.closest("[data-adlaire-sidebar-toggle]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -245,7 +246,40 @@
         });
       }
     }
+
+    if (sidebarToggle) {
+      event.preventDefault();
+      toggleSidebar(sidebarToggle);
+    }
   });
+
+  function toggleSidebar(trigger) {
+    var selector = trigger.getAttribute("data-adlaire-sidebar-toggle") || trigger.getAttribute("data-adlaire-target");
+    var controlled = trigger.getAttribute("aria-controls");
+    var shell = querySidebarShell(selector) || (controlled ? document.getElementById(controlled) : trigger.closest(".adlaire-app-shell"));
+    if (!shell) {
+      return;
+    }
+
+    var collapsed = !shell.classList.contains("adlaire-sidebar-collapsed");
+    shell.classList.toggle("adlaire-sidebar-collapsed", collapsed);
+    if (shell.id && !trigger.getAttribute("aria-controls")) {
+      trigger.setAttribute("aria-controls", shell.id);
+    }
+    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+  }
+
+  function querySidebarShell(selector) {
+    if (!selector) {
+      return null;
+    }
+    try {
+      return document.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
 
   document.addEventListener("input", function (event) {
     var filter = event.target.closest("[data-adlaire-filter-input]");
