@@ -365,6 +365,7 @@ WYSIWYG Editor UI専用品の実装先である `EditorUI/wysiwyg.css` と `Edit
 | ドロワー | `UI/components.css`、`UI/components.js` |
 | ドロップダウン | `UI/components.css`、`UI/components.js` |
 | カルーセル | `UI/components.css`、`UI/components.js` |
+| サイドバー折りたたみ | `UI/layout.css`、`UI/components.js` |
 | ソート可能テーブル | `UI/content.css`、`UI/content.js` |
 | 検索/絞り込みUI | `UI/forms.css`、`UI/forms.js`、`UI/content.css` |
 | ツールチップ動作 | `UI/components.css`、`UI/components.js` |
