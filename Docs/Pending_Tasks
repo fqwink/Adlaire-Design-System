@@ -33,7 +33,6 @@
 
 | ID | 分類 | 未実装 | 完了条件 | 主な更新対象 |
 | --- | --- | --- | --- | --- |
-| AD-TASK-033 | Icon Set | 公式アイコンセット拡張SVG制作 第9弾。`AD-ICON-361` から `AD-ICON-400` までのSVG実体を制作する。 | `Icons/` に対応SVGが配置され、`Docs/Icon_Set_Catalog` の該当アイコンが `実装済み` になり、検査に通過する。 | `Icons/`、`Docs/Icon_Set_Catalog`、必要に応じて `Samples/design/`、`Tools/check/check-adlaire-design.sh` |
 | AD-TASK-034 | Icon Set | 公式アイコンセット拡張SVG制作 第10弾。`AD-ICON-401` から `AD-ICON-440` までのSVG実体を制作する。 | `Icons/` に対応SVGが配置され、`Docs/Icon_Set_Catalog` の該当アイコンが `実装済み` になり、検査に通過する。 | `Icons/`、`Docs/Icon_Set_Catalog`、必要に応じて `Samples/design/`、`Tools/check/check-adlaire-design.sh` |
 | AD-TASK-035 | Icon Set | 公式アイコンセット拡張SVG制作 第11弾。`AD-ICON-441` から `AD-ICON-470` までのSVG実体を制作する。 | `Icons/` に対応SVGが配置され、`Docs/Icon_Set_Catalog` の該当アイコンが `実装済み` になり、検査に通過する。 | `Icons/`、`Docs/Icon_Set_Catalog`、必要に応じて `Samples/design/`、`Tools/check/check-adlaire-design.sh` |
 | AD-TASK-036 | Icon Set | 公式アイコンセット拡張SVG制作 第12弾。`AD-ICON-471` から `AD-ICON-500` までのSVG実体を制作する。 | `Icons/` に対応SVGが配置され、`Docs/Icon_Set_Catalog` の該当アイコンが `実装済み` になり、検査に通過する。 | `Icons/`、`Docs/Icon_Set_Catalog`、必要に応じて `Samples/design/`、`Tools/check/check-adlaire-design.sh` |
