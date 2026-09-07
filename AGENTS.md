@@ -3,11 +3,14 @@
 ## 作業開始時の必須確認
 
 - すべての作業開始時に、必ずこの `AGENTS.md` を読むこと。
+- `AGENTS.md` の読了と、マージ状況・リモート・ローカル整合性確認は、作業開始時の同一必須手順として扱うこと。
 - このリポジトリは、当面のリポジトリ名を `Adlaire-Design` とし、正式なシステム名を `Adlaire-Design-System` とする開発正本・仕様正本として扱うこと。
 - 仕様・設計の正本は `Docs/Master_Spec` とする。
 - リポジトリ索引は `Docs/Document_Index` とする。
 - 作業開始時に `AGENTS.md` を読むと同時に、マージ状況、リモート、ローカル整合性を確認すること。
+- この確認は後回しにせず、`AGENTS.md` 読了と不可分の作業開始手順として実施すること。
 - 整合性確認では、`git status --short --branch`、`git remote -v`、必要に応じた `git fetch backup`、`HEAD` と `backup/main` の一致または差分を確認すること。
+- `AGENTS.md` の読了と整合性確認が完了するまでは、実装、コミット、push、PR作成へ進まないこと。
 - Adlaire-Design-Systemは、デザインシステムを中核に、Deno TypeScript正本からCSS/JavaScript生成物を生成・検査・管理するフロントエンド基盤システムとして扱うこと。
 - TypeScriptはDenoランタイム環境を前提とすること。
 - 標準採用ライブラリはDeno標準ライブラリ(`jsr:@std/*`)に限定すること。
