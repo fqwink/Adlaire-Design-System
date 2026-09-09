@@ -7,6 +7,7 @@
 - `README.md`(リポジトリ概要、構成、検査コマンド)
 - `LICENSE`(ライセンス本文)
 - `Docs/Master_Spec`(仕様・設計の正本、Adlaire Frontend Compiler、CSS生成方針、Editor UI、Editor本体、TypeScript正本、CSS/JavaScript生成物、公式アイコンセット、Samples、カタログ責務索引)
+- `Docs/Master_Spec`内の品質保証改良方針(アイコン整合検査、生成物整合検査、Samples整備、カタログ運用統一、リリース前チェック強化)
 - `Docs/Master_Spec`内の正本階層(全体正本、専用マスター仕様、補助正本、TypeScript正本、生成物、実体資産、未タスク管理の優先関係)
 - `Docs/Editor_Master_Spec`(Editor本体とWYSIWYG Editor UIの専用マスター仕様)
 - `Docs/Editor_Master_Spec`内の詳細正本(Editor本体詳細、WYSIWYG Editor UI詳細、例外採用ライブラリ、検査条件)

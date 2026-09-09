@@ -323,6 +323,56 @@ while IFS= read -r icon_name; do
   fi
 done <"$TMP_DIR/implemented-icons"
 
+ICON_CATALOG_COUNT="$(awk -F '|' '/^\| AD-ICON-/ { count++ } END { print count + 0 }' "$ADLAIRE_DESIGN_ROOT/Docs/Icon_Set_Catalog")"
+ICON_FILE_COUNT="$(wc -l <"$TMP_DIR/icon-files" | tr -d ' ')"
+
+if [ "$ICON_CATALOG_COUNT" -ne 500 ]; then
+  echo "Docs/Icon_Set_Catalog must list exactly 500 official icons." >&2
+  exit 1
+fi
+
+if [ "$ICON_FILE_COUNT" -ne "$ICON_CATALOG_COUNT" ]; then
+  echo "Icons/ SVG file count must match Docs/Icon_Set_Catalog icon count." >&2
+  exit 1
+fi
+
+awk -F '|' '
+/^\| AD-ICON-/ {
+  id = $2
+  filename = $3
+  category = $4
+  status = $9
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", id)
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", filename)
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", category)
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", status)
+  count++
+  expected = sprintf("AD-ICON-%03d", count)
+  if (id != expected) {
+    print "Icon catalog ID sequence mismatch: " id " expected " expected
+  }
+  if (filename == "" || seen_filename[filename]++) {
+    print "Icon catalog filename must be present and unique: " filename
+  }
+  if (status != "実装済み") {
+    print "Icon catalog status must be 実装済み: " id
+  }
+  if (category !~ /^(navigation|action|status|content|editor|media|form)$/) {
+    print "Icon catalog category is invalid: " id " " category
+  }
+}
+END {
+  if (count != 500) {
+    print "Icon catalog row count must be 500: " count
+  }
+}
+' "$ADLAIRE_DESIGN_ROOT/Docs/Icon_Set_Catalog" >"$TMP_DIR/icon-catalog-errors"
+
+if [ -s "$TMP_DIR/icon-catalog-errors" ]; then
+  cat "$TMP_DIR/icon-catalog-errors" >&2
+  exit 1
+fi
+
 find "$ADLAIRE_DESIGN_ROOT/Samples" -maxdepth 1 -type f \
   ! -name '.gitkeep' \
   ! -name 'README.md' \
@@ -913,10 +963,31 @@ for pending_task_term in \
   '未実装リストには、仕様確定済みで実装だけが未完了の項目だけを記載する。' \
   '仕様未確定、要否未決定、策定中の項目は未実装リストに含めない。' \
   '## 3. 未実装リスト' \
-  '本章は、仕様確定済みで、実装だけが未完了の項目を管理する。' \
-  '現時点で該当なし'; do
+  '本章は、仕様確定済みで、実装だけが未完了の項目を管理する。'; do
   if ! grep -F -- "$pending_task_term" "$ADLAIRE_DESIGN_ROOT/Docs/Pending_Tasks" >/dev/null 2>&1; then
     echo "Docs/Pending_Tasks missing required pending task management term: $pending_task_term" >&2
+    exit 1
+  fi
+done
+
+for quality_improvement_term in \
+  '### 11.11.14 品質保証改良タスク策定仕様' \
+  '500件の公式アイコン実装完了後は、検査強化、生成物整合検査、サンプル整備、カタログ運用統一、リリース前チェック強化を優先改良対象とする。' \
+  'マージ後のheadブランチ削除確認'; do
+  if ! grep -F -- "$quality_improvement_term" "$ADLAIRE_DESIGN_ROOT/Docs/Master_Spec" >/dev/null 2>&1; then
+    echo "Docs/Master_Spec missing required quality improvement term: $quality_improvement_term" >&2
+    exit 1
+  fi
+done
+
+for pending_quality_task in \
+  'AD-TASK-037' \
+  'AD-TASK-038' \
+  'AD-TASK-039' \
+  'AD-TASK-040' \
+  'AD-TASK-041'; do
+  if ! grep -F -- "$pending_quality_task" "$ADLAIRE_DESIGN_ROOT/Docs/Pending_Tasks" >/dev/null 2>&1; then
+    echo "Docs/Pending_Tasks missing required quality improvement task: $pending_quality_task" >&2
     exit 1
   fi
 done
