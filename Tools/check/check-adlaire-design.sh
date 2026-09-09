@@ -373,6 +373,72 @@ if [ -s "$TMP_DIR/icon-catalog-errors" ]; then
   exit 1
 fi
 
+sed -n 's/.*path: "\([^"]*\)".*firstLine: "\([^"]*\)".*/\1|\2/p' \
+  "$ADLAIRE_DESIGN_ROOT/TypeScript/CSS/manifest.ts" >"$TMP_DIR/generated-css-targets"
+
+CSS_TARGET_COUNT="$(wc -l <"$TMP_DIR/generated-css-targets" | tr -d ' ')"
+CSS_FILE_COUNT="$(find "$ADLAIRE_DESIGN_ROOT/Tokens" "$ADLAIRE_DESIGN_ROOT/UI" "$ADLAIRE_DESIGN_ROOT/EditorUI" -type f -name '*.css' | wc -l | tr -d ' ')"
+
+if [ "$CSS_TARGET_COUNT" -ne 20 ]; then
+  echo "TypeScript/CSS/manifest.ts must define exactly 20 generated CSS targets." >&2
+  exit 1
+fi
+
+if [ "$CSS_FILE_COUNT" -ne "$CSS_TARGET_COUNT" ]; then
+  echo "Generated CSS file count must match TypeScript/CSS/manifest.ts targets." >&2
+  exit 1
+fi
+
+while IFS='|' read -r generated_css_path generated_css_first_line; do
+  if [ ! -f "$ADLAIRE_DESIGN_ROOT/$generated_css_path" ]; then
+    echo "CSS manifest target is missing generated file: $generated_css_path" >&2
+    exit 1
+  fi
+  if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/$generated_css_path")" != "$generated_css_first_line" ]; then
+    echo "Generated CSS first line does not match manifest: $generated_css_path" >&2
+    exit 1
+  fi
+done <"$TMP_DIR/generated-css-targets"
+
+cat >"$TMP_DIR/generated-js-targets" <<'ADLAIRE_GENERATED_JS_TARGETS'
+TypeScript/UI/components.ts|UI/components.js|/* Adlaire-Design component interactions */|/* Adlaire-Design component interactions */|data-adlaire-sidebar-toggle
+TypeScript/UI/forms.ts|UI/forms.js|/* Adlaire-Design form interactions */|/* Adlaire-Design form interactions */|data-adlaire-filter-input
+TypeScript/UI/content.ts|UI/content.js|/* Adlaire-Design content interactions */|/* Adlaire-Design content interactions */|data-adlaire-sort
+TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|/* Adlaire-Design WYSIWYG editor interactions */|/* Adlaire-Design WYSIWYG editor interactions */|data-adlaire-wysiwyg-mode
+TypeScript/Editor/index.ts|EditorUI/editor.js|/* Adlaire-Design editor core */|export const AdlaireEditor|window.AdlaireEditor
+ADLAIRE_GENERATED_JS_TARGETS
+
+while IFS='|' read -r generated_js_source generated_js_target generated_js_first_line generated_js_source_marker generated_js_target_marker; do
+  if [ ! -f "$ADLAIRE_DESIGN_ROOT/$generated_js_source" ]; then
+    echo "JavaScript source TypeScript is missing: $generated_js_source" >&2
+    exit 1
+  fi
+  if [ ! -f "$ADLAIRE_DESIGN_ROOT/$generated_js_target" ]; then
+    echo "JavaScript generated target is missing: $generated_js_target" >&2
+    exit 1
+  fi
+  if ! grep -F -- "$generated_js_source_marker" "$ADLAIRE_DESIGN_ROOT/$generated_js_source" >/dev/null 2>&1; then
+    echo "JavaScript source missing generated artifact marker: $generated_js_source" >&2
+    exit 1
+  fi
+  if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/$generated_js_target")" != "$generated_js_first_line" ]; then
+    echo "JavaScript generated target first line mismatch: $generated_js_target" >&2
+    exit 1
+  fi
+  if ! grep -F -- "$generated_js_target_marker" "$ADLAIRE_DESIGN_ROOT/$generated_js_source" >/dev/null 2>&1; then
+    echo "JavaScript source missing required behavior marker: $generated_js_source" >&2
+    exit 1
+  fi
+  if ! grep -F -- "$generated_js_target_marker" "$ADLAIRE_DESIGN_ROOT/$generated_js_target" >/dev/null 2>&1; then
+    echo "JavaScript generated target missing required behavior marker: $generated_js_target" >&2
+    exit 1
+  fi
+  if grep -E '/// <reference lib="dom" />|<[A-Za-z][A-Za-z0-9_]*>| as [A-Za-z][A-Za-z0-9_]*|\breadonly\b|\binterface\b' "$ADLAIRE_DESIGN_ROOT/$generated_js_target" >/dev/null 2>&1; then
+    echo "JavaScript generated target must not contain TypeScript-only syntax: $generated_js_target" >&2
+    exit 1
+  fi
+done <"$TMP_DIR/generated-js-targets"
+
 find "$ADLAIRE_DESIGN_ROOT/Samples" -maxdepth 1 -type f \
   ! -name '.gitkeep' \
   ! -name 'README.md' \
@@ -982,7 +1048,6 @@ done
 
 for pending_quality_task in \
   'AD-TASK-037' \
-  'AD-TASK-038' \
   'AD-TASK-039' \
   'AD-TASK-040' \
   'AD-TASK-041'; do
@@ -2102,6 +2167,13 @@ if comm -23 "$TMP_DIR/css-var-refs" "$TMP_DIR/css-var-defs" >"$TMP_DIR/css-var-m
 fi
 
 if command -v deno >/dev/null 2>&1; then
+  (cd "$ADLAIRE_DESIGN_ROOT" && deno check --no-npm \
+    TypeScript/CSS/index.ts \
+    TypeScript/UI/components.ts \
+    TypeScript/UI/forms.ts \
+    TypeScript/UI/content.ts \
+    TypeScript/EditorUI/wysiwyg.ts \
+    TypeScript/Editor/index.ts)
   (cd "$ADLAIRE_DESIGN_ROOT" && deno run --allow-read TypeScript/CSS/index.ts check-generated-css)
 fi
 

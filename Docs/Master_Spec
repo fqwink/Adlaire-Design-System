@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.104
+**Version:** rev.105
 
 ---
 
@@ -538,6 +538,8 @@ CSS/JavaScriptはブラウザ実行用の生成物として扱い、手編集の
 Editor本体の公開APIは `TypeScript/Editor/index.ts` に集約し、ブラウザ実行時は `window.AdlaireEditor` として公開する。
 
 Editor本体の検査はDenoランタイムで行い、`deno check --no-npm TypeScript/Editor/index.ts` を基準とする。
+
+生成物整合検査は、CSS生成物、UI JavaScript生成物、Editor UI JavaScript生成物、Editor本体JavaScript生成物を対象とする。CSS生成物は `TypeScript/CSS/manifest.ts` の対象一覧、生成先ファイル、先頭コメント、Deno実行可能環境での `check-generated-css` 差分ゼロ確認を検査する。JavaScript生成物はTypeScript正本と生成先ファイルの対応、生成物先頭コメント、TypeScript専用構文の混入禁止、Editor本体公開名を検査する。
 
 npm registry取得、npm互換パッケージ、Node.js依存を伴うbundle、minify、外部フレームワーク生成は採用しない。
 
