@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.103
+**Version:** rev.106
 
 ---
 
@@ -538,6 +538,8 @@ CSS/JavaScriptはブラウザ実行用の生成物として扱い、手編集の
 Editor本体の公開APIは `TypeScript/Editor/index.ts` に集約し、ブラウザ実行時は `window.AdlaireEditor` として公開する。
 
 Editor本体の検査はDenoランタイムで行い、`deno check --no-npm TypeScript/Editor/index.ts` を基準とする。
+
+生成物整合検査は、CSS生成物、UI JavaScript生成物、Editor UI JavaScript生成物、Editor本体JavaScript生成物を対象とする。CSS生成物は `TypeScript/CSS/manifest.ts` の対象一覧、生成先ファイル、先頭コメント、Deno実行可能環境での `check-generated-css` 差分ゼロ確認を検査する。JavaScript生成物はTypeScript正本と生成先ファイルの対応、生成物先頭コメント、TypeScript専用構文の混入禁止、Editor本体公開名を検査する。
 
 npm registry取得、npm互換パッケージ、Node.js依存を伴うbundle、minify、外部フレームワーク生成は採用しない。
 
@@ -2130,6 +2132,24 @@ semantic token aliasは、状態や選択をUI部品間で共通化するため�
 WCAG 2.2 A参照の確認観点は、focus表示、keyboard操作表示、skip link、landmark補助、状態表示、エラー表示、色以外の識別補助に固定する。数値コントラスト保証は現時点の管理対象外とする。
 
 リリース前チェックリストは、構成検査、必須ファイル、禁止ファイル、class照合、CSS変数参照、JavaScript smoke、Samples配置、PR確認、main同期確認を対象とする。リリース前チェックは仕様と実装の整合確認であり、CSS minify、bundleを追加する根拠にはしない。
+
+リリース前チェックでは、PR確認、main同期確認に加えて、マージ後のheadブランチ削除確認を対象に含める。GitHub側でマージ後ブランチ自動削除が有効である場合も、`git fetch backup --prune` 後にリモート追跡ブランチが残っていないことを確認する。
+
+### 11.11.14 品質保証改良タスク策定仕様
+
+500件の公式アイコン実装完了後は、検査強化、生成物整合検査、サンプル整備、カタログ運用統一、リリース前チェック強化を優先改良対象とする。
+
+品質保証改良は、仕様正本、カタログ、TypeScript正本、生成物、検査シェルの同期を目的とする。個別実装は未タスクとして管理し、実装工程に進む場合は変更承認と実装承認を別途取得する。
+
+公式アイコン整合検査は、`Docs/Icon_Set_Catalog` の500件固定、`AD-ICON-001` から `AD-ICON-500` までのID連番、ファイル名一意性、カテゴリ妥当性、全件 `実装済み` 状態、`Icons/` 配下のSVG実体数一致を検査対象とする。
+
+| 改良対象 | 主な内容 | 管理先 |
+| --- | --- | --- |
+| アイコン整合検査 | `Docs/Icon_Set_Catalog` のID、ファイル名、実装状態、`Icons/` のSVG実体数を照合する | `Tools/check/check-adlaire-design.sh` |
+| 生成物整合検査 | TypeScript正本とCSS/JavaScript生成物の対応、Deno check、差分ゼロ確認を強化する | `TypeScript/`、`UI/`、`EditorUI/`、`Tools/check/check-adlaire-design.sh` |
+| サンプル整備 | 500アイコン、汎用UI、Editor UIの理解補助サンプルを追加する | `Samples/README.md`、`Samples/design/` |
+| カタログ運用統一 | 各カタログの実装状態、対象外、同期対象、更新単位を統一する | `Docs/*_Catalog`、`Docs/Pending_Tasks` |
+| リリース前チェック | PR状態、main同期状態、マージ後ブランチ削除確認、release check実行結果を確認する | `Tools/check/check-adlaire-design.sh` |
 
 ---
 

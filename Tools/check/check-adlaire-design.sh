@@ -323,6 +323,122 @@ while IFS= read -r icon_name; do
   fi
 done <"$TMP_DIR/implemented-icons"
 
+ICON_CATALOG_COUNT="$(awk -F '|' '/^\| AD-ICON-/ { count++ } END { print count + 0 }' "$ADLAIRE_DESIGN_ROOT/Docs/Icon_Set_Catalog")"
+ICON_FILE_COUNT="$(wc -l <"$TMP_DIR/icon-files" | tr -d ' ')"
+
+if [ "$ICON_CATALOG_COUNT" -ne 500 ]; then
+  echo "Docs/Icon_Set_Catalog must list exactly 500 official icons." >&2
+  exit 1
+fi
+
+if [ "$ICON_FILE_COUNT" -ne "$ICON_CATALOG_COUNT" ]; then
+  echo "Icons/ SVG file count must match Docs/Icon_Set_Catalog icon count." >&2
+  exit 1
+fi
+
+awk -F '|' '
+/^\| AD-ICON-/ {
+  id = $2
+  filename = $3
+  category = $4
+  status = $9
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", id)
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", filename)
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", category)
+  gsub(/^[[:space:]]+|[[:space:]]+$/, "", status)
+  count++
+  expected = sprintf("AD-ICON-%03d", count)
+  if (id != expected) {
+    print "Icon catalog ID sequence mismatch: " id " expected " expected
+  }
+  if (filename == "" || seen_filename[filename]++) {
+    print "Icon catalog filename must be present and unique: " filename
+  }
+  if (status != "実装済み") {
+    print "Icon catalog status must be 実装済み: " id
+  }
+  if (category !~ /^(navigation|action|status|content|editor|media|form)$/) {
+    print "Icon catalog category is invalid: " id " " category
+  }
+}
+END {
+  if (count != 500) {
+    print "Icon catalog row count must be 500: " count
+  }
+}
+' "$ADLAIRE_DESIGN_ROOT/Docs/Icon_Set_Catalog" >"$TMP_DIR/icon-catalog-errors"
+
+if [ -s "$TMP_DIR/icon-catalog-errors" ]; then
+  cat "$TMP_DIR/icon-catalog-errors" >&2
+  exit 1
+fi
+
+sed -n 's/.*path: "\([^"]*\)".*firstLine: "\([^"]*\)".*/\1|\2/p' \
+  "$ADLAIRE_DESIGN_ROOT/TypeScript/CSS/manifest.ts" >"$TMP_DIR/generated-css-targets"
+
+CSS_TARGET_COUNT="$(wc -l <"$TMP_DIR/generated-css-targets" | tr -d ' ')"
+CSS_FILE_COUNT="$(find "$ADLAIRE_DESIGN_ROOT/Tokens" "$ADLAIRE_DESIGN_ROOT/UI" "$ADLAIRE_DESIGN_ROOT/EditorUI" -type f -name '*.css' | wc -l | tr -d ' ')"
+
+if [ "$CSS_TARGET_COUNT" -ne 20 ]; then
+  echo "TypeScript/CSS/manifest.ts must define exactly 20 generated CSS targets." >&2
+  exit 1
+fi
+
+if [ "$CSS_FILE_COUNT" -ne "$CSS_TARGET_COUNT" ]; then
+  echo "Generated CSS file count must match TypeScript/CSS/manifest.ts targets." >&2
+  exit 1
+fi
+
+while IFS='|' read -r generated_css_path generated_css_first_line; do
+  if [ ! -f "$ADLAIRE_DESIGN_ROOT/$generated_css_path" ]; then
+    echo "CSS manifest target is missing generated file: $generated_css_path" >&2
+    exit 1
+  fi
+  if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/$generated_css_path")" != "$generated_css_first_line" ]; then
+    echo "Generated CSS first line does not match manifest: $generated_css_path" >&2
+    exit 1
+  fi
+done <"$TMP_DIR/generated-css-targets"
+
+cat >"$TMP_DIR/generated-js-targets" <<'ADLAIRE_GENERATED_JS_TARGETS'
+TypeScript/UI/components.ts|UI/components.js|/* Adlaire-Design component interactions */|/* Adlaire-Design component interactions */|data-adlaire-sidebar-toggle
+TypeScript/UI/forms.ts|UI/forms.js|/* Adlaire-Design form interactions */|/* Adlaire-Design form interactions */|data-adlaire-filter-input
+TypeScript/UI/content.ts|UI/content.js|/* Adlaire-Design content interactions */|/* Adlaire-Design content interactions */|data-adlaire-sort
+TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|/* Adlaire-Design WYSIWYG editor interactions */|/* Adlaire-Design WYSIWYG editor interactions */|data-adlaire-wysiwyg-mode
+TypeScript/Editor/index.ts|EditorUI/editor.js|/* Adlaire-Design editor core */|export const AdlaireEditor|window.AdlaireEditor
+ADLAIRE_GENERATED_JS_TARGETS
+
+while IFS='|' read -r generated_js_source generated_js_target generated_js_first_line generated_js_source_marker generated_js_target_marker; do
+  if [ ! -f "$ADLAIRE_DESIGN_ROOT/$generated_js_source" ]; then
+    echo "JavaScript source TypeScript is missing: $generated_js_source" >&2
+    exit 1
+  fi
+  if [ ! -f "$ADLAIRE_DESIGN_ROOT/$generated_js_target" ]; then
+    echo "JavaScript generated target is missing: $generated_js_target" >&2
+    exit 1
+  fi
+  if ! grep -F -- "$generated_js_source_marker" "$ADLAIRE_DESIGN_ROOT/$generated_js_source" >/dev/null 2>&1; then
+    echo "JavaScript source missing generated artifact marker: $generated_js_source" >&2
+    exit 1
+  fi
+  if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/$generated_js_target")" != "$generated_js_first_line" ]; then
+    echo "JavaScript generated target first line mismatch: $generated_js_target" >&2
+    exit 1
+  fi
+  if ! grep -F -- "$generated_js_target_marker" "$ADLAIRE_DESIGN_ROOT/$generated_js_source" >/dev/null 2>&1; then
+    echo "JavaScript source missing required behavior marker: $generated_js_source" >&2
+    exit 1
+  fi
+  if ! grep -F -- "$generated_js_target_marker" "$ADLAIRE_DESIGN_ROOT/$generated_js_target" >/dev/null 2>&1; then
+    echo "JavaScript generated target missing required behavior marker: $generated_js_target" >&2
+    exit 1
+  fi
+  if grep -E '/// <reference lib="dom" />|<[A-Za-z][A-Za-z0-9_]*>| as [A-Za-z][A-Za-z0-9_]*|\breadonly\b|\binterface\b' "$ADLAIRE_DESIGN_ROOT/$generated_js_target" >/dev/null 2>&1; then
+    echo "JavaScript generated target must not contain TypeScript-only syntax: $generated_js_target" >&2
+    exit 1
+  fi
+done <"$TMP_DIR/generated-js-targets"
+
 find "$ADLAIRE_DESIGN_ROOT/Samples" -maxdepth 1 -type f \
   ! -name '.gitkeep' \
   ! -name 'README.md' \
@@ -913,10 +1029,30 @@ for pending_task_term in \
   '未実装リストには、仕様確定済みで実装だけが未完了の項目だけを記載する。' \
   '仕様未確定、要否未決定、策定中の項目は未実装リストに含めない。' \
   '## 3. 未実装リスト' \
-  '本章は、仕様確定済みで、実装だけが未完了の項目を管理する。' \
-  '現時点で該当なし'; do
+  '本章は、仕様確定済みで、実装だけが未完了の項目を管理する。'; do
   if ! grep -F -- "$pending_task_term" "$ADLAIRE_DESIGN_ROOT/Docs/Pending_Tasks" >/dev/null 2>&1; then
     echo "Docs/Pending_Tasks missing required pending task management term: $pending_task_term" >&2
+    exit 1
+  fi
+done
+
+for quality_improvement_term in \
+  '### 11.11.14 品質保証改良タスク策定仕様' \
+  '500件の公式アイコン実装完了後は、検査強化、生成物整合検査、サンプル整備、カタログ運用統一、リリース前チェック強化を優先改良対象とする。' \
+  '公式アイコン整合検査は、`Docs/Icon_Set_Catalog` の500件固定、`AD-ICON-001` から `AD-ICON-500` までのID連番、ファイル名一意性、カテゴリ妥当性、全件 `実装済み` 状態、`Icons/` 配下のSVG実体数一致を検査対象とする。' \
+  'マージ後のheadブランチ削除確認'; do
+  if ! grep -F -- "$quality_improvement_term" "$ADLAIRE_DESIGN_ROOT/Docs/Master_Spec" >/dev/null 2>&1; then
+    echo "Docs/Master_Spec missing required quality improvement term: $quality_improvement_term" >&2
+    exit 1
+  fi
+done
+
+for pending_quality_task in \
+  'AD-TASK-039' \
+  'AD-TASK-040' \
+  'AD-TASK-041'; do
+  if ! grep -F -- "$pending_quality_task" "$ADLAIRE_DESIGN_ROOT/Docs/Pending_Tasks" >/dev/null 2>&1; then
+    echo "Docs/Pending_Tasks missing required quality improvement task: $pending_quality_task" >&2
     exit 1
   fi
 done
@@ -2031,6 +2167,13 @@ if comm -23 "$TMP_DIR/css-var-refs" "$TMP_DIR/css-var-defs" >"$TMP_DIR/css-var-m
 fi
 
 if command -v deno >/dev/null 2>&1; then
+  (cd "$ADLAIRE_DESIGN_ROOT" && deno check --no-npm \
+    TypeScript/CSS/index.ts \
+    TypeScript/UI/components.ts \
+    TypeScript/UI/forms.ts \
+    TypeScript/UI/content.ts \
+    TypeScript/EditorUI/wysiwyg.ts \
+    TypeScript/Editor/index.ts)
   (cd "$ADLAIRE_DESIGN_ROOT" && deno run --allow-read TypeScript/CSS/index.ts check-generated-css)
 fi
 
