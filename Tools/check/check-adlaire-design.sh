@@ -1039,6 +1039,7 @@ done
 for quality_improvement_term in \
   '### 11.11.14 品質保証改良タスク策定仕様' \
   '500件の公式アイコン実装完了後は、検査強化、生成物整合検査、サンプル整備、カタログ運用統一、リリース前チェック強化を優先改良対象とする。' \
+  '公式アイコン整合検査は、`Docs/Icon_Set_Catalog` の500件固定、`AD-ICON-001` から `AD-ICON-500` までのID連番、ファイル名一意性、カテゴリ妥当性、全件 `実装済み` 状態、`Icons/` 配下のSVG実体数一致を検査対象とする。' \
   'マージ後のheadブランチ削除確認'; do
   if ! grep -F -- "$quality_improvement_term" "$ADLAIRE_DESIGN_ROOT/Docs/Master_Spec" >/dev/null 2>&1; then
     echo "Docs/Master_Spec missing required quality improvement term: $quality_improvement_term" >&2
@@ -1047,7 +1048,6 @@ for quality_improvement_term in \
 done
 
 for pending_quality_task in \
-  'AD-TASK-037' \
   'AD-TASK-039' \
   'AD-TASK-040' \
   'AD-TASK-041'; do

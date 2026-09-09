@@ -21,7 +21,6 @@
 
 | ID | 分類 | 未タスク | 完了条件 | 主な更新対象 |
 | --- | --- | --- | --- | --- |
-| AD-TASK-037 | Quality Check | 公式アイコン500件完了後のアイコン整合検査を強化する。 | `Docs/Icon_Set_Catalog` のID、ファイル名、実装状態、`Icons/` のSVG実体数を検査できること。 | `Docs/Master_Spec`、`Tools/check/check-adlaire-design.sh` |
 | AD-TASK-039 | Samples | 500アイコン、汎用UI、Editor UIの確認用サンプルを整備する。 | Samplesから主要UI、Editor UI、公式アイコンを確認できること。 | `Samples/README.md`、`Samples/design/`、`Docs/Master_Spec`、`Docs/Document_Index` |
 | AD-TASK-040 | Catalog | カタログ状態管理ルールを統一する。 | 各カタログの実装状態、対象外、同期対象、更新単位が統一されていること。 | `Docs/*_Catalog`、`Docs/Pending_Tasks`、`Tools/check/check-adlaire-design.sh` |
 | AD-TASK-041 | Release Check | リリース前チェックにPR確認、main同期確認、マージ後ブランチ削除確認を明記し、検査条件を強化する。 | PR確認、main同期確認、マージ後ブランチ削除確認をリリース前チェック対象として確認できること。 | `Docs/Master_Spec`、`Tools/check/check-adlaire-design.sh` |
