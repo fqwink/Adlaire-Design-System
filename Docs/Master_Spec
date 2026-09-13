@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.109
+**Version:** rev.110
 
 ---
 
@@ -2129,6 +2129,7 @@ Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象と�
 | Admin operations UI | `.adlaire-admin-kpi-card`、`.adlaire-admin-resource-header`、`.adlaire-admin-data-toolbar`、`.adlaire-admin-selection-summary`、`.adlaire-admin-approval-panel`、`.adlaire-admin-permission-matrix`、`.adlaire-admin-review-queue`、`.adlaire-admin-status-board` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 | Admin reliability / integration UI | `.adlaire-admin-insight-panel`、`.adlaire-admin-health-check`、`.adlaire-admin-task-board`、`.adlaire-admin-incident-panel`、`.adlaire-admin-release-panel`、`.adlaire-admin-quota-meter`、`.adlaire-admin-api-key-list`、`.adlaire-admin-webhook-list` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 | Admin operations support UI | `.adlaire-admin-notification-center`、`.adlaire-admin-broadcast-panel`、`.adlaire-admin-maintenance-window`、`.adlaire-admin-backup-panel`、`.adlaire-admin-import-export`、`.adlaire-admin-sync-status`、`.adlaire-admin-env-switcher`、`.adlaire-admin-feature-flag-list` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
+| Admin observability / governance UI | `.adlaire-admin-observability-panel`、`.adlaire-admin-log-stream`、`.adlaire-admin-alert-rule-list`、`.adlaire-admin-cost-summary`、`.adlaire-admin-usage-breakdown`、`.adlaire-admin-retention-panel`、`.adlaire-admin-compliance-checklist`、`.adlaire-admin-policy-panel` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 
 semantic token aliasは、状態や選択をUI部品間で共通化するために策定する。対象は danger、success、warning、info、focus、selected、muted とし、命名は `--adlaire-semantic-<name>-<property>` を基本とする。既存の色、surface、status tokenを正本値とし、semantic token aliasは用途別参照名として扱う。
 

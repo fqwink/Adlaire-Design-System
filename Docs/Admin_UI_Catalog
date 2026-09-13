@@ -41,6 +41,10 @@
 | Data Ops | バックアップ/同期/入出力 |
 | Environment | 環境切替 |
 | Feature Flag | 機能フラグ管理 |
+| Observability | 監視/ログ/アラート |
+| Cost | コスト/利用量分析 |
+| Data Governance | 保持/準拠確認 |
+| Policy | ポリシー管理 |
 
 ---
 
@@ -82,3 +86,11 @@
 | 同期状態 | `.adlaire-admin-sync-status`、`.adlaire-admin-sync-source`、`.adlaire-admin-sync-result` | `UI/components.css` | B | 実装済み | 同期元、同期結果、最終同期状態 | 表示状態補助 |
 | 環境スイッチャー | `.adlaire-admin-env-switcher`、`.adlaire-admin-env-option`、`.adlaire-admin-env-current` | `UI/components.css` | A | 実装済み | 環境選択、現在環境、危険環境識別 | 表示状態補助 |
 | 機能フラグ一覧 | `.adlaire-admin-feature-flag-list`、`.adlaire-admin-feature-flag-item`、`.adlaire-admin-feature-flag-state` | `UI/components.css` | B | 実装済み | 機能フラグ、公開状態、切替対象 | 表示状態補助 |
+| Observabilityパネル | `.adlaire-admin-observability-panel`、`.adlaire-admin-observability-metric`、`.adlaire-admin-observability-state` | `UI/components.css` | A | 実装済み | 監視指標、状態、異常兆候の概要表示 | 表示状態補助 |
+| ログストリーム | `.adlaire-admin-log-stream`、`.adlaire-admin-log-line`、`.adlaire-admin-log-level` | `UI/components.css` | B | 実装済み | ログ行、重要度、時系列表示 | 表示状態補助 |
+| アラートルール一覧 | `.adlaire-admin-alert-rule-list`、`.adlaire-admin-alert-rule-item`、`.adlaire-admin-alert-rule-state` | `UI/components.css` | B | 実装済み | アラート条件、有効状態、通知対象表示 | 表示状態補助 |
+| コストサマリー | `.adlaire-admin-cost-summary`、`.adlaire-admin-cost-value`、`.adlaire-admin-cost-delta` | `UI/components.css` | B | 実装済み | コスト合計、増減、予算状態表示 | 表示状態補助 |
+| 使用量内訳 | `.adlaire-admin-usage-breakdown`、`.adlaire-admin-usage-row`、`.adlaire-admin-usage-value` | `UI/components.css` | B | 実装済み | 使用量項目、内訳、比較値表示 | 表示状態補助 |
+| 保持設定パネル | `.adlaire-admin-retention-panel`、`.adlaire-admin-retention-rule`、`.adlaire-admin-retention-period` | `UI/components.css` | B | 実装済み | 保持ルール、保持期間、対象データ表示 | 表示状態補助 |
+| コンプライアンスチェックリスト | `.adlaire-admin-compliance-checklist`、`.adlaire-admin-compliance-item`、`.adlaire-admin-compliance-state` | `UI/components.css` | A | 実装済み | 準拠確認、未対応項目、完了状態表示 | 表示状態補助 |
+| ポリシーパネル | `.adlaire-admin-policy-panel`、`.adlaire-admin-policy-rule`、`.adlaire-admin-policy-state` | `UI/components.css` | B | 実装済み | 管理ポリシー、適用状態、例外表示 | 表示状態補助 |
