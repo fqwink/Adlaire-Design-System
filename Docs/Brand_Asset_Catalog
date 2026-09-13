@@ -52,3 +52,18 @@ JPG、JPEG、GIF、PDF、AI、PSD、EPSは対応しない。
 | AD-BRAND-002 | `adlaire-logo-mark.svg` | ロゴ | 小型表示・favicon系の基準 | SVG | Adlaire-Designの小型識別マークとして用途を説明する | 実装済み |
 | AD-BRAND-003 | `adlaire-ogp-default.png` | OGP画像 | 標準OGP | PNG | Adlaire-Designの標準OGP画像としてページまたはブランド説明を記録する | 実装済み |
 | AD-BRAND-004 | `adlaire-image-brand-overview.webp` | ブランド画像 | ブランド説明・紹介用 | WebP | Adlaire-Designのブランド概要を示す画像として内容を説明する | 実装済み |
+
+---
+
+## 5. カタログ運用統一ルール
+
+本カタログの実装状態、対象外、同期対象、更新単位は以下に統一する。
+
+| 項目 | 統一ルール |
+| --- | --- |
+| 実装状態 | `実装済み`、`策定済み`、`対象外` のいずれかで管理する |
+| 対象外 | 汎用UI部品、WYSIWYG Editor UI部品、公式アイコンセットは本カタログに含めない |
+| 同期対象 | `Docs/Master_Spec`、`Docs/Brand_Asset_Catalog`、`Docs/Document_Index`、`Brand/`、`Tools/check/check-adlaire-design.sh` |
+| 更新単位 | ブランド資産の追加、状態変更、対象外変更は、仕様、カタログ、実体資産、検査を同じ変更単位で確認する |
+
+Samplesで確認する場合は、`Samples/README.md` と `Samples/design/` を理解補助として更新できる。ただし、Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。

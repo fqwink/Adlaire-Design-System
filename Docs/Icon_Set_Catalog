@@ -544,3 +544,18 @@
 | AD-ICON-498 | `adlaire-icon-status-beta.svg` | status | ベータ | sm / md | 意味 | 状態ラベルを付与する | 実装済み |
 | AD-ICON-499 | `adlaire-icon-status-new.svg` | status | 新規 | sm / md | 意味 | 状態ラベルを付与する | 実装済み |
 | AD-ICON-500 | `adlaire-icon-status-updated.svg` | status | 更新済み | sm / md | 意味 | 状態ラベルを付与する | 実装済み |
+
+---
+
+## カタログ運用統一ルール
+
+本カタログの実装状態、対象外、同期対象、更新単位は以下に統一する。
+
+| 項目 | 統一ルール |
+| --- | --- |
+| 実装状態 | `実装済み`、`策定済み`、`対象外` のいずれかで管理する |
+| 対象外 | ブランド資産、アイコン表示UI、JavaScript挙動は本カタログに含めない |
+| 同期対象 | `Docs/Master_Spec`、`Docs/Icon_Set_Catalog`、`Icons/`、`Tools/check/check-adlaire-design.sh` |
+| 更新単位 | 公式アイコンの追加、状態変更、対象外変更は、仕様、カタログ、SVG実体、検査を同じ変更単位で確認する |
+
+Samplesで確認する場合は、`Samples/README.md` と `Samples/design/` を理解補助として更新できる。ただし、Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。

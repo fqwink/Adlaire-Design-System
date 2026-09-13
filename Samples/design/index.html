@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../Tokens/colors.css">
   <link rel="stylesheet" href="../../Tokens/typography.css">
   <link rel="stylesheet" href="../../Tokens/spacing.css">
+  <link rel="stylesheet" href="../../Tokens/layout.css">
   <link rel="stylesheet" href="../../Tokens/motion.css">
   <link rel="stylesheet" href="../../Tokens/layer.css">
   <link rel="stylesheet" href="../../Tokens/breakpoints.css">
@@ -44,6 +45,31 @@
   </header>
 
   <main class="adlaire-container sample-shell">
+    <section class="sample-section" aria-labelledby="coverage-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Coverage</p>
+        <h2 id="coverage-title">Samples確認範囲</h2>
+      </div>
+      <div class="sample-coverage-grid">
+        <a class="sample-coverage-card" href="../../Docs/Generic_Component_Catalog">
+          <span>Generic UI</span>
+          <strong>汎用UI / Git Provider UI</strong>
+        </a>
+        <a class="sample-coverage-card" href="../../Docs/Admin_UI_Catalog">
+          <span>Admin UI</span>
+          <strong>状態 / 操作 / 管理レイアウト</strong>
+        </a>
+        <a class="sample-coverage-card" href="../../Docs/WYSIWYG_Editor_UI_Catalog">
+          <span>WYSIWYG Editor UI</span>
+          <strong>Editor UI / Mobile / 状態表示</strong>
+        </a>
+        <a class="sample-coverage-card" href="../../Docs/Icon_Set_Catalog">
+          <span>Icon Set</span>
+          <strong>公式500アイコン</strong>
+        </a>
+      </div>
+    </section>
+
     <section class="sample-section" aria-labelledby="tokens-title">
       <div class="sample-section-heading">
         <p class="sample-kicker">Tokens</p>
@@ -185,6 +211,14 @@
         <span class="adlaire-icon-tile"><img src="../../Icons/adlaire-icon-editor-code.svg" alt="">code</span>
         <span class="adlaire-icon-tile"><img src="../../Icons/adlaire-icon-media-gallery.svg" alt="">gallery</span>
         <span class="adlaire-icon-tile"><img src="../../Icons/adlaire-icon-form-calendar.svg" alt="">calendar</span>
+      </div>
+      <div class="sample-icon-summary" aria-label="公式500アイコン確認">
+        <div>
+          <span class="sample-kicker">Official icon coverage</span>
+          <strong data-sample-icon-total>500</strong>
+          <span>icons listed in `Docs/Icon_Set_Catalog` and stored in `Icons/`.</span>
+        </div>
+        <a class="adlaire-button adlaire-button-secondary" href="../../Docs/Icon_Set_Catalog">500 icon catalog</a>
       </div>
     </section>
 

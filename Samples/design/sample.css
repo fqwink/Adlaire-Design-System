@@ -223,6 +223,60 @@ body {
   align-items: center;
 }
 
+.sample-coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sample-coverage-card {
+  display: grid;
+  gap: 6px;
+  min-height: 112px;
+  padding: 16px;
+  color: var(--adlaire-surface-text);
+  background: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  box-shadow: var(--adlaire-shadow-card);
+  text-decoration: none;
+}
+
+.sample-coverage-card:hover,
+.sample-coverage-card:focus-visible {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  text-decoration: none;
+}
+
+.sample-coverage-card span,
+.sample-icon-summary span {
+  color: var(--adlaire-surface-text-muted);
+  font-size: 13px;
+}
+
+.sample-icon-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.sample-icon-summary > div {
+  display: grid;
+  gap: 4px;
+}
+
+.sample-icon-summary strong {
+  font-size: 32px;
+  line-height: 1;
+}
+
 .sample-git-layout {
   display: grid;
   grid-template-columns: 1.1fr 1fr 1fr;
@@ -268,6 +322,7 @@ body {
 
   .sample-grid-two,
   .sample-swatch-grid,
+  .sample-coverage-grid,
   .sample-brand-grid,
   .sample-git-layout {
     grid-template-columns: 1fr;

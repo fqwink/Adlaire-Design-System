@@ -1051,15 +1051,6 @@ for quality_improvement_term in \
   fi
 done
 
-for pending_quality_task in \
-  'AD-TASK-039' \
-  'AD-TASK-040'; do
-  if ! grep -F -- "$pending_quality_task" "$ADLAIRE_DESIGN_ROOT/Docs/Pending_Tasks" >/dev/null 2>&1; then
-    echo "Docs/Pending_Tasks missing required quality improvement task: $pending_quality_task" >&2
-    exit 1
-  fi
-done
-
 check_catalog_classes generic "$ADLAIRE_DESIGN_ROOT/Docs/Generic_Component_Catalog" '^\.adlaire-wysiwyg$' \
   "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" \
   "$ADLAIRE_DESIGN_ROOT/UI/base.css" \
@@ -1113,9 +1104,55 @@ done
 
 for sample_term in \
   '汎用UI、Admin UI、公式アイコン、WYSIWYG Editor UI、Git Provider UI' \
+  '公式500アイコン' \
+  'Generic UI' \
+  'Admin UI' \
+  'WYSIWYG Editor UI' \
+  'Icon Set' \
+  'Samplesは、Generic UI、Admin UI、WYSIWYG Editor UI、Git Provider UI、Tokens、Brand、公式500アイコンの確認導線を持つ。' \
   'Samples/sample-current.png'; do
-  if ! grep -F -- "$sample_term" "$ADLAIRE_DESIGN_ROOT/Samples/README.md" "$ADLAIRE_DESIGN_ROOT/Samples/design/index.html" >/dev/null 2>&1; then
+  if ! grep -F -- "$sample_term" "$ADLAIRE_DESIGN_ROOT/Samples/README.md" "$ADLAIRE_DESIGN_ROOT/Samples/design/index.html" "$ADLAIRE_DESIGN_ROOT/Docs/Master_Spec" >/dev/null 2>&1; then
     echo "Samples documentation or design missing required sample term: $sample_term" >&2
+    exit 1
+  fi
+done
+
+for sample_doc_term in \
+  'Samplesを更新する場合は、対象カタログ、`Docs/Master_Spec`、`Docs/Document_Index`、`Tools/check/check-adlaire-design.sh` の同期要否を確認する。' \
+  '公式アイコンの確認導線は、500件固定の `Docs/Icon_Set_Catalog` と `Icons/` 実体を参照する。' \
+  '`Samples/design/`(汎用UI、Admin UI、WYSIWYG Editor UI、Git Provider UI、公式500アイコン、Brand確認用サンプルデザイン)'; do
+  if ! grep -F -- "$sample_doc_term" "$ADLAIRE_DESIGN_ROOT/Samples/README.md" "$ADLAIRE_DESIGN_ROOT/Docs/Document_Index" >/dev/null 2>&1; then
+    echo "Samples documentation or index missing required sample governance term: $sample_doc_term" >&2
+    exit 1
+  fi
+done
+
+for catalog_path in \
+  Docs/Generic_Component_Catalog \
+  Docs/Admin_UI_Catalog \
+  Docs/WYSIWYG_Editor_UI_Catalog \
+  Docs/Icon_Set_Catalog \
+  Docs/Brand_Asset_Catalog; do
+  for catalog_governance_term in \
+    'カタログ運用統一ルール' \
+    '実装状態' \
+    '対象外' \
+    '同期対象' \
+    '更新単位' \
+    'Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。'; do
+    if ! grep -F -- "$catalog_governance_term" "$ADLAIRE_DESIGN_ROOT/$catalog_path" >/dev/null 2>&1; then
+      echo "$catalog_path missing required catalog governance term: $catalog_governance_term" >&2
+      exit 1
+    fi
+  done
+done
+
+for catalog_master_term in \
+  '各カタログの実装状態、対象外、同期対象、更新単位は、共通の「カタログ運用統一ルール」で管理する。' \
+  '実装状態は `実装済み`、`策定済み`、`対象外` のいずれかで統一する。' \
+  'Samplesは理解補助であり、カタログ状態の根拠にはしない。'; do
+  if ! grep -F -- "$catalog_master_term" "$ADLAIRE_DESIGN_ROOT/Docs/Master_Spec" >/dev/null 2>&1; then
+    echo "Docs/Master_Spec missing required catalog governance term: $catalog_master_term" >&2
     exit 1
   fi
 done

@@ -120,3 +120,18 @@
 | 操作優先度表示 | `.adlaire-admin-action-bar`、`.adlaire-admin-action-group`、`.adlaire-admin-primary-action`、`.adlaire-admin-secondary-action`、`.adlaire-admin-danger-action`、`.adlaire-admin-inline-action` | `UI/components.css` | A | 実装済み | 主要操作、補助操作、危険操作、インライン操作、操作グループの配置と優先度表示 | 表示状態補助 |
 | Adminレイアウト | `.adlaire-admin-layout`、`.adlaire-admin-main`、`.adlaire-admin-aside`、`.adlaire-admin-panel-grid`、`.adlaire-admin-dashboard-grid`、`.adlaire-admin-form-layout`、`.adlaire-admin-detail-layout` | `UI/components.css` | A | 実装済み | 管理画面の一覧、詳細、設定、ダッシュボード向け画面構成 | 表示状態補助 |
 | レスポンシブ運用規則 | desktop / tablet / mobile、横スクロール、aside移動、操作領域折り返し | `Docs/Master_Spec` | A | 策定済み | 管理画面の幅別レイアウト運用、情報優先度、横長情報の扱い | 表示状態補助 |
+
+---
+
+## 4. カタログ運用統一ルール
+
+本カタログの実装状態、対象外、同期対象、更新単位は以下に統一する。
+
+| 項目 | 統一ルール |
+| --- | --- |
+| 実装状態 | `実装済み`、`策定済み`、`対象外` のいずれかで管理する |
+| 対象外 | 一般公開面だけで完結する汎用部品、WYSIWYG Editor UI専用品、公式アイコンSVG実体は本カタログに含めない |
+| 同期対象 | `Docs/Master_Spec`、`Docs/Admin_UI_Catalog`、対象 `UI/*.css`、必要な `UI/*.js`、`Tools/check/check-adlaire-design.sh` |
+| 更新単位 | 管理画面専用UIの追加、状態変更、対象外変更は、仕様、カタログ、実装、検査を同じ変更単位で確認する |
+
+Samplesで確認する場合は、`Samples/README.md` と `Samples/design/` を理解補助として更新できる。ただし、Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。

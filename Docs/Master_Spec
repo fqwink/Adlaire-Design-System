@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.122
+**Version:** rev.123
 
 ---
 
@@ -2125,6 +2125,8 @@ Samplesは、Adlaire-Designの仕様理解を補助する資料として管理�
 
 サンプル拡張では、汎用UI、Admin UI、WYSIWYG Editor UI、Git Provider UI、Icon Setの5分類を優先する。Editor UIサンプルでは mobile toolbar、bottom sheet、block操作、inline toolbar、readonly/error表示を対象に含める。Git Provider UIサンプルでは PR、Issue、Diff、Review、Repository、CI/CD、Settingsを対象に含める。
 
+Samplesは、Generic UI、Admin UI、WYSIWYG Editor UI、Git Provider UI、Tokens、Brand、公式500アイコンの確認導線を持つ。Samplesから主要UI、Editor UI、公式アイコンを確認できる状態を維持し、公式アイコンは `Docs/Icon_Set_Catalog` の500件固定と `Icons/` 実体を参照する。
+
 サンプル制作は実装工程として扱う。仕様確定済みのサンプルであっても、HTML、CSS、JS、SVG、PNG、WebPを追加または更新する場合は、実装承認を得てから実施する。
 
 ### 11.11.12 カタログ責務索引
@@ -2158,6 +2160,8 @@ Adlaire-Designの責務は、正本、補助正本、実装、理解補助に分
 | `Docs/Icon_Set_Catalog` | 公式アイコンセットのID、ファイル名、カテゴリ、用途、代替テキスト方針、実装状態 | ブランド資産、アイコン表示UI、JavaScript挙動 |
 
 カタログclass照合では、カタログに記載した `実装済み` classを対象CSSに照合する。対象外は、説明用接頭辞、未実装状態のclass、SVGファイル名、JavaScript関数名、ARIA属性、HTML属性とする。失敗時は、未検出class、参照元カタログ、期待実装先を表示する。
+
+各カタログの実装状態、対象外、同期対象、更新単位は、共通の「カタログ運用統一ルール」で管理する。実装状態は `実装済み`、`策定済み`、`対象外` のいずれかで統一する。部品、資産、アイコンの追加または状態変更では、仕様、カタログ、実装、検査を同じ変更単位で確認する。Samplesは理解補助であり、カタログ状態の根拠にはしない。
 
 ### 11.11.13 拡張UI/Tokens策定仕様
 
@@ -2223,8 +2227,8 @@ WCAG 2.2 A参照の確認観点は、focus表示、keyboard操作表示、skip l
 | --- | --- | --- |
 | アイコン整合検査 | `Docs/Icon_Set_Catalog` のID、ファイル名、実装状態、`Icons/` のSVG実体数を照合する | `Tools/check/check-adlaire-design.sh` |
 | 生成物整合検査 | TypeScript正本とCSS/JavaScript生成物の対応、Deno check、差分ゼロ確認を強化する | `TypeScript/`、`UI/`、`EditorUI/`、`Tools/check/check-adlaire-design.sh` |
-| サンプル整備 | 500アイコン、汎用UI、Editor UIの理解補助サンプルを追加する | `Samples/README.md`、`Samples/design/` |
-| カタログ運用統一 | 各カタログの実装状態、対象外、同期対象、更新単位を統一する | `Docs/*_Catalog`、`Docs/Pending_Tasks` |
+| サンプル整備 | 500アイコン、汎用UI、Editor UIの理解補助サンプルを維持する | `Samples/README.md`、`Samples/design/` |
+| カタログ運用統一 | 各カタログの実装状態、対象外、同期対象、更新単位を統一して維持する | `Docs/*_Catalog`、`Tools/check/check-adlaire-design.sh` |
 | リリース前チェック | PR状態、backup/main同期状態、ローカルmain同期状態、マージ後ブランチ削除確認、release check実行結果を確認する | `Tools/check/check-adlaire-design.sh` |
 
 ---

@@ -13,4 +13,9 @@
   if (count) {
     count.textContent = String(document.querySelectorAll('.adlaire-language-option').length);
   }
+
+  var total = document.querySelector('[data-sample-icon-total]');
+  if (total) {
+    total.textContent = '500';
+  }
 })();
