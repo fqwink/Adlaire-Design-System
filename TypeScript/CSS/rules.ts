@@ -2017,6 +2017,52 @@ a:hover {
   font-weight: 800;
 }
 
+.adlaire-admin-state-badge {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 5px 9px;
+  border: 1px solid var(--adlaire-semantic-muted-border);
+  border-radius: var(--adlaire-radius-sm);
+  background-color: var(--adlaire-semantic-muted-bg);
+  color: var(--adlaire-semantic-muted-text);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.adlaire-admin-state-success {
+  background-color: var(--adlaire-semantic-success-bg);
+  border-color: var(--adlaire-semantic-success-border);
+  color: var(--adlaire-semantic-success-text);
+}
+
+.adlaire-admin-state-warning {
+  background-color: var(--adlaire-semantic-warning-bg);
+  border-color: var(--adlaire-semantic-warning-border);
+  color: var(--adlaire-semantic-warning-text);
+}
+
+.adlaire-admin-state-danger {
+  background-color: var(--adlaire-semantic-danger-bg);
+  border-color: var(--adlaire-semantic-danger-border);
+  color: var(--adlaire-semantic-danger-text);
+}
+
+.adlaire-admin-state-info {
+  background-color: var(--adlaire-semantic-info-bg);
+  border-color: var(--adlaire-semantic-info-border);
+  color: var(--adlaire-semantic-info-text);
+}
+
+.adlaire-admin-state-neutral {
+  background-color: var(--adlaire-semantic-muted-bg);
+  border-color: var(--adlaire-semantic-muted-border);
+  color: var(--adlaire-semantic-muted-text);
+}
+
 .adlaire-admin-density-compact {
   gap: 8px;
   padding: 10px;

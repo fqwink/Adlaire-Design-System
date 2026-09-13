@@ -50,6 +50,7 @@
 | Access Request | アクセス申請 |
 | Secret | シークレット/トークンスコープ |
 | Visual Hierarchy | セクション/カード/状態行/表示密度 |
+| Semantic State | 成功/警告/危険/情報/中立状態 |
 
 ---
 
@@ -108,3 +109,4 @@
 | リスクシグナル | `.adlaire-admin-risk-signal`、`.adlaire-admin-risk-signal-item`、`.adlaire-admin-risk-level` | `UI/components.css` | A | 実装済み | リスク兆候、重要度、対応状態表示 | 表示状態補助 |
 | 監査フィルター | `.adlaire-admin-audit-filter`、`.adlaire-admin-audit-filter-group`、`.adlaire-admin-audit-filter-chip` | `UI/components.css` | B | 実装済み | 監査ログの対象、期間、条件表示 | 表示状態補助 |
 | 視覚階層/表示密度 | `.adlaire-admin-section`、`.adlaire-admin-section-header`、`.adlaire-admin-section-title`、`.adlaire-admin-section-text`、`.adlaire-admin-card-header`、`.adlaire-admin-card-title`、`.adlaire-admin-card-meta`、`.adlaire-admin-card-actions`、`.adlaire-admin-state-row`、`.adlaire-admin-state-label`、`.adlaire-admin-state-value`、`.adlaire-admin-density-compact`、`.adlaire-admin-density-comfortable` | `UI/components.css` | A | 実装済み | セクション、カード見出し、メタ情報、操作領域、状態行、表示密度 | 表示状態補助 |
+| 状態色表示 | `.adlaire-admin-state-badge`、`.adlaire-admin-state-success`、`.adlaire-admin-state-warning`、`.adlaire-admin-state-danger`、`.adlaire-admin-state-info`、`.adlaire-admin-state-neutral` | `UI/components.css` | A | 実装済み | 成功、警告、危険、情報、中立状態の色、境界、ラベル表示 | 表示状態補助 |
