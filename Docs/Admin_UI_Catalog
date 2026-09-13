@@ -37,6 +37,10 @@
 | Integration | API key/Webhook管理 |
 | Release | リリース運用 |
 | Quota | 使用量/制限管理 |
+| Notification | 通知/告知 |
+| Data Ops | バックアップ/同期/入出力 |
+| Environment | 環境切替 |
+| Feature Flag | 機能フラグ管理 |
 
 ---
 
@@ -70,3 +74,11 @@
 | クォータメーター | `.adlaire-admin-quota-meter`、`.adlaire-admin-quota-bar`、`.adlaire-admin-quota-value` | `UI/components.css` | B | 実装済み | 使用量、上限、残量の視覚表示 | 表示状態補助 |
 | APIキー一覧 | `.adlaire-admin-api-key-list`、`.adlaire-admin-api-key-item`、`.adlaire-admin-api-key-token` | `UI/components.css` | B | 実装済み | APIキー、発行状態、マスク表示 | 表示状態補助 |
 | Webhook一覧 | `.adlaire-admin-webhook-list`、`.adlaire-admin-webhook-item`、`.adlaire-admin-webhook-status` | `UI/components.css` | B | 実装済み | Webhook送信先、状態、最終結果 | 表示状態補助 |
+| 通知センター | `.adlaire-admin-notification-center`、`.adlaire-admin-notification-item`、`.adlaire-admin-notification-badge` | `UI/components.css` | B | 実装済み | 管理通知、未読状態、優先度表示 | 表示状態補助 |
+| ブロードキャストパネル | `.adlaire-admin-broadcast-panel`、`.adlaire-admin-broadcast-message`、`.adlaire-admin-broadcast-scope` | `UI/components.css` | B | 実装済み | 告知内容、配信範囲、状態表示 | 表示状態補助 |
+| メンテナンスウィンドウ | `.adlaire-admin-maintenance-window`、`.adlaire-admin-maintenance-time`、`.adlaire-admin-maintenance-impact` | `UI/components.css` | A | 実装済み | メンテナンス時間、影響範囲、告知状態 | 表示状態補助 |
+| バックアップパネル | `.adlaire-admin-backup-panel`、`.adlaire-admin-backup-item`、`.adlaire-admin-backup-status` | `UI/components.css` | B | 実装済み | バックアップ対象、実行状態、復元導線 | 表示状態補助 |
+| インポート/エクスポート | `.adlaire-admin-import-export`、`.adlaire-admin-import-export-job`、`.adlaire-admin-import-export-status` | `UI/components.css` | B | 実装済み | 入出力ジョブ、進行状態、結果表示 | 表示状態補助 |
+| 同期状態 | `.adlaire-admin-sync-status`、`.adlaire-admin-sync-source`、`.adlaire-admin-sync-result` | `UI/components.css` | B | 実装済み | 同期元、同期結果、最終同期状態 | 表示状態補助 |
+| 環境スイッチャー | `.adlaire-admin-env-switcher`、`.adlaire-admin-env-option`、`.adlaire-admin-env-current` | `UI/components.css` | A | 実装済み | 環境選択、現在環境、危険環境識別 | 表示状態補助 |
+| 機能フラグ一覧 | `.adlaire-admin-feature-flag-list`、`.adlaire-admin-feature-flag-item`、`.adlaire-admin-feature-flag-state` | `UI/components.css` | B | 実装済み | 機能フラグ、公開状態、切替対象 | 表示状態補助 |
