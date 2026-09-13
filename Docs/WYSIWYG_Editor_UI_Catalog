@@ -324,3 +324,18 @@ WYSIWYG Editor UIカタログは、Editor UI部品の状態、優先度、実装
 | AD-TASK-051 | エディタエラー/警告/保存状態表示UI | `.adlaire-wysiwyg-alert`、`.adlaire-wysiwyg-warning`、`.adlaire-wysiwyg-save-state` |
 | AD-TASK-052 | エディタ設定/表示密度/表示切替UI | `.adlaire-wysiwyg-settings`、`.adlaire-wysiwyg-density-control`、`.adlaire-wysiwyg-view-toggle` |
 | AD-TASK-053 | エディタミニマップ/アウトラインUI | `.adlaire-wysiwyg-minimap`、`.adlaire-wysiwyg-outline`、`.adlaire-wysiwyg-outline-current` |
+
+---
+
+## 8. カタログ運用統一ルール
+
+本カタログの実装状態、対象外、同期対象、更新単位は以下に統一する。
+
+| 項目 | 統一ルール |
+| --- | --- |
+| 実装状態 | `実装済み`、`策定済み`、`対象外` のいずれかで管理する |
+| 対象外 | 一般公開面の汎用部品、公式アイコンSVG実体、Editor本体内部ロジックは本カタログに含めない |
+| 同期対象 | `Docs/Master_Spec`、`Docs/Editor_Master_Spec`、`EditorUI/wysiwyg.css`、`EditorUI/wysiwyg.js`、必要な `TypeScript/EditorUI/`、`Tools/check/check-adlaire-design.sh` |
+| 更新単位 | Editor UI部品の追加、状態変更、対象外変更は、仕様、カタログ、実装、検査を同じ変更単位で確認する |
+
+Samplesで確認する場合は、`Samples/README.md` と `Samples/design/` を理解補助として更新できる。ただし、Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。
