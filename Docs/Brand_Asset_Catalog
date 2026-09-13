@@ -1,69 +1,37 @@
-# Adlaire-Design ブランド資産カタログ
+# Adlaire-Design Brand Asset Catalog
 
-本カタログは、`Brand/` 配下で管理するブランド資産の補助正本である。
+This catalog governs brand assets stored in `Brand/`.
 
-`Docs/Master_Spec` を上位正本とし、本カタログではブランド資産のID、ファイル名、種別、用途、形式、代替テキストまたは説明方針、実装状態を一覧管理する。
+`Docs/Master_Spec` is the higher-level source of truth.
 
----
+## Allowed Asset Types
 
-## 1. 管理対象
+| Type | Formats | Naming |
+| --- | --- | --- |
+| Logo | SVG | `adlaire-logo-<name>.svg` |
+| Brand image | PNG / WebP | `adlaire-image-<name>.png`, `adlaire-image-<name>.webp` |
+| OGP image | PNG / WebP | `adlaire-ogp-<name>.png`, `adlaire-ogp-<name>.webp` |
+| Brand-specific icon | SVG | `adlaire-icon-<name>.svg` |
+| Brand explanatory asset | SVG / PNG / WebP | `adlaire-brand-<name>.<ext>` |
 
-`Brand/` で管理するブランド資産は以下に固定する。
+JPG, JPEG, GIF, PDF, AI, PSD, and EPS are not used.
 
-| 種別 | 用途 | 許可形式 | 命名規則 |
-| --- | --- | --- | --- |
-| ロゴ | ブランド名、サービス名、識別表示 | SVG | `adlaire-logo-<name>.svg` |
-| ブランド画像 | ブランド説明、紹介、背景以外の視覚素材 | PNG / WebP | `adlaire-image-<name>.png`、`adlaire-image-<name>.webp` |
-| OGP画像 | OGP、SNS共有、リンクプレビュー | PNG / WebP | `adlaire-ogp-<name>.png`、`adlaire-ogp-<name>.webp` |
-| ブランド固有アイコン | ブランド固有の意味を持つ小型素材 | SVG | `adlaire-icon-<name>.svg` |
-| ブランド説明用素材 | ブランド説明、資料、案内で使う補助素材 | SVG / PNG / WebP | `adlaire-brand-<name>.svg`、`adlaire-brand-<name>.png`、`adlaire-brand-<name>.webp` |
+## Assets
 
-JPG、JPEG、GIF、PDF、AI、PSD、EPSは対応しない。
+| ID | File | Type | Role | State |
+| --- | --- | --- | --- | --- |
+| AD-BRAND-001 | `adlaire-logo-primary.svg` | Logo | Primary logo. | 実装済み |
+| AD-BRAND-002 | `adlaire-logo-mark.svg` | Logo | Small mark. | 実装済み |
+| AD-BRAND-003 | `adlaire-ogp-default.png` | OGP image | Default OGP image. | 実装済み |
+| AD-BRAND-004 | `adlaire-image-brand-overview.webp` | Brand image | Brand overview image. | 実装済み |
 
----
+## Catalog Governance
 
-## 2. 境界
-
-`Brand/` はブランド資産の管理領域であり、CSS、デザイントークン、汎用UI部品、WYSIWYG Editor UI部品、公式アイコンセットの置き場ではない。
-
-汎用UIで使う公式アイコンセットは `Icons/` と `Docs/Icon_Set_Catalog` で管理する。
-
----
-
-## 3. 状態
-
-| 状態 | 意味 |
+| Item | Rule |
 | --- | --- |
-| 策定済み | ファイル名、用途、形式、代替テキストまたは説明方針が決まっている |
-| 実装済み | `Brand/` に実ファイルが存在し、検査に通過している |
-| 廃止予定 | 置換または削除予定が決まっている |
+| Implementation state | Use `実装済み`, `策定済み`, or `対象外`. |
+| Out of scope | Generic UI, WYSIWYG Editor UI, official icon set, generated CSS and JavaScript. |
+| Synchronization | Update `Docs/Master_Spec`, this catalog, `Docs/Document_Index`, `Brand/`, and checks when needed. |
+| Change unit | Specification, catalog, asset files, and check updates are reviewed together. |
 
-現時点では、実ブランド資産は未配置であり、`Brand/.gitkeep` のみを空ディレクトリ維持用に許可する。
-
----
-
-## 4. ブランド資産一覧
-
-ブランド資産IDは `AD-BRAND-001` から連番で付与する。
-
-| ID | ファイル名 | 種別 | 用途 | 形式 | 代替テキスト/説明方針 | 状態 |
-| --- | --- | --- | --- | --- | --- | --- |
-| AD-BRAND-001 | `adlaire-logo-primary.svg` | ロゴ | 標準ロゴ | SVG | Adlaire-Designの標準ロゴとして用途を説明する | 実装済み |
-| AD-BRAND-002 | `adlaire-logo-mark.svg` | ロゴ | 小型表示・favicon系の基準 | SVG | Adlaire-Designの小型識別マークとして用途を説明する | 実装済み |
-| AD-BRAND-003 | `adlaire-ogp-default.png` | OGP画像 | 標準OGP | PNG | Adlaire-Designの標準OGP画像としてページまたはブランド説明を記録する | 実装済み |
-| AD-BRAND-004 | `adlaire-image-brand-overview.webp` | ブランド画像 | ブランド説明・紹介用 | WebP | Adlaire-Designのブランド概要を示す画像として内容を説明する | 実装済み |
-
----
-
-## 5. カタログ運用統一ルール
-
-本カタログの実装状態、対象外、同期対象、更新単位は以下に統一する。
-
-| 項目 | 統一ルール |
-| --- | --- |
-| 実装状態 | `実装済み`、`策定済み`、`対象外` のいずれかで管理する |
-| 対象外 | 汎用UI部品、WYSIWYG Editor UI部品、公式アイコンセットは本カタログに含めない |
-| 同期対象 | `Docs/Master_Spec`、`Docs/Brand_Asset_Catalog`、`Docs/Document_Index`、`Brand/`、`Tools/check/check-adlaire-design.sh` |
-| 更新単位 | ブランド資産の追加、状態変更、対象外変更は、仕様、カタログ、実体資産、検査を同じ変更単位で確認する |
-
-Samplesで確認する場合は、`Samples/README.md` と `Samples/design/` を理解補助として更新できる。ただし、Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。
+Samples can demonstrate brand assets, but Samples are not the source of truth.

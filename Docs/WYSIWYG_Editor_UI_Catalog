@@ -1,341 +1,57 @@
-# Adlaire-Design WYSIWYG Editor UIカタログ
+# Adlaire-Design WYSIWYG Editor UI Catalog
 
-本ファイルは、WYSIWYG Editor専用UI部品の一覧を管理する補助正本である。
+This catalog governs WYSIWYG Editor UI components and states.
 
-本ファイルは、Adlaire-DesignにおけるエディタUIに関するカタログである。
+`Docs/Editor_Master_Spec` governs editor details. `Docs/Master_Spec` governs the whole system.
 
-仕様正本は `Docs/Master_Spec` とする。本ファイルは、Editor.jsおよびNotionに代表されるブロックベース編集UIを前提に、Adlaire-Designで管理するEditor UI部品、優先度、実装先、状態を一覧管理する。
+## Scope
 
-本カタログは、WYSIWYG Editor UIの表示層、UI部品、状態表示、モバイルUI、補助パネル、Editor UI JavaScriptを一覧管理する。
-
----
-
-## 1. 管理方針
-
-- WYSIWYG Editor UIはAdlaire-Design採用とする。
-- 本カタログはエディタUIに関するカタログとして扱う。
-- WYSIWYG Editor UI仕様は `Docs/Editor_Master_Spec` で固定し、UI部品一覧は本カタログで管理する。
-- 本カタログは表示層、UI部品、状態表示、モバイルUI、補助パネル、Editor UI JavaScriptを扱う。
-- CSS実装先は `EditorUI/wysiwyg.css`、JavaScript実装先は `EditorUI/wysiwyg.js` とする。
-- `EditorUI/wysiwyg.css` は、本カタログの優先A/B/C分類を実装確認単位として扱う。
-- `EditorUI/wysiwyg.js` は、表示モード切替、メニュー開閉、パネル開閉を実装確認単位として扱う。
-- 仕様変更時は `Docs/Master_Spec`、本ファイル、`EditorUI/wysiwyg.css`、必要な `EditorUI/wysiwyg.js`、`Tools/check/check-adlaire-design.sh` を同じ承認単位で更新する。
-- CSS/JavaScriptのビルド、bundle、minify、CSSプリプロセッサは前提にしない。
-- Markdown/MDX parser、Editor本体処理、保存処理、DOMイベント設計は本カタログの管理対象にしない。
-- 実装済みclassは、対応する `EditorUI/wysiwyg.css` と照合できる状態で管理する。
-- サンプルは理解補助として扱い、仕様正本にはしない。
-
-## 1.1 完全固定対象
-
-| 固定対象 | 内容 |
+| Owns | Does not own |
 | --- | --- |
-| UI階層 | Root、Header、Toolbar、Canvas、Block、Inline toolbar、Slash menu、Mobile surface、補助パネル、Preview、JSON panel、Footer |
-| 表示モード | editor、preview、split、readonly、error、mobile |
-| 状態入力 | class、ARIA属性、HTML属性をCSSで受ける |
-| レスポンシブ境界 | default、768px以下、480px以下、touch target、bottom sheet |
-| 変更管理 | Master_Spec、カタログ、CSS、検査を同期更新する |
+| WYSIWYG editor shell | Generic public UI |
+| Editor toolbar and inline toolbar | Admin-only UI |
+| Block selection, insertion, transform, and reorder UI | Official SVG icon files |
+| Mobile editor toolbar and bottom sheet | Editor runtime internals |
+| Editor warning, error, readonly, disabled, locked, and save states | Brand asset files |
 
-## 1.2 UI階層
+## Implemented Groups
 
-| 階層 | 必須または任意 | 代表クラス | 役割 |
-| --- | --- | --- | --- |
-| Root | 必須 | `.adlaire-wysiwyg` | Editor UI全体の表示境界 |
-| Header | 任意 | `.adlaire-wysiwyg-header` | タイトル、保存状態、補助情報 |
-| Toolbar | 任意 | `.adlaire-wysiwyg-toolbar` | 主要操作群の表示 |
-| Canvas | 必須 | `.adlaire-wysiwyg-canvas` | ブロック一覧の表示領域 |
-| Block | 必須 | `.adlaire-wysiwyg-block` | 1ブロック単位の表示境界 |
-| Block content | 必須 | `.adlaire-wysiwyg-block-content` | ブロック本文または表示内容 |
-| Inline toolbar | 任意 | `.adlaire-wysiwyg-inline-toolbar` | 選択範囲に対する補助操作 |
-| Slash menu | 任意 | `.adlaire-wysiwyg-slash-menu` | ブロック追加候補の表示 |
-| Mobile surface | 任意 | `.adlaire-wysiwyg-mobile-bar`、`.adlaire-wysiwyg-mobile-sheet` | mobile操作面 |
-| Side / helper panels | 任意 | `.adlaire-wysiwyg-outline`、`.adlaire-wysiwyg-comment-panel`、`.adlaire-wysiwyg-history-panel` | 補助情報表示 |
-| Preview | 任意 | `.adlaire-wysiwyg-preview` | プレビュー表示領域 |
-| JSON panel | 任意 | `.adlaire-wysiwyg-json-panel` | JSON文字列表現の表示領域 |
-| Footer | 任意 | `.adlaire-wysiwyg-footer` | 状態バー、補助情報 |
-
-## 1.2.1 モバイルサンプル構成
-
-| サンプル対象 | 含めるUI |
-| --- | --- |
-| mobile toolbar | `.adlaire-wysiwyg-mobile-toolbar`、`.adlaire-wysiwyg-mobile-action` |
-| bottom sheet | `.adlaire-wysiwyg-mobile-sheet`、`.adlaire-wysiwyg-command-item` |
-| block操作 | `.adlaire-wysiwyg-block`、`.adlaire-wysiwyg-drag-handle`、`.adlaire-wysiwyg-block-menu` |
-| inline toolbar | `.adlaire-wysiwyg-inline-toolbar`、`.adlaire-wysiwyg-inline-button` |
-| readonly/error表示 | `.adlaire-wysiwyg-readonly`、`.adlaire-wysiwyg-alert`、`.adlaire-wysiwyg-save-state` |
-
-## 1.3 表示モード
-
-| 表示モード | UI仕様 |
-| --- | --- |
-| editor | Canvasを主表示とし、ブロック編集面を表示する |
-| preview | Previewを主表示とし、生成済みまたは渡されたプレビューHTMLの見た目を整える |
-| split | CanvasとPreviewを併置できる表示を想定する |
-| readonly | 編集操作UIを抑制した読み取り専用表示を想定する |
-| error | ブロックまたはEditor全体のエラー表示を受ける |
-| mobile | 下部操作バーとbottom sheetを優先する |
-
-## 1.4 状態入力
-
-| 状態入力 | Adlaire-Design側の扱い |
-| --- | --- |
-| class | `.adlaire-wysiwyg-block-selected` などの状態classを視覚化する |
-| ARIA属性 | `[aria-pressed="true"]`、`[aria-selected="true"]`、`[aria-current="true"]` を受けて表示を変える |
-| HTML属性 | `readonly` 相当の状態はclassまたはARIA属性で受ける |
-| data属性 | Adlaire-Designではdata属性名を固定しない |
-| inline style | progress幅など利用先HTML側の静的指定は許容するが、CSS契約としては固定しない |
-| Editor本体状態 | Adlaire-Designでは生成、更新、監視しない |
-
-## 1.5 レスポンシブ境界
-
-| 境界 | UI仕様 |
-| --- | --- |
-| default | 1カラムのCanvasを基本とし、補助パネルは任意で追加する |
-| 768px以下 | Header、Footer、Previewの余白を圧縮し、縦積み表示を優先する |
-| 480px以下 | Toolbarは縦積み、Blockは1カラム、Mobile barは下部sticky表示を想定する |
-| touch target | mobile操作面の主要操作は44px相当を目安にする |
-| popover | mobileではpopoverよりbottom sheetを優先する |
-| fixed panel | small viewportでは固定サイドパネルを前提にしない |
-
-## 1.6 アクセシビリティUI
-
-| 項目 | UI仕様 |
-| --- | --- |
-| focus | keyboard focusの視認性を確保する |
-| aria | toolbar、menu、button、statusにARIA属性を受けるCSSを用意する |
-| reduced motion | `prefers-reduced-motion` を尊重する |
-| contrast | WCAG 2.2 Aを参照し、状態表示は色だけに依存しない |
-| error | エラー状態は色、アイコン領域、テキスト領域を持つ |
-| selection | ツールバー選択、ブロック選択、補助表示は色以外の手掛かりを併用する |
-
-## 1.7 Preview / JSON表示UI
-
-| 対象 | UI仕様 |
-| --- | --- |
-| Preview | `.adlaire-wysiwyg-preview` でプレビュー領域の余白、背景、本文色、行間を整える |
-| JSON panel | `.adlaire-wysiwyg-json-panel` で等幅表示と横スクロールを提供する |
-| Split表示 | editorとpreviewを同時表示できるUIクラス群を前提にする |
-| Publish check | `.adlaire-wysiwyg-publish-check` で公開前確認の表示枠を提供する |
-
-## 1.8 変更管理
-
-| 変更種別 | 必須更新 |
-| --- | --- |
-| UI部品を追加する | `Docs/Master_Spec`、本カタログ、`EditorUI/wysiwyg.css`、必要な `EditorUI/wysiwyg.js`、`Tools/check/check-adlaire-design.sh` |
-| UI部品を削除する | `Docs/Master_Spec`、本カタログ、`EditorUI/wysiwyg.css`、必要な `EditorUI/wysiwyg.js`、`Tools/check/check-adlaire-design.sh` |
-| class名を変更する | `Docs/Master_Spec`、本カタログ、`EditorUI/wysiwyg.css`、必要な `EditorUI/wysiwyg.js`、`Tools/check/check-adlaire-design.sh` |
-| CSS/JavaScript読み込み順を変更する | `Docs/Master_Spec`、`README.md`、`Tools/check/check-adlaire-design.sh` |
-| カタログだけを整理する | 本カタログ、`Tools/check/check-adlaire-design.sh` |
-
-WYSIWYG Editor UIカタログは、Editor UI部品の状態、優先度、実装先を管理する完成カタログとして扱う。
-
----
-
-## 2. 共通構造クラス
-
-共通構造クラスは、優先A/B/Cの部品分類にまたがるEditor UIの骨格である。
-
-| 部品 | 実装済みクラス |
-| --- | --- |
-| Editor外枠 | `.adlaire-wysiwyg` |
-| Header | `.adlaire-wysiwyg-header`、`.adlaire-wysiwyg-title`、`.adlaire-wysiwyg-status` |
-| Toolbar | `.adlaire-wysiwyg-toolbar`、`.adlaire-wysiwyg-toolbar-group`、`.adlaire-wysiwyg-tool` |
-| Canvas | `.adlaire-wysiwyg-canvas` |
-| Block | `.adlaire-wysiwyg-block`、`.adlaire-wysiwyg-block-selected`、`.adlaire-wysiwyg-block-handle`、`.adlaire-wysiwyg-block-content` |
-| Placeholder | `.adlaire-wysiwyg-placeholder` |
-| Footer / status bar | `.adlaire-wysiwyg-footer` |
-| Preview | `.adlaire-wysiwyg-preview` |
-| JSON panel | `.adlaire-wysiwyg-json-panel` |
-
----
-
-## 3. 優先A
-
-優先Aは、ブロックベースEditor UIの基本操作に必要な部品である。
-
-| 分類 | 部品 | 実装先 | 状態 |
-| --- | --- | --- | --- |
-| 基本枠 | Editor外枠 | `EditorUI/wysiwyg.css` | 実装済み |
-| 基本枠 | Header | `EditorUI/wysiwyg.css` | 実装済み |
-| 基本枠 | Footer / status bar | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Toolbar | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Inline toolbar | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Slash menu | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Block handle | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Block inserter | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Heading | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Paragraph | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | List | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Checklist | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Quote | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Code | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Image | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Divider | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Callout | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Label | `EditorUI/wysiwyg.css` | 実装済み |
-| ブロック | Progress | `EditorUI/wysiwyg.css` | 実装済み |
-| モバイル | Mobile bar | `EditorUI/wysiwyg.css` | 実装済み |
-| モバイル | Mobile bottom sheet | `EditorUI/wysiwyg.css` | 実装済み |
-
-### 3.1 優先Aクラス
-
-| 部品 | 実装済みクラス |
-| --- | --- |
-| Editor外枠 | `.adlaire-wysiwyg` |
-| Header | `.adlaire-wysiwyg-header`、`.adlaire-wysiwyg-title`、`.adlaire-wysiwyg-status` |
-| Footer / status bar | `.adlaire-wysiwyg-footer` |
-| Toolbar | `.adlaire-wysiwyg-toolbar`、`.adlaire-wysiwyg-toolbar-group`、`.adlaire-wysiwyg-tool` |
-| Inline toolbar | `.adlaire-wysiwyg-inline-toolbar` |
-| Slash menu | `.adlaire-wysiwyg-slash-menu`、`.adlaire-wysiwyg-slash-item` |
-| Block handle | `.adlaire-wysiwyg-block-handle` |
-| Block inserter | `.adlaire-wysiwyg-block-inserter` |
-| Heading | `.adlaire-wysiwyg-block-heading` |
-| Paragraph | `.adlaire-wysiwyg-block-paragraph` |
-| List | `.adlaire-wysiwyg-block-list` |
-| Checklist | `.adlaire-wysiwyg-block-checklist` |
-| Quote | `.adlaire-wysiwyg-block-quote` |
-| Code | `.adlaire-wysiwyg-block-code` |
-| Image | `.adlaire-wysiwyg-block-image` |
-| Divider | `.adlaire-wysiwyg-block-divider` |
-| Callout | `.adlaire-wysiwyg-block-callout` |
-| Label | `.adlaire-wysiwyg-block-label` |
-| Progress | `.adlaire-wysiwyg-block-progress` |
-| Mobile bar | `.adlaire-wysiwyg-mobile-bar`、`.adlaire-wysiwyg-mobile-action` |
-| Mobile bottom sheet | `.adlaire-wysiwyg-mobile-sheet`、`.adlaire-wysiwyg-mobile-sheet-header`、`.adlaire-wysiwyg-mobile-sheet-body`、`.adlaire-wysiwyg-mobile-sheet-item` |
-
----
-
-## 4. 優先B
-
-優先Bは、Editor.js / Notion風の編集体験を高める補助UIである。
-
-| 分類 | 部品 | 実装先 | 状態 |
-| --- | --- | --- | --- |
-| 操作 | Block toolbar | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Block menu | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Transform menu | `EditorUI/wysiwyg.css` | 実装済み |
-| 操作 | Style menu | `EditorUI/wysiwyg.css` | 実装済み |
-| 挿入 | Quick insert | `EditorUI/wysiwyg.css` | 実装済み |
-| 挿入 | Recent blocks | `EditorUI/wysiwyg.css` | 実装済み |
-| 挿入 | Suggested blocks | `EditorUI/wysiwyg.css` | 実装済み |
-| Navigation | Outline | `EditorUI/wysiwyg.css` | 実装済み |
-| Navigation | Current block indicator | `EditorUI/wysiwyg.css` | 実装済み |
-| Review | Comment marker | `EditorUI/wysiwyg.css` | 実装済み |
-| Review | Comment panel | `EditorUI/wysiwyg.css` | 実装済み |
-| Publish | Preview / split表示 | `EditorUI/wysiwyg.css` | 実装済み |
-| Publish | Publish check | `EditorUI/wysiwyg.css` | 実装済み |
-
-### 4.1 優先Bクラス
-
-| 部品 | 実装済みクラス |
-| --- | --- |
-| Block toolbar | `.adlaire-wysiwyg-block-toolbar` |
-| Block menu | `.adlaire-wysiwyg-block-menu` |
-| Transform menu | `.adlaire-wysiwyg-transform-menu` |
-| Style menu | `.adlaire-wysiwyg-style-menu` |
-| Quick insert | `.adlaire-wysiwyg-quick-insert` |
-| Recent blocks | `.adlaire-wysiwyg-recent-blocks` |
-| Suggested blocks | `.adlaire-wysiwyg-suggested-blocks` |
-| Outline | `.adlaire-wysiwyg-outline`、`.adlaire-wysiwyg-outline-item` |
-| Current block indicator | `.adlaire-wysiwyg-current-block-indicator` |
-| Comment marker | `.adlaire-wysiwyg-comment-marker` |
-| Comment panel | `.adlaire-wysiwyg-comment-panel` |
-| Preview / split表示 | `.adlaire-wysiwyg-preview` |
-| Publish check | `.adlaire-wysiwyg-publish-check` |
-
----
-
-## 5. 優先C
-
-優先Cは、必要に応じて利用する高度な表示補助UIである。
-
-| 分類 | 部品 | 実装先 | 状態 |
-| --- | --- | --- | --- |
-| Layout | Width modes | `EditorUI/wysiwyg.css` | 実装済み |
-| Layout | Block group | `EditorUI/wysiwyg.css` | 実装済み |
-| Review | Suggestion | `EditorUI/wysiwyg.css` | 実装済み |
-| Review | History panel | `EditorUI/wysiwyg.css` | 実装済み |
-| Status | Sync status | `EditorUI/wysiwyg.css` | 実装済み |
-| Assist | Assist menu | `EditorUI/wysiwyg.css` | 実装済み |
-| Assist | Assist suggestion | `EditorUI/wysiwyg.css` | 実装済み |
-
-### 5.1 優先Cクラス
-
-| 部品 | 実装済みクラス |
-| --- | --- |
-| Width modes | `.adlaire-wysiwyg-width-narrow`、`.adlaire-wysiwyg-width-wide`、`.adlaire-wysiwyg-width-full` |
-| Block group | `.adlaire-wysiwyg-block-group` |
-| Suggestion | `.adlaire-wysiwyg-suggestion` |
-| History panel | `.adlaire-wysiwyg-history-panel` |
-| Sync status | `.adlaire-wysiwyg-sync-status` |
-| Assist menu | `.adlaire-wysiwyg-assist-menu` |
-| Assist suggestion | `.adlaire-wysiwyg-assist-suggestion` |
-
----
-
-## 6. 状態クラス
-
-| 状態 | 実装済みクラス |
-| --- | --- |
-| hover | `.adlaire-wysiwyg-block-hover` |
-| focused | `.adlaire-wysiwyg-block-focused` |
-| dragging | `.adlaire-wysiwyg-block-dragging` |
-| drop before | `.adlaire-wysiwyg-block-drop-before` |
-| drop after | `.adlaire-wysiwyg-block-drop-after` |
-| empty | `.adlaire-wysiwyg-block-empty` |
-| readonly | `.adlaire-wysiwyg-block-readonly` |
-| error | `.adlaire-wysiwyg-block-error` |
-| collapsed | `.adlaire-wysiwyg-block-collapsed` |
-
----
-
-## 7. 機能追加UI実装済み項目
-
-以下は、WYSIWYG Editor UIの機能追加部品として実装済みである。実装先は `EditorUI/wysiwyg.css`、必要な表示補助JavaScriptは `EditorUI/wysiwyg.js` とする。
-
-| ID | 部品 | 実装済みクラス |
+| Group | Examples | State |
 | --- | --- | --- |
-| AD-TASK-024 | ブロック挿入UI | `.adlaire-wysiwyg-insert`、`.adlaire-wysiwyg-insert-menu`、`.adlaire-wysiwyg-insert-item` |
-| AD-TASK-025 | ブロック変換UI | `.adlaire-wysiwyg-transform`、`.adlaire-wysiwyg-transform-menu`、`.adlaire-wysiwyg-block-type` |
-| AD-TASK-026 | ブロック並び替えUI | `.adlaire-wysiwyg-reorder`、`.adlaire-wysiwyg-drag-target`、`.adlaire-wysiwyg-dragging` |
-| AD-TASK-027 | ブロック選択/複数選択UI | `.adlaire-wysiwyg-block-selected`、`.adlaire-wysiwyg-selection-toolbar`、`.adlaire-wysiwyg-selection-count` |
-| AD-TASK-028 | インライン装飾ツールバー | `.adlaire-wysiwyg-inline-toolbar`、`.adlaire-wysiwyg-inline-button`、`.adlaire-wysiwyg-inline-active` |
-| AD-TASK-029 | リンク編集UI | `.adlaire-wysiwyg-link-editor`、`.adlaire-wysiwyg-link-preview`、`.adlaire-wysiwyg-link-error` |
-| AD-TASK-030 | コメント/注釈UI | `.adlaire-wysiwyg-comment`、`.adlaire-wysiwyg-comment-thread`、`.adlaire-wysiwyg-comment-resolved` |
-| AD-TASK-031 | 文字数/読了時間/構成情報UI | `.adlaire-wysiwyg-stats`、`.adlaire-wysiwyg-stat-item`、`.adlaire-wysiwyg-outline-meta` |
-| AD-TASK-032 | 見出し/本文/引用/リスト系ブロックUI | `.adlaire-wysiwyg-heading-block`、`.adlaire-wysiwyg-text-block`、`.adlaire-wysiwyg-quote-block`、`.adlaire-wysiwyg-list-block` |
-| AD-TASK-033 | 画像/動画/ファイル添付ブロックUI | `.adlaire-wysiwyg-media-block`、`.adlaire-wysiwyg-image-block`、`.adlaire-wysiwyg-video-block`、`.adlaire-wysiwyg-file-block` |
-| AD-TASK-034 | テーブルブロックUI | `.adlaire-wysiwyg-table-block`、`.adlaire-wysiwyg-table-toolbar`、`.adlaire-wysiwyg-table-cell-selected` |
-| AD-TASK-035 | コードブロックUI | `.adlaire-wysiwyg-code-block`、`.adlaire-wysiwyg-code-language`、`.adlaire-wysiwyg-code-copy` |
-| AD-TASK-036 | コールアウト/注記/警告ブロックUI | `.adlaire-wysiwyg-callout-block`、`.adlaire-wysiwyg-note-block`、`.adlaire-wysiwyg-warning-block` |
-| AD-TASK-037 | 区切り線/スペーサー/埋め込みブロックUI | `.adlaire-wysiwyg-divider-block`、`.adlaire-wysiwyg-spacer-block`、`.adlaire-wysiwyg-embed-block` |
-| AD-TASK-038 | ブロックテンプレート/再利用ブロックUI | `.adlaire-wysiwyg-template-panel`、`.adlaire-wysiwyg-template-item`、`.adlaire-wysiwyg-reusable-block` |
-| AD-TASK-039 | ドラッグハンドル/ブロックメニューUI | `.adlaire-wysiwyg-drag-handle`、`.adlaire-wysiwyg-block-menu`、`.adlaire-wysiwyg-block-action` |
-| AD-TASK-040 | スラッシュコマンド/挿入メニューUI | `.adlaire-wysiwyg-slash-menu`、`.adlaire-wysiwyg-command-item`、`.adlaire-wysiwyg-command-active` |
-| AD-TASK-041 | モバイル編集操作UI | `.adlaire-wysiwyg-mobile-toolbar`、`.adlaire-wysiwyg-mobile-sheet`、`.adlaire-wysiwyg-mobile-action` |
-| AD-TASK-042 | キーボード操作ヒントUI | `.adlaire-wysiwyg-shortcut-help`、`.adlaire-wysiwyg-kbd`、`.adlaire-wysiwyg-help-panel` |
-| AD-TASK-043 | Editor UI状態表示 | `.adlaire-wysiwyg-status`、`.adlaire-wysiwyg-status-saving`、`.adlaire-wysiwyg-status-error` |
-| AD-TASK-044 | readonly/disabled/locked表示UI | `.adlaire-wysiwyg-readonly`、`.adlaire-wysiwyg-disabled`、`.adlaire-wysiwyg-locked` |
-| AD-TASK-045 | 差分/変更履歴表示UI | `.adlaire-wysiwyg-diff`、`.adlaire-wysiwyg-diff-added`、`.adlaire-wysiwyg-history-panel` |
-| AD-TASK-046 | 公開前チェック表示UI | `.adlaire-wysiwyg-publish-check`、`.adlaire-wysiwyg-check-item`、`.adlaire-wysiwyg-check-warning` |
-| AD-TASK-047 | AI補助入口UI | `.adlaire-wysiwyg-ai-entry`、`.adlaire-wysiwyg-ai-suggestion`、`.adlaire-wysiwyg-ai-loading` |
-| AD-TASK-048 | 共同編集者/カーソル/選択範囲表示UI | `.adlaire-wysiwyg-collaborator`、`.adlaire-wysiwyg-remote-cursor`、`.adlaire-wysiwyg-remote-selection` |
-| AD-TASK-049 | アクセシビリティ補助表示UI | `.adlaire-wysiwyg-a11y-panel`、`.adlaire-wysiwyg-a11y-warning`、`.adlaire-wysiwyg-alt-warning` |
-| AD-TASK-050 | エディタ空状態/初期案内UI | `.adlaire-wysiwyg-empty`、`.adlaire-wysiwyg-empty-title`、`.adlaire-wysiwyg-empty-action` |
-| AD-TASK-051 | エディタエラー/警告/保存状態表示UI | `.adlaire-wysiwyg-alert`、`.adlaire-wysiwyg-warning`、`.adlaire-wysiwyg-save-state` |
-| AD-TASK-052 | エディタ設定/表示密度/表示切替UI | `.adlaire-wysiwyg-settings`、`.adlaire-wysiwyg-density-control`、`.adlaire-wysiwyg-view-toggle` |
-| AD-TASK-053 | エディタミニマップ/アウトラインUI | `.adlaire-wysiwyg-minimap`、`.adlaire-wysiwyg-outline`、`.adlaire-wysiwyg-outline-current` |
+| Shell | editor surface, header, canvas, status | 実装済み |
+| Toolbar | toolbar, inline toolbar, selection toolbar | 実装済み |
+| Block UI | block, selected block, insert, transform, reorder, drag handle | 実装済み |
+| Content Blocks | heading, text, quote, list, media, table, code, callout | 実装済み |
+| Review UI | comment, suggestion, diff, history panel | 実装済み |
+| Mobile UI | mobile toolbar, mobile sheet, mobile actions | 実装済み |
+| Assist UI | slash menu, assist menu, AI entry, accessibility panel | 実装済み |
+| State UI | readonly, disabled, locked, alert, warning, save state, empty state | 実装済み |
 
----
+## Required Class Families
 
-## 8. カタログ運用統一ルール
+- `.adlaire-wysiwyg`
+- `.adlaire-wysiwyg-header`
+- `.adlaire-wysiwyg-toolbar`
+- `.adlaire-wysiwyg-canvas`
+- `.adlaire-wysiwyg-block`
+- `.adlaire-wysiwyg-block-selected`
+- `.adlaire-wysiwyg-inline-toolbar`
+- `.adlaire-wysiwyg-insert`
+- `.adlaire-wysiwyg-transform`
+- `.adlaire-wysiwyg-mobile-toolbar`
+- `.adlaire-wysiwyg-mobile-sheet`
+- `.adlaire-wysiwyg-command-item`
+- `.adlaire-wysiwyg-alert`
+- `.adlaire-wysiwyg-readonly`
+- `.adlaire-wysiwyg-a11y-panel`
 
-本カタログの実装状態、対象外、同期対象、更新単位は以下に統一する。
+## Catalog Governance
 
-| 項目 | 統一ルール |
+| Item | Rule |
 | --- | --- |
-| 実装状態 | `実装済み`、`策定済み`、`対象外` のいずれかで管理する |
-| 対象外 | 一般公開面の汎用部品、公式アイコンSVG実体、Editor本体内部ロジックは本カタログに含めない |
-| 同期対象 | `Docs/Master_Spec`、`Docs/Editor_Master_Spec`、`EditorUI/wysiwyg.css`、`EditorUI/wysiwyg.js`、必要な `TypeScript/EditorUI/`、`Tools/check/check-adlaire-design.sh` |
-| 更新単位 | Editor UI部品の追加、状態変更、対象外変更は、仕様、カタログ、実装、検査を同じ変更単位で確認する |
+| Implementation state | Use `実装済み`, `策定済み`, or `対象外`. |
+| Out of scope | Generic UI, Admin UI, official SVG icon files, editor runtime internals, brand assets. |
+| Synchronization | Update `Docs/Master_Spec`, `Docs/Editor_Master_Spec`, generated EditorUI files, TypeScript source, and checks when needed. |
+| Change unit | Specification, catalog, implementation, and check updates are reviewed together. |
 
-Samplesで確認する場合は、`Samples/README.md` と `Samples/design/` を理解補助として更新できる。ただし、Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。
+Samples can demonstrate WYSIWYG Editor UI, but Samples are not the source of truth.

@@ -1,454 +1,82 @@
-# Adlaire-Design 汎用部品カタログ
+# Adlaire-Design Generic Component Catalog
 
-本ファイルは、Adlaire-Designで扱う汎用部品の分類、実装先、実装状態、非対象を管理する補助正本である。
+This catalog governs reusable public UI, content UI, form UI, layout UI, utility UI, and Git Provider UI.
 
-最終的な仕様正本は `Docs/Master_Spec` とし、本ファイルは汎用部品の分類、優先度、実装先、実装状態、非対象を一覧管理するために使用する。
+`Docs/Master_Spec` is the higher-level source of truth.
 
-本ファイルは一般的なCSS汎用部品のカタログであり、WYSIWYG Editor UI専用品は含めない。WYSIWYG Editor UI専用品は `Docs/WYSIWYG_Editor_UI_Catalog` で分離管理する。
+## Scope
 
----
-
-## 1. 管理方針
-
-- 汎用部品は、特定ページ、本文種別、フォームだけに依存しない再利用可能なUI部品として扱う。
-- 本カタログは一般的なCSS汎用部品、本文固有CSS部品、フォーム部品、ユーティリティを扱う。
-- WYSIWYG Editor UI専用品、`.adlaire-wysiwyg-` 接頭辞のクラス、Editor UI状態表示は本カタログに含めない。
-- 実装先は既存の責務境界に従う。
-- 本カタログは部品一覧と実装状態を管理し、未完了タスクの管理は `Docs/Pending_Tasks` に集約する。
-- 実装する場合は、`Docs/Master_Spec`、CSS、必要なJavaScript、`Tools/check/check-adlaire-design.sh` を同じ承認単位で更新する。
-- ビルド、minify、bundle、CSSプリプロセッサ、JSONデータ管理は前提にしない。JavaScriptが必要な汎用部品は、対応する `UI/*.js` で管理する。
-- 汎用部品は WCAG 2.2 A を参照し、状態や意味を色だけで伝えない。
-- エラー、警告、成功、情報、フォーカス、選択、入力エラーは、ラベル、文言、境界、アイコン領域、形状などを併用する。
-- 実装済みclassは、対応する `UI/*.css` と照合できる状態で管理する。
-- サンプルは理解補助として扱い、仕様正本にはしない。
-
----
-
-## 2. 実装先
-
-| 実装先 | 対象 |
+| Owns | Does not own |
 | --- | --- |
-| `UI/components.css` | 公開面で再利用する汎用コンポーネント |
-| `UI/components.js` | 公開面で再利用する汎用コンポーネントのJavaScript |
-| `UI/content.css` | 本文固有の表、注記、メタ情報など |
-| `UI/content.js` | 本文固有コンポーネントのJavaScript |
-| `UI/forms.css` | フォーム専用部品 |
-| `UI/forms.js` | フォーム専用部品のJavaScript |
-| `UI/utilities.css` | 単機能の汎用ユーティリティ |
-| `Tokens/` | 複数部品で共有する値が必要な場合のみ |
+| Generic public UI components | Admin-only UI |
+| Content and documentation UI | WYSIWYG Editor UI |
+| Form UI | Official SVG icon files |
+| Layout UI | Brand asset files |
+| Git Provider UI | Editor runtime internals |
 
-WYSIWYG Editor UI専用品の実装先である `EditorUI/wysiwyg.css` と `EditorUI/wysiwyg.js` は、本カタログの実装先に含めない。
+## Implementation Targets
 
----
-
-## 3. 優先A
-
-優先Aは、Adlaire-Design利用先の公開面で再利用性が高く、CSSを基本に必要なJavaScriptを責務別ファイルで補える、仕様化済みまたは実装済みとして扱う部品群である。
-
-| 分類 | 部品 | 実装先 | 状態 |
-| --- | --- | --- | --- |
-| 表示枠 | カード | `UI/components.css` | 実装済み |
-| 表示枠 | パネル | `UI/components.css` | 実装済み |
-| 表示枠 | 補助枠 | `UI/components.css` | 実装済み |
-| 操作 | 操作行 | `UI/components.css` | 実装済み |
-| 操作 | ボタングループ | `UI/components.css` | 実装済み |
-| 操作 | ツールバー | `UI/components.css` | 実装済み |
-| 配置補助 | 縦積み | `UI/components.css` | 実装済み |
-| 配置補助 | 横並び | `UI/components.css` | 実装済み |
-| 区切り | 区切り線 | `UI/components.css` | 実装済み |
-| 空状態 | 空状態表示 | `UI/components.css` | 実装済み |
-| リスト | リンクリスト | `UI/components.css` | 実装済み |
-| リスト | 特徴リスト | `UI/components.css` | 実装済み |
-| リスト | チェックリスト | `UI/components.css` | 実装済み |
-| リスト | 定義リスト | `UI/components.css` | 実装済み |
-| 情報整理 | キー/値サマリー | `UI/components.css` | 実装済み |
-| 情報整理 | メタ情報行 | `UI/content.css` | 実装済み |
-| メディア | メディアオブジェクト | `UI/components.css` | 実装済み |
-| 状態 | バッジ | `UI/content.css` | 実装済み |
-| 状態 | 注記 | `UI/content.css` | 実装済み |
-| 状態 | アラート | `UI/content.css` | 実装済み |
-| 状態 | チップ | `UI/components.css` | 実装済み |
-| 状態 | ステータスラベル | `UI/components.css` | 実装済み |
-| 状態 | ステータス点 | `UI/components.css` | 実装済み |
-| 導線 | 関連リンク | `UI/components.css` | 実装済み |
-| 導線 | CTAブロック | `UI/components.css` | 実装済み |
-| 面表示 | サーフェスグリッド | `UI/components.css` | 実装済み |
-| 面表示 | サーフェス項目 | `UI/components.css` | 実装済み |
-| 補助 | キャプション | `UI/components.css` | 実装済み |
-| 補助 | 補助テキスト | `UI/components.css` | 実装済み |
-
-### 3.1 実装済みクラス対応表
-
-優先Aの実装済み部品は、以下のクラスで管理する。
-
-| 部品 | 実装済みクラス |
+| Target | Role |
 | --- | --- |
-| カード | `.adlaire-card`、`.adlaire-card-header`、`.adlaire-card-body` |
-| パネル | `.adlaire-panel`、`.adlaire-panel-header`、`.adlaire-panel-body`、`.adlaire-panel-footer` |
-| 補助枠 | `.adlaire-well` |
-| 操作行 | `.adlaire-action-row`、`.adlaire-action-row-start`、`.adlaire-action-row-between` |
-| ボタングループ | `.adlaire-button-group` |
-| ツールバー | `.adlaire-toolbar`、`.adlaire-toolbar-section` |
-| 縦積み | `.adlaire-stack`、`.adlaire-stack-sm`、`.adlaire-stack-lg` |
-| Core Layout | `.adlaire-container-narrow`、`.adlaire-container-wide`、`.adlaire-stack-compact`、`.adlaire-stack-loose`、`.adlaire-cluster`、`.adlaire-split`、`.adlaire-center` |
-| 意味付きグリッド | `.adlaire-grid`、`.adlaire-grid-2`、`.adlaire-grid-3`、`.adlaire-grid-4`、`.adlaire-grid-auto`、`.adlaire-grid-sidebar`、`.adlaire-grid-main`、`.adlaire-section-grid` |
-| レスポンシブレイアウト方針 | desktop / tablet / mobile、横スクロール、aside移動、操作領域折り返し |
-| 横並び | `.adlaire-inline` |
-| 区切り線 | `.adlaire-divider` |
-| 空状態表示 | `.adlaire-empty-state`、`.adlaire-empty-state-title`、`.adlaire-empty-state-text` |
-| リンクリスト | `.adlaire-link-list`、`.adlaire-link-list-item`、`.adlaire-link-list-link` |
-| 特徴リスト | `.adlaire-feature-list`、`.adlaire-feature-item` |
-| チェックリスト | `.adlaire-check-list`、`.adlaire-check-item` |
-| 定義リスト | `.adlaire-definition-list`、`.adlaire-definition-row`、`.adlaire-definition-term`、`.adlaire-definition-description` |
-| キー/値サマリー | `.adlaire-key-value`、`.adlaire-key-value-row`、`.adlaire-key-value-key`、`.adlaire-key-value-value` |
-| メタ情報行 | `.adlaire-meta-list`、`.adlaire-meta-row`、`.adlaire-meta-label`、`.adlaire-meta-value` |
-| メディアオブジェクト | `.adlaire-media`、`.adlaire-media-figure`、`.adlaire-media-body`、`.adlaire-media-title` |
-| バッジ | `.adlaire-badge`、`.adlaire-badge-primary`、`.adlaire-badge-secondary`、`.adlaire-badge-success`、`.adlaire-badge-warning`、`.adlaire-badge-danger` |
-| 注記 | `.adlaire-note`、`.adlaire-note-info`、`.adlaire-note-success`、`.adlaire-note-warning`、`.adlaire-note-danger` |
-| アラート | `.adlaire-alert`、`.adlaire-alert-info`、`.adlaire-alert-success`、`.adlaire-alert-warning`、`.adlaire-alert-danger` |
-| チップ | `.adlaire-chip-list`、`.adlaire-chip`、`.adlaire-chip-primary`、`.adlaire-chip-muted` |
-| ステータスラベル | `.adlaire-status-pill` |
-| ステータス点 | `.adlaire-status-dot` |
-| 関連リンク | `.adlaire-related-links` |
-| CTAブロック | `.adlaire-cta`、`.adlaire-cta-title`、`.adlaire-cta-text`、`.adlaire-cta-actions` |
-| サーフェスグリッド | `.adlaire-surface-grid` |
-| サーフェス項目 | `.adlaire-surface-item` |
-| キャプション | `.adlaire-caption` |
-| 補助テキスト | `.adlaire-helper-text` |
+| `UI/components.css` | Reusable public components and Admin-shared surfaces. |
+| `UI/components.js` | Component behavior. |
+| `UI/content.css` | Content and documentation UI. |
+| `UI/content.js` | Content behavior. |
+| `UI/forms.css` | Form UI. |
+| `UI/forms.js` | Form behavior. |
+| `UI/grid.css` | Grid and section layout. |
+| `UI/layout.css` | Page, app shell, and split pane layout. |
+| `UI/utilities.css` | Small utilities. |
+| `Tokens/` | Shared values only when they serve multiple components. |
 
----
+## Implemented Groups
 
-## 4. 優先B
+| Group | Examples | State |
+| --- | --- | --- |
+| Surface UI | card, panel, well, surface grid, surface item | 実装済み |
+| Action UI | action row, button group, toolbar, CTA | 実装済み |
+| State UI | badge, chip, status pill, status dot, empty/error/loading states | 実装済み |
+| Content UI | notes, alerts, tables, FAQ, code, markdown-like surfaces | 実装済み |
+| Form UI | input groups, composite inputs, date/time/period inputs, validation UI | 実装済み |
+| Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
+| Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
+| Data UI | KPI, metrics, charts, comparison, timeline | 実装済み |
+| Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
+| Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
-優先Bは、CSSを基本に成立しやすく、利用場面とクラス粒度を固めて管理する汎用部品群である。JavaScriptが必要なものは、対応する `UI/*.js` の責務範囲で管理する。
+## Required Class Families
 
-| 分類 | 部品 | 想定実装先 | 状態 |
-| --- | --- | --- | --- |
-| 見出し群 | ページ見出し | `UI/components.css` | 実装済み |
-| 見出し群 | 見出しグループ | `UI/components.css` | 実装済み |
-| 見出し群 | セクションリード | `UI/components.css` | 実装済み |
-| 案内 | お知らせバー | `UI/components.css` | 実装済み |
-| 案内 | 更新通知 | `UI/components.css` | 実装済み |
-| 案内 | メンテナンス通知 | `UI/components.css` | 実装済み |
-| 案内 | メンテナンス画面 | `UI/components.css` | 実装済み |
-| 案内 | エラーページ | `UI/components.css` | 実装済み |
-| FAQ | FAQリスト | `UI/content.css` | 実装済み |
-| FAQ | FAQ項目 | `UI/content.css` | 実装済み |
-| FAQ | 開閉要素の見た目 | `UI/content.css` | 実装済み |
-| 手順 | 手順リスト | `UI/components.css` | 実装済み |
-| 手順 | 工程リスト | `UI/components.css` | 実装済み |
-| 手順 | 番号付きフロー | `UI/components.css` | 実装済み |
-| 比較 | 比較ブロック | `UI/content.css` | 実装済み |
-| 比較 | メリット/デメリットリスト | `UI/content.css` | 実装済み |
-| 強調 | ハイライト枠 | `UI/components.css` | 実装済み |
-| 強調 | 要約枠 | `UI/components.css` | 実装済み |
-| 強調 | 数値表示ブロック | `UI/components.css` | 実装済み |
-| ナビ補助 | アンカーナビ | `UI/components.css` | 実装済み |
-| ナビ補助 | サブナビ | `UI/components.css` | 実装済み |
-| ナビ補助 | 兄弟ページナビ | `UI/components.css` | 実装済み |
-| カード派生 | カードグリッド | `UI/components.css` | 実装済み |
-| カード派生 | メディア付きカード | `UI/components.css` | 実装済み |
-| カード派生 | カード操作領域 | `UI/components.css` | 実装済み |
-| リスト派生 | シンプルリスト | `UI/components.css` | 実装済み |
-| リスト派生 | 枠線付きリスト | `UI/components.css` | 実装済み |
-| リスト派生 | コンパクトリスト | `UI/components.css` | 実装済み |
-| 連絡導線 | 連絡パネル | `UI/components.css` | 実装済み |
-| 連絡導線 | 問い合わせCTA | `UI/components.css` | 実装済み |
-| 連絡導線 | 外部リンク行 | `UI/components.css` | 実装済み |
+This catalog expects the following class families to remain implemented:
 
-### 4.1 実装済みクラス対応表
+- `.adlaire-card`
+- `.adlaire-panel`
+- `.adlaire-action-row`
+- `.adlaire-toolbar`
+- `.adlaire-empty-state`
+- `.adlaire-badge`
+- `.adlaire-note`
+- `.adlaire-alert`
+- `.adlaire-chip`
+- `.adlaire-status-pill`
+- `.adlaire-container`
+- `.adlaire-grid`
+- `.adlaire-public-layout`
+- `.adlaire-app-shell`
+- `.adlaire-split-pane`
+- `.adlaire-filter`
+- `.adlaire-pagination`
+- `.adlaire-command-palette`
+- `.adlaire-git-repo-card`
+- `.adlaire-git-pr-detail`
+- `.adlaire-git-diff-viewer`
 
-| 部品 | 実装済みクラス |
+## Catalog Governance
+
+| Item | Rule |
 | --- | --- |
-| ページ見出し | `.adlaire-page-heading`、`.adlaire-page-heading-title`、`.adlaire-page-heading-text` |
-| 見出しグループ | `.adlaire-heading-group`、`.adlaire-heading-eyebrow` |
-| セクションリード | `.adlaire-section-lead` |
-| お知らせバー | `.adlaire-announcement-bar` |
-| 更新通知 | `.adlaire-update-notice` |
-| メンテナンス通知 | `.adlaire-maintenance-notice` |
-| メンテナンス画面 | `.adlaire-maintenance-screen`、`.adlaire-maintenance-screen-inner`、`.adlaire-maintenance-screen-title`、`.adlaire-maintenance-screen-text` |
-| エラーページ | `.adlaire-error-page`、`.adlaire-error-page-400`、`.adlaire-error-page-401`、`.adlaire-error-page-403`、`.adlaire-error-page-404`、`.adlaire-error-page-500`、`.adlaire-error-page-510`、`.adlaire-error-page-server`、`.adlaire-error-page-inner`、`.adlaire-error-page-code`、`.adlaire-error-page-title`、`.adlaire-error-page-text`、`.adlaire-error-page-actions` |
-| FAQ | `.adlaire-faq-list`、`.adlaire-faq-item`、`.adlaire-faq-question`、`.adlaire-faq-answer` |
-| 手順 | `.adlaire-step-list`、`.adlaire-step-item`、`.adlaire-process-list`、`.adlaire-process-item`、`.adlaire-numbered-flow`、`.adlaire-numbered-flow-item` |
-| 比較 | `.adlaire-comparison-block`、`.adlaire-pros-cons-list`、`.adlaire-pros-cons-item` |
-| 強調 | `.adlaire-highlight-box`、`.adlaire-summary-box`、`.adlaire-stat-block`、`.adlaire-stat-value`、`.adlaire-stat-label` |
-| ナビ補助 | `.adlaire-anchor-nav`、`.adlaire-anchor-nav-link`、`.adlaire-subnav`、`.adlaire-subnav-link`、`.adlaire-sibling-nav`、`.adlaire-sibling-nav-link` |
-| カード派生 | `.adlaire-card-grid`、`.adlaire-card-media`、`.adlaire-card-media-figure`、`.adlaire-card-actions` |
-| リスト派生 | `.adlaire-simple-list`、`.adlaire-simple-list-item`、`.adlaire-bordered-list`、`.adlaire-bordered-list-item`、`.adlaire-compact-list`、`.adlaire-compact-list-item` |
-| 連絡導線 | `.adlaire-contact-panel`、`.adlaire-inquiry-cta`、`.adlaire-external-link-row` |
+| Implementation state | Use `実装済み`, `策定済み`, or `対象外`. |
+| Out of scope | WYSIWYG-only UI, Admin-only classification, official SVG icon files, brand assets. |
+| Synchronization | Update `Docs/Master_Spec`, target generated files, TypeScript source, and checks when needed. |
+| Change unit | Specification, catalog, implementation, and check updates are reviewed together. |
 
----
-
-## 5. 優先C
-
-優先Cは、必要性に応じて仕様化する候補群である。CSSで成立するものはCSS実装、JavaScriptが必要なものは対応する `UI/*.js` の責務範囲で扱う。
-
-| 分類 | 部品 | 想定実装先 | 状態 |
-| --- | --- | --- | --- |
-| 状態表示 | 進捗表示 | `UI/components.css` | 実装済み |
-| 状態表示 | ステップ表示 | `UI/components.css` | 実装済み |
-| 状態表示 | ステータスタイムライン | `UI/content.css` | 実装済み |
-| データ表示 | ページネーション | `UI/components.css` | 実装済み |
-| データ表示 | タグリスト | `UI/components.css` | 実装済み |
-| データ表示 | 絞り込みチップ | `UI/components.css`、`UI/forms.js` | 実装済み |
-| 補助表示 | ツールチップ風表示 | `UI/components.css` | 実装済み |
-| 補助表示 | ポップオーバー風表示 | `UI/components.css` | 実装済み |
-| 視覚枠 | ヒーローパネル | `UI/components.css` | 実装済み |
-| 視覚枠 | ビジュアルバナー | `UI/components.css` | 実装済み |
-| 視覚枠 | 画像フレーム | `UI/components.css` | 実装済み |
-| ブランド表示 | ロゴリスト | `UI/components.css` | 実装済み |
-| ブランド表示 | パートナーリスト | `UI/components.css` | 実装済み |
-| ブランド表示 | アイコンタイル | `UI/components.css` | 実装済み |
-| Knowledge UI | Knowledge検索導線 | `UI/content.css` | 実装済み |
-| Knowledge UI | Knowledgeカテゴリナビ | `UI/content.css` | 実装済み |
-| Knowledge UI | Knowledge更新情報 | `UI/content.css` | 実装済み |
-| Repository UI | Repositoryファイル一覧 | `UI/content.css` | 実装済み |
-| Repository UI | Repositoryコミット一覧 | `UI/content.css` | 実装済み |
-| Repository UI | Repository差分表示 | `UI/content.css` | 実装済み |
-| Repository UI | Repository設定パネル | `UI/components.css`、`UI/forms.css` | 実装済み |
-| Portal UI | メンバー/チーム表示 | `UI/components.css` | 実装済み |
-| API UI | 読み込み状態/データカード | `UI/components.css`、`UI/content.css` | 実装済み |
-| ナビ補助 | 多言語化UI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| データ表示 | テーブルUI | `UI/content.css`、`UI/components.css` | 実装済み |
-| 操作面 | モーダル/ダイアログUI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| フォーム | アップロードUI | `UI/forms.css`、必要な `UI/forms.js` | 実装済み |
-| 操作面 | フィルターUI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| 検索 | 検索UI | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` | 実装済み |
-| データ表示 | ページネーションUI | `UI/components.css` | 実装済み |
-| 設定 | 設定UI | `UI/components.css`、`UI/forms.css`、必要な `UI/forms.js` | 実装済み |
-| フォーム | バリデーションUI | `UI/forms.css`、必要な `UI/forms.js` | 実装済み |
-| ナビ補助 | 汎用目次 | `UI/content.css` | 実装済み |
-| 本文補助 | 本文カード | `UI/content.css` | 実装済み |
-| 本文補助 | コード表示 | `UI/content.css`、必要な `UI/content.js` | 実装済み |
-| 本文補助 | 関連記事 | `UI/content.css` | 実装済み |
-| Git Provider UI | リポジトリ一覧UI | `UI/content.css`、`UI/components.css` | 実装済み |
-| Git Provider UI | リポジトリ概要/README表示UI | `UI/content.css` | 実装済み |
-| Git Provider UI | ブランチ/タグ切替UI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | ファイルツリー/パスナビUI | `UI/content.css`、必要な `UI/content.js` | 実装済み |
-| Git Provider UI | ファイルビューアUI | `UI/content.css` | 実装済み |
-| Git Provider UI | コード表示/行番号/行ハイライトUI | `UI/content.css`、必要な `UI/content.js` | 実装済み |
-| Git Provider UI | コミット一覧/コミット詳細UI | `UI/content.css` | 実装済み |
-| Git Provider UI | 差分ビューアUI | `UI/content.css`、必要な `UI/content.js` | 実装済み |
-| Git Provider UI | Pull Request一覧/詳細UI | `UI/content.css`、`UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | Issue一覧/詳細UI | `UI/content.css`、`UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | レビューコメント/スレッドUI | `UI/content.css`、`UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | CI/CDステータス/チェック結果UI | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | リリース/タグ一覧UI | `UI/content.css` | 実装済み |
-| Git Provider UI | セキュリティアラートUI | `UI/components.css`、`UI/content.css` | 実装済み |
-| Git Provider UI | リポジトリ設定/権限/危険操作UI | `UI/components.css`、`UI/forms.css`、必要な `UI/forms.js` | 実装済み |
-| Git Provider UI | Web IDE入口/編集導線UI | `UI/components.css` | 実装済み |
-| Git Provider UI | 検索/コード検索/絞り込みUI | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | Activity/Insights/貢献グラフUI | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | Wiki/Docs表示UI | `UI/content.css` | 実装済み |
-| Git Provider UI | Packages/Artifacts表示UI | `UI/content.css`、`UI/components.css` | 実装済み |
-| Git Provider UI | Projects/カンバン/タスクボードUI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | 通知/Watch/Star/Fork操作UI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Git Provider UI | 組織/チーム/メンバー権限UI | `UI/components.css`、`UI/forms.css` | 実装済み |
-| Git Provider UI | 空状態/読み込み/エラー状態UI | `UI/components.css`、`UI/content.css` | 実装済み |
-| Git Provider UI | モバイルGitプロバイダーUI | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` | 実装済み |
-| Accessibility UI | フォーカスリング/キーボード操作表示 | `UI/components.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` | 実装済み |
-| Accessibility UI | スキップリンク/ランドマーク補助UI | `UI/base.css`、`UI/components.css` | 実装済み |
-| Form UI | 入力グループ/複合入力UI | `UI/forms.css`、必要な `UI/forms.js` | 実装済み |
-| Form UI | 日付/時刻/期間入力UI | `UI/forms.css`、必要な `UI/forms.js` | 実装済み |
-| Data Viz UI | チャート枠/凡例/データラベルUI | `UI/content.css`、`UI/components.css` | 実装済み |
-| Data Viz UI | KPI/メトリクス比較UI | `UI/components.css`、`UI/content.css` | 実装済み |
-| Navigation UI | コマンドパレットUI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Navigation UI | グローバル検索/オムニバーUI | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` | 実装済み |
-| Layout UI | App shell / Sidebar layout | `UI/layout.css`、`UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Layout UI | Split pane / Resizable pane UI | `UI/layout.css`、必要な `UI/components.js` | 実装済み |
-| Layout UI | Core Layout UI | `UI/layout.css` | 実装済み |
-| Layout UI | Meaningful Grid UI | `UI/grid.css` | 実装済み |
-| Layout UI | Responsive layout policy | `Docs/Master_Spec`、`Docs/Generic_Component_Catalog`、`Docs/Admin_UI_Catalog` | 策定済み |
-| Layout UI | Layout Tokens | `Tokens/layout.css`、`UI/grid.css`、`UI/layout.css` | 実装済み |
-| Feedback UI | Toast / Snackbar UI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Feedback UI | Empty / Error / Loading state統合 | `UI/components.css`、`UI/content.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` | 実装済み |
-| Content UI | Markdown/MDX表示用本文部品 | `UI/content.css`、必要な `UI/content.js` | 実装済み |
-| Media UI | Avatar / User presence UI | `UI/components.css` | 実装済み |
-| Media UI | Gallery / Lightbox UI | `UI/content.css`、`UI/components.css`、必要な `UI/components.js` | 実装済み |
-| Security UI | Permission / Role / Scope表示UI | `UI/components.css`、`UI/forms.css` | 実装済み |
-| レイアウト複合 | 分割ブロック | `UI/components.css` | 実装済み |
-| レイアウト複合 | 積み上げ特徴表示 | `UI/components.css` | 実装済み |
-| レイアウト複合 | 比較グリッド | `UI/content.css` | 実装済み |
-
-### 5.1 実装済みクラス対応表
-
-| 部品 | 実装済みクラス |
-| --- | --- |
-| 進捗表示 | `.adlaire-progress`、`.adlaire-progress-bar`。幅はHTML側で静的指定する |
-| ステップ表示 | `.adlaire-step-indicator`、`.adlaire-step-indicator-item`、`.adlaire-step-indicator-item-current` |
-| ステータスタイムライン | `.adlaire-status-timeline`、`.adlaire-status-timeline-item` |
-| ページネーション | `.adlaire-pagination`、`.adlaire-page-link`、`.adlaire-page-link-current`、`.adlaire-page-link-disabled` |
-| タグリスト | `.adlaire-tag-list`。項目表示は既存の `.adlaire-chip` 系を組み合わせる |
-| 絞り込みチップ | `.adlaire-filter-chip-list`、`.adlaire-filter-chip` |
-| ツールチップ風表示 | `.adlaire-tooltip-note` |
-| ポップオーバー風表示 | `.adlaire-popover-note` |
-| ヒーローパネル | `.adlaire-hero-panel` |
-| ビジュアルバナー | `.adlaire-visual-banner` |
-| 画像フレーム | `.adlaire-image-frame` |
-| ロゴリスト | `.adlaire-logo-list`、`.adlaire-logo-list-item` |
-| パートナーリスト | `.adlaire-partner-list`、`.adlaire-partner-list-item` |
-| アイコンタイル | `.adlaire-icon-tile-list`、`.adlaire-icon-tile` |
-| 分割ブロック | `.adlaire-split-block` |
-| 積み上げ特徴表示 | `.adlaire-stacked-feature` |
-| 比較グリッド | `.adlaire-comparison-grid`、`.adlaire-comparison-grid-item` |
-
-### 5.2 実装済みクラス対応表
-
-| 部品 | 実装済みクラス |
-| --- | --- |
-| Knowledge検索導線 | `.adlaire-knowledge-search-nav`、`.adlaire-knowledge-list`、`.adlaire-knowledge-empty` |
-| Knowledgeカテゴリナビ | `.adlaire-knowledge-category-nav` |
-| Knowledge更新情報 | `.adlaire-knowledge-update-list` |
-| Repositoryファイル一覧 | `.adlaire-repo-file-list`、`.adlaire-repo-file-row`、`.adlaire-repo-directory-row` |
-| Repositoryコミット一覧 | `.adlaire-repo-commit-list` |
-| Repository差分表示 | `.adlaire-repo-diff`、`.adlaire-repo-diff-added`、`.adlaire-repo-diff-removed`、`.adlaire-repo-change-badge` |
-| Repository設定パネル | `.adlaire-repo-settings`、`.adlaire-repo-settings-section`、`.adlaire-repo-settings-row`、`.adlaire-repo-save-status` |
-| メンバー/チーム表示 | `.adlaire-member-list`、`.adlaire-member-item`、`.adlaire-team-list`、`.adlaire-team-item`、`.adlaire-role-badge`、`.adlaire-invite-status`、`.adlaire-affiliation-meta` |
-| 読み込み状態/データカード | `.adlaire-loading-state`、`.adlaire-data-card`、`.adlaire-data-card-title`、`.adlaire-data-card-value`、`.adlaire-last-updated`、`.adlaire-sync-status`、`.adlaire-api-error` |
-| 多言語化UI | `.adlaire-language-switcher`、`.adlaire-language-switcher-label`、`.adlaire-language-current`、`.adlaire-language-list`、`.adlaire-language-option`、`.adlaire-language-option-current` |
-| テーブルUI | `.adlaire-table`、`.adlaire-data-table`、`.adlaire-comparison-table`、`.adlaire-content-table`、`.adlaire-table-scroll`、`.adlaire-table-empty`、`.adlaire-table-row-selected`、`.adlaire-table-cell-muted` |
-| モーダル/ダイアログUI | `.adlaire-modal`、`.adlaire-modal-dialog`、`.adlaire-confirm-dialog`、`.adlaire-notice-dialog`、`.adlaire-drawer`、`.adlaire-dialog-close` |
-| アップロードUI | `.adlaire-file-picker`、`.adlaire-dropzone`、`.adlaire-upload-progress`、`.adlaire-attachment-list`、`.adlaire-attachment-item`、`.adlaire-upload-error` |
-| フィルターUI | `.adlaire-filter-panel`、`.adlaire-filter-condition`、`.adlaire-saved-filter-list`、`.adlaire-saved-filter-item`、`.adlaire-filter-chip`、`.adlaire-filter-clear` |
-| 検索UI | `.adlaire-search-box`、`.adlaire-search-input`、`.adlaire-search-suggest`、`.adlaire-search-suggest-item`、`.adlaire-search-results`、`.adlaire-search-result-item`、`.adlaire-search-empty` |
-| ページネーションUI | `.adlaire-pagination`、`.adlaire-pagination-count`、`.adlaire-page-prev`、`.adlaire-page-next`、`.adlaire-page-link`、`.adlaire-page-link-current`、`.adlaire-page-link-disabled` |
-| 設定UI | `.adlaire-settings-group`、`.adlaire-settings-row`、`.adlaire-settings-label`、`.adlaire-settings-help`、`.adlaire-toggle`、`.adlaire-danger-zone` |
-| バリデーションUI | `.adlaire-field-error`、`.adlaire-field-warning`、`.adlaire-field-success`、`.adlaire-error-summary`、`.adlaire-error-summary-item`、`.adlaire-input-hint` |
-| 汎用目次 | `.adlaire-toc`、`.adlaire-toc-title`、`.adlaire-toc-list`、`.adlaire-toc-item`、`.adlaire-toc-link`、`.adlaire-toc-link-current`、`.adlaire-toc-sticky` |
-| 本文カード | `.adlaire-content-card`、`.adlaire-content-card-header`、`.adlaire-content-card-body`、`.adlaire-content-card-footer` |
-| コード表示 | `.adlaire-code-block`、`.adlaire-code-title`、`.adlaire-code-body`、`.adlaire-code-copy` |
-| 関連記事 | `.adlaire-related-list`、`.adlaire-related-item`、`.adlaire-related-link`、`.adlaire-related-meta` |
-| リポジトリ一覧UI | `.adlaire-git-repo-list`、`.adlaire-git-repo-card`、`.adlaire-git-repo-meta` |
-| リポジトリ概要/README表示UI | `.adlaire-git-repo-summary`、`.adlaire-git-readme`、`.adlaire-git-readme-meta` |
-| ブランチ/タグ切替UI | `.adlaire-git-ref-switcher`、`.adlaire-git-ref-menu`、`.adlaire-git-ref-current` |
-| ファイルツリー/パスナビUI | `.adlaire-git-file-tree`、`.adlaire-git-file-row`、`.adlaire-git-path-nav` |
-| ファイルビューアUI | `.adlaire-git-file-viewer`、`.adlaire-git-file-header`、`.adlaire-git-file-empty` |
-| コード表示/行番号/行ハイライトUI | `.adlaire-git-code-view`、`.adlaire-git-line-number`、`.adlaire-git-line-highlight` |
-| コミット一覧/コミット詳細UI | `.adlaire-git-commit-list`、`.adlaire-git-commit-item`、`.adlaire-git-commit-detail` |
-| 差分ビューアUI | `.adlaire-git-diff-viewer`、`.adlaire-git-diff-added`、`.adlaire-git-diff-removed` |
-| Pull Request一覧/詳細UI | `.adlaire-git-pr-list`、`.adlaire-git-pr-item`、`.adlaire-git-pr-detail` |
-| Issue一覧/詳細UI | `.adlaire-git-issue-list`、`.adlaire-git-issue-item`、`.adlaire-git-issue-detail` |
-| レビューコメント/スレッドUI | `.adlaire-git-review-thread`、`.adlaire-git-review-comment`、`.adlaire-git-review-resolved` |
-| CI/CDステータス/チェック結果UI | `.adlaire-git-check-list`、`.adlaire-git-check-item`、`.adlaire-git-check-status` |
-| リリース/タグ一覧UI | `.adlaire-git-release-list`、`.adlaire-git-release-item`、`.adlaire-git-tag` |
-| セキュリティアラートUI | `.adlaire-git-security-alert`、`.adlaire-git-severity`、`.adlaire-git-alert-status` |
-| リポジトリ設定/権限/危険操作UI | `.adlaire-git-settings`、`.adlaire-git-permission`、`.adlaire-git-danger-zone` |
-| Web IDE入口/編集導線UI | `.adlaire-git-web-ide-entry`、`.adlaire-git-edit-action`、`.adlaire-git-edit-disabled` |
-| 検索/コード検索/絞り込みUI | `.adlaire-git-code-search`、`.adlaire-git-search-filter`、`.adlaire-git-search-result` |
-| Activity/Insights/貢献グラフUI | `.adlaire-git-activity`、`.adlaire-git-insights`、`.adlaire-git-contribution-graph` |
-| Wiki/Docs表示UI | `.adlaire-git-wiki`、`.adlaire-git-docs-page`、`.adlaire-git-docs-nav` |
-| Packages/Artifacts表示UI | `.adlaire-git-package-list`、`.adlaire-git-artifact-list`、`.adlaire-git-download-action` |
-| Projects/カンバン/タスクボードUI | `.adlaire-git-project-board`、`.adlaire-git-board-column`、`.adlaire-git-board-card` |
-| 通知/Watch/Star/Fork操作UI | `.adlaire-git-watch-action`、`.adlaire-git-star-action`、`.adlaire-git-fork-action` |
-| 組織/チーム/メンバー権限UI | `.adlaire-git-org`、`.adlaire-git-team-list`、`.adlaire-git-member-permission` |
-| 空状態/読み込み/エラー状態UI | `.adlaire-git-empty`、`.adlaire-git-loading`、`.adlaire-git-error` |
-| モバイルGitプロバイダーUI | `.adlaire-git-mobile-nav`、`.adlaire-git-mobile-tab`、`.adlaire-git-mobile-action` |
-| フォーカスリング/キーボード操作表示 | `.adlaire-focus-ring`、`.adlaire-keyboard-focus`、`.adlaire-pressed`、`.adlaire-focus-surface` |
-| スキップリンク/ランドマーク補助UI | `.adlaire-skip-link`、`.adlaire-landmark-label`、`.adlaire-sr-only`、`.adlaire-a11y-helper` |
-| 入力グループ/複合入力UI | `.adlaire-input-group`、`.adlaire-input-prefix`、`.adlaire-input-suffix`、`.adlaire-composite-input` |
-| 日付/時刻/期間入力UI | `.adlaire-date-input`、`.adlaire-time-input`、`.adlaire-date-range`、`.adlaire-period-field` |
-| チャート枠/凡例/データラベルUI | `.adlaire-chart-frame`、`.adlaire-chart-legend`、`.adlaire-chart-label`、`.adlaire-chart-empty` |
-| KPI/メトリクス比較UI | `.adlaire-kpi-card`、`.adlaire-metric-delta`、`.adlaire-metric-trend`、`.adlaire-metric-comparison` |
-| コマンドパレットUI | `.adlaire-command-palette`、`.adlaire-command-input`、`.adlaire-command-item`、`.adlaire-command-shortcut` |
-| グローバル検索/オムニバーUI | `.adlaire-omnibar`、`.adlaire-omnibar-input`、`.adlaire-omnibar-result`、`.adlaire-omnibar-empty` |
-| App shell / Sidebar layout | `.adlaire-app-shell`、`.adlaire-app-sidebar`、`.adlaire-app-main`、`.adlaire-sidebar-collapsed` |
-| Split pane / Resizable pane UI | `.adlaire-split-pane`、`.adlaire-pane`、`.adlaire-pane-resize-handle`、`.adlaire-pane-collapsed` |
-| Toast / Snackbar UI | `.adlaire-toast-stack`、`.adlaire-toast`、`.adlaire-snackbar`、`.adlaire-toast-dismiss` |
-| Empty / Error / Loading state統合 | `.adlaire-state`、`.adlaire-state-empty`、`.adlaire-state-error`、`.adlaire-state-loading` |
-| Markdown/MDX表示用本文部品 | `.adlaire-markdown-body`、`.adlaire-mdx-body`、`.adlaire-md-note`、`.adlaire-md-footnote` |
-| Avatar / User presence UI | `.adlaire-avatar`、`.adlaire-avatar-group`、`.adlaire-presence`、`.adlaire-presence-dot` |
-| Gallery / Lightbox UI | `.adlaire-gallery`、`.adlaire-gallery-item`、`.adlaire-lightbox`、`.adlaire-lightbox-caption` |
-| Permission / Role / Scope表示UI | `.adlaire-permission`、`.adlaire-role`、`.adlaire-scope`、`.adlaire-restricted` |
-
----
-
-## 6. JavaScriptあり実装済み部品
-
-以下は、責務別JavaScriptを併用して汎用部品として実装する。
-
-| 部品 | 実装先 |
-| --- | --- |
-| モーダル | `UI/components.css`、`UI/components.js` |
-| ドロワー | `UI/components.css`、`UI/components.js` |
-| ドロップダウン | `UI/components.css`、`UI/components.js` |
-| カルーセル | `UI/components.css`、`UI/components.js` |
-| サイドバー折りたたみ | `UI/layout.css`、`UI/components.js` |
-| ソート可能テーブル | `UI/content.css`、`UI/content.js` |
-| 検索/絞り込みUI | `UI/forms.css`、`UI/forms.js`、`UI/content.css` |
-| ツールチップ動作 | `UI/components.css`、`UI/components.js` |
-
-### 6.1 JavaScriptあり実装済みクラス
-
-| 部品 | 実装済みクラス |
-| --- | --- |
-| モーダル | `.adlaire-modal`、`.adlaire-modal-dialog`、`.adlaire-modal-header`、`.adlaire-modal-title`、`.adlaire-modal-body`、`.adlaire-modal-footer`、`.adlaire-modal-close` |
-| ドロワー | `.adlaire-drawer`、`.adlaire-drawer-left`、`.adlaire-drawer-panel`、`.adlaire-drawer-header`、`.adlaire-drawer-title`、`.adlaire-drawer-body`、`.adlaire-drawer-footer`、`.adlaire-drawer-close` |
-| ドロップダウン | `.adlaire-dropdown`、`.adlaire-dropdown-trigger`、`.adlaire-dropdown-menu`、`.adlaire-dropdown-item` |
-| カルーセル | `.adlaire-carousel`、`.adlaire-carousel-viewport`、`.adlaire-carousel-track`、`.adlaire-carousel-slide`、`.adlaire-carousel-controls`、`.adlaire-carousel-control`、`.adlaire-carousel-indicators`、`.adlaire-carousel-indicator` |
-| ソート可能テーブル | `.adlaire-sortable-table`、`.adlaire-sort-button` |
-| 検索/絞り込みUI | `.adlaire-filter`、`.adlaire-filter-row`、`.adlaire-filter-input`、`.adlaire-filter-count`、`.adlaire-filter-results`、`.adlaire-filter-empty`、`.adlaire-filter-item` |
-| ツールチップ動作 | `.adlaire-tooltip`、`.adlaire-tooltip-trigger`、`.adlaire-tooltip-content` |
-
-## 6.2 原則対象外
-
-以下は、現方針では汎用部品として実装しない。
-
-| 部品 | 理由 |
-| --- | --- |
-| WYSIWYG Editor UI専用品 | `Docs/WYSIWYG_Editor_UI_Catalog` で分離管理する |
-| `.adlaire-wysiwyg-` 接頭辞のクラス | Editor UI専用CSS契約であり、汎用部品ではない |
-| 公式アイコンセット | `Docs/Icon_Set_Catalog` と `Icons/` で分離管理する。アイコンタイル等はアイコン表示UI部品として扱う |
-| Admin UI専用分類 | `Docs/Admin_UI_Catalog` で分離管理する |
-
----
-
-## 7. 追加判断基準
-
-新しい汎用部品を追加する場合は、以下を満たすこと。
-
-- 2ページ以上で再利用できる見込みがある。
-- 既存の部品またはユーティリティの組み合わせだけでは用途が曖昧になる。
-- CSSまたは責務別JavaScriptで成立する。
-- 新規トークンを追加する場合は、複数部品で共有する理由がある。
-- クラス名は `.adlaire-` 接頭辞を使用する。
-- 実装後に `Tools/check/check-adlaire-design.sh` の検査対象へ追加する。
-
----
-
-## 8. 代表的な画面種別で使う汎用部品
-
-本章は、Adlaire-Designの共通部品とルールを適用する代表的な画面種別から、必要になりやすい汎用部品を逆引きするための一覧である。
-
-画面種別はデザインシステムの分類軸ではなく、共通部品の利用例として扱う。画面種別ごとの専用テーマや専用設計体系は作らない。
-
-本章の代表例は、共通UIパターン整理の確定仕様として扱う。
-
-| 代表的な画面種別 | 必要な汎用部品 |
-| --- | --- |
-| ブログ・ドキュメントサイト | ページ見出し、セクションリード、目次、本文カード、注記、コード表示、関連記事、タグリスト |
-| ナレッジベース・Wiki | 検索ページへのリンク導線、カテゴリナビ、アンカーナビ、FAQ、定義リスト、更新情報、関連リンク |
-| マーケティングサイト | ヒーロー領域、CTAブロック、特徴リスト、カードグリッド、数値表示、比較ブロック、お知らせバー |
-| GitプロバイダーUI | ツールバー、ステータスラベル、キー/値サマリー、メタ情報行、ファイル一覧、コミット一覧、差分表示 |
-| リポジトリ管理画面 | 操作行、ボタングループ、空状態表示、アラート、ページネーション、絞り込みチップ、設定パネル |
-| 社内ポータル | お知らせバー、更新通知、メンテナンス通知、リンクリスト、カードグリッド、連絡パネル、メンバー/チーム表示 |
-| ダッシュボード | サーフェスグリッド、サーフェス項目、数値表示ブロック、ステータス点、ステータスラベル、メンテナンス通知、要約枠 |
-| 静的サイト | 読み込み状態、エラー表示、エラーページ、空状態表示、メンテナンス通知、メンテナンス画面、データカード、メタ情報行、更新日時表示 |
-| コンテンツ駆動Webシステム | 本文表、注記、メンテナンス通知、メンテナンス画面、チェックリスト、定義リスト、リンクリスト、関連リンク、CTAブロック |
-| 多言語サイト | 多言語化UI、サブナビ、リンクリスト、ステータスラベル、補助テキスト |
-
-この一覧は、汎用部品の追加優先度を判断するための補助情報である。ここに記載した部品であっても、JSONデータ管理、ビルド、minify、bundle、画面種別ごとの専用テーマが前提になるものは、個別に扱う。
-
----
-
-## 9. カタログ運用統一ルール
-
-本カタログの実装状態、対象外、同期対象、更新単位は以下に統一する。
-
-| 項目 | 統一ルール |
-| --- | --- |
-| 実装状態 | `実装済み`、`策定済み`、`対象外` のいずれかで管理する |
-| 対象外 | WYSIWYG Editor UI専用品、公式アイコンSVG実体、Admin UI専用分類は本カタログに含めない |
-| 同期対象 | `Docs/Master_Spec`、対象 `UI/*.css`、必要な `UI/*.js`、`Tools/check/check-adlaire-design.sh` |
-| 更新単位 | 部品追加、状態変更、対象外変更は、仕様、カタログ、実装、検査を同じ変更単位で確認する |
-
-Samplesで確認する場合は、`Samples/README.md` と `Samples/design/` を理解補助として更新できる。ただし、Samplesは仕様正本ではなく、カタログ状態の根拠にはしない。
+Samples can demonstrate these components, but Samples are not the source of truth.
