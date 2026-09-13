@@ -1,34 +1,23 @@
-# Adlaire-Design 未タスク
+# Adlaire-Design Pending Tasks
 
-本ファイルは、Adlaire-Designで未策定または未完了のまま残っているタスクだけを集約する管理ファイルである。
+This file contains only unfinished tasks.
 
-完了済みタスクと履歴は本ファイルに残さない。タスクが完了したら該当行を本ファイルから削除する。
+Completed tasks and historical notes are not retained here.
 
----
+## Rules
 
-## 1. 管理ルール
+- Keep only unfinished work.
+- Remove a task when it is complete.
+- Put implementation-only unfinished work in the implementation table.
+- Keep undecided or planning work in the task table.
+- When tasks change, review `Docs/Master_Spec`, `Docs/Document_Index`, relevant catalogs, and `Tools/check/check-adlaire-design.sh`.
 
-- 本ファイルには未完了タスクだけを記載する。
-- タスクを完了した場合は、該当行を削除する。
-- 完了済みタスクの保管場所として使わない。
-- 未実装リストには、仕様確定済みで実装だけが未完了の項目だけを記載する。
-- 仕様未確定、要否未決定、策定中の項目は未実装リストに含めない。
-- タスクを追加、削除、分割、統合する場合は、必要に応じて `Docs/Master_Spec`、`Docs/Document_Index`、`Tools/check/check-adlaire-design.sh` を同期更新する。
+## Pending Tasks
 
----
-
-## 2. 未タスク一覧
-
-| ID | 分類 | 未タスク | 完了条件 | 主な更新対象 |
+| ID | Category | Task | Completion condition | Main update targets |
 | --- | --- | --- | --- | --- |
 
----
+## Pending Implementation
 
-## 3. 未実装リスト
-
-本章は、仕様確定済みで、実装だけが未完了の項目を管理する。
-
-仕様未確定、要否未決定、策定中の項目は本章に含めない。それらは「未タスク一覧」で管理する。
-
-| ID | 分類 | 未実装 | 完了条件 | 主な更新対象 |
+| ID | Category | Implementation | Completion condition | Main update targets |
 | --- | --- | --- | --- | --- |

@@ -1,44 +1,61 @@
 # Adlaire Design System
 
-Adlaire-Design-Systemは、Adlaire Groupのデザインシステムを中核に、Deno TypeScript正本からCSS/JavaScript生成物を生成・検査・管理するフロントエンド基盤システムである。
+Adlaire-Design-System is the source repository for Adlaire Group's design system and frontend foundation.
 
-当面のリポジトリ名は `Adlaire-Design` とし、リポジトリ改名は後続工程で扱う。
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
 
-開発元: Adlaire Group DX事業セグメントグループ
+This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG Editor UI, structured editor runtime output, brand assets, the official icon set, samples, and governance documents.
 
-## 構成
+## Source of Truth
 
-- `Docs/`: 仕様・設計、リポジトリ索引。
-- `UI/`: CSS生成物および汎用UI JavaScript生成物。`UI/adlaire.css`、`UI/base.css`、`UI/grid.css`、`UI/layout.css`、`UI/components.css`、`UI/components.js`、`UI/site.css`、`UI/forms.css`、`UI/forms.js`、`UI/content.css`、`UI/content.js`、`UI/utilities.css`、`UI/compat-agws.css` を管理する。`UI/compat-agws.css` はAdlaire-Design仕様CSS層として管理する。
-- `EditorUI/`: WYSIWYG Editor UI専用領域。`EditorUI/wysiwyg.css`、`EditorUI/wysiwyg.js`、`EditorUI/editor.js` を管理する。`EditorUI/editor.js` はEditor本体の生成物JavaScriptとする。
-- `TypeScript/`: CSS生成、UI JavaScript、Editor UI JavaScript、Editor本体のTypeScript正本。Editor本体は `TypeScript/Editor/` に責務ベースの少数ファイルで集約する。既存トップレベル構造を維持し、追加トップレベルは `TypeScript/` のみとする。
-- `Tokens/`: デザイントークンCSS生成物。`Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css` を管理する。
-- `Brand/`: ブランド資産。
-- `Tools/check/`: Adlaire-Design専用の検査シェル。
-- `LICENSE`: ライセンス本文。
+| Area | Source |
+| --- | --- |
+| Overall specification | `Docs/Master_Spec` |
+| Editor and WYSIWYG details | `Docs/Editor_Master_Spec` |
+| Repository index | `Docs/Document_Index` |
+| Generic UI catalog | `Docs/Generic_Component_Catalog` |
+| Admin UI catalog | `Docs/Admin_UI_Catalog` |
+| WYSIWYG Editor UI catalog | `Docs/WYSIWYG_Editor_UI_Catalog` |
+| Icon catalog | `Docs/Icon_Set_Catalog` |
+| Brand asset catalog | `Docs/Brand_Asset_Catalog` |
+| Open tasks | `Docs/Pending_Tasks` |
 
-## ドキュメント
+## Repository Areas
 
-仕様・設計の全体正本は `Docs/Master_Spec` とする。Editor本体とWYSIWYG Editor UIの詳細正本は `Docs/Editor_Master_Spec` とする。CSS仕様、CSS生成物、TypeScript正本、JavaScript生成物、トークン、一般CSS汎用部品カタログ、Editor UIカタログ、Editor本体、未タスク管理、検査、利用先プロダクト採用の責務境界は `Docs/Master_Spec` に整理する。
+| Path | Role |
+| --- | --- |
+| `Tokens/` | Generated CSS custom properties. |
+| `UI/` | Generated public UI CSS and JavaScript. |
+| `EditorUI/` | Generated WYSIWYG Editor UI CSS and JavaScript, plus editor runtime output. |
+| `TypeScript/` | Deno TypeScript sources for generated CSS and JavaScript. |
+| `Icons/` | Official 500-icon SVG set. |
+| `Brand/` | Brand assets and brand asset rules. |
+| `Samples/` | Non-authoritative visual confirmation materials. |
+| `Tools/check/` | Repository checks. |
 
-一般的なCSS汎用部品は `Docs/Generic_Component_Catalog`、エディタUIに関する部品は `Docs/WYSIWYG_Editor_UI_Catalog` で分離管理する。未策定または未完了タスクは `Docs/Pending_Tasks` に未完了分だけを集約する。リポジトリ内の主要ファイルと管理対象は `Docs/Document_Index` を参照する。
+## Technical Rules
 
-## 方針
+- Deno TypeScript is the implementation source for generated CSS and JavaScript.
+- Standard libraries are limited to Deno standard libraries when needed.
+- npm packages, `package.json`, `node_modules`, Node.js-dependent tooling, external frontend frameworks, CSS preprocessors, minified bundles, and generated `dist` or `build` outputs are not used.
+- CSS and JavaScript are not mixed in the same file.
+- Generated CSS remains in `Tokens/`, `UI/`, and `EditorUI/`.
+- Generated JavaScript remains in `UI/` and `EditorUI/`.
 
-Adlaire-Design-Systemの成果物は、本リポジトリ内で完結して管理する。CSS/JavaScriptはDeno TypeScript正本から生成する成果物として管理する。TypeScriptはDenoランタイム環境を前提とし、標準採用ライブラリはDeno標準ライブラリ(`jsr:@std/*`)に限定する。npm互換パッケージ、npm依存、Node.js依存、外部フレームワークは例外なく禁止する。Adlaire-Design-Systemは、CSSフレームワーク、デザイントークン、ブランド資産、WYSIWYG Editor UI、Editor本体、TypeScript正本、CSS生成物、JavaScript生成物の開発正本として独立して管理する。
+## Checks
 
-今後の拡充は、Deno TypeScriptによるCSS/JavaScript生成基盤、公開面CSS機能、WYSIWYG Editor UI、Editor本体、生成物整合、再現性検査、ドキュメント整備、ブランド資産の整理を優先する。CSS minify、CSS bundle、Sass/SCSS等のCSSプリプロセッサは採用しない。
-
-拡充仕様の詳細は `Docs/Master_Spec` の「今後の拡充優先順位」および各策定仕様を正本とする。
-
-## コマンド
+Run the normal repository check:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh
 ```
 
-リリース前確認では、通常検査に加えて空白差分、未コミット差分、main同期状態を確認する。
+Run the release check only after PR merge, branch pruning, and local `main` synchronization:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh --release-check
 ```
+
+## Samples
+
+`Samples/design/index.html` is a confirmation surface for Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Brand, Tokens, and the official 500 icon set. Samples are supporting materials, not specification sources.

@@ -1,64 +1,53 @@
-# Adlaire-Design-System リポジトリ索引
+# Adlaire-Design-System Repository Index
 
-当面のリポジトリ名は `Adlaire-Design` とし、正式なシステム名は `Adlaire-Design-System` とする。
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
 
-- `AGENTS.md`(作業開始時の必須確認とリポジトリ運用ルール)
-- `.gitignore`(作業用ディレクトリとOS生成ファイルの除外設定)
-- `README.md`(リポジトリ概要、構成、検査コマンド)
-- `LICENSE`(ライセンス本文)
-- `Docs/Master_Spec`(仕様・設計の正本、Adlaire Frontend Compiler、CSS生成方針、Editor UI、Editor本体、TypeScript正本、CSS/JavaScript生成物、公式アイコンセット、Samples、カタログ責務索引)
-- `Docs/Master_Spec`内の品質保証改良方針(アイコン整合検査、生成物整合検査、Samples整備、カタログ運用統一、リリース前チェック強化)
-- `Docs/Master_Spec`内の正本階層(全体正本、専用マスター仕様、補助正本、TypeScript正本、生成物、実体資産、未タスク管理の優先関係)
-- `Docs/Editor_Master_Spec`(Editor本体とWYSIWYG Editor UIの専用マスター仕様)
-- `Docs/Editor_Master_Spec`内の詳細正本(Editor本体詳細、WYSIWYG Editor UI詳細、例外採用ライブラリ、検査条件)
-- `Docs/Generic_Component_Catalog`(一般的なCSS汎用部品の分類、優先度、実装先、実装状態の一覧)
-- `Docs/Admin_UI_Catalog`(管理画面専用UI部品の分類、優先度、実装先、実装状態の一覧)
-- `Docs/WYSIWYG_Editor_UI_Catalog`(エディタUIに関する部品の分類、優先度、実装先、実装状態の一覧)
-- `Docs/Icon_Set_Catalog`(Adlaire-Design公式アイコンセットの分類、用途、実装状態の一覧)
-- `Docs/Brand_Asset_Catalog`(ブランド資産のID、ファイル名、種別、用途、形式、代替テキストまたは説明方針、実装状態の一覧)
-- `Docs/Pending_Tasks`(未策定または未完了タスクだけを集約する管理ファイル)
-- `Brand/`(ロゴ、ブランド画像、OGP画像、ブランド固有アイコン、ブランド説明用素材を管理するブランド資産領域)
-- `Brand/README.md`(ブランド資産の配置ルール、許可形式、命名規則、公式アイコンセットとの境界)
-- `Icons/`(Adlaire-Design公式アイコンセット)
-- `Samples/README.md`(理解補助用サンプル資料の説明、確認対象、更新ルール)
-- `Samples/design/`(汎用UI、Admin UI、WYSIWYG Editor UI、Git Provider UI、公式500アイコン、Brand確認用サンプルデザイン)
-- `Samples/*.png`、`Samples/*.webp`(理解補助用スクリーンショット)
-- `Tokens/colors.css`(ブランドカラーCSS変数生成物)
-- `Tokens/typography.css`(タイポグラフィCSS変数生成物)
-- `Tokens/spacing.css`(余白CSS変数生成物)
-- `Tokens/layout.css`(画面構造CSS変数生成物)
-- `Tokens/motion.css`(motion CSS変数生成物)
-- `Tokens/layer.css`(layer CSS変数生成物)
-- `Tokens/breakpoints.css`(breakpoint CSS変数生成物)
-- `Tokens/surface.css`(公開面参照色CSS変数生成物)
-- `Tokens/status.css`(状態色・中立色CSS変数生成物)
-- `Tokens/effects.css`(公開面効果CSS変数生成物)
-- `UI/adlaire.css`(ブランドカラー最小ユーティリティ)
-- `UI/base.css`(基礎スタイル)
-- `UI/grid.css`(グリッド)
-- `UI/layout.css`(公開面基本レイアウト)
-- `UI/components.css`(公開面コンポーネント)
-- `UI/components.js`(公開面コンポーネントのJavaScript)
-- `UI/site.css`(サイト外枠)
-- `UI/forms.css`(フォームコンポーネント)
-- `UI/forms.js`(フォームコンポーネントのJavaScript)
-- `UI/content.css`(本文固有コンポーネント)
-- `UI/content.js`(本文固有コンポーネントのJavaScript)
-- `UI/utilities.css`(汎用ユーティリティ)
-- `UI/compat-agws.css`(Adlaire-Design仕様CSS層)
-- `EditorUI/wysiwyg.css`(WYSIWYG Editor UIスキン)
-- `EditorUI/wysiwyg.js`(WYSIWYG Editor UI JavaScript生成物)
-- `EditorUI/editor.js`(Editor本体のJavaScript生成物)
-- `TypeScript/`(CSS生成、UI JavaScript、Editor UI JavaScript、Editor本体のTypeScript正本。Editor本体は責務ベースの少数ファイルで集約)
-- `TypeScript/CSS/`(Adlaire Frontend CompilerのCSS生成TypeScript正本)
-- `TypeScript/CSS/tokens.ts`(CSS変数定義のTypeScript正本)
-- `TypeScript/CSS/rules.ts`(UI CSS、Editor UI CSS rule定義のTypeScript正本)
-- `TypeScript/CSS/targets.ts`(CSS生成先、出力順、読み込み順のTypeScript正本)
-- `TypeScript/CSS/emit.ts`(CSS文字列生成処理のTypeScript正本)
-- `TypeScript/CSS/manifest.ts`(CSS生成物一覧、禁止事項、差分確認対象のTypeScript正本)
-- `TypeScript/CSS/index.ts`(Adlaire Frontend Compiler CSS生成入口)
-- `TypeScript/UI/components.ts`(公開面コンポーネントJavaScriptのTypeScript正本)
-- `TypeScript/UI/content.ts`(本文固有コンポーネントJavaScriptのTypeScript正本)
-- `TypeScript/UI/forms.ts`(フォームコンポーネントJavaScriptのTypeScript正本)
-- `TypeScript/EditorUI/wysiwyg.ts`(WYSIWYG Editor UI JavaScriptのTypeScript正本)
-- `Tools/check/check-adlaire-design.sh`(Adlaire-Design専用の構成・CSS実装検査)
+## Governance
+
+| Path | Role |
+| --- | --- |
+| `AGENTS.md` | Work rules, approval rules, and Git startup checks. |
+| `README.md` | Repository overview and command entry points. |
+| `LICENSE` | License text. |
+| `Docs/Master_Spec` | Overall source of truth. |
+| `Docs/Editor_Master_Spec` | Editor and WYSIWYG Editor UI source of truth. |
+| `Docs/Pending_Tasks` | Unfinished task list only. |
+
+## Catalogs
+
+| Path | Role |
+| --- | --- |
+| `Docs/Generic_Component_Catalog` | Generic public UI, content UI, form UI, layout UI, Git Provider UI. |
+| `Docs/Admin_UI_Catalog` | Admin-only UI. |
+| `Docs/WYSIWYG_Editor_UI_Catalog` | WYSIWYG Editor UI. |
+| `Docs/Icon_Set_Catalog` | Official icon set governance. |
+| `Docs/Brand_Asset_Catalog` | Brand asset governance. |
+
+## Runtime Outputs and Sources
+
+| Path | Role |
+| --- | --- |
+| `Tokens/` | Generated token CSS. |
+| `UI/` | Generated public UI CSS and JavaScript. |
+| `EditorUI/` | Generated WYSIWYG Editor UI CSS and JavaScript, plus editor runtime output. |
+| `TypeScript/CSS/` | CSS generation source. |
+| `TypeScript/UI/` | Public UI JavaScript source. |
+| `TypeScript/EditorUI/` | WYSIWYG Editor UI JavaScript source. |
+| `TypeScript/Editor/` | Structured editor source. |
+
+## Assets and Samples
+
+| Path | Role |
+| --- | --- |
+| `Icons/` | Official 500 SVG icons. |
+| `Brand/` | Brand assets. |
+| `Brand/README.md` | Brand asset rules. |
+| `Samples/README.md` | Sample rules and coverage. |
+| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, official 500 icons, Tokens, and Brand confirmation surface. |
+| `Samples/*.png`, `Samples/*.webp` | Supporting screenshots. |
+
+## Checks
+
+| Path | Role |
+| --- | --- |
+| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, asset, and release checks. |
