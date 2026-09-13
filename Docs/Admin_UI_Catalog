@@ -29,6 +29,26 @@
 | Danger Zone | 危険操作 |
 | Audit | 監査/履歴 |
 | Admin Form | 管理フォーム |
+| Metrics | KPI/運用指標 |
+| Resource | リソース見出し |
+| Workflow | 承認/レビュー/状態管理 |
+| Permission Matrix | 権限マトリクス |
+| Reliability | 稼働状態/障害対応 |
+| Integration | API key/Webhook管理 |
+| Release | リリース運用 |
+| Quota | 使用量/制限管理 |
+| Notification | 通知/告知 |
+| Data Ops | バックアップ/同期/入出力 |
+| Environment | 環境切替 |
+| Feature Flag | 機能フラグ管理 |
+| Observability | 監視/ログ/アラート |
+| Cost | コスト/利用量分析 |
+| Data Governance | 保持/準拠確認 |
+| Policy | ポリシー管理 |
+| Security | セキュリティ状態 |
+| Session | セッション/端末管理 |
+| Access Request | アクセス申請 |
+| Secret | シークレット/トークンスコープ |
 
 ---
 
@@ -46,3 +66,43 @@
 | 管理フォーム | `.adlaire-admin-form` | `UI/forms.css` | A | 実装済み | 入力行、補助説明、検証表示 | 入力状態補助 |
 | Audit trail / Activity log | `.adlaire-audit-trail`、`.adlaire-activity-log`、`.adlaire-activity-actor`、`.adlaire-activity-time` | `UI/content.css`、`UI/components.css` | B | 実装済み | 監査履歴、操作主体、時刻、イベント種別、詳細表示 | 表示状態補助 |
 | Permission / Role / Scope表示 | `.adlaire-permission`、`.adlaire-role`、`.adlaire-scope`、`.adlaire-restricted` | `UI/components.css`、`UI/forms.css` | A | 実装済み | 権限、ロール、スコープ、制限状態の表示 | 表示状態補助 |
+| KPIカード | `.adlaire-admin-kpi-card`、`.adlaire-admin-kpi-value`、`.adlaire-admin-kpi-label`、`.adlaire-admin-kpi-trend` | `UI/components.css` | A | 実装済み | 管理指標、数値、ラベル、増減傾向 | 表示状態補助 |
+| リソースヘッダー | `.adlaire-admin-resource-header`、`.adlaire-admin-resource-meta`、`.adlaire-admin-resource-actions` | `UI/components.css` | A | 実装済み | 対象リソースの見出し、メタ情報、主要操作 | 表示状態補助 |
+| データツールバー | `.adlaire-admin-data-toolbar`、`.adlaire-admin-toolbar-filter`、`.adlaire-admin-toolbar-actions` | `UI/components.css` | A | 実装済み | 一覧の絞り込み、検索、操作領域 | 表示状態補助 |
+| 選択サマリー | `.adlaire-admin-selection-summary`、`.adlaire-admin-selection-count`、`.adlaire-admin-selection-actions` | `UI/components.css` | B | 実装済み | 選択件数、選択対象操作、補助表示 | 選択状態補助 |
+| 承認パネル | `.adlaire-admin-approval-panel`、`.adlaire-admin-approval-step`、`.adlaire-admin-approval-current` | `UI/components.css` | B | 実装済み | 承認フロー、現在ステップ、操作待ち状態 | 表示状態補助 |
+| 権限マトリクス | `.adlaire-admin-permission-matrix`、`.adlaire-admin-permission-row`、`.adlaire-admin-permission-cell` | `UI/components.css` | B | 実装済み | ロール別権限、スコープ、許可状態の比較 | 表示状態補助 |
+| レビューキュー | `.adlaire-admin-review-queue`、`.adlaire-admin-review-item`、`.adlaire-admin-review-priority` | `UI/components.css` | B | 実装済み | 確認待ち一覧、優先度、担当状態 | 表示状態補助 |
+| ステータスボード | `.adlaire-admin-status-board`、`.adlaire-admin-status-column`、`.adlaire-admin-status-card` | `UI/components.css` | B | 実装済み | 状態別の作業列、カード、進行状況 | 表示状態補助 |
+| インサイトパネル | `.adlaire-admin-insight-panel`、`.adlaire-admin-insight-title`、`.adlaire-admin-insight-body` | `UI/components.css` | B | 実装済み | 運用上の要点、分析メモ、次アクション表示 | 表示状態補助 |
+| ヘルスチェック | `.adlaire-admin-health-check`、`.adlaire-admin-health-item`、`.adlaire-admin-health-status` | `UI/components.css` | A | 実装済み | 稼働状態、正常/注意/異常の一覧表示 | 表示状態補助 |
+| タスクボード | `.adlaire-admin-task-board`、`.adlaire-admin-task-column`、`.adlaire-admin-task-card` | `UI/components.css` | B | 実装済み | 作業列、担当タスク、進行状態 | 表示状態補助 |
+| インシデントパネル | `.adlaire-admin-incident-panel`、`.adlaire-admin-incident-severity`、`.adlaire-admin-incident-update` | `UI/components.css` | A | 実装済み | 障害重要度、状況更新、対応履歴 | 表示状態補助 |
+| リリースパネル | `.adlaire-admin-release-panel`、`.adlaire-admin-release-version`、`.adlaire-admin-release-check` | `UI/components.css` | B | 実装済み | リリース版、確認項目、公開準備状態 | 表示状態補助 |
+| クォータメーター | `.adlaire-admin-quota-meter`、`.adlaire-admin-quota-bar`、`.adlaire-admin-quota-value` | `UI/components.css` | B | 実装済み | 使用量、上限、残量の視覚表示 | 表示状態補助 |
+| APIキー一覧 | `.adlaire-admin-api-key-list`、`.adlaire-admin-api-key-item`、`.adlaire-admin-api-key-token` | `UI/components.css` | B | 実装済み | APIキー、発行状態、マスク表示 | 表示状態補助 |
+| Webhook一覧 | `.adlaire-admin-webhook-list`、`.adlaire-admin-webhook-item`、`.adlaire-admin-webhook-status` | `UI/components.css` | B | 実装済み | Webhook送信先、状態、最終結果 | 表示状態補助 |
+| 通知センター | `.adlaire-admin-notification-center`、`.adlaire-admin-notification-item`、`.adlaire-admin-notification-badge` | `UI/components.css` | B | 実装済み | 管理通知、未読状態、優先度表示 | 表示状態補助 |
+| ブロードキャストパネル | `.adlaire-admin-broadcast-panel`、`.adlaire-admin-broadcast-message`、`.adlaire-admin-broadcast-scope` | `UI/components.css` | B | 実装済み | 告知内容、配信範囲、状態表示 | 表示状態補助 |
+| メンテナンスウィンドウ | `.adlaire-admin-maintenance-window`、`.adlaire-admin-maintenance-time`、`.adlaire-admin-maintenance-impact` | `UI/components.css` | A | 実装済み | メンテナンス時間、影響範囲、告知状態 | 表示状態補助 |
+| バックアップパネル | `.adlaire-admin-backup-panel`、`.adlaire-admin-backup-item`、`.adlaire-admin-backup-status` | `UI/components.css` | B | 実装済み | バックアップ対象、実行状態、復元導線 | 表示状態補助 |
+| インポート/エクスポート | `.adlaire-admin-import-export`、`.adlaire-admin-import-export-job`、`.adlaire-admin-import-export-status` | `UI/components.css` | B | 実装済み | 入出力ジョブ、進行状態、結果表示 | 表示状態補助 |
+| 同期状態 | `.adlaire-admin-sync-status`、`.adlaire-admin-sync-source`、`.adlaire-admin-sync-result` | `UI/components.css` | B | 実装済み | 同期元、同期結果、最終同期状態 | 表示状態補助 |
+| 環境スイッチャー | `.adlaire-admin-env-switcher`、`.adlaire-admin-env-option`、`.adlaire-admin-env-current` | `UI/components.css` | A | 実装済み | 環境選択、現在環境、危険環境識別 | 表示状態補助 |
+| 機能フラグ一覧 | `.adlaire-admin-feature-flag-list`、`.adlaire-admin-feature-flag-item`、`.adlaire-admin-feature-flag-state` | `UI/components.css` | B | 実装済み | 機能フラグ、公開状態、切替対象 | 表示状態補助 |
+| Observabilityパネル | `.adlaire-admin-observability-panel`、`.adlaire-admin-observability-metric`、`.adlaire-admin-observability-state` | `UI/components.css` | A | 実装済み | 監視指標、状態、異常兆候の概要表示 | 表示状態補助 |
+| ログストリーム | `.adlaire-admin-log-stream`、`.adlaire-admin-log-line`、`.adlaire-admin-log-level` | `UI/components.css` | B | 実装済み | ログ行、重要度、時系列表示 | 表示状態補助 |
+| アラートルール一覧 | `.adlaire-admin-alert-rule-list`、`.adlaire-admin-alert-rule-item`、`.adlaire-admin-alert-rule-state` | `UI/components.css` | B | 実装済み | アラート条件、有効状態、通知対象表示 | 表示状態補助 |
+| コストサマリー | `.adlaire-admin-cost-summary`、`.adlaire-admin-cost-value`、`.adlaire-admin-cost-delta` | `UI/components.css` | B | 実装済み | コスト合計、増減、予算状態表示 | 表示状態補助 |
+| 使用量内訳 | `.adlaire-admin-usage-breakdown`、`.adlaire-admin-usage-row`、`.adlaire-admin-usage-value` | `UI/components.css` | B | 実装済み | 使用量項目、内訳、比較値表示 | 表示状態補助 |
+| 保持設定パネル | `.adlaire-admin-retention-panel`、`.adlaire-admin-retention-rule`、`.adlaire-admin-retention-period` | `UI/components.css` | B | 実装済み | 保持ルール、保持期間、対象データ表示 | 表示状態補助 |
+| コンプライアンスチェックリスト | `.adlaire-admin-compliance-checklist`、`.adlaire-admin-compliance-item`、`.adlaire-admin-compliance-state` | `UI/components.css` | A | 実装済み | 準拠確認、未対応項目、完了状態表示 | 表示状態補助 |
+| ポリシーパネル | `.adlaire-admin-policy-panel`、`.adlaire-admin-policy-rule`、`.adlaire-admin-policy-state` | `UI/components.css` | B | 実装済み | 管理ポリシー、適用状態、例外表示 | 表示状態補助 |
+| セキュリティ概要 | `.adlaire-admin-security-overview`、`.adlaire-admin-security-score`、`.adlaire-admin-security-state` | `UI/components.css` | A | 実装済み | セキュリティ状態、スコア、注意状態の概要表示 | 表示状態補助 |
+| セッション一覧 | `.adlaire-admin-session-list`、`.adlaire-admin-session-item`、`.adlaire-admin-session-state` | `UI/components.css` | A | 実装済み | ログインセッション、状態、最終利用表示 | 表示状態補助 |
+| 端末一覧 | `.adlaire-admin-device-list`、`.adlaire-admin-device-item`、`.adlaire-admin-device-trust` | `UI/components.css` | B | 実装済み | 端末、信頼状態、利用者表示 | 表示状態補助 |
+| アクセス申請一覧 | `.adlaire-admin-access-request-list`、`.adlaire-admin-access-request-item`、`.adlaire-admin-access-request-state` | `UI/components.css` | A | 実装済み | 申請者、対象権限、承認状態表示 | 表示状態補助 |
+| シークレットパネル | `.adlaire-admin-secret-panel`、`.adlaire-admin-secret-item`、`.adlaire-admin-secret-expiry` | `UI/components.css` | A | 実装済み | secret、期限、ローテーション状態表示 | 表示状態補助 |
+| トークンスコープ一覧 | `.adlaire-admin-token-scope-list`、`.adlaire-admin-token-scope-item`、`.adlaire-admin-token-scope-level` | `UI/components.css` | B | 実装済み | token scope、権限レベル、制限範囲表示 | 表示状態補助 |
+| リスクシグナル | `.adlaire-admin-risk-signal`、`.adlaire-admin-risk-signal-item`、`.adlaire-admin-risk-level` | `UI/components.css` | A | 実装済み | リスク兆候、重要度、対応状態表示 | 表示状態補助 |
+| 監査フィルター | `.adlaire-admin-audit-filter`、`.adlaire-admin-audit-filter-group`、`.adlaire-admin-audit-filter-chip` | `UI/components.css` | B | 実装済み | 監査ログの対象、期間、条件表示 | 表示状態補助 |

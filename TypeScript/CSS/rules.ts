@@ -1948,6 +1948,492 @@ a:hover {
   font-weight: 700;
 }
 
+.adlaire-admin-kpi-card,
+.adlaire-admin-resource-header,
+.adlaire-admin-data-toolbar,
+.adlaire-admin-selection-summary,
+.adlaire-admin-approval-panel,
+.adlaire-admin-permission-matrix,
+.adlaire-admin-review-queue,
+.adlaire-admin-status-board {
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-admin-kpi-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.adlaire-admin-kpi-value {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.adlaire-admin-kpi-label,
+.adlaire-admin-resource-meta,
+.adlaire-admin-kpi-trend {
+  color: var(--adlaire-surface-text-subtle);
+  font-size: 0.875rem;
+}
+
+.adlaire-admin-kpi-trend {
+  font-weight: 700;
+}
+
+.adlaire-admin-resource-header,
+.adlaire-admin-data-toolbar,
+.adlaire-admin-selection-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.adlaire-admin-resource-meta,
+.adlaire-admin-resource-actions,
+.adlaire-admin-toolbar-filter,
+.adlaire-admin-toolbar-actions,
+.adlaire-admin-selection-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.adlaire-admin-selection-summary {
+  background-color: var(--adlaire-surface-soft);
+}
+
+.adlaire-admin-selection-count,
+.adlaire-admin-review-priority {
+  color: var(--adlaire-surface-accent-strong);
+  font-weight: 700;
+}
+
+.adlaire-admin-approval-panel,
+.adlaire-admin-review-queue {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.adlaire-admin-approval-step,
+.adlaire-admin-review-item,
+.adlaire-admin-status-card {
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-approval-current {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+}
+
+.adlaire-admin-permission-matrix {
+  display: grid;
+  overflow: auto;
+}
+
+.adlaire-admin-permission-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.5fr) repeat(3, minmax(120px, 1fr));
+  min-width: 560px;
+  border-bottom: 1px solid var(--adlaire-surface-border);
+}
+
+.adlaire-admin-permission-cell {
+  padding: 10px 12px;
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-admin-status-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+.adlaire-admin-status-column {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-insight-panel,
+.adlaire-admin-health-check,
+.adlaire-admin-task-board,
+.adlaire-admin-incident-panel,
+.adlaire-admin-release-panel,
+.adlaire-admin-quota-meter,
+.adlaire-admin-api-key-list,
+.adlaire-admin-webhook-list {
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-admin-insight-panel,
+.adlaire-admin-incident-panel,
+.adlaire-admin-release-panel,
+.adlaire-admin-quota-meter {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.adlaire-admin-insight-title,
+.adlaire-admin-release-version,
+.adlaire-admin-incident-severity,
+.adlaire-admin-health-status,
+.adlaire-admin-webhook-status {
+  color: var(--adlaire-surface-accent-strong);
+  font-weight: 700;
+}
+
+.adlaire-admin-insight-body,
+.adlaire-admin-incident-update,
+.adlaire-admin-release-check {
+  color: var(--adlaire-surface-text-muted);
+  line-height: 1.7;
+}
+
+.adlaire-admin-health-check,
+.adlaire-admin-api-key-list,
+.adlaire-admin-webhook-list {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.adlaire-admin-health-item,
+.adlaire-admin-api-key-item,
+.adlaire-admin-webhook-item {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-task-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+.adlaire-admin-task-column {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-task-card {
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-quota-bar {
+  overflow: hidden;
+  height: 10px;
+  background-color: var(--adlaire-surface-soft);
+  border-radius: var(--adlaire-radius-round);
+}
+
+.adlaire-admin-quota-bar::before {
+  display: block;
+  width: 66%;
+  height: 100%;
+  background-color: var(--adlaire-surface-accent);
+  content: "";
+}
+
+.adlaire-admin-quota-value,
+.adlaire-admin-api-key-token {
+  color: var(--adlaire-surface-text-subtle);
+  font-family: var(--adlaire-font-family-mono);
+  font-size: 0.875rem;
+}
+
+.adlaire-admin-notification-center,
+.adlaire-admin-broadcast-panel,
+.adlaire-admin-maintenance-window,
+.adlaire-admin-backup-panel,
+.adlaire-admin-import-export,
+.adlaire-admin-sync-status,
+.adlaire-admin-env-switcher,
+.adlaire-admin-feature-flag-list {
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-admin-notification-center,
+.adlaire-admin-backup-panel,
+.adlaire-admin-import-export,
+.adlaire-admin-sync-status,
+.adlaire-admin-feature-flag-list {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.adlaire-admin-notification-item,
+.adlaire-admin-backup-item,
+.adlaire-admin-import-export-job,
+.adlaire-admin-feature-flag-item {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-notification-badge,
+.adlaire-admin-broadcast-scope,
+.adlaire-admin-backup-status,
+.adlaire-admin-import-export-status,
+.adlaire-admin-sync-result,
+.adlaire-admin-env-current,
+.adlaire-admin-feature-flag-state {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.adlaire-admin-broadcast-panel,
+.adlaire-admin-maintenance-window {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.adlaire-admin-broadcast-message,
+.adlaire-admin-maintenance-impact {
+  color: var(--adlaire-surface-text-muted);
+  line-height: 1.7;
+}
+
+.adlaire-admin-maintenance-time,
+.adlaire-admin-sync-source {
+  color: var(--adlaire-surface-text-subtle);
+  font-family: var(--adlaire-font-family-mono);
+  font-size: 0.875rem;
+}
+
+.adlaire-admin-env-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 12px;
+}
+
+.adlaire-admin-env-option {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-admin-sync-status {
+  border-left: 4px solid var(--adlaire-surface-accent);
+}
+
+.adlaire-admin-observability-panel,
+.adlaire-admin-log-stream,
+.adlaire-admin-alert-rule-list,
+.adlaire-admin-cost-summary,
+.adlaire-admin-usage-breakdown,
+.adlaire-admin-retention-panel,
+.adlaire-admin-compliance-checklist,
+.adlaire-admin-policy-panel {
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-admin-observability-panel,
+.adlaire-admin-cost-summary,
+.adlaire-admin-retention-panel,
+.adlaire-admin-policy-panel {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.adlaire-admin-log-stream,
+.adlaire-admin-alert-rule-list,
+.adlaire-admin-usage-breakdown,
+.adlaire-admin-compliance-checklist {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.adlaire-admin-observability-metric,
+.adlaire-admin-log-line,
+.adlaire-admin-alert-rule-item,
+.adlaire-admin-usage-row,
+.adlaire-admin-retention-rule,
+.adlaire-admin-compliance-item,
+.adlaire-admin-policy-rule {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-observability-state,
+.adlaire-admin-alert-rule-state,
+.adlaire-admin-cost-delta,
+.adlaire-admin-compliance-state,
+.adlaire-admin-policy-state {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.adlaire-admin-log-level,
+.adlaire-admin-usage-value,
+.adlaire-admin-retention-period {
+  color: var(--adlaire-surface-text-subtle);
+  font-family: var(--adlaire-font-family-mono);
+  font-size: 0.875rem;
+}
+
+.adlaire-admin-cost-value {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.adlaire-admin-log-stream {
+  overflow: auto;
+  max-height: 320px;
+}
+
+.adlaire-admin-security-overview,
+.adlaire-admin-session-list,
+.adlaire-admin-device-list,
+.adlaire-admin-access-request-list,
+.adlaire-admin-secret-panel,
+.adlaire-admin-token-scope-list,
+.adlaire-admin-risk-signal,
+.adlaire-admin-audit-filter {
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-admin-security-overview,
+.adlaire-admin-secret-panel,
+.adlaire-admin-risk-signal,
+.adlaire-admin-audit-filter {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.adlaire-admin-session-list,
+.adlaire-admin-device-list,
+.adlaire-admin-access-request-list,
+.adlaire-admin-token-scope-list {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.adlaire-admin-session-item,
+.adlaire-admin-device-item,
+.adlaire-admin-access-request-item,
+.adlaire-admin-secret-item,
+.adlaire-admin-token-scope-item,
+.adlaire-admin-risk-signal-item {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-security-score {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.adlaire-admin-security-state,
+.adlaire-admin-session-state,
+.adlaire-admin-device-trust,
+.adlaire-admin-access-request-state,
+.adlaire-admin-token-scope-level,
+.adlaire-admin-risk-level {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.adlaire-admin-secret-expiry {
+  color: var(--adlaire-surface-text-subtle);
+  font-family: var(--adlaire-font-family-mono);
+  font-size: 0.875rem;
+}
+
+.adlaire-admin-audit-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.adlaire-admin-audit-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
 .adlaire-language-switcher,
 .adlaire-language-current,
 .adlaire-language-list,
