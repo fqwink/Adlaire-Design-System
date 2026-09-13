@@ -1623,6 +1623,126 @@
   color: var(--adlaire-semantic-muted-text);
 }
 
+.adlaire-admin-empty-state,
+.adlaire-admin-error-state,
+.adlaire-admin-loading-state,
+.adlaire-admin-forbidden-state,
+.adlaire-admin-incomplete-state {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  padding: 20px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-admin-empty-state {
+  background-color: var(--adlaire-semantic-muted-bg);
+  border-color: var(--adlaire-semantic-muted-border);
+}
+
+.adlaire-admin-error-state,
+.adlaire-admin-forbidden-state {
+  background-color: var(--adlaire-semantic-danger-bg);
+  border-color: var(--adlaire-semantic-danger-border);
+  color: var(--adlaire-semantic-danger-text);
+}
+
+.adlaire-admin-loading-state,
+.adlaire-admin-incomplete-state {
+  background-color: var(--adlaire-semantic-info-bg);
+  border-color: var(--adlaire-semantic-info-border);
+  color: var(--adlaire-semantic-info-text);
+}
+
+.adlaire-admin-state-title {
+  margin: 0;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.adlaire-admin-state-text {
+  margin: 0;
+  max-width: 60ch;
+  color: inherit;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.adlaire-admin-state-action {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.adlaire-admin-action-bar,
+.adlaire-admin-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.adlaire-admin-action-bar {
+  justify-content: space-between;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-admin-action-group {
+  justify-content: flex-end;
+}
+
+.adlaire-admin-primary-action,
+.adlaire-admin-secondary-action,
+.adlaire-admin-danger-action,
+.adlaire-admin-inline-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--adlaire-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.adlaire-admin-primary-action {
+  background-color: var(--adlaire-surface-accent);
+  border-color: var(--adlaire-surface-accent);
+  color: var(--adlaire-surface-card);
+}
+
+.adlaire-admin-secondary-action {
+  background-color: var(--adlaire-surface-card);
+  border-color: var(--adlaire-surface-border);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-admin-danger-action {
+  background-color: var(--adlaire-semantic-danger-bg);
+  border-color: var(--adlaire-semantic-danger-border);
+  color: var(--adlaire-semantic-danger-text);
+}
+
+.adlaire-admin-inline-action {
+  min-height: 28px;
+  padding: 4px 0;
+  background: transparent;
+  border-color: transparent;
+  color: var(--adlaire-surface-accent-strong);
+}
+
 .adlaire-admin-density-compact {
   gap: 8px;
   padding: 10px;
@@ -2574,8 +2694,67 @@
 }
 
 @media (max-width: 480px) {
-  .adlaire-admin-bulk-action {
+  .adlaire-admin-mobile-stack,
+  .adlaire-admin-mobile-card-list,
+  .adlaire-admin-bulk-action,
+  .adlaire-admin-resource-header,
+  .adlaire-admin-data-toolbar,
+  .adlaire-admin-selection-summary,
+  .adlaire-admin-section-header,
+  .adlaire-admin-card-header,
+  .adlaire-admin-action-bar,
+  .adlaire-admin-state-row {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .adlaire-admin-mobile-scroll,
+  .adlaire-admin-permission-matrix,
+  .adlaire-admin-log-stream {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .adlaire-admin-mobile-actions,
+  .adlaire-admin-action-group,
+  .adlaire-admin-card-actions,
+  .adlaire-admin-resource-actions,
+  .adlaire-admin-toolbar-actions,
+  .adlaire-admin-selection-actions,
+  .adlaire-admin-state-action {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .adlaire-admin-mobile-collapse,
+  .adlaire-admin-health-item,
+  .adlaire-admin-api-key-item,
+  .adlaire-admin-webhook-item,
+  .adlaire-admin-observability-metric,
+  .adlaire-admin-log-line,
+  .adlaire-admin-alert-rule-item,
+  .adlaire-admin-usage-row,
+  .adlaire-admin-retention-rule,
+  .adlaire-admin-compliance-item,
+  .adlaire-admin-policy-rule,
+  .adlaire-admin-session-item,
+  .adlaire-admin-device-item,
+  .adlaire-admin-access-request-item,
+  .adlaire-admin-secret-item,
+  .adlaire-admin-token-scope-item,
+  .adlaire-admin-risk-signal-item {
+    grid-template-columns: 1fr;
+  }
+
+  .adlaire-admin-empty-state,
+  .adlaire-admin-error-state,
+  .adlaire-admin-loading-state,
+  .adlaire-admin-forbidden-state,
+  .adlaire-admin-incomplete-state {
+    padding: 16px;
   }
 
   .adlaire-modal,
