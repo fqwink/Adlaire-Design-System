@@ -1041,6 +1041,9 @@ for quality_improvement_term in \
   '### 11.11.14 品質保証改良タスク策定仕様' \
   '500件の公式アイコン実装完了後は、検査強化、生成物整合検査、サンプル整備、カタログ運用統一、リリース前チェック強化を優先改良対象とする。' \
   '公式アイコン整合検査は、`Docs/Icon_Set_Catalog` の500件固定、`AD-ICON-001` から `AD-ICON-500` までのID連番、ファイル名一意性、カテゴリ妥当性、全件 `実装済み` 状態、`Icons/` 配下のSVG実体数一致を検査対象とする。' \
+  'ローカルmain同期確認' \
+  '`git fetch backup --prune` を実行した後の状態を検査前提とする。' \
+  'ローカル `main` が `backup/main` と同一commitであること' \
   'マージ後のheadブランチ削除確認'; do
   if ! grep -F -- "$quality_improvement_term" "$ADLAIRE_DESIGN_ROOT/Docs/Master_Spec" >/dev/null 2>&1; then
     echo "Docs/Master_Spec missing required quality improvement term: $quality_improvement_term" >&2
@@ -1050,8 +1053,7 @@ done
 
 for pending_quality_task in \
   'AD-TASK-039' \
-  'AD-TASK-040' \
-  'AD-TASK-041'; do
+  'AD-TASK-040'; do
   if ! grep -F -- "$pending_quality_task" "$ADLAIRE_DESIGN_ROOT/Docs/Pending_Tasks" >/dev/null 2>&1; then
     echo "Docs/Pending_Tasks missing required quality improvement task: $pending_quality_task" >&2
     exit 1
@@ -2212,6 +2214,11 @@ if command -v deno >/dev/null 2>&1; then
 fi
 
 if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
+  if ! git -C "$ADLAIRE_DESIGN_ROOT" fetch backup --prune; then
+    echo "release check requires git fetch backup --prune to succeed." >&2
+    exit 1
+  fi
+
   git -C "$ADLAIRE_DESIGN_ROOT" diff --check
 
   git -C "$ADLAIRE_DESIGN_ROOT" status --short --branch >"$TMP_DIR/git-status"
@@ -2221,9 +2228,43 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
     exit 1
   fi
 
-  if git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify backup/main >/dev/null 2>&1; then
-    if ! git -C "$ADLAIRE_DESIGN_ROOT" merge-base --is-ancestor backup/main HEAD; then
-      echo "release check requires HEAD to include backup/main." >&2
+  if ! git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify backup/main >/dev/null 2>&1; then
+    echo "release check requires backup/main to exist after git fetch backup --prune." >&2
+    exit 1
+  fi
+
+  if ! git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify main >/dev/null 2>&1; then
+    echo "release check requires local main to exist." >&2
+    exit 1
+  fi
+
+  LOCAL_MAIN="$(git -C "$ADLAIRE_DESIGN_ROOT" rev-parse main)"
+  REMOTE_MAIN="$(git -C "$ADLAIRE_DESIGN_ROOT" rev-parse backup/main)"
+
+  if [ "$LOCAL_MAIN" != "$REMOTE_MAIN" ]; then
+    echo "release check requires local main to match backup/main after git fetch backup --prune." >&2
+    echo "local main: $LOCAL_MAIN" >&2
+    echo "backup/main: $REMOTE_MAIN" >&2
+    exit 1
+  fi
+
+  CURRENT_BRANCH="$(git -C "$ADLAIRE_DESIGN_ROOT" symbolic-ref --quiet --short HEAD || printf '%s' 'HEAD')"
+
+  if [ "$CURRENT_BRANCH" = "main" ]; then
+    CURRENT_HEAD="$(git -C "$ADLAIRE_DESIGN_ROOT" rev-parse HEAD)"
+    if [ "$CURRENT_HEAD" != "$REMOTE_MAIN" ]; then
+      echo "release check requires main HEAD to match backup/main." >&2
+      exit 1
+    fi
+  else
+    if git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify "backup/$CURRENT_BRANCH" >/dev/null 2>&1; then
+      echo "release check requires merged PR head branch to be deleted after git fetch backup --prune: backup/$CURRENT_BRANCH" >&2
+      exit 1
+    fi
+
+    if git -C "$ADLAIRE_DESIGN_ROOT" cherry -v backup/main HEAD | grep -E '^\+' >/dev/null 2>&1; then
+      echo "release check requires the current branch to have no patches outside backup/main." >&2
+      git -C "$ADLAIRE_DESIGN_ROOT" cherry -v backup/main HEAD >&2
       exit 1
     fi
   fi
