@@ -1,6 +1,6 @@
 # Adlaire-Design Icon Set Catalog
 
-This catalog governs the official Adlaire-Design icon set stored in `Icons/`.
+This catalog governs the official 500 SVG icons stored in `Icons/`.
 
 The icon set contains exactly 500 SVG files. The file system is the implementation inventory; this catalog defines governance, category rules, usage rules, and verification rules.
 
@@ -43,4 +43,4 @@ The icon set contains exactly 500 SVG files. The file system is the implementati
 | Synchronization | Update `Docs/Master_Spec`, this catalog, `Icons/`, and checks when needed. |
 | Change unit | Specification, catalog, SVG files, and check updates are reviewed together. |
 
-Samples can demonstrate icon usage and link to the official 500 icon set, but Samples are not the source of truth.
+Samples can demonstrate icon usage and link to the official 500 SVG icons, but Samples are not the source of truth.

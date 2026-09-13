@@ -28,6 +28,12 @@ It is not a React/Vue/Svelte replacement, not a utility-first CSS framework, and
 
 Samples are supporting confirmation material. They are not a specification source.
 
+## Startup Synchronization
+
+Every repository task starts by reading `AGENTS.md` and checking Git consistency as one required step. The startup check covers worktree status, remotes, remote pruning when needed, and the relationship between `HEAD`, local `main`, and `backup/main`.
+
+Implementation, commit, push, and PR creation do not proceed until that startup synchronization is complete.
+
 ## Technical Baseline
 
 - TypeScript assumes the Deno runtime.
@@ -45,7 +51,7 @@ Samples are supporting confirmation material. They are not a specification sourc
 | `UI/` | Public UI CSS and JavaScript outputs. |
 | `EditorUI/` | WYSIWYG Editor UI CSS/JavaScript and editor runtime output. |
 | `TypeScript/` | Deno TypeScript source. |
-| `Icons/` | Official 500-icon SVG set. |
+| `Icons/` | Official 500 SVG icons. |
 | `Brand/` | Brand assets. |
 | `Samples/` | Supporting confirmation samples. |
 | `Tools/check/` | Repository checks. |
@@ -131,7 +137,7 @@ The editor model is a safe structured content editing foundation with command, d
 
 ## Samples
 
-Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Tokens, Brand, and the official 500 icon set.
+Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Tokens, Brand, and the official 500 SVG icons.
 
 Samples must not become the source of truth for tokens, CSS contracts, JavaScript behavior, or catalog state.
 

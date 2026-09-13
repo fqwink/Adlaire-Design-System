@@ -6,7 +6,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 | Path | Role |
 | --- | --- |
-| `AGENTS.md` | Work rules, approval rules, and Git startup checks. |
+| `AGENTS.md` | Work rules, approval rules, and the required startup synchronization of rulebook reading plus Git consistency checks. |
 | `README.md` | Repository overview and command entry points. |
 | `LICENSE` | License text. |
 | `Docs/Master_Spec` | Overall source of truth. |
@@ -43,7 +43,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `Brand/` | Brand assets. |
 | `Brand/README.md` | Brand asset rules. |
 | `Samples/README.md` | Sample rules and coverage. |
-| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, official 500 icons, Tokens, and Brand confirmation surface. |
+| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, official 500 SVG icons, Tokens, and Brand confirmation surface. |
 | `Samples/*.png`, `Samples/*.webp` | Supporting screenshots. |
 
 ## Checks

@@ -289,7 +289,8 @@ for doc_term in \
   'Deno TypeScript' \
   'npm packages' \
   'Samples are supporting' \
-  'Official 500' \
+  'official 500 SVG icons' \
+  'startup synchronization' \
   'Catalog Governance' \
   'Pending Tasks'; do
   if ! grep -R -F -- "$doc_term" "$ROOT/README.md" "$ROOT/Docs" "$ROOT/Samples/README.md" "$ROOT/Brand/README.md" >/dev/null 2>&1; then

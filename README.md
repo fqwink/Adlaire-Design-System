@@ -1,4 +1,4 @@
-# Adlaire Design System
+# Adlaire-Design-System
 
 Adlaire-Design-System is the source repository for Adlaire Group's design system and frontend foundation.
 
@@ -28,7 +28,7 @@ This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG
 | `UI/` | Generated public UI CSS and JavaScript. |
 | `EditorUI/` | Generated WYSIWYG Editor UI CSS and JavaScript, plus editor runtime output. |
 | `TypeScript/` | Deno TypeScript sources for generated CSS and JavaScript. |
-| `Icons/` | Official 500-icon SVG set. |
+| `Icons/` | Official 500 SVG icons. |
 | `Brand/` | Brand assets and brand asset rules. |
 | `Samples/` | Non-authoritative visual confirmation materials. |
 | `Tools/check/` | Repository checks. |
@@ -50,7 +50,7 @@ Run the normal repository check:
 sh Tools/check/check-adlaire-design.sh
 ```
 
-Run the release check only after PR merge, branch pruning, and local `main` synchronization:
+Run the release check only after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh --release-check
@@ -58,4 +58,4 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 ## Samples
 
-`Samples/design/index.html` is a confirmation surface for Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Brand, Tokens, and the official 500 icon set. Samples are supporting materials, not specification sources.
+`Samples/design/index.html` is a confirmation surface for Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Brand, Tokens, and the official 500 SVG icons. Samples are supporting materials, not specification sources.

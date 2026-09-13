@@ -20,7 +20,7 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 | Generic UI | `Docs/Generic_Component_Catalog` | Cards, states, forms, content UI, Git Provider UI. |
 | Admin UI | `Docs/Admin_UI_Catalog` | Admin state, action priority, mobile support, layout. |
 | WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | Editor surface, toolbar, mobile sheet, readonly/error states. |
-| Icon Set | `Docs/Icon_Set_Catalog`, `Icons/` | Official 500 icons and category access. |
+| Icon Set | `Docs/Icon_Set_Catalog`, `Icons/` | Official 500 SVG icons and category access. |
 | Tokens / Brand | `Tokens/`, `Brand/`, `Docs/Brand_Asset_Catalog` | Token colors, surfaces, layout tokens, brand assets. |
 
 ## Update Rules
