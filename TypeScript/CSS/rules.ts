@@ -3071,8 +3071,65 @@ a:hover {
 }
 
 @media (max-width: 480px) {
-  .adlaire-admin-bulk-action {
+  .adlaire-admin-mobile-stack,
+  .adlaire-admin-mobile-card-list,
+  .adlaire-admin-bulk-action,
+  .adlaire-admin-resource-header,
+  .adlaire-admin-data-toolbar,
+  .adlaire-admin-selection-summary,
+  .adlaire-admin-section-header,
+  .adlaire-admin-card-header,
+  .adlaire-admin-state-row {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .adlaire-admin-mobile-scroll,
+  .adlaire-admin-permission-matrix,
+  .adlaire-admin-log-stream {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .adlaire-admin-mobile-actions,
+  .adlaire-admin-card-actions,
+  .adlaire-admin-resource-actions,
+  .adlaire-admin-toolbar-actions,
+  .adlaire-admin-selection-actions,
+  .adlaire-admin-state-action {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .adlaire-admin-mobile-collapse,
+  .adlaire-admin-health-item,
+  .adlaire-admin-api-key-item,
+  .adlaire-admin-webhook-item,
+  .adlaire-admin-observability-metric,
+  .adlaire-admin-log-line,
+  .adlaire-admin-alert-rule-item,
+  .adlaire-admin-usage-row,
+  .adlaire-admin-retention-rule,
+  .adlaire-admin-compliance-item,
+  .adlaire-admin-policy-rule,
+  .adlaire-admin-session-item,
+  .adlaire-admin-device-item,
+  .adlaire-admin-access-request-item,
+  .adlaire-admin-secret-item,
+  .adlaire-admin-token-scope-item,
+  .adlaire-admin-risk-signal-item {
+    grid-template-columns: 1fr;
+  }
+
+  .adlaire-admin-empty-state,
+  .adlaire-admin-error-state,
+  .adlaire-admin-loading-state,
+  .adlaire-admin-forbidden-state,
+  .adlaire-admin-incomplete-state {
+    padding: 16px;
   }
 
   .adlaire-modal,
