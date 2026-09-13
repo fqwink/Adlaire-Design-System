@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.116
+**Version:** rev.117
 
 ---
 
@@ -986,16 +986,24 @@ CSS変数は以下とする。
 
 ### 11.6.2 `UI/layout.css`
 
-`UI/layout.css` は、公開面レイアウトとして、ページ幅、2カラム構成、レスポンシブ時の1カラム化を扱う。
+`UI/layout.css` は、公開面レイアウトとして、ページ幅、2カラム構成、Core Layout、レスポンシブ時の1カラム化を扱う。
 
 対象クラスは以下とする。
 
 | クラス | 役割 |
 | --- | --- |
 | `.adlaire-container` | 最大幅 `1200px` の中央寄せコンテナ |
+| `.adlaire-container-narrow` | 狭い本文向け中央寄せコンテナ |
+| `.adlaire-container-wide` | 広い管理/一覧向け中央寄せコンテナ |
 | `.adlaire-public-layout` | 公開面のメイン/サイドバー2カラムレイアウト |
 | `.adlaire-public-main` | 公開面の本文領域 |
 | `.adlaire-public-sidebar` | 公開面のサイドバー領域 |
+| `.adlaire-stack` | 縦方向の反復配置 |
+| `.adlaire-stack-compact` | 小さい間隔の縦方向反復配置 |
+| `.adlaire-stack-loose` | 大きい間隔の縦方向反復配置 |
+| `.adlaire-cluster` | 折り返し可能な横方向配置 |
+| `.adlaire-split` | 左右分割配置 |
+| `.adlaire-center` | 最大幅を持つ中央寄せ配置 |
 
 `UI/layout.css` は以下の規則に従う。
 
@@ -1005,12 +1013,34 @@ CSS変数は以下とする。
 - `!important` は使用しない。
 - `.adlaire-container` の最大幅は `1200px` とする。
 - `.adlaire-container` は左右余白を持ち、中央寄せとする。
+- `.adlaire-container-narrow` は本文やフォームに適した狭い幅とする。
+- `.adlaire-container-wide` は一覧や管理画面に適した広い幅とする。
+- Core Layoutは、stack、cluster、split、centerの少数の意味付き配置を基本とする。
 - `.adlaire-public-layout` はデスクトップで2カラムとする。
 - `.adlaire-public-sidebar` の基準幅は `300px` とする。
 - `1024px` 以下ではサイドバー幅を狭める。
 - `768px` 以下では1カラム化する。
 - `480px` 以下では小型画面向けの余白調整のみを行う。
 - layout層では色、カード、見出し、noticeなどのコンポーネント見た目を定義しない。
+
+### 11.6.2.1 `UI/grid.css` 意味付きグリッド
+
+`UI/grid.css` は、既存の互換グリッドに加えて、Adlaire-Design-Systemの画面構成に使う意味付きグリッドを扱う。
+
+対象クラスは以下とする。
+
+| クラス | 役割 |
+| --- | --- |
+| `.adlaire-grid` | 基本グリッド |
+| `.adlaire-grid-2` | 2カラムグリッド |
+| `.adlaire-grid-3` | 3カラムグリッド |
+| `.adlaire-grid-4` | 4カラムグリッド |
+| `.adlaire-grid-auto` | auto-fitによる可変カードグリッド |
+| `.adlaire-grid-sidebar` | サイドバー付きグリッド |
+| `.adlaire-grid-main` | グリッド内の主領域 |
+| `.adlaire-section-grid` | セクション単位のカード/パネル配置 |
+
+意味付きグリッドは、Bootstrap型の12カラム設計やTailwind型の大量ユーティリティを主軸にしない。2、3、4、auto、sidebarの少数パターンで、Dashboard、Admin UI、WYSIWYG Editor UI、Git Provider UIの画面構成を安定させる。
 
 ### 11.6.3 `UI/components.css`
 
@@ -2129,6 +2159,8 @@ Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象と�
 | グローバル検索/オムニバーUI | `.adlaire-omnibar`、`.adlaire-omnibar-input`、`.adlaire-omnibar-result`、`.adlaire-omnibar-empty` | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` |
 | App shell / Sidebar layout | `.adlaire-app-shell`、`.adlaire-app-sidebar`、`.adlaire-app-main`、`.adlaire-sidebar-collapsed` | `UI/layout.css`、`UI/components.css`、必要な `UI/components.js` |
 | Split pane / Resizable pane UI | `.adlaire-split-pane`、`.adlaire-pane`、`.adlaire-pane-resize-handle`、`.adlaire-pane-collapsed` | `UI/layout.css`、必要な `UI/components.js` |
+| Core Layout UI | `.adlaire-container-narrow`、`.adlaire-container-wide`、`.adlaire-stack-compact`、`.adlaire-stack-loose`、`.adlaire-cluster`、`.adlaire-split`、`.adlaire-center` | `UI/layout.css` |
+| Meaningful Grid UI | `.adlaire-grid`、`.adlaire-grid-2`、`.adlaire-grid-3`、`.adlaire-grid-4`、`.adlaire-grid-auto`、`.adlaire-grid-sidebar`、`.adlaire-grid-main`、`.adlaire-section-grid` | `UI/grid.css` |
 | Toast / Snackbar UI | `.adlaire-toast-stack`、`.adlaire-toast`、`.adlaire-snackbar`、`.adlaire-toast-dismiss` | `UI/components.css`、必要な `UI/components.js` |
 | Empty / Error / Loading state統合 | `.adlaire-state`、`.adlaire-state-empty`、`.adlaire-state-error`、`.adlaire-state-loading` | `UI/components.css`、`UI/content.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` |
 | Markdown/MDX表示用本文部品 | `.adlaire-markdown-body`、`.adlaire-mdx-body`、`.adlaire-md-note`、`.adlaire-md-footnote` | `UI/content.css`、必要な `UI/content.js` |
