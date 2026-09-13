@@ -29,6 +29,10 @@
 | Danger Zone | 危険操作 |
 | Audit | 監査/履歴 |
 | Admin Form | 管理フォーム |
+| Metrics | KPI/運用指標 |
+| Resource | リソース見出し |
+| Workflow | 承認/レビュー/状態管理 |
+| Permission Matrix | 権限マトリクス |
 
 ---
 
@@ -46,3 +50,11 @@
 | 管理フォーム | `.adlaire-admin-form` | `UI/forms.css` | A | 実装済み | 入力行、補助説明、検証表示 | 入力状態補助 |
 | Audit trail / Activity log | `.adlaire-audit-trail`、`.adlaire-activity-log`、`.adlaire-activity-actor`、`.adlaire-activity-time` | `UI/content.css`、`UI/components.css` | B | 実装済み | 監査履歴、操作主体、時刻、イベント種別、詳細表示 | 表示状態補助 |
 | Permission / Role / Scope表示 | `.adlaire-permission`、`.adlaire-role`、`.adlaire-scope`、`.adlaire-restricted` | `UI/components.css`、`UI/forms.css` | A | 実装済み | 権限、ロール、スコープ、制限状態の表示 | 表示状態補助 |
+| KPIカード | `.adlaire-admin-kpi-card`、`.adlaire-admin-kpi-value`、`.adlaire-admin-kpi-label`、`.adlaire-admin-kpi-trend` | `UI/components.css` | A | 実装済み | 管理指標、数値、ラベル、増減傾向 | 表示状態補助 |
+| リソースヘッダー | `.adlaire-admin-resource-header`、`.adlaire-admin-resource-meta`、`.adlaire-admin-resource-actions` | `UI/components.css` | A | 実装済み | 対象リソースの見出し、メタ情報、主要操作 | 表示状態補助 |
+| データツールバー | `.adlaire-admin-data-toolbar`、`.adlaire-admin-toolbar-filter`、`.adlaire-admin-toolbar-actions` | `UI/components.css` | A | 実装済み | 一覧の絞り込み、検索、操作領域 | 表示状態補助 |
+| 選択サマリー | `.adlaire-admin-selection-summary`、`.adlaire-admin-selection-count`、`.adlaire-admin-selection-actions` | `UI/components.css` | B | 実装済み | 選択件数、選択対象操作、補助表示 | 選択状態補助 |
+| 承認パネル | `.adlaire-admin-approval-panel`、`.adlaire-admin-approval-step`、`.adlaire-admin-approval-current` | `UI/components.css` | B | 実装済み | 承認フロー、現在ステップ、操作待ち状態 | 表示状態補助 |
+| 権限マトリクス | `.adlaire-admin-permission-matrix`、`.adlaire-admin-permission-row`、`.adlaire-admin-permission-cell` | `UI/components.css` | B | 実装済み | ロール別権限、スコープ、許可状態の比較 | 表示状態補助 |
+| レビューキュー | `.adlaire-admin-review-queue`、`.adlaire-admin-review-item`、`.adlaire-admin-review-priority` | `UI/components.css` | B | 実装済み | 確認待ち一覧、優先度、担当状態 | 表示状態補助 |
+| ステータスボード | `.adlaire-admin-status-board`、`.adlaire-admin-status-column`、`.adlaire-admin-status-card` | `UI/components.css` | B | 実装済み | 状態別の作業列、カード、進行状況 | 表示状態補助 |

@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.106
+**Version:** rev.107
 
 ---
 
@@ -2126,6 +2126,7 @@ Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象と�
 | Gallery / Lightbox UI | `.adlaire-gallery`、`.adlaire-gallery-item`、`.adlaire-lightbox`、`.adlaire-lightbox-caption` | `UI/content.css`、`UI/components.css`、必要な `UI/components.js` |
 | Audit trail / Activity log UI | `.adlaire-audit-trail`、`.adlaire-activity-log`、`.adlaire-activity-actor`、`.adlaire-activity-time` | `Docs/Admin_UI_Catalog`、`UI/content.css`、`UI/components.css` |
 | Permission / Role / Scope表示UI | `.adlaire-permission`、`.adlaire-role`、`.adlaire-scope`、`.adlaire-restricted` | `Docs/Generic_Component_Catalog`、`Docs/Admin_UI_Catalog`、`UI/components.css`、`UI/forms.css` |
+| Admin operations UI | `.adlaire-admin-kpi-card`、`.adlaire-admin-resource-header`、`.adlaire-admin-data-toolbar`、`.adlaire-admin-selection-summary`、`.adlaire-admin-approval-panel`、`.adlaire-admin-permission-matrix`、`.adlaire-admin-review-queue`、`.adlaire-admin-status-board` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 
 semantic token aliasは、状態や選択をUI部品間で共通化するために策定する。対象は danger、success、warning、info、focus、selected、muted とし、命名は `--adlaire-semantic-<name>-<property>` を基本とする。既存の色、surface、status tokenを正本値とし、semantic token aliasは用途別参照名として扱う。
 
