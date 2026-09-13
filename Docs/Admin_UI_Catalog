@@ -55,6 +55,7 @@
 | Mobile Responsive | 狭幅表示/折り返し/横スクロール補助 |
 | Action Priority | 主要/補助/危険/インライン操作 |
 | Admin Layout | 一覧/詳細/設定/ダッシュボード画面構成 |
+| Responsive Policy | 管理画面のdesktop/tablet/mobile運用規則 |
 
 ---
 
@@ -118,3 +119,4 @@
 | モバイル表示補助 | `.adlaire-admin-mobile-stack`、`.adlaire-admin-mobile-scroll`、`.adlaire-admin-mobile-actions`、`.adlaire-admin-mobile-card-list`、`.adlaire-admin-mobile-collapse` | `UI/components.css` | A | 実装済み | 狭幅での1カラム化、横スクロール、操作領域折り返し、カード一覧表示 | 表示状態補助 |
 | 操作優先度表示 | `.adlaire-admin-action-bar`、`.adlaire-admin-action-group`、`.adlaire-admin-primary-action`、`.adlaire-admin-secondary-action`、`.adlaire-admin-danger-action`、`.adlaire-admin-inline-action` | `UI/components.css` | A | 実装済み | 主要操作、補助操作、危険操作、インライン操作、操作グループの配置と優先度表示 | 表示状態補助 |
 | Adminレイアウト | `.adlaire-admin-layout`、`.adlaire-admin-main`、`.adlaire-admin-aside`、`.adlaire-admin-panel-grid`、`.adlaire-admin-dashboard-grid`、`.adlaire-admin-form-layout`、`.adlaire-admin-detail-layout` | `UI/components.css` | A | 実装済み | 管理画面の一覧、詳細、設定、ダッシュボード向け画面構成 | 表示状態補助 |
+| レスポンシブ運用規則 | desktop / tablet / mobile、横スクロール、aside移動、操作領域折り返し | `Docs/Master_Spec` | A | 策定済み | 管理画面の幅別レイアウト運用、情報優先度、横長情報の扱い | 表示状態補助 |

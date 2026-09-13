@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.118
+**Version:** rev.119
 
 ---
 
@@ -1041,6 +1041,22 @@ CSS変数は以下とする。
 | `.adlaire-section-grid` | セクション単位のカード/パネル配置 |
 
 意味付きグリッドは、Bootstrap型の12カラム設計やTailwind型の大量ユーティリティを主軸にしない。2、3、4、auto、sidebarの少数パターンで、Dashboard、Admin UI、WYSIWYG Editor UI、Git Provider UIの画面構成を安定させる。
+
+### 11.6.2.2 レスポンシブレイアウト運用規則
+
+Adlaire-Design-Systemのレイアウトは、desktop、tablet、mobileの3段階で運用する。
+
+desktopでは、情報密度と比較性を優先し、複数カラム、サイドバー、Dashboard grid、詳細/補助領域の併置を許可する。
+
+tabletでは、2カラムまたはauto-fit gridを基本とし、表示密度を保ちながら主要操作と本文領域を優先する。
+
+mobileでは、原則として1カラム化する。操作領域は折り返し、sidebar / aside はmain下に落とし、状態行、カード見出し、ツールバーは縦積み可能な構造にする。
+
+長い表、権限表、ログ、差分、監査情報など、意味を失いやすい横長情報は、無理に折り返さず横スクロールを許可する。
+
+Admin UIでは、状態表示、主要操作、危険操作、選択中の一括操作を優先して見せる。補助情報、aside、詳細メタ情報は、狭幅では主情報の後続に配置する。
+
+レスポンシブ対応では、12カラムや大量ユーティリティを増やさず、既存のCore Layout、Meaningful Grid、Admin Layout、mobile helperを組み合わせる。個別部品だけで完結しない画面構成は、`Docs/Master_Spec`、対象カタログ、TypeScript正本、生成CSSを同じ変更単位で更新する。
 
 ### 11.6.3 `UI/components.css`
 
@@ -2163,6 +2179,7 @@ Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象と�
 | Split pane / Resizable pane UI | `.adlaire-split-pane`、`.adlaire-pane`、`.adlaire-pane-resize-handle`、`.adlaire-pane-collapsed` | `UI/layout.css`、必要な `UI/components.js` |
 | Core Layout UI | `.adlaire-container-narrow`、`.adlaire-container-wide`、`.adlaire-stack-compact`、`.adlaire-stack-loose`、`.adlaire-cluster`、`.adlaire-split`、`.adlaire-center` | `UI/layout.css` |
 | Meaningful Grid UI | `.adlaire-grid`、`.adlaire-grid-2`、`.adlaire-grid-3`、`.adlaire-grid-4`、`.adlaire-grid-auto`、`.adlaire-grid-sidebar`、`.adlaire-grid-main`、`.adlaire-section-grid` | `UI/grid.css` |
+| Responsive layout policy | desktop / tablet / mobile の配置規則、横スクロール許可、aside移動、操作領域折り返し | `Docs/Master_Spec`、`Docs/Generic_Component_Catalog`、`Docs/Admin_UI_Catalog` |
 | Toast / Snackbar UI | `.adlaire-toast-stack`、`.adlaire-toast`、`.adlaire-snackbar`、`.adlaire-toast-dismiss` | `UI/components.css`、必要な `UI/components.js` |
 | Empty / Error / Loading state統合 | `.adlaire-state`、`.adlaire-state-empty`、`.adlaire-state-error`、`.adlaire-state-loading` | `UI/components.css`、`UI/content.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` |
 | Markdown/MDX表示用本文部品 | `.adlaire-markdown-body`、`.adlaire-mdx-body`、`.adlaire-md-note`、`.adlaire-md-footnote` | `UI/content.css`、必要な `UI/content.js` |
