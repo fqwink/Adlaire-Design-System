@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.116
+**Version:** rev.122
 
 ---
 
@@ -376,7 +376,7 @@ Adlaire-Design-Systemの責務は、CSS仕様、CSS生成物、TypeScript正本�
 | Brand | `Brand/` | ブランド資産 |
 | Brand | `Brand/README.md` | ブランド資産の配置ルール、許可形式、命名規則、公式アイコンセットとの境界 |
 | Icons | `Icons/` | 公式アイコンSVG |
-| Tokens | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css` | CSS変数生成物 |
+| Tokens | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/layout.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css` | CSS変数生成物 |
 | UI | `UI/adlaire.css`、`UI/base.css`、`UI/grid.css`、`UI/layout.css`、`UI/components.css`、`UI/components.js`、`UI/site.css`、`UI/forms.css`、`UI/forms.js`、`UI/content.css`、`UI/content.js`、`UI/utilities.css`、`UI/compat-agws.css` | 公開面CSS基盤と汎用UI JavaScript生成物 |
 | EditorUI | `EditorUI/wysiwyg.css`、`EditorUI/wysiwyg.js`、`EditorUI/editor.js` | WYSIWYG Editor UIスキン、Editor UI JavaScript生成物、Editor本体JavaScript生成物 |
 | TypeScript | `TypeScript/CSS/`、`TypeScript/UI/`、`TypeScript/EditorUI/`、`TypeScript/Editor/` | CSS生成、UI JavaScript、Editor UI JavaScript、Editor本体のTypeScript正本 |
@@ -426,6 +426,7 @@ CSS層構造は以下に固定する。
 | Brand token | `Tokens/colors.css` | ブランド主色と基本色のCSS変数 |
 | Typography token | `Tokens/typography.css` | font family、font size、line height、font weightのCSS変数 |
 | Spacing token | `Tokens/spacing.css` | gap、padding、margin、section spacingのCSS変数 |
+| Layout token | `Tokens/layout.css` | container幅、sidebar幅、layout gap、gutterのCSS変数 |
 | Motion token | `Tokens/motion.css` | duration、ease、transitionのCSS変数 |
 | Layer token | `Tokens/layer.css` | z-index / layerのCSS変数 |
 | Breakpoint token | `Tokens/breakpoints.css` | responsive breakpointのCSS変数 |
@@ -449,8 +450,8 @@ CSS/JavaScript読み込み順は用途別に以下へ固定する。
 
 | 用途 | 読み込み順 |
 | --- | --- |
-| 公開面CSS基盤 | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css`、`UI/adlaire.css`、`UI/base.css`、`UI/grid.css`、`UI/layout.css`、`UI/components.css`、`UI/site.css`、`UI/forms.css`、`UI/content.css`、`UI/utilities.css`、`UI/compat-agws.css` |
-| WYSIWYG Editor UI | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css`、`UI/adlaire.css`、`UI/base.css`、`UI/grid.css`、`UI/layout.css`、`UI/components.css`、`UI/forms.css`、`UI/content.css`、`UI/utilities.css`、`EditorUI/wysiwyg.css`、`EditorUI/wysiwyg.js`、必要に応じて `EditorUI/editor.js` |
+| 公開面CSS基盤 | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/layout.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css`、`UI/adlaire.css`、`UI/base.css`、`UI/grid.css`、`UI/layout.css`、`UI/components.css`、`UI/site.css`、`UI/forms.css`、`UI/content.css`、`UI/utilities.css`、`UI/compat-agws.css` |
+| WYSIWYG Editor UI | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/layout.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css`、`UI/adlaire.css`、`UI/base.css`、`UI/grid.css`、`UI/layout.css`、`UI/components.css`、`UI/forms.css`、`UI/content.css`、`UI/utilities.css`、`EditorUI/wysiwyg.css`、`EditorUI/wysiwyg.js`、必要に応じて `EditorUI/editor.js` |
 
 CSSファイルの責務境界は以下とする。
 
@@ -631,7 +632,7 @@ CSS生成対象は以下に固定する。
 
 | 生成分類 | TypeScript正本 | 生成先 |
 | --- | --- | --- |
-| Token CSS | `TypeScript/CSS/` | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css` |
+| Token CSS | `TypeScript/CSS/` | `Tokens/colors.css`、`Tokens/typography.css`、`Tokens/spacing.css`、`Tokens/layout.css`、`Tokens/motion.css`、`Tokens/layer.css`、`Tokens/breakpoints.css`、`Tokens/surface.css`、`Tokens/status.css`、`Tokens/effects.css` |
 | UI CSS | `TypeScript/CSS/` | `UI/adlaire.css`、`UI/base.css`、`UI/grid.css`、`UI/layout.css`、`UI/components.css`、`UI/site.css`、`UI/forms.css`、`UI/content.css`、`UI/utilities.css`、`UI/compat-agws.css` |
 | Editor UI CSS | `TypeScript/CSS/` | `EditorUI/wysiwyg.css` |
 
@@ -986,16 +987,24 @@ CSS変数は以下とする。
 
 ### 11.6.2 `UI/layout.css`
 
-`UI/layout.css` は、公開面レイアウトとして、ページ幅、2カラム構成、レスポンシブ時の1カラム化を扱う。
+`UI/layout.css` は、公開面レイアウトとして、ページ幅、2カラム構成、Core Layout、レスポンシブ時の1カラム化を扱う。
 
 対象クラスは以下とする。
 
 | クラス | 役割 |
 | --- | --- |
 | `.adlaire-container` | 最大幅 `1200px` の中央寄せコンテナ |
+| `.adlaire-container-narrow` | 狭い本文向け中央寄せコンテナ |
+| `.adlaire-container-wide` | 広い管理/一覧向け中央寄せコンテナ |
 | `.adlaire-public-layout` | 公開面のメイン/サイドバー2カラムレイアウト |
 | `.adlaire-public-main` | 公開面の本文領域 |
 | `.adlaire-public-sidebar` | 公開面のサイドバー領域 |
+| `.adlaire-stack` | 縦方向の反復配置 |
+| `.adlaire-stack-compact` | 小さい間隔の縦方向反復配置 |
+| `.adlaire-stack-loose` | 大きい間隔の縦方向反復配置 |
+| `.adlaire-cluster` | 折り返し可能な横方向配置 |
+| `.adlaire-split` | 左右分割配置 |
+| `.adlaire-center` | 最大幅を持つ中央寄せ配置 |
 
 `UI/layout.css` は以下の規則に従う。
 
@@ -1005,12 +1014,50 @@ CSS変数は以下とする。
 - `!important` は使用しない。
 - `.adlaire-container` の最大幅は `1200px` とする。
 - `.adlaire-container` は左右余白を持ち、中央寄せとする。
+- `.adlaire-container-narrow` は本文やフォームに適した狭い幅とする。
+- `.adlaire-container-wide` は一覧や管理画面に適した広い幅とする。
+- Core Layoutは、stack、cluster、split、centerの少数の意味付き配置を基本とする。
 - `.adlaire-public-layout` はデスクトップで2カラムとする。
 - `.adlaire-public-sidebar` の基準幅は `300px` とする。
 - `1024px` 以下ではサイドバー幅を狭める。
 - `768px` 以下では1カラム化する。
 - `480px` 以下では小型画面向けの余白調整のみを行う。
 - layout層では色、カード、見出し、noticeなどのコンポーネント見た目を定義しない。
+
+### 11.6.2.1 `UI/grid.css` 意味付きグリッド
+
+`UI/grid.css` は、既存の互換グリッドに加えて、Adlaire-Design-Systemの画面構成に使う意味付きグリッドを扱う。
+
+対象クラスは以下とする。
+
+| クラス | 役割 |
+| --- | --- |
+| `.adlaire-grid` | 基本グリッド |
+| `.adlaire-grid-2` | 2カラムグリッド |
+| `.adlaire-grid-3` | 3カラムグリッド |
+| `.adlaire-grid-4` | 4カラムグリッド |
+| `.adlaire-grid-auto` | auto-fitによる可変カードグリッド |
+| `.adlaire-grid-sidebar` | サイドバー付きグリッド |
+| `.adlaire-grid-main` | グリッド内の主領域 |
+| `.adlaire-section-grid` | セクション単位のカード/パネル配置 |
+
+意味付きグリッドは、Bootstrap型の12カラム設計やTailwind型の大量ユーティリティを主軸にしない。2、3、4、auto、sidebarの少数パターンで、Dashboard、Admin UI、WYSIWYG Editor UI、Git Provider UIの画面構成を安定させる。
+
+### 11.6.2.2 レスポンシブレイアウト運用規則
+
+Adlaire-Design-Systemのレイアウトは、desktop、tablet、mobileの3段階で運用する。
+
+desktopでは、情報密度と比較性を優先し、複数カラム、サイドバー、Dashboard grid、詳細/補助領域の併置を許可する。
+
+tabletでは、2カラムまたはauto-fit gridを基本とし、表示密度を保ちながら主要操作と本文領域を優先する。
+
+mobileでは、原則として1カラム化する。操作領域は折り返し、sidebar / aside はmain下に落とし、状態行、カード見出し、ツールバーは縦積み可能な構造にする。
+
+長い表、権限表、ログ、差分、監査情報など、意味を失いやすい横長情報は、無理に折り返さず横スクロールを許可する。
+
+Admin UIでは、状態表示、主要操作、危険操作、選択中の一括操作を優先して見せる。補助情報、aside、詳細メタ情報は、狭幅では主情報の後続に配置する。
+
+レスポンシブ対応では、12カラムや大量ユーティリティを増やさず、既存のCore Layout、Meaningful Grid、Admin Layout、mobile helperを組み合わせる。個別部品だけで完結しない画面構成は、`Docs/Master_Spec`、対象カタログ、TypeScript正本、生成CSSを同じ変更単位で更新する。
 
 ### 11.6.3 `UI/components.css`
 
@@ -1952,6 +1999,8 @@ Admin UIモバイル表示は、管理画面のツールバー、カード一覧
 
 Admin UI操作領域は、管理画面の主要操作、補助操作、危険操作、インライン操作、操作グループを優先度ごとに整理する共通部品として扱う。対象classは `.adlaire-admin-action-bar`、`.adlaire-admin-action-group`、`.adlaire-admin-primary-action`、`.adlaire-admin-secondary-action`、`.adlaire-admin-danger-action`、`.adlaire-admin-inline-action` とする。主な管理先は `Docs/Admin_UI_Catalog` と `UI/components.css` とする。
 
+Admin UIレイアウトは、管理画面の一覧、詳細、設定、ダッシュボードを安定して構成する専用レイアウトとして扱う。対象classは `.adlaire-admin-layout`、`.adlaire-admin-main`、`.adlaire-admin-aside`、`.adlaire-admin-panel-grid`、`.adlaire-admin-dashboard-grid`、`.adlaire-admin-form-layout`、`.adlaire-admin-detail-layout` とする。主な管理先は `Docs/Admin_UI_Catalog` と `UI/components.css` とする。
+
 Typography / Spacing Tokensは、`Tokens/typography.css` と `Tokens/spacing.css` で実装済みの仕様として管理する。Typographyは、font family、font size、line height、font weight、heading scale、body text、caption/helper text、code fontを対象とする。Spacingは、gap、padding、margin、section spacing、inline spacing、stack spacing、grid gapを対象とする。命名は `--adlaire-font-*`、`--adlaire-font-size-*`、`--adlaire-line-height-*`、`--adlaire-font-weight-*`、`--adlaire-space-*` を基本とする。
 
 汎用目次は `.adlaire-toc` 系で管理する。対象classは `.adlaire-toc`、`.adlaire-toc-title`、`.adlaire-toc-list`、`.adlaire-toc-item`、`.adlaire-toc-link`、`.adlaire-toc-link-current`、`.adlaire-toc-sticky` とする。ページ内目次、セクション目次、ネスト目次、sticky目次、現在位置表示を扱う。既存 `.adlaire-legal-toc` は法務ページ向け既存部品として残す。
@@ -2114,11 +2163,14 @@ Adlaire-Designの責務は、正本、補助正本、実装、理解補助に分
 
 Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象とする。Motionは duration、easing、transition の3系統で管理し、命名は `--adlaire-motion-duration-*`、`--adlaire-motion-easing-*`、`--adlaire-motion-transition-*` を基本とする。Layerは base、sticky、dropdown、popover、modal、toast を基本階層とし、命名は `--adlaire-layer-*` を基本とする。Breakpointは sm、md、lg、xl を基本境界とし、命名は `--adlaire-breakpoint-*` を基本とする。
 
+Layout Tokensは、Core Layout、Meaningful Grid、Admin Layoutで使う画面構造の幅、サイドバー基準幅、レイアウトgap、gutterを扱う正式tokenとして `Tokens/layout.css` で管理する。Spacing tokenは余白スケール、Layout tokenは画面構造の基準値として分離する。対象tokenは `--adlaire-layout-container`、`--adlaire-layout-container-narrow`、`--adlaire-layout-container-wide`、`--adlaire-layout-sidebar`、`--adlaire-layout-sidebar-compact`、`--adlaire-layout-sidebar-collapsed`、`--adlaire-layout-gap`、`--adlaire-layout-gap-compact`、`--adlaire-layout-gap-loose`、`--adlaire-layout-gutter`、`--adlaire-layout-gutter-compact` とする。`UI/grid.css` と `UI/layout.css` は画面構造を決める代表値でLayout Tokensを参照し、細かな余白スケールは既存の `Tokens/spacing.css` を参照する。
+
 | 部品または仕様 | 対象classまたはtoken | 主な管理先 |
 | --- | --- | --- |
 | Motion tokens | `--adlaire-motion-duration-*`、`--adlaire-motion-ease-*`、`--adlaire-motion-transition-*` | `Tokens/motion.css` |
 | Z-index / Layer tokens | `--adlaire-layer-base`、`--adlaire-layer-dropdown`、`--adlaire-layer-modal`、`--adlaire-layer-toast` | `Tokens/layer.css` |
 | Breakpoint tokens | `--adlaire-breakpoint-sm`、`--adlaire-breakpoint-md`、`--adlaire-breakpoint-lg`、`--adlaire-breakpoint-xl` | `Tokens/breakpoints.css` |
+| Layout tokens | `--adlaire-layout-container`、`--adlaire-layout-container-narrow`、`--adlaire-layout-container-wide`、`--adlaire-layout-sidebar`、`--adlaire-layout-sidebar-compact`、`--adlaire-layout-sidebar-collapsed`、`--adlaire-layout-gap`、`--adlaire-layout-gap-compact`、`--adlaire-layout-gap-loose`、`--adlaire-layout-gutter`、`--adlaire-layout-gutter-compact` | `Tokens/layout.css`、`UI/grid.css`、`UI/layout.css` |
 | フォーカスリング/キーボード操作表示 | `.adlaire-focus-ring`、`.adlaire-keyboard-focus`、`.adlaire-pressed`、`.adlaire-focus-surface` | `UI/components.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` |
 | スキップリンク/ランドマーク補助UI | `.adlaire-skip-link`、`.adlaire-landmark-label`、`.adlaire-sr-only`、`.adlaire-a11y-helper` | `UI/base.css`、`UI/components.css` |
 | 入力グループ/複合入力UI | `.adlaire-input-group`、`.adlaire-input-prefix`、`.adlaire-input-suffix`、`.adlaire-composite-input` | `UI/forms.css`、必要な `UI/forms.js` |
@@ -2129,6 +2181,9 @@ Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象と�
 | グローバル検索/オムニバーUI | `.adlaire-omnibar`、`.adlaire-omnibar-input`、`.adlaire-omnibar-result`、`.adlaire-omnibar-empty` | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` |
 | App shell / Sidebar layout | `.adlaire-app-shell`、`.adlaire-app-sidebar`、`.adlaire-app-main`、`.adlaire-sidebar-collapsed` | `UI/layout.css`、`UI/components.css`、必要な `UI/components.js` |
 | Split pane / Resizable pane UI | `.adlaire-split-pane`、`.adlaire-pane`、`.adlaire-pane-resize-handle`、`.adlaire-pane-collapsed` | `UI/layout.css`、必要な `UI/components.js` |
+| Core Layout UI | `.adlaire-container-narrow`、`.adlaire-container-wide`、`.adlaire-stack-compact`、`.adlaire-stack-loose`、`.adlaire-cluster`、`.adlaire-split`、`.adlaire-center` | `UI/layout.css` |
+| Meaningful Grid UI | `.adlaire-grid`、`.adlaire-grid-2`、`.adlaire-grid-3`、`.adlaire-grid-4`、`.adlaire-grid-auto`、`.adlaire-grid-sidebar`、`.adlaire-grid-main`、`.adlaire-section-grid` | `UI/grid.css` |
+| Responsive layout policy | desktop / tablet / mobile の配置規則、横スクロール許可、aside移動、操作領域折り返し | `Docs/Master_Spec`、`Docs/Generic_Component_Catalog`、`Docs/Admin_UI_Catalog` |
 | Toast / Snackbar UI | `.adlaire-toast-stack`、`.adlaire-toast`、`.adlaire-snackbar`、`.adlaire-toast-dismiss` | `UI/components.css`、必要な `UI/components.js` |
 | Empty / Error / Loading state統合 | `.adlaire-state`、`.adlaire-state-empty`、`.adlaire-state-error`、`.adlaire-state-loading` | `UI/components.css`、`UI/content.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` |
 | Markdown/MDX表示用本文部品 | `.adlaire-markdown-body`、`.adlaire-mdx-body`、`.adlaire-md-note`、`.adlaire-md-footnote` | `UI/content.css`、必要な `UI/content.js` |
@@ -2146,14 +2201,15 @@ Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象と�
 | Admin state surface UI | `.adlaire-admin-empty-state`、`.adlaire-admin-error-state`、`.adlaire-admin-loading-state`、`.adlaire-admin-forbidden-state`、`.adlaire-admin-incomplete-state`、`.adlaire-admin-state-title`、`.adlaire-admin-state-text`、`.adlaire-admin-state-action` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 | Admin mobile responsive UI | `.adlaire-admin-mobile-stack`、`.adlaire-admin-mobile-scroll`、`.adlaire-admin-mobile-actions`、`.adlaire-admin-mobile-card-list`、`.adlaire-admin-mobile-collapse` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 | Admin action priority UI | `.adlaire-admin-action-bar`、`.adlaire-admin-action-group`、`.adlaire-admin-primary-action`、`.adlaire-admin-secondary-action`、`.adlaire-admin-danger-action`、`.adlaire-admin-inline-action` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
+| Admin layout UI | `.adlaire-admin-layout`、`.adlaire-admin-main`、`.adlaire-admin-aside`、`.adlaire-admin-panel-grid`、`.adlaire-admin-dashboard-grid`、`.adlaire-admin-form-layout`、`.adlaire-admin-detail-layout` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 
 semantic token aliasは、状態や選択をUI部品間で共通化するために策定する。対象は danger、success、warning、info、focus、selected、muted とし、命名は `--adlaire-semantic-<name>-<property>` を基本とする。既存の色、surface、status tokenを正本値とし、semantic token aliasは用途別参照名として扱う。
 
 WCAG 2.2 A参照の確認観点は、focus表示、keyboard操作表示、skip link、landmark補助、状態表示、エラー表示、色以外の識別補助に固定する。数値コントラスト保証は現時点の管理対象外とする。
 
-リリース前チェックリストは、構成検査、必須ファイル、禁止ファイル、class照合、CSS変数参照、JavaScript smoke、Samples配置、PR確認、main同期確認を対象とする。リリース前チェックは仕様と実装の整合確認であり、CSS minify、bundleを追加する根拠にはしない。
+リリース前チェックリストは、構成検査、必須ファイル、禁止ファイル、class照合、CSS変数参照、JavaScript smoke、Samples配置、PR確認、main同期確認、ローカルmain同期確認を対象とする。リリース前チェックは仕様と実装の整合確認であり、CSS minify、bundleを追加する根拠にはしない。
 
-リリース前チェックでは、PR確認、main同期確認に加えて、マージ後のheadブランチ削除確認を対象に含める。GitHub側でマージ後ブランチ自動削除が有効である場合も、`git fetch backup --prune` 後にリモート追跡ブランチが残っていないことを確認する。
+リリース前チェックでは、`git fetch backup --prune` を実行した後の状態を検査前提とする。PR確認は、作業ブランチに `backup/main` へ未反映のコミットが残っていないこと、またはPRを作成してマージ対象にしていることを確認する工程とする。main同期確認は、`backup/main` が存在し、ローカル `main` が `backup/main` と同一commitであることを確認する。マージ後のheadブランチ削除確認は、現在の作業ブランチが `main` 以外である場合に、`git fetch backup --prune` 後の `backup/<branch>` が残っていないこと、かつ現在の作業ブランチに `backup/main` 未反映のpatchが残っていないことを確認する。GitHub側でマージ後ブランチ自動削除が有効である場合も、リモート追跡ブランチ削除とローカル `main` 同期の両方を確認する。
 
 ### 11.11.14 品質保証改良タスク策定仕様
 
@@ -2169,7 +2225,7 @@ WCAG 2.2 A参照の確認観点は、focus表示、keyboard操作表示、skip l
 | 生成物整合検査 | TypeScript正本とCSS/JavaScript生成物の対応、Deno check、差分ゼロ確認を強化する | `TypeScript/`、`UI/`、`EditorUI/`、`Tools/check/check-adlaire-design.sh` |
 | サンプル整備 | 500アイコン、汎用UI、Editor UIの理解補助サンプルを追加する | `Samples/README.md`、`Samples/design/` |
 | カタログ運用統一 | 各カタログの実装状態、対象外、同期対象、更新単位を統一する | `Docs/*_Catalog`、`Docs/Pending_Tasks` |
-| リリース前チェック | PR状態、main同期状態、マージ後ブランチ削除確認、release check実行結果を確認する | `Tools/check/check-adlaire-design.sh` |
+| リリース前チェック | PR状態、backup/main同期状態、ローカルmain同期状態、マージ後ブランチ削除確認、release check実行結果を確認する | `Tools/check/check-adlaire-design.sh` |
 
 ---
 

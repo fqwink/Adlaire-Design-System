@@ -2,6 +2,7 @@ export type TokenCategory =
   | "color"
   | "typography"
   | "spacing"
+  | "layout"
   | "motion"
   | "layer"
   | "breakpoint"
@@ -70,6 +71,21 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-space-8: 2rem;
   --adlaire-space-10: 2.5rem;
   --adlaire-space-12: 3rem;
+}
+` },
+  { path: "Tokens/layout.css", category: "layout", css: `/* Adlaire-Design layout tokens */
+:root {
+  --adlaire-layout-container: 1200px;
+  --adlaire-layout-container-narrow: 760px;
+  --adlaire-layout-container-wide: 1440px;
+  --adlaire-layout-sidebar: 300px;
+  --adlaire-layout-sidebar-compact: 260px;
+  --adlaire-layout-sidebar-collapsed: 72px;
+  --adlaire-layout-gap: 2rem;
+  --adlaire-layout-gap-compact: 1.5rem;
+  --adlaire-layout-gap-loose: 3rem;
+  --adlaire-layout-gutter: 1.5rem;
+  --adlaire-layout-gutter-compact: 1rem;
 }
 ` },
   { path: "Tokens/motion.css", category: "motion", css: `/* Adlaire-Design motion tokens */

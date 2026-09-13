@@ -71,6 +71,7 @@ for path in \
   Tokens/colors.css \
   Tokens/typography.css \
   Tokens/spacing.css \
+  Tokens/layout.css \
   Tokens/motion.css \
   Tokens/layer.css \
   Tokens/breakpoints.css \
@@ -379,8 +380,8 @@ sed -n 's/.*path: "\([^"]*\)".*firstLine: "\([^"]*\)".*/\1|\2/p' \
 CSS_TARGET_COUNT="$(wc -l <"$TMP_DIR/generated-css-targets" | tr -d ' ')"
 CSS_FILE_COUNT="$(find "$ADLAIRE_DESIGN_ROOT/Tokens" "$ADLAIRE_DESIGN_ROOT/UI" "$ADLAIRE_DESIGN_ROOT/EditorUI" -type f -name '*.css' | wc -l | tr -d ' ')"
 
-if [ "$CSS_TARGET_COUNT" -ne 20 ]; then
-  echo "TypeScript/CSS/manifest.ts must define exactly 20 generated CSS targets." >&2
+if [ "$CSS_TARGET_COUNT" -ne 21 ]; then
+  echo "TypeScript/CSS/manifest.ts must define exactly 21 generated CSS targets." >&2
   exit 1
 fi
 
@@ -1040,6 +1041,9 @@ for quality_improvement_term in \
   '### 11.11.14 品質保証改良タスク策定仕様' \
   '500件の公式アイコン実装完了後は、検査強化、生成物整合検査、サンプル整備、カタログ運用統一、リリース前チェック強化を優先改良対象とする。' \
   '公式アイコン整合検査は、`Docs/Icon_Set_Catalog` の500件固定、`AD-ICON-001` から `AD-ICON-500` までのID連番、ファイル名一意性、カテゴリ妥当性、全件 `実装済み` 状態、`Icons/` 配下のSVG実体数一致を検査対象とする。' \
+  'ローカルmain同期確認' \
+  '`git fetch backup --prune` を実行した後の状態を検査前提とする。' \
+  'ローカル `main` が `backup/main` と同一commitであること' \
   'マージ後のheadブランチ削除確認'; do
   if ! grep -F -- "$quality_improvement_term" "$ADLAIRE_DESIGN_ROOT/Docs/Master_Spec" >/dev/null 2>&1; then
     echo "Docs/Master_Spec missing required quality improvement term: $quality_improvement_term" >&2
@@ -1049,8 +1053,7 @@ done
 
 for pending_quality_task in \
   'AD-TASK-039' \
-  'AD-TASK-040' \
-  'AD-TASK-041'; do
+  'AD-TASK-040'; do
   if ! grep -F -- "$pending_quality_task" "$ADLAIRE_DESIGN_ROOT/Docs/Pending_Tasks" >/dev/null 2>&1; then
     echo "Docs/Pending_Tasks missing required quality improvement task: $pending_quality_task" >&2
     exit 1
@@ -1164,13 +1167,13 @@ if grep -R -n -E '保留|ページネーション\(保留\)|絞り込みチッ�
   exit 1
 fi
 
-if grep -R -n '@import' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-import-matches 2>/dev/null; then
+if grep -R -n '@import' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-import-matches 2>/dev/null; then
   echo "Adlaire-Design CSS files must not use @import:" >&2
   cat /tmp/adlaire-design-css-import-matches >&2
   exit 1
 fi
 
-if grep -R -n '@charset' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-charset-matches 2>/dev/null; then
+if grep -R -n '@charset' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-charset-matches 2>/dev/null; then
   echo "Adlaire-Design CSS files must not use @charset:" >&2
   cat /tmp/adlaire-design-css-charset-matches >&2
   exit 1
@@ -1194,6 +1197,11 @@ fi
 
 if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css")" != '/* Adlaire-Design surface tokens */' ]; then
   echo "Tokens/surface.css must start with the required comment." >&2
+  exit 1
+fi
+
+if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css")" != '/* Adlaire-Design layout tokens */' ]; then
+  echo "Tokens/layout.css must start with the required comment." >&2
   exit 1
 fi
 
@@ -1401,6 +1409,11 @@ if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css")" -ne 1 ]; 
   exit 1
 fi
 
+if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css")" -ne 1 ]; then
+  echo "Tokens/layout.css must contain exactly one :root block." >&2
+  exit 1
+fi
+
 if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/status.css")" -ne 1 ]; then
   echo "Tokens/status.css must contain exactly one :root block." >&2
   exit 1
@@ -1410,6 +1423,24 @@ if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css")" -ne 1 ]; 
   echo "Tokens/effects.css must contain exactly one :root block." >&2
   exit 1
 fi
+
+for token in \
+  '--adlaire-layout-container: 1200px;' \
+  '--adlaire-layout-container-narrow: 760px;' \
+  '--adlaire-layout-container-wide: 1440px;' \
+  '--adlaire-layout-sidebar: 300px;' \
+  '--adlaire-layout-sidebar-compact: 260px;' \
+  '--adlaire-layout-sidebar-collapsed: 72px;' \
+  '--adlaire-layout-gap: 2rem;' \
+  '--adlaire-layout-gap-compact: 1.5rem;' \
+  '--adlaire-layout-gap-loose: 3rem;' \
+  '--adlaire-layout-gutter: 1.5rem;' \
+  '--adlaire-layout-gutter-compact: 1rem;'; do
+  if ! grep -F -- "$token" "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css" >/dev/null 2>&1; then
+    echo "Tokens/layout.css missing required token: $token" >&2
+    exit 1
+  fi
+done
 
 for token in \
   '--adlaire-color-agws-blue-primary: #0066cc;' \
@@ -2084,13 +2115,18 @@ if [ "$WYSIWYG_PRIORITY_C_LINE" -ge "$WYSIWYG_ASSIST_MENU_LINE" ]; then
   exit 1
 fi
 
-if ! grep -F 'max-width: 1200px;' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
-  echo "UI/layout.css must define a 1200px container." >&2
+if ! grep -F 'max-width: var(--adlaire-layout-container);' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
+  echo "UI/layout.css must reference the layout container token." >&2
   exit 1
 fi
 
-if ! grep -F '300px' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
-  echo "UI/layout.css must define the 300px sidebar basis." >&2
+if ! grep -F 'var(--adlaire-layout-sidebar)' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
+  echo "UI/layout.css must reference the layout sidebar token." >&2
+  exit 1
+fi
+
+if ! grep -F 'var(--adlaire-layout-sidebar)' "$ADLAIRE_DESIGN_ROOT/UI/grid.css" >/dev/null 2>&1; then
+  echo "UI/grid.css must reference the layout sidebar token." >&2
   exit 1
 fi
 
@@ -2178,6 +2214,11 @@ if command -v deno >/dev/null 2>&1; then
 fi
 
 if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
+  if ! git -C "$ADLAIRE_DESIGN_ROOT" fetch backup --prune; then
+    echo "release check requires git fetch backup --prune to succeed." >&2
+    exit 1
+  fi
+
   git -C "$ADLAIRE_DESIGN_ROOT" diff --check
 
   git -C "$ADLAIRE_DESIGN_ROOT" status --short --branch >"$TMP_DIR/git-status"
@@ -2187,9 +2228,43 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
     exit 1
   fi
 
-  if git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify backup/main >/dev/null 2>&1; then
-    if ! git -C "$ADLAIRE_DESIGN_ROOT" merge-base --is-ancestor backup/main HEAD; then
-      echo "release check requires HEAD to include backup/main." >&2
+  if ! git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify backup/main >/dev/null 2>&1; then
+    echo "release check requires backup/main to exist after git fetch backup --prune." >&2
+    exit 1
+  fi
+
+  if ! git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify main >/dev/null 2>&1; then
+    echo "release check requires local main to exist." >&2
+    exit 1
+  fi
+
+  LOCAL_MAIN="$(git -C "$ADLAIRE_DESIGN_ROOT" rev-parse main)"
+  REMOTE_MAIN="$(git -C "$ADLAIRE_DESIGN_ROOT" rev-parse backup/main)"
+
+  if [ "$LOCAL_MAIN" != "$REMOTE_MAIN" ]; then
+    echo "release check requires local main to match backup/main after git fetch backup --prune." >&2
+    echo "local main: $LOCAL_MAIN" >&2
+    echo "backup/main: $REMOTE_MAIN" >&2
+    exit 1
+  fi
+
+  CURRENT_BRANCH="$(git -C "$ADLAIRE_DESIGN_ROOT" symbolic-ref --quiet --short HEAD || printf '%s' 'HEAD')"
+
+  if [ "$CURRENT_BRANCH" = "main" ]; then
+    CURRENT_HEAD="$(git -C "$ADLAIRE_DESIGN_ROOT" rev-parse HEAD)"
+    if [ "$CURRENT_HEAD" != "$REMOTE_MAIN" ]; then
+      echo "release check requires main HEAD to match backup/main." >&2
+      exit 1
+    fi
+  else
+    if git -C "$ADLAIRE_DESIGN_ROOT" rev-parse --verify "backup/$CURRENT_BRANCH" >/dev/null 2>&1; then
+      echo "release check requires merged PR head branch to be deleted after git fetch backup --prune: backup/$CURRENT_BRANCH" >&2
+      exit 1
+    fi
+
+    if git -C "$ADLAIRE_DESIGN_ROOT" cherry -v backup/main HEAD | grep -E '^\+' >/dev/null 2>&1; then
+      echo "release check requires the current branch to have no patches outside backup/main." >&2
+      git -C "$ADLAIRE_DESIGN_ROOT" cherry -v backup/main HEAD >&2
       exit 1
     fi
   fi

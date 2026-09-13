@@ -12,6 +12,7 @@ export const CSS_TARGETS: readonly CssTarget[] = [
   { path: "Tokens/colors.css", kind: "token", firstLine: "/* Adlaire-Design color tokens */", sourceModules: ["tokens.ts"], migrated: true },
   { path: "Tokens/typography.css", kind: "token", firstLine: "/* Adlaire-Design typography tokens */", sourceModules: ["tokens.ts"], migrated: true },
   { path: "Tokens/spacing.css", kind: "token", firstLine: "/* Adlaire-Design spacing tokens */", sourceModules: ["tokens.ts"], migrated: true },
+  { path: "Tokens/layout.css", kind: "token", firstLine: "/* Adlaire-Design layout tokens */", sourceModules: ["tokens.ts"], migrated: true },
   { path: "Tokens/motion.css", kind: "token", firstLine: "/* Adlaire-Design motion tokens */", sourceModules: ["tokens.ts"], migrated: true },
   { path: "Tokens/layer.css", kind: "token", firstLine: "/* Adlaire-Design layer tokens */", sourceModules: ["tokens.ts"], migrated: true },
   { path: "Tokens/breakpoints.css", kind: "token", firstLine: "/* Adlaire-Design breakpoint tokens */", sourceModules: ["tokens.ts"], migrated: true },

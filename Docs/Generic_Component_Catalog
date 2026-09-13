@@ -90,6 +90,9 @@ WYSIWYG Editor UI専用品の実装先である `EditorUI/wysiwyg.css` と `Edit
 | ボタングループ | `.adlaire-button-group` |
 | ツールバー | `.adlaire-toolbar`、`.adlaire-toolbar-section` |
 | 縦積み | `.adlaire-stack`、`.adlaire-stack-sm`、`.adlaire-stack-lg` |
+| Core Layout | `.adlaire-container-narrow`、`.adlaire-container-wide`、`.adlaire-stack-compact`、`.adlaire-stack-loose`、`.adlaire-cluster`、`.adlaire-split`、`.adlaire-center` |
+| 意味付きグリッド | `.adlaire-grid`、`.adlaire-grid-2`、`.adlaire-grid-3`、`.adlaire-grid-4`、`.adlaire-grid-auto`、`.adlaire-grid-sidebar`、`.adlaire-grid-main`、`.adlaire-section-grid` |
+| レスポンシブレイアウト方針 | desktop / tablet / mobile、横スクロール、aside移動、操作領域折り返し |
 | 横並び | `.adlaire-inline` |
 | 区切り線 | `.adlaire-divider` |
 | 空状態表示 | `.adlaire-empty-state`、`.adlaire-empty-state-title`、`.adlaire-empty-state-text` |
@@ -253,6 +256,10 @@ WYSIWYG Editor UI専用品の実装先である `EditorUI/wysiwyg.css` と `Edit
 | Navigation UI | グローバル検索/オムニバーUI | `UI/components.css`、`UI/content.css`、必要な `UI/components.js` | 実装済み |
 | Layout UI | App shell / Sidebar layout | `UI/layout.css`、`UI/components.css`、必要な `UI/components.js` | 実装済み |
 | Layout UI | Split pane / Resizable pane UI | `UI/layout.css`、必要な `UI/components.js` | 実装済み |
+| Layout UI | Core Layout UI | `UI/layout.css` | 実装済み |
+| Layout UI | Meaningful Grid UI | `UI/grid.css` | 実装済み |
+| Layout UI | Responsive layout policy | `Docs/Master_Spec`、`Docs/Generic_Component_Catalog`、`Docs/Admin_UI_Catalog` | 策定済み |
+| Layout UI | Layout Tokens | `Tokens/layout.css`、`UI/grid.css`、`UI/layout.css` | 実装済み |
 | Feedback UI | Toast / Snackbar UI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
 | Feedback UI | Empty / Error / Loading state統合 | `UI/components.css`、`UI/content.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` | 実装済み |
 | Content UI | Markdown/MDX表示用本文部品 | `UI/content.css`、必要な `UI/content.js` | 実装済み |
