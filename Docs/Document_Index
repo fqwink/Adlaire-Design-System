@@ -26,6 +26,7 @@
 - `Tokens/colors.css`(ブランドカラーCSS変数生成物)
 - `Tokens/typography.css`(タイポグラフィCSS変数生成物)
 - `Tokens/spacing.css`(余白CSS変数生成物)
+- `Tokens/layout.css`(画面構造CSS変数生成物)
 - `Tokens/motion.css`(motion CSS変数生成物)
 - `Tokens/layer.css`(layer CSS変数生成物)
 - `Tokens/breakpoints.css`(breakpoint CSS変数生成物)

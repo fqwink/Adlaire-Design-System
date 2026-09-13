@@ -71,6 +71,7 @@ for path in \
   Tokens/colors.css \
   Tokens/typography.css \
   Tokens/spacing.css \
+  Tokens/layout.css \
   Tokens/motion.css \
   Tokens/layer.css \
   Tokens/breakpoints.css \
@@ -379,8 +380,8 @@ sed -n 's/.*path: "\([^"]*\)".*firstLine: "\([^"]*\)".*/\1|\2/p' \
 CSS_TARGET_COUNT="$(wc -l <"$TMP_DIR/generated-css-targets" | tr -d ' ')"
 CSS_FILE_COUNT="$(find "$ADLAIRE_DESIGN_ROOT/Tokens" "$ADLAIRE_DESIGN_ROOT/UI" "$ADLAIRE_DESIGN_ROOT/EditorUI" -type f -name '*.css' | wc -l | tr -d ' ')"
 
-if [ "$CSS_TARGET_COUNT" -ne 20 ]; then
-  echo "TypeScript/CSS/manifest.ts must define exactly 20 generated CSS targets." >&2
+if [ "$CSS_TARGET_COUNT" -ne 21 ]; then
+  echo "TypeScript/CSS/manifest.ts must define exactly 21 generated CSS targets." >&2
   exit 1
 fi
 
@@ -1164,13 +1165,13 @@ if grep -R -n -E '保留|ページネーション\(保留\)|絞り込みチッ�
   exit 1
 fi
 
-if grep -R -n '@import' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-import-matches 2>/dev/null; then
+if grep -R -n '@import' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-import-matches 2>/dev/null; then
   echo "Adlaire-Design CSS files must not use @import:" >&2
   cat /tmp/adlaire-design-css-import-matches >&2
   exit 1
 fi
 
-if grep -R -n '@charset' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-charset-matches 2>/dev/null; then
+if grep -R -n '@charset' "$ADLAIRE_DESIGN_ROOT/Tokens/colors.css" "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css" "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css" "$ADLAIRE_DESIGN_ROOT/Tokens/status.css" "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css" "$ADLAIRE_DESIGN_ROOT/UI/adlaire.css" "$ADLAIRE_DESIGN_ROOT/UI/base.css" "$ADLAIRE_DESIGN_ROOT/UI/grid.css" "$ADLAIRE_DESIGN_ROOT/UI/layout.css" "$ADLAIRE_DESIGN_ROOT/UI/components.css" "$ADLAIRE_DESIGN_ROOT/UI/site.css" "$ADLAIRE_DESIGN_ROOT/UI/forms.css" "$ADLAIRE_DESIGN_ROOT/UI/content.css" "$ADLAIRE_DESIGN_ROOT/EditorUI/wysiwyg.css" "$ADLAIRE_DESIGN_ROOT/UI/utilities.css" "$ADLAIRE_DESIGN_ROOT/UI/compat-agws.css" >/tmp/adlaire-design-css-charset-matches 2>/dev/null; then
   echo "Adlaire-Design CSS files must not use @charset:" >&2
   cat /tmp/adlaire-design-css-charset-matches >&2
   exit 1
@@ -1194,6 +1195,11 @@ fi
 
 if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css")" != '/* Adlaire-Design surface tokens */' ]; then
   echo "Tokens/surface.css must start with the required comment." >&2
+  exit 1
+fi
+
+if [ "$(sed -n '1p' "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css")" != '/* Adlaire-Design layout tokens */' ]; then
+  echo "Tokens/layout.css must start with the required comment." >&2
   exit 1
 fi
 
@@ -1401,6 +1407,11 @@ if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/surface.css")" -ne 1 ]; 
   exit 1
 fi
 
+if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css")" -ne 1 ]; then
+  echo "Tokens/layout.css must contain exactly one :root block." >&2
+  exit 1
+fi
+
 if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/status.css")" -ne 1 ]; then
   echo "Tokens/status.css must contain exactly one :root block." >&2
   exit 1
@@ -1410,6 +1421,24 @@ if [ "$(grep -c '^:root {' "$ADLAIRE_DESIGN_ROOT/Tokens/effects.css")" -ne 1 ]; 
   echo "Tokens/effects.css must contain exactly one :root block." >&2
   exit 1
 fi
+
+for token in \
+  '--adlaire-layout-container: 1200px;' \
+  '--adlaire-layout-container-narrow: 760px;' \
+  '--adlaire-layout-container-wide: 1440px;' \
+  '--adlaire-layout-sidebar: 300px;' \
+  '--adlaire-layout-sidebar-compact: 260px;' \
+  '--adlaire-layout-sidebar-collapsed: 72px;' \
+  '--adlaire-layout-gap: 2rem;' \
+  '--adlaire-layout-gap-compact: 1.5rem;' \
+  '--adlaire-layout-gap-loose: 3rem;' \
+  '--adlaire-layout-gutter: 1.5rem;' \
+  '--adlaire-layout-gutter-compact: 1rem;'; do
+  if ! grep -F -- "$token" "$ADLAIRE_DESIGN_ROOT/Tokens/layout.css" >/dev/null 2>&1; then
+    echo "Tokens/layout.css missing required token: $token" >&2
+    exit 1
+  fi
+done
 
 for token in \
   '--adlaire-color-agws-blue-primary: #0066cc;' \
@@ -2084,13 +2113,18 @@ if [ "$WYSIWYG_PRIORITY_C_LINE" -ge "$WYSIWYG_ASSIST_MENU_LINE" ]; then
   exit 1
 fi
 
-if ! grep -F 'max-width: 1200px;' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
-  echo "UI/layout.css must define a 1200px container." >&2
+if ! grep -F 'max-width: var(--adlaire-layout-container);' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
+  echo "UI/layout.css must reference the layout container token." >&2
   exit 1
 fi
 
-if ! grep -F '300px' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
-  echo "UI/layout.css must define the 300px sidebar basis." >&2
+if ! grep -F 'var(--adlaire-layout-sidebar)' "$ADLAIRE_DESIGN_ROOT/UI/layout.css" >/dev/null 2>&1; then
+  echo "UI/layout.css must reference the layout sidebar token." >&2
+  exit 1
+fi
+
+if ! grep -F 'var(--adlaire-layout-sidebar)' "$ADLAIRE_DESIGN_ROOT/UI/grid.css" >/dev/null 2>&1; then
+  echo "UI/grid.css must reference the layout sidebar token." >&2
   exit 1
 fi
 

@@ -5,13 +5,13 @@
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding-right: var(--adlaire-layout-gutter-compact);
+  padding-left: var(--adlaire-layout-gutter-compact);
 }
 
 .adlaire-content-container,
 .container {
-  max-width: 1200px;
+  max-width: var(--adlaire-layout-container);
 }
 
 .adlaire-grid-row,
@@ -113,8 +113,8 @@
 
 .adlaire-grid-sidebar {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
-  gap: var(--adlaire-space-6);
+  grid-template-columns: minmax(0, 1fr) minmax(220px, var(--adlaire-layout-sidebar));
+  gap: var(--adlaire-layout-gap-compact);
   align-items: start;
 }
 

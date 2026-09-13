@@ -216,13 +216,13 @@ a:hover {
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding-right: var(--adlaire-layout-gutter-compact);
+  padding-left: var(--adlaire-layout-gutter-compact);
 }
 
 .adlaire-content-container,
 .container {
-  max-width: 1200px;
+  max-width: var(--adlaire-layout-container);
 }
 
 .adlaire-grid-row,
@@ -324,8 +324,8 @@ a:hover {
 
 .adlaire-grid-sidebar {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
-  gap: var(--adlaire-space-6);
+  grid-template-columns: minmax(0, 1fr) minmax(220px, var(--adlaire-layout-sidebar));
+  gap: var(--adlaire-layout-gap-compact);
   align-items: start;
 }
 
@@ -375,11 +375,11 @@ a:hover {
 ` },
   { path: "UI/layout.css", css: `/* Adlaire-Design public layout */
 .adlaire-container {
-  max-width: 1200px;
+  max-width: var(--adlaire-layout-container);
   margin-right: auto;
   margin-left: auto;
-  padding-right: 24px;
-  padding-left: 24px;
+  padding-right: var(--adlaire-layout-gutter);
+  padding-left: var(--adlaire-layout-gutter);
 }
 
 .adlaire-container-narrow,
@@ -387,16 +387,16 @@ a:hover {
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 24px;
-  padding-left: 24px;
+  padding-right: var(--adlaire-layout-gutter);
+  padding-left: var(--adlaire-layout-gutter);
 }
 
 .adlaire-container-narrow {
-  max-width: 760px;
+  max-width: var(--adlaire-layout-container-narrow);
 }
 
 .adlaire-container-wide {
-  max-width: 1440px;
+  max-width: var(--adlaire-layout-container-wide);
 }
 
 .adlaire-stack,
@@ -440,8 +440,8 @@ a:hover {
 
 .adlaire-public-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) var(--adlaire-layout-sidebar);
+  gap: var(--adlaire-layout-gap);
   align-items: start;
 }
 
@@ -456,8 +456,8 @@ a:hover {
 
 @media (max-width: 1024px) {
   .adlaire-public-layout {
-    grid-template-columns: minmax(0, 1fr) 260px;
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) var(--adlaire-layout-sidebar-compact);
+    gap: var(--adlaire-layout-gap-compact);
   }
 }
 
@@ -480,7 +480,7 @@ a:hover {
   }
 
   .adlaire-public-layout {
-    gap: 20px;
+    gap: var(--adlaire-space-5);
   }
 }
 
@@ -504,7 +504,7 @@ a:hover {
 }
 
 .adlaire-sidebar-collapsed {
-  grid-template-columns: 72px minmax(0, 1fr);
+  grid-template-columns: var(--adlaire-layout-sidebar-collapsed) minmax(0, 1fr);
 }
 
 .adlaire-split-pane {
