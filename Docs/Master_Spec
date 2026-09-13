@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.119
+**Version:** rev.120
 
 ---
 
@@ -2162,11 +2162,14 @@ Adlaire-Designの責務は、正本、補助正本、実装、理解補助に分
 
 Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象とする。Motionは duration、easing、transition の3系統で管理し、命名は `--adlaire-motion-duration-*`、`--adlaire-motion-easing-*`、`--adlaire-motion-transition-*` を基本とする。Layerは base、sticky、dropdown、popover、modal、toast を基本階層とし、命名は `--adlaire-layer-*` を基本とする。Breakpointは sm、md、lg、xl を基本境界とし、命名は `--adlaire-breakpoint-*` を基本とする。
 
+Layout Tokensは、Core Layout、Meaningful Grid、Admin Layoutで使う画面構造の幅、サイドバー基準幅、レイアウトgapを扱う候補として策定する。Spacing tokenは余白スケール、Layout tokenは画面構造の基準値として分離する。候補tokenは `--adlaire-layout-container`、`--adlaire-layout-container-narrow`、`--adlaire-layout-container-wide`、`--adlaire-layout-sidebar`、`--adlaire-layout-gap`、`--adlaire-layout-gap-compact`、`--adlaire-layout-gap-loose` とする。Layout Tokensは仕様候補とし、既存CSSへの一括置換は行わない。実装する場合は、後続工程で `Tokens/layout.css` の要否、既存 `Tokens/spacing.css` との境界、`UI/grid.css` と `UI/layout.css` の参照範囲を同じ変更単位で確認する。
+
 | 部品または仕様 | 対象classまたはtoken | 主な管理先 |
 | --- | --- | --- |
 | Motion tokens | `--adlaire-motion-duration-*`、`--adlaire-motion-ease-*`、`--adlaire-motion-transition-*` | `Tokens/motion.css` |
 | Z-index / Layer tokens | `--adlaire-layer-base`、`--adlaire-layer-dropdown`、`--adlaire-layer-modal`、`--adlaire-layer-toast` | `Tokens/layer.css` |
 | Breakpoint tokens | `--adlaire-breakpoint-sm`、`--adlaire-breakpoint-md`、`--adlaire-breakpoint-lg`、`--adlaire-breakpoint-xl` | `Tokens/breakpoints.css` |
+| Layout token candidates | `--adlaire-layout-container`、`--adlaire-layout-container-narrow`、`--adlaire-layout-container-wide`、`--adlaire-layout-sidebar`、`--adlaire-layout-gap`、`--adlaire-layout-gap-compact`、`--adlaire-layout-gap-loose` | `Docs/Master_Spec`、`Docs/Pending_Tasks` |
 | フォーカスリング/キーボード操作表示 | `.adlaire-focus-ring`、`.adlaire-keyboard-focus`、`.adlaire-pressed`、`.adlaire-focus-surface` | `UI/components.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` |
 | スキップリンク/ランドマーク補助UI | `.adlaire-skip-link`、`.adlaire-landmark-label`、`.adlaire-sr-only`、`.adlaire-a11y-helper` | `UI/base.css`、`UI/components.css` |
 | 入力グループ/複合入力UI | `.adlaire-input-group`、`.adlaire-input-prefix`、`.adlaire-input-suffix`、`.adlaire-composite-input` | `UI/forms.css`、必要な `UI/forms.js` |

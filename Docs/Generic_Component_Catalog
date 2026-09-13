@@ -259,6 +259,7 @@ WYSIWYG Editor UI専用品の実装先である `EditorUI/wysiwyg.css` と `Edit
 | Layout UI | Core Layout UI | `UI/layout.css` | 実装済み |
 | Layout UI | Meaningful Grid UI | `UI/grid.css` | 実装済み |
 | Layout UI | Responsive layout policy | `Docs/Master_Spec`、`Docs/Generic_Component_Catalog`、`Docs/Admin_UI_Catalog` | 策定済み |
+| Layout UI | Layout token candidates | `Docs/Master_Spec`、`Docs/Pending_Tasks` | 策定済み |
 | Feedback UI | Toast / Snackbar UI | `UI/components.css`、必要な `UI/components.js` | 実装済み |
 | Feedback UI | Empty / Error / Loading state統合 | `UI/components.css`、`UI/content.css`、`UI/forms.css`、`EditorUI/wysiwyg.css` | 実装済み |
 | Content UI | Markdown/MDX表示用本文部品 | `UI/content.css`、必要な `UI/content.js` | 実装済み |
