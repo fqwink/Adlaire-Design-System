@@ -45,6 +45,10 @@
 | Cost | コスト/利用量分析 |
 | Data Governance | 保持/準拠確認 |
 | Policy | ポリシー管理 |
+| Security | セキュリティ状態 |
+| Session | セッション/端末管理 |
+| Access Request | アクセス申請 |
+| Secret | シークレット/トークンスコープ |
 
 ---
 
@@ -94,3 +98,11 @@
 | 保持設定パネル | `.adlaire-admin-retention-panel`、`.adlaire-admin-retention-rule`、`.adlaire-admin-retention-period` | `UI/components.css` | B | 実装済み | 保持ルール、保持期間、対象データ表示 | 表示状態補助 |
 | コンプライアンスチェックリスト | `.adlaire-admin-compliance-checklist`、`.adlaire-admin-compliance-item`、`.adlaire-admin-compliance-state` | `UI/components.css` | A | 実装済み | 準拠確認、未対応項目、完了状態表示 | 表示状態補助 |
 | ポリシーパネル | `.adlaire-admin-policy-panel`、`.adlaire-admin-policy-rule`、`.adlaire-admin-policy-state` | `UI/components.css` | B | 実装済み | 管理ポリシー、適用状態、例外表示 | 表示状態補助 |
+| セキュリティ概要 | `.adlaire-admin-security-overview`、`.adlaire-admin-security-score`、`.adlaire-admin-security-state` | `UI/components.css` | A | 実装済み | セキュリティ状態、スコア、注意状態の概要表示 | 表示状態補助 |
+| セッション一覧 | `.adlaire-admin-session-list`、`.adlaire-admin-session-item`、`.adlaire-admin-session-state` | `UI/components.css` | A | 実装済み | ログインセッション、状態、最終利用表示 | 表示状態補助 |
+| 端末一覧 | `.adlaire-admin-device-list`、`.adlaire-admin-device-item`、`.adlaire-admin-device-trust` | `UI/components.css` | B | 実装済み | 端末、信頼状態、利用者表示 | 表示状態補助 |
+| アクセス申請一覧 | `.adlaire-admin-access-request-list`、`.adlaire-admin-access-request-item`、`.adlaire-admin-access-request-state` | `UI/components.css` | A | 実装済み | 申請者、対象権限、承認状態表示 | 表示状態補助 |
+| シークレットパネル | `.adlaire-admin-secret-panel`、`.adlaire-admin-secret-item`、`.adlaire-admin-secret-expiry` | `UI/components.css` | A | 実装済み | secret、期限、ローテーション状態表示 | 表示状態補助 |
+| トークンスコープ一覧 | `.adlaire-admin-token-scope-list`、`.adlaire-admin-token-scope-item`、`.adlaire-admin-token-scope-level` | `UI/components.css` | B | 実装済み | token scope、権限レベル、制限範囲表示 | 表示状態補助 |
+| リスクシグナル | `.adlaire-admin-risk-signal`、`.adlaire-admin-risk-signal-item`、`.adlaire-admin-risk-level` | `UI/components.css` | A | 実装済み | リスク兆候、重要度、対応状態表示 | 表示状態補助 |
+| 監査フィルター | `.adlaire-admin-audit-filter`、`.adlaire-admin-audit-filter-group`、`.adlaire-admin-audit-filter-chip` | `UI/components.css` | B | 実装済み | 監査ログの対象、期間、条件表示 | 表示状態補助 |
