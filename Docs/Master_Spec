@@ -2,7 +2,7 @@
 
 # マスター仕様書
 
-**Version:** rev.117
+**Version:** rev.118
 
 ---
 
@@ -1982,6 +1982,8 @@ Admin UIモバイル表示は、管理画面のツールバー、カード一覧
 
 Admin UI操作領域は、管理画面の主要操作、補助操作、危険操作、インライン操作、操作グループを優先度ごとに整理する共通部品として扱う。対象classは `.adlaire-admin-action-bar`、`.adlaire-admin-action-group`、`.adlaire-admin-primary-action`、`.adlaire-admin-secondary-action`、`.adlaire-admin-danger-action`、`.adlaire-admin-inline-action` とする。主な管理先は `Docs/Admin_UI_Catalog` と `UI/components.css` とする。
 
+Admin UIレイアウトは、管理画面の一覧、詳細、設定、ダッシュボードを安定して構成する専用レイアウトとして扱う。対象classは `.adlaire-admin-layout`、`.adlaire-admin-main`、`.adlaire-admin-aside`、`.adlaire-admin-panel-grid`、`.adlaire-admin-dashboard-grid`、`.adlaire-admin-form-layout`、`.adlaire-admin-detail-layout` とする。主な管理先は `Docs/Admin_UI_Catalog` と `UI/components.css` とする。
+
 Typography / Spacing Tokensは、`Tokens/typography.css` と `Tokens/spacing.css` で実装済みの仕様として管理する。Typographyは、font family、font size、line height、font weight、heading scale、body text、caption/helper text、code fontを対象とする。Spacingは、gap、padding、margin、section spacing、inline spacing、stack spacing、grid gapを対象とする。命名は `--adlaire-font-*`、`--adlaire-font-size-*`、`--adlaire-line-height-*`、`--adlaire-font-weight-*`、`--adlaire-space-*` を基本とする。
 
 汎用目次は `.adlaire-toc` 系で管理する。対象classは `.adlaire-toc`、`.adlaire-toc-title`、`.adlaire-toc-list`、`.adlaire-toc-item`、`.adlaire-toc-link`、`.adlaire-toc-link-current`、`.adlaire-toc-sticky` とする。ページ内目次、セクション目次、ネスト目次、sticky目次、現在位置表示を扱う。既存 `.adlaire-legal-toc` は法務ページ向け既存部品として残す。
@@ -2178,6 +2180,7 @@ Design Tokens拡張では、Motion、Layer、Breakpointを追加策定対象と�
 | Admin state surface UI | `.adlaire-admin-empty-state`、`.adlaire-admin-error-state`、`.adlaire-admin-loading-state`、`.adlaire-admin-forbidden-state`、`.adlaire-admin-incomplete-state`、`.adlaire-admin-state-title`、`.adlaire-admin-state-text`、`.adlaire-admin-state-action` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 | Admin mobile responsive UI | `.adlaire-admin-mobile-stack`、`.adlaire-admin-mobile-scroll`、`.adlaire-admin-mobile-actions`、`.adlaire-admin-mobile-card-list`、`.adlaire-admin-mobile-collapse` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 | Admin action priority UI | `.adlaire-admin-action-bar`、`.adlaire-admin-action-group`、`.adlaire-admin-primary-action`、`.adlaire-admin-secondary-action`、`.adlaire-admin-danger-action`、`.adlaire-admin-inline-action` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
+| Admin layout UI | `.adlaire-admin-layout`、`.adlaire-admin-main`、`.adlaire-admin-aside`、`.adlaire-admin-panel-grid`、`.adlaire-admin-dashboard-grid`、`.adlaire-admin-form-layout`、`.adlaire-admin-detail-layout` | `Docs/Admin_UI_Catalog`、`UI/components.css` |
 
 semantic token aliasは、状態や選択をUI部品間で共通化するために策定する。対象は danger、success、warning、info、focus、selected、muted とし、命名は `--adlaire-semantic-<name>-<property>` を基本とする。既存の色、surface、status tokenを正本値とし、semantic token aliasは用途別参照名として扱う。
 

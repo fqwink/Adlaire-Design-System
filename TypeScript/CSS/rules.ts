@@ -2020,6 +2020,46 @@ a:hover {
 }
 
 /* Implemented extended UI patterns */
+.adlaire-admin-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 24px;
+  align-items: start;
+}
+
+.adlaire-admin-main,
+.adlaire-admin-aside {
+  min-width: 0;
+}
+
+.adlaire-admin-aside {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.adlaire-admin-panel-grid,
+.adlaire-admin-dashboard-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.adlaire-admin-panel-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.adlaire-admin-dashboard-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.adlaire-admin-form-layout,
+.adlaire-admin-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+  gap: 20px;
+  align-items: start;
+}
+
 .adlaire-admin-dashboard,
 .adlaire-admin-settings,
 .adlaire-admin-data-list,
@@ -3253,6 +3293,9 @@ a:hover {
 @media (max-width: 480px) {
   .adlaire-admin-mobile-stack,
   .adlaire-admin-mobile-card-list,
+  .adlaire-admin-layout,
+  .adlaire-admin-form-layout,
+  .adlaire-admin-detail-layout,
   .adlaire-admin-bulk-action,
   .adlaire-admin-resource-header,
   .adlaire-admin-data-toolbar,
@@ -3312,6 +3355,11 @@ a:hover {
   .adlaire-admin-forbidden-state,
   .adlaire-admin-incomplete-state {
     padding: 16px;
+  }
+
+  .adlaire-admin-panel-grid,
+  .adlaire-admin-dashboard-grid {
+    grid-template-columns: 1fr;
   }
 
   .adlaire-modal,
