@@ -75,6 +75,7 @@ This catalog expects the following class families to remain implemented:
 | Item | Rule |
 | --- | --- |
 | Implementation state | Use `実装済み`, `策定済み`, or `対象外`. |
+| Required class families | Treat listed classes as a check-covered contract between this catalog and generated CSS. |
 | Out of scope | WYSIWYG-only UI, Admin-only classification, official SVG icon files, brand assets. |
 | Synchronization | Update `Docs/Master_Spec`, target generated files, TypeScript source, and checks when needed. |
 | Change unit | Specification, catalog, implementation, and check updates are reviewed together. |

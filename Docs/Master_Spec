@@ -119,6 +119,8 @@ UI JavaScript is generated from Deno TypeScript and kept responsibility-based.
 
 All catalogs use the same implementation-state vocabulary: `実装済み`, `策定済み`, and `対象外`.
 
+Required Class Families in Generic, Admin, and WYSIWYG catalogs are a check-covered contract. Listed classes must stay present in the catalog and generated CSS together.
+
 ## Layout Direction
 
 Layout is meaningful rather than utility-first. Core layout, meaningful grid, Admin layout, responsive policy, and Layout Tokens are part of the system.
