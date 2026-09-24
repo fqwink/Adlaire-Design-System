@@ -90,6 +90,18 @@ for path in \
   EditorUI/editor.js \
   TypeScript/CSS/tokens.ts \
   TypeScript/CSS/rules.ts \
+  TypeScript/CSS/rules-types.ts \
+  TypeScript/CSS/rules-adlaire.ts \
+  TypeScript/CSS/rules-base.ts \
+  TypeScript/CSS/rules-grid.ts \
+  TypeScript/CSS/rules-layout.ts \
+  TypeScript/CSS/rules-components.ts \
+  TypeScript/CSS/rules-site.ts \
+  TypeScript/CSS/rules-forms.ts \
+  TypeScript/CSS/rules-content.ts \
+  TypeScript/CSS/rules-utilities.ts \
+  TypeScript/CSS/rules-compat-agws.ts \
+  TypeScript/CSS/rules-wysiwyg.ts \
   TypeScript/CSS/targets.ts \
   TypeScript/CSS/emit.ts \
   TypeScript/CSS/manifest.ts \
@@ -291,6 +303,7 @@ for doc_term in \
   'Samples are supporting' \
   'official 500 SVG icons' \
   'startup synchronization' \
+  'output file unit' \
   'Catalog Governance' \
   'Pending Tasks'; do
   if ! grep -R -F -- "$doc_term" "$ROOT/README.md" "$ROOT/Docs" "$ROOT/Samples/README.md" "$ROOT/Brand/README.md" >/dev/null 2>&1; then

@@ -1,0 +1,39 @@
+import type { CssRuleFile } from "./rules-types.ts";
+
+export const COMPAT_AGWS_RULE_FILE: CssRuleFile = { path: "UI/compat-agws.css", css: `/* Adlaire-Design specification layer */
+#top,
+#company,
+#terms,
+#privacy,
+#disclaimer,
+#copyright,
+#contactForm,
+#name,
+#email,
+#subject,
+#inquiry_type,
+#message {
+  scroll-margin-top: 20px;
+}
+
+.container {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+[aria-label],
+[target="_blank"],
+[rel="stylesheet"],
+[name="viewport"],
+[name="news-tab"],
+[type="radio"],
+[type="checkbox"],
+[type="submit"],
+[type="text"],
+[type="email"],
+[rows],
+[value],
+[for] {
+  font: inherit;
+}
+` } as const;

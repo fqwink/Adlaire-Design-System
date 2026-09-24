@@ -1,0 +1,121 @@
+import type { CssRuleFile } from "./rules-types.ts";
+
+export const BASE_RULE_FILE: CssRuleFile = { path: "UI/base.css", css: `/* Adlaire-Design base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--adlaire-surface-page);
+  color: var(--adlaire-surface-text);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--adlaire-surface-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.adlaire-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.adlaire-skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: var(--adlaire-layer-toast);
+  padding: 10px 14px;
+  background-color: var(--adlaire-surface-accent);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-card);
+  font-weight: 700;
+  transform: translateY(-140%);
+}
+
+.adlaire-skip-link:focus {
+  transform: translateY(0);
+}
+
+.adlaire-focus-ring:focus-visible,
+.adlaire-keyboard-focus:focus-visible,
+.adlaire-focus-surface:focus-within {
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  outline: 0;
+}
+
+.adlaire-landmark-label,
+.adlaire-a11y-helper {
+  color: var(--adlaire-surface-text-subtle);
+  font-size: var(--adlaire-font-size-sm);
+}
+
+.adlaire-pressed,
+[aria-pressed="true"].adlaire-pressed {
+  background-color: var(--adlaire-surface-soft);
+  border-color: var(--adlaire-surface-accent);
+  color: var(--adlaire-surface-accent);
+}
+` } as const;

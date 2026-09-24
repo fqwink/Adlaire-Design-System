@@ -75,6 +75,8 @@ Token CSS is generated from `TypeScript/CSS/tokens.ts`.
 
 UI CSS is generated from `TypeScript/CSS/rules.ts`.
 
+`TypeScript/CSS/rules.ts` is the aggregation entrypoint. Rule sources are split by output file unit, such as `rules-components.ts`, `rules-forms.ts`, `rules-content.ts`, and `rules-wysiwyg.ts`, so component families can evolve without turning one source file into the whole system.
+
 | UI file | Responsibility |
 | --- | --- |
 | `UI/adlaire.css` | Minimal brand color utilities. |

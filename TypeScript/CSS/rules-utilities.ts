@@ -1,0 +1,240 @@
+import type { CssRuleFile } from "./rules-types.ts";
+
+export const UTILITIES_RULE_FILE: CssRuleFile = { path: "UI/utilities.css", css: `/* Adlaire-Design utility classes */
+.mt-0 {
+  margin-top: 0;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mt-5 {
+  margin-top: 3rem;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-5 {
+  margin-bottom: 3rem;
+}
+
+.pt-0 {
+  padding-top: 0;
+}
+
+.pt-1 {
+  padding-top: 0.25rem;
+}
+
+.pt-2 {
+  padding-top: 0.5rem;
+}
+
+.pt-3 {
+  padding-top: 1rem;
+}
+
+.pt-4 {
+  padding-top: 1.5rem;
+}
+
+.pt-5 {
+  padding-top: 3rem;
+}
+
+.pb-0 {
+  padding-bottom: 0;
+}
+
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.pb-3 {
+  padding-bottom: 1rem;
+}
+
+.pb-4 {
+  padding-bottom: 1.5rem;
+}
+
+.pb-5 {
+  padding-bottom: 3rem;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-primary {
+  color: var(--adlaire-semantic-selected-color);
+}
+
+.text-secondary,
+.text-muted {
+  color: var(--adlaire-semantic-muted-text);
+}
+
+.text-success {
+  color: var(--adlaire-semantic-success-color);
+}
+
+.text-danger {
+  color: var(--adlaire-semantic-danger-color);
+}
+
+.text-warning {
+  color: var(--adlaire-semantic-warning-color);
+}
+
+.text-info {
+  color: var(--adlaire-semantic-info-color);
+}
+
+.adlaire-muted-text {
+  color: var(--adlaire-semantic-muted-text);
+}
+
+.bg-primary {
+  background-color: var(--adlaire-surface-accent);
+}
+
+.bg-secondary {
+  background-color: var(--adlaire-status-secondary);
+}
+
+.bg-light {
+  background-color: var(--adlaire-status-gray-light);
+}
+
+.bg-dark {
+  background-color: var(--adlaire-status-dark);
+}
+
+.d-none {
+  display: none;
+}
+
+.d-block {
+  display: block;
+}
+
+.d-inline {
+  display: inline;
+}
+
+.d-inline-block {
+  display: inline-block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-start {
+  align-items: flex-start;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.adlaire-text-xs {
+  font-size: var(--adlaire-font-size-xs);
+}
+
+.adlaire-text-sm {
+  font-size: var(--adlaire-font-size-sm);
+}
+
+.adlaire-text-lg {
+  font-size: var(--adlaire-font-size-lg);
+}
+
+.adlaire-font-mono {
+  font-family: var(--adlaire-font-family-mono);
+}
+
+.adlaire-gap-2 {
+  gap: var(--adlaire-space-2);
+}
+
+.adlaire-gap-4 {
+  gap: var(--adlaire-space-4);
+}
+
+.adlaire-gap-6 {
+  gap: var(--adlaire-space-6);
+}
+` } as const;
