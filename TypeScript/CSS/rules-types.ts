@@ -15,4 +15,3 @@ export interface CssRuleFile {
   readonly path: string;
   readonly css: string;
 }
-
