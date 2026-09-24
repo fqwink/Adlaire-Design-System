@@ -62,6 +62,36 @@ body {
   padding-bottom: 48px;
 }
 
+.sample-showcase-nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--adlaire-layer-sticky);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 12px;
+  background: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  box-shadow: var(--adlaire-shadow-card);
+}
+
+.sample-showcase-nav a {
+  padding: 6px 10px;
+  color: var(--adlaire-surface-text);
+  border-radius: var(--adlaire-radius-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sample-showcase-nav a:hover,
+.sample-showcase-nav a:focus-visible {
+  background: var(--adlaire-surface-soft);
+  color: var(--adlaire-surface-accent);
+  text-decoration: none;
+}
+
 .sample-section {
   display: grid;
   gap: 16px;
@@ -78,6 +108,43 @@ body {
 
 .sample-grid-two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sample-grid-three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sample-contract-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.sample-contract-strip span {
+  color: var(--adlaire-surface-text-muted);
+}
+
+.sample-token-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sample-token-chip {
+  padding: 6px 10px;
+  background: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+  font-weight: 700;
 }
 
 .sample-swatch-grid {
@@ -294,8 +361,22 @@ body {
 
 .adlaire-admin-dashboard,
 .adlaire-admin-settings,
+.adlaire-admin-security-overview,
+.adlaire-admin-empty-state,
+.adlaire-admin-mobile-stack,
 .sample-git-layout > article {
   min-width: 0;
+}
+
+.adlaire-admin-resource-header,
+.adlaire-admin-data-toolbar,
+.adlaire-admin-approval-panel,
+.adlaire-admin-health-check,
+.adlaire-admin-release-panel,
+.adlaire-admin-security-overview,
+.adlaire-admin-empty-state,
+.adlaire-admin-mobile-stack {
+  margin-top: 14px;
 }
 
 .adlaire-wysiwyg-inline-toolbar {
@@ -315,12 +396,19 @@ body {
   max-height: none;
 }
 
+.adlaire-wysiwyg-insert,
+.adlaire-wysiwyg-alert,
+.adlaire-wysiwyg-a11y-panel {
+  margin-top: 12px;
+}
+
 @media (max-width: 768px) {
   .sample-hero h1 {
     font-size: 32px;
   }
 
   .sample-grid-two,
+  .sample-grid-three,
   .sample-swatch-grid,
   .sample-coverage-grid,
   .sample-brand-grid,

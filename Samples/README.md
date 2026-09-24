@@ -8,7 +8,7 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 
 | Path | Role |
 | --- | --- |
-| `Samples/design/index.html` | Static confirmation surface for the current design system. |
+| `Samples/design/index.html` | Static showcase surface for the current design system. |
 | `Samples/design/sample.css` | Sample-only layout support. |
 | `Samples/design/sample.js` | Sample-only display support. |
 | `Samples/sample-current.png` | Reference screenshot. |
@@ -22,6 +22,8 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 | WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | Editor surface, toolbar, mobile sheet, readonly/error states. |
 | Icon Set | `Docs/Icon_Set_Catalog`, `Icons/` | Official 500 SVG icons and category access. |
 | Tokens / Brand | `Tokens/`, `Brand/`, `Docs/Brand_Asset_Catalog` | Token colors, surfaces, layout tokens, brand assets. |
+
+The showcase groups the current system into Overview, Tokens, Components, Admin, WYSIWYG, Icons, and Brand sections so visual review follows the same boundaries as the catalogs.
 
 ## Update Rules
 
