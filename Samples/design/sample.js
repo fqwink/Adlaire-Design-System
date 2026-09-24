@@ -18,4 +18,14 @@
   if (total) {
     total.textContent = '500';
   }
+
+  var navLinks = document.querySelectorAll('.sample-showcase-nav a');
+  navLinks.forEach(function (link) {
+    link.addEventListener('click', function () {
+      navLinks.forEach(function (item) {
+        item.removeAttribute('aria-current');
+      });
+      link.setAttribute('aria-current', 'true');
+    });
+  });
 })();

@@ -44,6 +44,23 @@ require_text() {
   fi
 }
 
+require_class_in_css() {
+  class=$1
+  if ! grep -R -F -- "$class" "$ROOT/UI" "$ROOT/EditorUI" >/dev/null 2>&1; then
+    echo "missing required implemented class: $class" >&2
+    exit 1
+  fi
+}
+
+require_class_in_doc() {
+  file=$1
+  class=$2
+  if ! grep -F -- "\`$class\`" "$ROOT/$file" >/dev/null 2>&1; then
+    echo "$file missing required catalog class: $class" >&2
+    exit 1
+  fi
+}
+
 for path in \
   AGENTS.md \
   README.md \
@@ -90,6 +107,18 @@ for path in \
   EditorUI/editor.js \
   TypeScript/CSS/tokens.ts \
   TypeScript/CSS/rules.ts \
+  TypeScript/CSS/rules-types.ts \
+  TypeScript/CSS/rules-adlaire.ts \
+  TypeScript/CSS/rules-base.ts \
+  TypeScript/CSS/rules-grid.ts \
+  TypeScript/CSS/rules-layout.ts \
+  TypeScript/CSS/rules-components.ts \
+  TypeScript/CSS/rules-site.ts \
+  TypeScript/CSS/rules-forms.ts \
+  TypeScript/CSS/rules-content.ts \
+  TypeScript/CSS/rules-utilities.ts \
+  TypeScript/CSS/rules-compat-agws.ts \
+  TypeScript/CSS/rules-wysiwyg.ts \
   TypeScript/CSS/targets.ts \
   TypeScript/CSS/emit.ts \
   TypeScript/CSS/manifest.ts \
@@ -247,20 +276,71 @@ for token in \
   fi
 done
 
-for class in \
-  '.adlaire-card' \
-  '.adlaire-admin-dashboard' \
-  '.adlaire-admin-layout' \
-  '.adlaire-git-repo-card' \
-  '.adlaire-filter' \
-  '.adlaire-container' \
-  '.adlaire-grid' \
-  '.adlaire-wysiwyg' \
-  '.adlaire-wysiwyg-mobile-toolbar'; do
-  if ! grep -R -F -- "$class" "$ROOT/UI" "$ROOT/EditorUI" >/dev/null 2>&1; then
-    echo "missing required implemented class: $class" >&2
-    exit 1
-  fi
+for catalog_class in \
+  'Docs/Generic_Component_Catalog|.adlaire-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-action-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-toolbar' \
+  'Docs/Generic_Component_Catalog|.adlaire-empty-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-badge' \
+  'Docs/Generic_Component_Catalog|.adlaire-note' \
+  'Docs/Generic_Component_Catalog|.adlaire-alert' \
+  'Docs/Generic_Component_Catalog|.adlaire-chip' \
+  'Docs/Generic_Component_Catalog|.adlaire-status-pill' \
+  'Docs/Generic_Component_Catalog|.adlaire-container' \
+  'Docs/Generic_Component_Catalog|.adlaire-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-public-layout' \
+  'Docs/Generic_Component_Catalog|.adlaire-app-shell' \
+  'Docs/Generic_Component_Catalog|.adlaire-split-pane' \
+  'Docs/Generic_Component_Catalog|.adlaire-filter' \
+  'Docs/Generic_Component_Catalog|.adlaire-pagination' \
+  'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
+  'Docs/Generic_Component_Catalog|.adlaire-dialog' \
+  'Docs/Generic_Component_Catalog|.adlaire-drawer' \
+  'Docs/Generic_Component_Catalog|.adlaire-popover' \
+  'Docs/Generic_Component_Catalog|.adlaire-tooltip' \
+  'Docs/Generic_Component_Catalog|.adlaire-toast' \
+  'Docs/Generic_Component_Catalog|.adlaire-backdrop' \
+  'Docs/Generic_Component_Catalog|.adlaire-feedback-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-repo-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-pr-detail' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-diff-viewer' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-dashboard' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-settings' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-data-list' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-bulk-action' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-danger-zone' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-kpi-card' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-resource-header' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-data-toolbar' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-approval-panel' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-health-check' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-release-panel' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-security-overview' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-state-badge' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-empty-state' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-stack' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-action-bar' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-layout' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-header' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-toolbar' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-canvas' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-block' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-block-selected' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-inline-toolbar' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-insert' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-transform' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-mobile-toolbar' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-mobile-sheet' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-command-item' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-alert' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-readonly' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-a11y-panel'; do
+  catalog_file=${catalog_class%%|*}
+  class=${catalog_class#*|}
+  require_class_in_doc "$catalog_file" "$class"
+  require_class_in_css "$class"
 done
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
@@ -291,6 +371,8 @@ for doc_term in \
   'Samples are supporting' \
   'official 500 SVG icons' \
   'startup synchronization' \
+  'output file unit' \
+  'check-covered contract' \
   'Catalog Governance' \
   'Pending Tasks'; do
   if ! grep -R -F -- "$doc_term" "$ROOT/README.md" "$ROOT/Docs" "$ROOT/Samples/README.md" "$ROOT/Brand/README.md" >/dev/null 2>&1; then

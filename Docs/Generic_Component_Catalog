@@ -40,6 +40,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Form UI | input groups, composite inputs, date/time/period inputs, validation UI | 実装済み |
 | Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
 | Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
+| Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, backdrop | 実装済み |
 | Data UI | KPI, metrics, charts, comparison, timeline | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
@@ -66,6 +67,13 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-filter`
 - `.adlaire-pagination`
 - `.adlaire-command-palette`
+- `.adlaire-dialog`
+- `.adlaire-drawer`
+- `.adlaire-popover`
+- `.adlaire-tooltip`
+- `.adlaire-toast`
+- `.adlaire-backdrop`
+- `.adlaire-feedback-stack`
 - `.adlaire-git-repo-card`
 - `.adlaire-git-pr-detail`
 - `.adlaire-git-diff-viewer`
@@ -75,6 +83,7 @@ This catalog expects the following class families to remain implemented:
 | Item | Rule |
 | --- | --- |
 | Implementation state | Use `実装済み`, `策定済み`, or `対象外`. |
+| Required class families | Treat listed classes as a check-covered contract between this catalog and generated CSS. |
 | Out of scope | WYSIWYG-only UI, Admin-only classification, official SVG icon files, brand assets. |
 | Synchronization | Update `Docs/Master_Spec`, target generated files, TypeScript source, and checks when needed. |
 | Change unit | Specification, catalog, implementation, and check updates are reviewed together. |

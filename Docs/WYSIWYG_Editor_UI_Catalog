@@ -50,6 +50,7 @@ This catalog governs WYSIWYG Editor UI components and states.
 | Item | Rule |
 | --- | --- |
 | Implementation state | Use `実装済み`, `策定済み`, or `対象外`. |
+| Required class families | Treat listed classes as a check-covered contract between this catalog and generated CSS. |
 | Out of scope | Generic UI, Admin UI, official SVG icon files, editor runtime internals, brand assets. |
 | Synchronization | Update `Docs/Master_Spec`, `Docs/Editor_Master_Spec`, generated EditorUI files, TypeScript source, and checks when needed. |
 | Change unit | Specification, catalog, implementation, and check updates are reviewed together. |

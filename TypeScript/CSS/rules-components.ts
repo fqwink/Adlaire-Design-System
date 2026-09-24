@@ -1,4 +1,6 @@
-/* Adlaire-Design public components */
+import type { CssRuleFile } from "./rules-types.ts";
+
+export const COMPONENTS_RULE_FILE: CssRuleFile = { path: "UI/components.css", css: `/* Adlaire-Design public components */
 .adlaire-card {
   background-color: var(--adlaire-surface-card);
   border: 1px solid var(--adlaire-surface-border);
@@ -2924,3 +2926,4 @@
     padding: 12px;
   }
 }
+` } as const;
