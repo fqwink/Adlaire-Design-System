@@ -2733,6 +2733,118 @@
   color: var(--adlaire-alert-warning-text);
 }
 
+.adlaire-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--adlaire-layer-overlay);
+  background-color: var(--adlaire-overlay-black-48);
+}
+
+.adlaire-dialog {
+  display: grid;
+  gap: 16px;
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 20px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-lg);
+  box-shadow: var(--adlaire-shadow-card-hover);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-dialog-header,
+.adlaire-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adlaire-dialog-title {
+  margin: 0;
+  color: var(--adlaire-surface-accent-strong);
+  font-weight: 700;
+}
+
+.adlaire-dialog-body {
+  color: var(--adlaire-surface-text-muted);
+  line-height: 1.8;
+}
+
+.adlaire-dialog-close {
+  display: inline-flex;
+  min-width: 36px;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-dialog-close:hover,
+.adlaire-dialog-close:focus-visible {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  color: var(--adlaire-surface-accent);
+  outline: 0;
+}
+
+.adlaire-popover {
+  display: grid;
+  gap: 8px;
+  max-width: 320px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  box-shadow: var(--adlaire-shadow-card);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-popover-title {
+  color: var(--adlaire-surface-accent-strong);
+  font-weight: 700;
+}
+
+.adlaire-popover-body {
+  color: var(--adlaire-surface-text-muted);
+  line-height: 1.7;
+}
+
+.adlaire-feedback-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.adlaire-toast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 12px 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-left: 4px solid var(--adlaire-surface-accent);
+  border-radius: var(--adlaire-radius-md);
+  box-shadow: var(--adlaire-shadow-card);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-toast-success {
+  border-left-color: var(--adlaire-status-success);
+}
+
+.adlaire-toast-warning {
+  border-left-color: var(--adlaire-status-warning);
+}
+
+.adlaire-toast-danger {
+  border-left-color: var(--adlaire-status-danger);
+}
+
 @media (max-width: 480px) {
   .adlaire-admin-mobile-stack,
   .adlaire-admin-mobile-card-list,

@@ -280,6 +280,55 @@
       </div>
     </section>
 
+    <section class="sample-section" aria-labelledby="overlay-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Overlay / Feedback</p>
+        <h2 id="overlay-title">Dialog, Drawer, Popover, Tooltip, Toast</h2>
+      </div>
+      <div class="sample-overlay-grid">
+        <article class="adlaire-dialog" aria-labelledby="sample-dialog-title">
+          <div class="adlaire-dialog-header">
+            <h3 id="sample-dialog-title" class="adlaire-dialog-title">Publish confirmation</h3>
+            <button class="adlaire-dialog-close" type="button" aria-label="Close dialog">x</button>
+          </div>
+          <div class="adlaire-dialog-body">PR前にチェック、生成物、カタログ同期を確認する。</div>
+          <div class="adlaire-dialog-footer">
+            <button class="adlaire-button adlaire-button-secondary" type="button">Cancel</button>
+            <button class="adlaire-button adlaire-button-primary" type="button">Confirm</button>
+          </div>
+        </article>
+
+        <article class="adlaire-drawer is-open">
+          <div class="adlaire-drawer-panel">
+            <div class="adlaire-drawer-header">
+              <h3 class="adlaire-drawer-title">Review drawer</h3>
+              <button class="adlaire-drawer-close" type="button" aria-label="Close drawer">x</button>
+            </div>
+            <div class="adlaire-drawer-body">サンプル上では静的に表示し、実運用では状態制御で開閉する。</div>
+          </div>
+        </article>
+
+        <div class="sample-overlay-stack">
+          <div class="adlaire-popover">
+            <strong class="adlaire-popover-title">Popover</strong>
+            <span class="adlaire-popover-body">短い補助情報や選択肢を面として表示。</span>
+          </div>
+          <span class="adlaire-tooltip">
+            <button class="adlaire-tooltip-trigger" type="button">Tooltip target</button>
+            <span class="adlaire-tooltip-content">補助説明</span>
+          </span>
+          <div class="adlaire-feedback-stack">
+            <div class="adlaire-toast adlaire-toast-success"><span>Saved</span><button class="adlaire-toast-dismiss" type="button">x</button></div>
+            <div class="adlaire-toast adlaire-toast-warning"><span>Review required</span><button class="adlaire-toast-dismiss" type="button">x</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="sample-backdrop-preview">
+        <span class="adlaire-backdrop" aria-hidden="true"></span>
+        <strong>Backdrop preview</strong>
+      </div>
+    </section>
+
     <section class="sample-section" aria-labelledby="icon-title">
       <div class="sample-section-heading">
         <p class="sample-kicker">Icons</p>

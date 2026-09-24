@@ -147,6 +147,54 @@ body {
   font-weight: 700;
 }
 
+.sample-overlay-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.9fr) minmax(240px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.sample-overlay-grid .adlaire-drawer {
+  position: static;
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.sample-overlay-grid .adlaire-drawer-panel {
+  max-width: none;
+  min-height: 220px;
+  transform: none;
+}
+
+.sample-overlay-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.sample-backdrop-preview {
+  position: relative;
+  min-height: 72px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.sample-backdrop-preview .adlaire-backdrop {
+  position: absolute;
+  z-index: 0;
+}
+
+.sample-backdrop-preview strong {
+  position: relative;
+  z-index: 1;
+  color: var(--adlaire-surface-card);
+}
+
 .sample-swatch-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -409,6 +457,7 @@ body {
 
   .sample-grid-two,
   .sample-grid-three,
+  .sample-overlay-grid,
   .sample-swatch-grid,
   .sample-coverage-grid,
   .sample-brand-grid,

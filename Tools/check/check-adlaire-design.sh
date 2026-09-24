@@ -295,6 +295,13 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
   'Docs/Generic_Component_Catalog|.adlaire-pagination' \
   'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
+  'Docs/Generic_Component_Catalog|.adlaire-dialog' \
+  'Docs/Generic_Component_Catalog|.adlaire-drawer' \
+  'Docs/Generic_Component_Catalog|.adlaire-popover' \
+  'Docs/Generic_Component_Catalog|.adlaire-tooltip' \
+  'Docs/Generic_Component_Catalog|.adlaire-toast' \
+  'Docs/Generic_Component_Catalog|.adlaire-backdrop' \
+  'Docs/Generic_Component_Catalog|.adlaire-feedback-stack' \
   'Docs/Generic_Component_Catalog|.adlaire-git-repo-card' \
   'Docs/Generic_Component_Catalog|.adlaire-git-pr-detail' \
   'Docs/Generic_Component_Catalog|.adlaire-git-diff-viewer' \

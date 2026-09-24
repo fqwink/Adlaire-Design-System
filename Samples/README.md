@@ -17,7 +17,7 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 
 | Area | Source | Sample coverage |
 | --- | --- | --- |
-| Generic UI | `Docs/Generic_Component_Catalog` | Cards, states, forms, content UI, Git Provider UI. |
+| Generic UI | `Docs/Generic_Component_Catalog` | Cards, states, forms, content UI, overlay/feedback UI, Git Provider UI. |
 | Admin UI | `Docs/Admin_UI_Catalog` | Admin state, action priority, mobile support, layout. |
 | WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | Editor surface, toolbar, mobile sheet, readonly/error states. |
 | Icon Set | `Docs/Icon_Set_Catalog`, `Icons/` | Official 500 SVG icons and category access. |
