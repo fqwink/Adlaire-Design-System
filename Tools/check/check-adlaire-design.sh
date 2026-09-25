@@ -373,6 +373,28 @@ for js_hook in \
   require_text "UI/components.js" "$js_hook"
 done
 
+for js_pair in \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-input' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-chip' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-input' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-toggle-input' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-line' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-mode' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-toggle' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-target' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-select' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|adlaire-wysiwyg-block-selected'; do
+  source_file=${js_pair%%|*}
+  rest=${js_pair#*|}
+  output_file=${rest%%|*}
+  hook=${rest#*|}
+  require_text "$source_file" "$hook"
+  require_text "$output_file" "$hook"
+done
+
 for sample_class in \
   'adlaire-workbench-layout' \
   'adlaire-filter-builder' \
