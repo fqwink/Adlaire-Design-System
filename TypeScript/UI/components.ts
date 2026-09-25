@@ -4,6 +4,8 @@
   "use strict";
 
   let lastFocus: HTMLElement | null = null;
+  const overlaySelector = ".adlaire-modal, .adlaire-dialog, .adlaire-drawer";
+  const openOverlaySelector = ".adlaire-modal.is-open, .adlaire-dialog.is-open, .adlaire-drawer.is-open";
 
   function targetElement(target: EventTarget | null): Element | null {
     return target instanceof Element ? target : null;
@@ -20,10 +22,10 @@
     if (!target) return;
     target.hidden = !expanded;
     target.classList.toggle("is-open", expanded);
-    if (expanded && target.matches(".adlaire-modal, .adlaire-drawer")) {
+    if (expanded && target.matches(overlaySelector)) {
       document.documentElement.classList.add("adlaire-overlay-open");
     }
-    if (!expanded && !document.querySelector(".adlaire-modal.is-open, .adlaire-drawer.is-open")) {
+    if (!expanded && !document.querySelector(openOverlaySelector)) {
       document.documentElement.classList.remove("adlaire-overlay-open");
     }
   }
@@ -74,13 +76,13 @@
     if (carouselIndicator?.hasAttribute("data-adlaire-carousel")) carouselIndicator = null;
 
     if (dismiss) {
-      const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-drawer, .adlaire-dropdown-menu");
+      const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
       if (dismissTarget) {
         dismissTarget.hidden = true;
         dismissTarget.classList.remove("is-open");
         triggersForTarget(dismissTarget).forEach((item) => item.setAttribute("aria-expanded", "false"));
       }
-      if (!document.querySelector(".adlaire-modal.is-open, .adlaire-drawer.is-open")) {
+      if (!document.querySelector(openOverlaySelector)) {
         document.documentElement.classList.remove("adlaire-overlay-open");
       }
       lastFocus?.focus();
@@ -102,18 +104,18 @@
     lastFocus = trigger instanceof HTMLElement ? trigger : null;
     closeSiblings(trigger, target);
     setExpanded(trigger, target, !isExpanded);
-    if (!isExpanded && target.matches(".adlaire-modal, .adlaire-drawer")) focusFirst(target);
+    if (!isExpanded && target.matches(overlaySelector)) focusFirst(target);
   });
 
   document.addEventListener("keydown", (event) => {
-    const activeOverlay = document.querySelector<HTMLElement>(".adlaire-modal.is-open, .adlaire-drawer.is-open");
+    const activeOverlay = document.querySelector<HTMLElement>(openOverlaySelector);
     if (event.key === "Tab" && activeOverlay) {
       containFocus(event, activeOverlay);
       return;
     }
     if (event.key !== "Escape") return;
 
-    document.querySelectorAll<HTMLElement>(".adlaire-modal.is-open, .adlaire-drawer.is-open, .adlaire-dropdown-menu.is-open").forEach((target) => {
+    document.querySelectorAll<HTMLElement>(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open`).forEach((target) => {
       target.hidden = true;
       target.classList.remove("is-open");
       triggersForTarget(target).forEach((trigger) => trigger.setAttribute("aria-expanded", "false"));
@@ -176,6 +178,7 @@
     const source = targetElement(event.target);
     const copy = source?.closest("[data-adlaire-copy]");
     const remove = source?.closest("[data-adlaire-remove]");
+    const toastDismiss = source?.closest("[data-adlaire-toast-dismiss]");
     const select = source?.closest("[data-adlaire-select]");
     const sidebarToggle = source?.closest("[data-adlaire-sidebar-toggle]");
 
@@ -191,6 +194,10 @@
     if (remove) {
       const removable = getTarget(remove) ?? remove.closest(".adlaire-toast, .adlaire-snackbar, .adlaire-upload-item, .adlaire-attachment-item");
       removable?.remove();
+    }
+
+    if (toastDismiss) {
+      toastDismiss.closest(".adlaire-toast")?.remove();
     }
 
     if (select) {

@@ -41,6 +41,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
 | Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
 | Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, backdrop | 実装済み |
+| Interaction Readiness UI | toast viewport, progress, skeleton, data table state, bulk feedback | 実装済み |
 | Data UI | KPI, metrics, charts, comparison, timeline | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
@@ -61,7 +62,13 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-status-pill`
 - `.adlaire-container`
 - `.adlaire-grid`
+- `.adlaire-dashboard-grid`
+- `.adlaire-resource-grid`
+- `.adlaire-editor-grid`
 - `.adlaire-public-layout`
+- `.adlaire-layout-frame`
+- `.adlaire-master-detail-layout`
+- `.adlaire-workbench-layout`
 - `.adlaire-app-shell`
 - `.adlaire-split-pane`
 - `.adlaire-filter`
@@ -72,8 +79,15 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-popover`
 - `.adlaire-tooltip`
 - `.adlaire-toast`
+- `.adlaire-toast-viewport`
 - `.adlaire-backdrop`
 - `.adlaire-feedback-stack`
+- `.adlaire-progress`
+- `.adlaire-skeleton`
+- `.adlaire-data-table-state`
+- `.adlaire-bulk-feedback`
+- `.adlaire-stepper`
+- `.adlaire-filter-builder`
 - `.adlaire-git-repo-card`
 - `.adlaire-git-pr-detail`
 - `.adlaire-git-diff-viewer`

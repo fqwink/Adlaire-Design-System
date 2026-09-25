@@ -1128,7 +1128,7 @@ details.adlaire-faq-item > :not(summary),
   position: absolute;
   left: 0;
   color: var(--adlaire-surface-accent);
-  content: "\25b8";
+  content: "\\25b8";
   font-weight: 700;
 }
 

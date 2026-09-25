@@ -27,6 +27,7 @@ This catalog governs Admin-only UI patterns used by administrators, operators, e
 | Integration | API key list, webhook list, quota meter | 実装済み |
 | Visual System | visual hierarchy, semantic state, state surface, action priority | 実装済み |
 | Responsive System | mobile stack, mobile scroll, mobile actions, admin layout | 実装済み |
+| Operational Feedback | bulk feedback, progress, table state, skeleton loading | 実装済み |
 
 ## Required Class Families
 
@@ -47,6 +48,10 @@ This catalog governs Admin-only UI patterns used by administrators, operators, e
 - `.adlaire-admin-mobile-stack`
 - `.adlaire-admin-action-bar`
 - `.adlaire-admin-layout`
+- `.adlaire-bulk-feedback`
+- `.adlaire-progress`
+- `.adlaire-data-table-state`
+- `.adlaire-skeleton`
 
 ## Catalog Governance
 

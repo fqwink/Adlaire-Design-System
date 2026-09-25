@@ -128,10 +128,41 @@ export const GRID_RULE_FILE: CssRuleFile = { path: "UI/grid.css", css: `/* Adlai
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.adlaire-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--adlaire-layout-gap-compact);
+  align-items: stretch;
+}
+
+.adlaire-resource-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.65fr);
+  gap: var(--adlaire-layout-gap);
+  align-items: start;
+}
+
+.adlaire-editor-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(220px, 300px);
+  gap: var(--adlaire-layout-gap-compact);
+  align-items: start;
+}
+
+.adlaire-grid-density-compact {
+  gap: var(--adlaire-space-2);
+}
+
+.adlaire-grid-density-comfortable {
+  gap: var(--adlaire-space-5);
+}
+
 @media (max-width: 768px) {
   .adlaire-grid-3,
   .adlaire-grid-4,
-  .adlaire-grid-sidebar {
+  .adlaire-grid-sidebar,
+  .adlaire-resource-grid,
+  .adlaire-editor-grid {
     grid-template-columns: 1fr;
   }
 
