@@ -318,14 +318,49 @@
             <span class="adlaire-tooltip-content">補助説明</span>
           </span>
           <div class="adlaire-feedback-stack">
-            <div class="adlaire-toast adlaire-toast-success"><span>Saved</span><button class="adlaire-toast-dismiss" type="button">x</button></div>
-            <div class="adlaire-toast adlaire-toast-warning"><span>Review required</span><button class="adlaire-toast-dismiss" type="button">x</button></div>
+            <div class="adlaire-toast adlaire-toast-success"><span class="adlaire-toast-title">Saved</span><button class="adlaire-toast-dismiss" data-adlaire-toast-dismiss type="button">x</button></div>
+            <div class="adlaire-toast adlaire-toast-warning"><span class="adlaire-toast-body">Review required</span><button class="adlaire-toast-dismiss" data-adlaire-toast-dismiss type="button">x</button></div>
           </div>
         </div>
       </div>
       <div class="sample-backdrop-preview">
         <span class="adlaire-backdrop" aria-hidden="true"></span>
         <strong>Backdrop preview</strong>
+      </div>
+    </section>
+
+    <section class="sample-section" aria-labelledby="quality-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Operational quality</p>
+        <h2 id="quality-title">Layout System v2 / Data / Forms</h2>
+      </div>
+      <div class="adlaire-workbench-layout">
+        <aside class="adlaire-layout-region adlaire-layout-sticky">
+          <div class="adlaire-stepper" aria-label="Release steps">
+            <span class="adlaire-step adlaire-step-complete">1 Sync</span>
+            <span class="adlaire-step" aria-current="step">2 Check</span>
+            <span class="adlaire-step">3 PR</span>
+          </div>
+        </aside>
+        <article class="adlaire-layout-region">
+          <div class="adlaire-filter-builder">
+            <div class="adlaire-filter-rule">
+              <label class="adlaire-field">Field<input class="adlaire-form-control" value="State"></label>
+              <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is"></label>
+              <label class="adlaire-field">Value<input class="adlaire-form-control" value="Ready"></label>
+              <button class="adlaire-button adlaire-button-secondary" type="button">Apply</button>
+            </div>
+          </div>
+          <div class="adlaire-data-table-state">Generated CSS, catalogs, samples, and JS hooks are treated as one check-covered contract.</div>
+        </article>
+        <aside class="adlaire-layout-region">
+          <div class="adlaire-progress" aria-label="Quality progress">
+            <span>Verification</span>
+            <span class="adlaire-progress-track"><span class="adlaire-progress-value" style="--adlaire-progress-value: 72%"></span></span>
+          </div>
+          <div class="adlaire-skeleton" aria-hidden="true"></div>
+          <div class="adlaire-bulk-feedback"><span>4 selected</span><button class="adlaire-button adlaire-button-primary" type="button">Run</button></div>
+        </aside>
       </div>
     </section>
 
@@ -383,6 +418,11 @@
             <button class="adlaire-wysiwyg-insert-item" type="button">Insert block</button>
             <button class="adlaire-wysiwyg-transform" type="button">Transform</button>
           </div>
+          <div class="adlaire-wysiwyg-slash-menu">
+            <button class="adlaire-wysiwyg-command-item" type="button">/ callout</button>
+            <button class="adlaire-wysiwyg-command-item" type="button">/ table</button>
+          </div>
+          <div class="adlaire-wysiwyg-suggestion-card">Suggestion: tighten heading hierarchy.</div>
         </div>
       </article>
 
@@ -402,6 +442,8 @@
           <button class="adlaire-wysiwyg-command-item" type="button">コード</button>
         </div>
         <div class="adlaire-wysiwyg-alert">Readonly content cannot be edited.</div>
+        <div class="adlaire-wysiwyg-save-banner">Saved locally</div>
+        <div class="adlaire-wysiwyg-lock-banner">Locked by reviewer</div>
         <div class="adlaire-wysiwyg-a11y-panel">
           <strong>Accessibility</strong>
           <span>見出し順、代替テキスト、キーボード操作を確認。</span>

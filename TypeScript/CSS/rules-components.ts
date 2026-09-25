@@ -2754,6 +2754,26 @@ export const COMPONENTS_RULE_FILE: CssRuleFile = { path: "UI/components.css", cs
   color: var(--adlaire-surface-text);
 }
 
+.adlaire-dialog[aria-modal="true"],
+.adlaire-dialog.is-open {
+  position: relative;
+  z-index: var(--adlaire-layer-modal);
+}
+
+.adlaire-dialog-stack {
+  position: fixed;
+  inset: 0;
+  z-index: var(--adlaire-layer-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--adlaire-layout-gutter);
+  pointer-events: none;
+}
+
+.adlaire-dialog-stack > .adlaire-dialog {
+  pointer-events: auto;
+}
+
 .adlaire-dialog-header,
 .adlaire-dialog-footer {
   display: flex;
@@ -2806,6 +2826,14 @@ export const COMPONENTS_RULE_FILE: CssRuleFile = { path: "UI/components.css", cs
   color: var(--adlaire-surface-text);
 }
 
+.adlaire-popover[data-placement="top"] {
+  transform-origin: bottom center;
+}
+
+.adlaire-popover[data-placement="bottom"] {
+  transform-origin: top center;
+}
+
 .adlaire-popover-title {
   color: var(--adlaire-surface-accent-strong);
   font-weight: 700;
@@ -2818,6 +2846,16 @@ export const COMPONENTS_RULE_FILE: CssRuleFile = { path: "UI/components.css", cs
 
 .adlaire-feedback-stack {
   display: grid;
+  gap: 10px;
+}
+
+.adlaire-toast-viewport {
+  position: fixed;
+  right: var(--adlaire-layout-gutter);
+  bottom: var(--adlaire-layout-gutter);
+  z-index: var(--adlaire-layer-toast);
+  display: grid;
+  width: min(360px, calc(100vw - 32px));
   gap: 10px;
 }
 
@@ -2845,6 +2883,66 @@ export const COMPONENTS_RULE_FILE: CssRuleFile = { path: "UI/components.css", cs
 
 .adlaire-toast-danger {
   border-left-color: var(--adlaire-status-danger);
+}
+
+.adlaire-toast-title {
+  color: var(--adlaire-surface-accent-strong);
+  font-weight: 700;
+}
+
+.adlaire-toast-body {
+  color: var(--adlaire-surface-text-muted);
+  line-height: 1.6;
+}
+
+.adlaire-progress {
+  display: grid;
+  gap: 6px;
+}
+
+.adlaire-progress-track {
+  width: 100%;
+  height: 8px;
+  overflow: hidden;
+  background-color: var(--adlaire-surface-soft);
+  border-radius: var(--adlaire-radius-round);
+}
+
+.adlaire-progress-value {
+  display: block;
+  width: var(--adlaire-progress-value, 0%);
+  height: 100%;
+  background-color: var(--adlaire-surface-accent);
+}
+
+.adlaire-skeleton {
+  display: block;
+  min-height: 1rem;
+  background-color: var(--adlaire-surface-soft);
+  border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-data-table-state {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-bulk-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background-color: var(--adlaire-semantic-selected-bg);
+  border: 1px solid var(--adlaire-semantic-selected-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-semantic-selected-text);
 }
 
 @media (max-width: 480px) {
@@ -2922,7 +3020,8 @@ export const COMPONENTS_RULE_FILE: CssRuleFile = { path: "UI/components.css", cs
   .adlaire-modal,
   .adlaire-confirm-dialog,
   .adlaire-notice-dialog,
-  .adlaire-drawer {
+  .adlaire-drawer,
+  .adlaire-dialog-stack {
     padding: 12px;
   }
 }

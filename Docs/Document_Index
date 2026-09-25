@@ -51,3 +51,11 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | Path | Role |
 | --- | --- |
 | `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, asset, and release checks. |
+
+## Operational Quality
+
+| Area | Rule |
+| --- | --- |
+| Post-merge cleanup | After a user merges a PR, the next task verifies the PR state, fetches `backup --prune`, synchronizes local `main` with `backup/main`, and deletes only the matching merged local branch. |
+| Layout System v2 | Meaningful layout contracts are documented in `Docs/Master_Spec`, listed in `Docs/Generic_Component_Catalog`, implemented in `TypeScript/CSS/rules-grid.ts` and `TypeScript/CSS/rules-layout.ts`, and generated to `UI/grid.css` and `UI/layout.css`. |
+| Interaction readiness | Dialog, drawer, popover, toast, progress, skeleton, data state, bulk feedback, stepper, and filter builder classes remain catalog-listed and check-covered. |

@@ -3,6 +3,8 @@
   "use strict";
 
   var lastFocus = null;
+  var overlaySelector = ".adlaire-modal, .adlaire-dialog, .adlaire-drawer";
+  var openOverlaySelector = ".adlaire-modal.is-open, .adlaire-dialog.is-open, .adlaire-drawer.is-open";
 
   function getTarget(trigger) {
     var selector = trigger.getAttribute("data-adlaire-target") || trigger.getAttribute("href");
@@ -17,10 +19,10 @@
     if (target) {
       target.hidden = !expanded;
       target.classList.toggle("is-open", expanded);
-      if (expanded && target.matches(".adlaire-modal, .adlaire-drawer")) {
+      if (expanded && target.matches(overlaySelector)) {
         document.documentElement.classList.add("adlaire-overlay-open");
       }
-      if (!expanded && !document.querySelector(".adlaire-modal.is-open, .adlaire-drawer.is-open")) {
+      if (!expanded && !document.querySelector(openOverlaySelector)) {
         document.documentElement.classList.remove("adlaire-overlay-open");
       }
     }
@@ -90,7 +92,7 @@
     }
 
     if (dismiss) {
-      var dismissTarget = getTarget(dismiss) || dismiss.closest(".adlaire-modal, .adlaire-drawer, .adlaire-dropdown-menu");
+      var dismissTarget = getTarget(dismiss) || dismiss.closest(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
       if (dismissTarget) {
         dismissTarget.hidden = true;
         dismissTarget.classList.remove("is-open");
@@ -98,7 +100,7 @@
           item.setAttribute("aria-expanded", "false");
         });
       }
-      if (!document.querySelector(".adlaire-modal.is-open, .adlaire-drawer.is-open")) {
+      if (!document.querySelector(openOverlaySelector)) {
         document.documentElement.classList.remove("adlaire-overlay-open");
       }
       if (lastFocus && typeof lastFocus.focus === "function") {
@@ -124,14 +126,14 @@
       lastFocus = trigger;
       closeSiblings(trigger, target);
       setExpanded(trigger, target, !isExpanded);
-      if (!isExpanded && target.matches(".adlaire-modal, .adlaire-drawer")) {
+      if (!isExpanded && target.matches(overlaySelector)) {
         focusFirst(target);
       }
     }
   });
 
   document.addEventListener("keydown", function (event) {
-    var activeOverlay = document.querySelector(".adlaire-modal.is-open, .adlaire-drawer.is-open");
+    var activeOverlay = document.querySelector(openOverlaySelector);
     if (event.key === "Tab" && activeOverlay) {
       containFocus(event, activeOverlay);
       return;
@@ -141,7 +143,7 @@
       return;
     }
 
-    document.querySelectorAll(".adlaire-modal.is-open, .adlaire-drawer.is-open, .adlaire-dropdown-menu.is-open").forEach(function (target) {
+    document.querySelectorAll(openOverlaySelector + ", .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open").forEach(function (target) {
       target.hidden = true;
       target.classList.remove("is-open");
       triggersForTarget(target).forEach(function (trigger) {
@@ -219,6 +221,7 @@
   document.addEventListener("click", function (event) {
     var copy = event.target.closest("[data-adlaire-copy]");
     var remove = event.target.closest("[data-adlaire-remove]");
+    var toastDismiss = event.target.closest("[data-adlaire-toast-dismiss]");
     var select = event.target.closest("[data-adlaire-select]");
     var sidebarToggle = event.target.closest("[data-adlaire-sidebar-toggle]");
 
@@ -235,6 +238,13 @@
       var removable = getTarget(remove) || remove.closest(".adlaire-toast, .adlaire-snackbar, .adlaire-upload-item, .adlaire-attachment-item");
       if (removable) {
         removable.remove();
+      }
+    }
+
+    if (toastDismiss) {
+      var toast = toastDismiss.closest(".adlaire-toast");
+      if (toast) {
+        toast.remove();
       }
     }
 

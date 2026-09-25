@@ -449,9 +449,49 @@ select.form-control {
   color: var(--adlaire-semantic-danger-text);
 }
 
+.adlaire-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.adlaire-step {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-round);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-step[aria-current="step"],
+.adlaire-step-complete {
+  border-color: var(--adlaire-surface-accent);
+  color: var(--adlaire-surface-accent-strong);
+}
+
+.adlaire-filter-builder,
+.adlaire-filter-rule {
+  display: grid;
+  gap: 10px;
+}
+
+.adlaire-filter-rule {
+  grid-template-columns: minmax(140px, 1fr) minmax(120px, 0.8fr) minmax(160px, 1fr) auto;
+  align-items: end;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
 @media (max-width: 480px) {
   .adlaire-date-range,
-  .adlaire-settings-row {
+  .adlaire-settings-row,
+  .adlaire-filter-rule {
     grid-template-columns: 1fr;
   }
 }

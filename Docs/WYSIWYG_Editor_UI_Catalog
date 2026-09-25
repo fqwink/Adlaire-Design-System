@@ -26,6 +26,7 @@ This catalog governs WYSIWYG Editor UI components and states.
 | Mobile UI | mobile toolbar, mobile sheet, mobile actions | 実装済み |
 | Assist UI | slash menu, assist menu, AI entry, accessibility panel | 実装済み |
 | State UI | readonly, disabled, locked, alert, warning, save state, empty state | 実装済み |
+| Collaboration and Review State UI | suggestion card, save banner, lock banner, comment and diff states | 実装済み |
 
 ## Required Class Families
 
@@ -44,6 +45,10 @@ This catalog governs WYSIWYG Editor UI components and states.
 - `.adlaire-wysiwyg-alert`
 - `.adlaire-wysiwyg-readonly`
 - `.adlaire-wysiwyg-a11y-panel`
+- `.adlaire-wysiwyg-slash-menu`
+- `.adlaire-wysiwyg-suggestion-card`
+- `.adlaire-wysiwyg-save-banner`
+- `.adlaire-wysiwyg-lock-banner`
 
 ## Catalog Governance
 

@@ -81,10 +81,77 @@ export const LAYOUT_RULE_FILE: CssRuleFile = { path: "UI/layout.css", css: `/* A
   min-width: 0;
 }
 
+.adlaire-layout-frame {
+  display: grid;
+  min-height: 100vh;
+  background-color: var(--adlaire-surface-page);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-layout-header,
+.adlaire-layout-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--adlaire-space-3);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--adlaire-space-4) var(--adlaire-layout-gutter);
+  background-color: var(--adlaire-surface-card);
+  border-color: var(--adlaire-surface-border);
+}
+
+.adlaire-layout-header {
+  border-bottom: 1px solid var(--adlaire-surface-border);
+}
+
+.adlaire-layout-footer {
+  border-top: 1px solid var(--adlaire-surface-border);
+}
+
+.adlaire-layout-body {
+  display: grid;
+  gap: var(--adlaire-layout-gap);
+  min-width: 0;
+  padding: var(--adlaire-layout-gutter);
+}
+
+.adlaire-layout-region {
+  min-width: 0;
+}
+
+.adlaire-layout-sticky {
+  position: sticky;
+  top: var(--adlaire-space-4);
+  align-self: start;
+}
+
+.adlaire-layout-scroll {
+  min-height: 0;
+  overflow: auto;
+}
+
+.adlaire-master-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  gap: var(--adlaire-layout-gap-compact);
+  align-items: start;
+}
+
+.adlaire-workbench-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(220px, 320px);
+  gap: var(--adlaire-layout-gap-compact);
+  align-items: start;
+}
+
 @media (max-width: 1024px) {
   .adlaire-public-layout {
     grid-template-columns: minmax(0, 1fr) var(--adlaire-layout-sidebar-compact);
     gap: var(--adlaire-layout-gap-compact);
+  }
+
+  .adlaire-workbench-layout {
+    grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
   }
 }
 
@@ -93,8 +160,14 @@ export const LAYOUT_RULE_FILE: CssRuleFile = { path: "UI/layout.css", css: `/* A
     grid-template-columns: 1fr;
   }
 
-  .adlaire-public-layout {
+  .adlaire-public-layout,
+  .adlaire-master-detail-layout,
+  .adlaire-workbench-layout {
     grid-template-columns: 1fr;
+  }
+
+  .adlaire-layout-sticky {
+    position: static;
   }
 }
 

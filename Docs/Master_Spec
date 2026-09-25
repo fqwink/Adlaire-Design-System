@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.124
+Version: rev.125
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -33,6 +33,8 @@ Samples are supporting confirmation material. They are not a specification sourc
 Every repository task starts by reading `AGENTS.md` and checking Git consistency as one required step. The startup check covers worktree status, remotes, remote pruning when needed, and the relationship between `HEAD`, local `main`, and `backup/main`.
 
 Implementation, commit, push, and PR creation do not proceed until that startup synchronization is complete.
+
+After a PR is merged by the user, the next repository task treats post-merge cleanup as part of startup synchronization. The cleanup verifies the merged PR state, fetches `backup --prune`, fast-forwards local `main` to `backup/main`, and deletes only the matching local branch whose head is already contained in `backup/main`.
 
 ## Technical Baseline
 
@@ -127,11 +129,17 @@ Layout is meaningful rather than utility-first. Core layout, meaningful grid, Ad
 
 `Tokens/layout.css` owns structural values such as container width, sidebar width, layout gap, and gutter. Fine spacing remains in `Tokens/spacing.css`.
 
+Layout System v2 adds named application structures: layout frame, header, footer, body, sticky/scroll regions, master-detail layout, workbench layout, dashboard grid, resource grid, and editor grid. These classes are semantic contracts, not low-level utility aliases.
+
+Dialog, drawer, popover, toast, progress, skeleton, data table state, bulk feedback, stepper, and filter builder UI are interaction-ready component contracts. Their CSS, JavaScript hooks, catalog rows, and checks are updated together.
+
 ## WYSIWYG Editor Direction
 
 WYSIWYG Editor UI is part of Adlaire-Design-System. Editor details are governed by `Docs/Editor_Master_Spec`; UI component coverage is governed by `Docs/WYSIWYG_Editor_UI_Catalog`.
 
 The editor model is a safe structured content editing foundation with command, document, selection, history, validation, event, and type modules under `TypeScript/Editor/`.
+
+WYSIWYG UI contracts include slash menu, suggestion card, save banner, lock banner, block reorder, comment, warning, readonly, disabled, locked, and accessibility panel states.
 
 ## Icons and Brand
 
@@ -160,6 +168,8 @@ sh Tools/check/check-adlaire-design.sh --release-check
 ```
 
 The release check assumes `git fetch backup --prune`, local `main` synchronized with `backup/main`, merged head branch cleanup, and no patches outside `backup/main`.
+
+Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, required JavaScript hooks, source/generated CSS consistency when Deno is available, and post-merge release readiness.
 
 ## Change Units
 

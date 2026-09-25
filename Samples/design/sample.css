@@ -446,8 +446,21 @@ body {
 
 .adlaire-wysiwyg-insert,
 .adlaire-wysiwyg-alert,
-.adlaire-wysiwyg-a11y-panel {
+.adlaire-wysiwyg-a11y-panel,
+.adlaire-wysiwyg-slash-menu,
+.adlaire-wysiwyg-suggestion-card,
+.adlaire-wysiwyg-save-banner,
+.adlaire-wysiwyg-lock-banner {
   margin-top: 12px;
+}
+
+.adlaire-workbench-layout > * {
+  min-width: 0;
+}
+
+.adlaire-skeleton {
+  min-height: 42px;
+  margin: 12px 0;
 }
 
 @media (max-width: 768px) {
@@ -461,7 +474,8 @@ body {
   .sample-swatch-grid,
   .sample-coverage-grid,
   .sample-brand-grid,
-  .sample-git-layout {
+  .sample-git-layout,
+  .adlaire-workbench-layout {
     grid-template-columns: 1fr;
   }
 }

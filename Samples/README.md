@@ -17,13 +17,13 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 
 | Area | Source | Sample coverage |
 | --- | --- | --- |
-| Generic UI | `Docs/Generic_Component_Catalog` | Cards, states, forms, content UI, overlay/feedback UI, Git Provider UI. |
-| Admin UI | `Docs/Admin_UI_Catalog` | Admin state, action priority, mobile support, layout. |
-| WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | Editor surface, toolbar, mobile sheet, readonly/error states. |
+| Generic UI | `Docs/Generic_Component_Catalog` | Cards, states, forms, content UI, Layout System v2, overlay/feedback UI, Git Provider UI. |
+| Admin UI | `Docs/Admin_UI_Catalog` | Admin state, action priority, mobile support, layout, operational feedback. |
+| WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | Editor surface, toolbar, mobile sheet, slash menu, save/lock/suggestion states. |
 | Icon Set | `Docs/Icon_Set_Catalog`, `Icons/` | Official 500 SVG icons and category access. |
 | Tokens / Brand | `Tokens/`, `Brand/`, `Docs/Brand_Asset_Catalog` | Token colors, surfaces, layout tokens, brand assets. |
 
-The showcase groups the current system into Overview, Tokens, Components, Admin, WYSIWYG, Icons, and Brand sections so visual review follows the same boundaries as the catalogs.
+The showcase groups the current system into Overview, Tokens, Components, Admin, WYSIWYG, Icons, Brand, and operational quality sections so visual review follows the same boundaries as the catalogs.
 
 ## Update Rules
 

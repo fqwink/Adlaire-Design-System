@@ -289,7 +289,13 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-status-pill' \
   'Docs/Generic_Component_Catalog|.adlaire-container' \
   'Docs/Generic_Component_Catalog|.adlaire-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-dashboard-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-resource-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-editor-grid' \
   'Docs/Generic_Component_Catalog|.adlaire-public-layout' \
+  'Docs/Generic_Component_Catalog|.adlaire-layout-frame' \
+  'Docs/Generic_Component_Catalog|.adlaire-master-detail-layout' \
+  'Docs/Generic_Component_Catalog|.adlaire-workbench-layout' \
   'Docs/Generic_Component_Catalog|.adlaire-app-shell' \
   'Docs/Generic_Component_Catalog|.adlaire-split-pane' \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
@@ -300,8 +306,15 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
   'Docs/Generic_Component_Catalog|.adlaire-tooltip' \
   'Docs/Generic_Component_Catalog|.adlaire-toast' \
+  'Docs/Generic_Component_Catalog|.adlaire-toast-viewport' \
   'Docs/Generic_Component_Catalog|.adlaire-backdrop' \
   'Docs/Generic_Component_Catalog|.adlaire-feedback-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-progress' \
+  'Docs/Generic_Component_Catalog|.adlaire-skeleton' \
+  'Docs/Generic_Component_Catalog|.adlaire-data-table-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-bulk-feedback' \
+  'Docs/Generic_Component_Catalog|.adlaire-stepper' \
+  'Docs/Generic_Component_Catalog|.adlaire-filter-builder' \
   'Docs/Generic_Component_Catalog|.adlaire-git-repo-card' \
   'Docs/Generic_Component_Catalog|.adlaire-git-pr-detail' \
   'Docs/Generic_Component_Catalog|.adlaire-git-diff-viewer' \
@@ -322,6 +335,10 @@ for catalog_class in \
   'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-stack' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-action-bar' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-layout' \
+  'Docs/Admin_UI_Catalog|.adlaire-bulk-feedback' \
+  'Docs/Admin_UI_Catalog|.adlaire-progress' \
+  'Docs/Admin_UI_Catalog|.adlaire-data-table-state' \
+  'Docs/Admin_UI_Catalog|.adlaire-skeleton' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-header' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-toolbar' \
@@ -336,12 +353,30 @@ for catalog_class in \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-command-item' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-alert' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-readonly' \
-  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-a11y-panel'; do
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-a11y-panel' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-slash-menu' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-suggestion-card' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-save-banner' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-lock-banner'; do
   catalog_file=${catalog_class%%|*}
   class=${catalog_class#*|}
   require_class_in_doc "$catalog_file" "$class"
   require_class_in_css "$class"
 done
+
+for js_hook in \
+  'data-adlaire-sidebar-toggle' \
+  'data-adlaire-toast-dismiss' \
+  'adlaire-dialog.is-open' \
+  'adlaire-popover.is-open'; do
+  require_text "TypeScript/UI/components.ts" "$js_hook"
+  require_text "UI/components.js" "$js_hook"
+done
+
+if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
+  echo "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-." >&2
+  exit 1
+fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
 if [ "$ICON_COUNT" -ne 500 ]; then
