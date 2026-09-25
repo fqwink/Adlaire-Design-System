@@ -28,6 +28,20 @@
 
 The runtime keeps invalid commands from mutating document state. Duplicate block identifiers, invalid payloads, and invalid selection references are errors.
 
+## Runtime Contract
+
+| Contract | Rule |
+| --- | --- |
+| Public entry point | `TypeScript/Editor/index.ts` exports the runtime modules and the `AdlaireEditor` browser global. |
+| Command boundary | `commands.ts` owns command execution and returns non-mutating failures for invalid commands. |
+| Document boundary | `document.ts` owns block creation, registries, normalization, paste handling, and block lookup helpers. |
+| Selection boundary | `selection.ts` owns selection position helpers and must not mutate documents. |
+| History boundary | `history.ts` owns undo/redo state and keeps document snapshots isolated. |
+| Validation boundary | `validation.ts` owns document, block, command, and selection validation. |
+| Event boundary | `events.ts` owns editor event and error construction. |
+| Type boundary | `types.ts` owns shared runtime types and does not import implementation modules. |
+| Output boundary | `EditorUI/editor.js` is generated runtime output and is checked for the public browser global. |
+
 ## UI Surface
 
 WYSIWYG Editor UI covers:
@@ -54,4 +68,4 @@ Concrete class coverage is maintained in `Docs/WYSIWYG_Editor_UI_Catalog`.
 
 ## Checks
 
-The repository check verifies required files, generated outputs, catalog governance terms, and forbidden dependency patterns.
+The repository check verifies required files, generated outputs, catalog governance terms, editor runtime exports, module boundaries, and forbidden dependency patterns.

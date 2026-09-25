@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.125
+Version: rev.126
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -18,6 +18,7 @@ It is not a React/Vue/Svelte replacement, not a utility-first CSS framework, and
 | --- | --- |
 | Overall source of truth | `Docs/Master_Spec` |
 | Editor-specific source of truth | `Docs/Editor_Master_Spec` |
+| Component synchronization matrix | `Docs/Component_Contract_Matrix` |
 | Catalog sources | `Docs/*_Catalog` |
 | TypeScript implementation source | `TypeScript/` |
 | Generated CSS | `Tokens/`, `UI/`, `EditorUI/wysiwyg.css` |
@@ -122,6 +123,8 @@ UI JavaScript is generated from Deno TypeScript and kept responsibility-based.
 All catalogs use the same implementation-state vocabulary: `実装済み`, `策定済み`, and `対象外`.
 
 Required Class Families in Generic, Admin, and WYSIWYG catalogs are a check-covered contract. Listed classes must stay present in the catalog and generated CSS together.
+
+`Docs/Component_Contract_Matrix` maps component families to their catalog or specification owner, TypeScript source, generated output, JavaScript hooks, sample coverage, and check coverage.
 
 ## Layout Direction
 

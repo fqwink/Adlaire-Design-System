@@ -11,6 +11,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `LICENSE` | License text. |
 | `Docs/Master_Spec` | Overall source of truth. |
 | `Docs/Editor_Master_Spec` | Editor and WYSIWYG Editor UI source of truth. |
+| `Docs/Component_Contract_Matrix` | Component family synchronization matrix. |
 | `Docs/Pending_Tasks` | Unfinished task list only. |
 
 ## Catalogs
@@ -43,7 +44,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `Brand/` | Brand assets. |
 | `Brand/README.md` | Brand asset rules. |
 | `Samples/README.md` | Sample rules and coverage. |
-| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, official 500 SVG icons, Tokens, and Brand confirmation surface. |
+| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, official 500 SVG icons, Tokens, Brand, and sample-only state toggles. |
 | `Samples/*.png`, `Samples/*.webp` | Supporting screenshots. |
 
 ## Checks

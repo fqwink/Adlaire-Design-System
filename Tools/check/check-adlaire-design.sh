@@ -67,6 +67,7 @@ for path in \
   LICENSE \
   Docs/Master_Spec \
   Docs/Editor_Master_Spec \
+  Docs/Component_Contract_Matrix \
   Docs/Document_Index \
   Docs/Generic_Component_Catalog \
   Docs/Admin_UI_Catalog \
@@ -170,6 +171,7 @@ fi
 find "$ROOT/Docs" -type f \
   ! -name 'Master_Spec' \
   ! -name 'Editor_Master_Spec' \
+  ! -name 'Component_Contract_Matrix' \
   ! -name 'Document_Index' \
   ! -name 'Generic_Component_Catalog' \
   ! -name 'Admin_UI_Catalog' \
@@ -395,6 +397,36 @@ for js_pair in \
   require_text "$output_file" "$hook"
 done
 
+for editor_contract in \
+  'Docs/Editor_Master_Spec|Runtime Contract' \
+  'Docs/Editor_Master_Spec|Command boundary' \
+  'Docs/Editor_Master_Spec|Document boundary' \
+  'Docs/Editor_Master_Spec|Selection boundary' \
+  'Docs/Editor_Master_Spec|History boundary' \
+  'Docs/Editor_Master_Spec|Validation boundary' \
+  'Docs/Editor_Master_Spec|Event boundary' \
+  'Docs/Editor_Master_Spec|Type boundary' \
+  'Docs/Editor_Master_Spec|Output boundary' \
+  'TypeScript/Editor/index.ts|export * from "./types.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./document.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./selection.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./history.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./events.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./validation.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./commands.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./core.ts"' \
+  'TypeScript/Editor/index.ts|window.AdlaireEditor' \
+  'EditorUI/editor.js|window.AdlaireEditor'; do
+  file=${editor_contract%%|*}
+  text=${editor_contract#*|}
+  require_text "$file" "$text"
+done
+
+if grep -R -n -E 'from "\.\./|from "\./CSS|from "\./UI|from "\./EditorUI' "$ROOT/TypeScript/Editor" >/dev/null 2>&1; then
+  echo "TypeScript/Editor modules must stay inside the editor runtime boundary." >&2
+  exit 1
+fi
+
 for sample_class in \
   'adlaire-workbench-layout' \
   'adlaire-filter-builder' \
@@ -406,7 +438,12 @@ for sample_class in \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \
   'adlaire-wysiwyg-lock-banner' \
-  'data-adlaire-toast-dismiss'; do
+  'data-adlaire-toast-dismiss' \
+  'data-sample-toggle-hidden' \
+  'data-sample-toggle-class' \
+  'data-sample-cycle-progress' \
+  'role="dialog"' \
+  'aria-modal='; do
   require_text "Samples/design/index.html" "$sample_class"
 done
 
@@ -416,6 +453,17 @@ for sample_term in \
   'slash menu' \
   'save/lock/suggestion states'; do
   require_text "Samples/README.md" "$sample_term"
+done
+
+for matrix_term in \
+  'Layout System v2' \
+  'Interaction readiness' \
+  'Form and data UI' \
+  'WYSIWYG Editor UI' \
+  'Editor runtime' \
+  'generated token CSS' \
+  'New component families require a matrix row'; do
+  require_text "Docs/Component_Contract_Matrix" "$matrix_term"
 done
 
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
@@ -495,6 +543,7 @@ for doc_term in \
   'Adlaire-Design-System' \
   'Deno TypeScript' \
   'npm packages' \
+  'Component_Contract_Matrix' \
   'Samples are supporting' \
   'official 500 SVG icons' \
   'startup synchronization' \

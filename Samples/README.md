@@ -10,7 +10,7 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 | --- | --- |
 | `Samples/design/index.html` | Static showcase surface for the current design system. |
 | `Samples/design/sample.css` | Sample-only layout support. |
-| `Samples/design/sample.js` | Sample-only display support. |
+| `Samples/design/sample.js` | Sample-only display and state-toggle support. |
 | `Samples/sample-current.png` | Reference screenshot. |
 
 ## Coverage
@@ -23,7 +23,7 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 | Icon Set | `Docs/Icon_Set_Catalog`, `Icons/` | Official 500 SVG icons and category access. |
 | Tokens / Brand | `Tokens/`, `Brand/`, `Docs/Brand_Asset_Catalog` | Token colors, surfaces, layout tokens, brand assets. |
 
-The showcase groups the current system into Overview, Tokens, Components, Admin, WYSIWYG, Icons, Brand, and operational quality sections so visual review follows the same boundaries as the catalogs.
+The showcase groups the current system into Overview, Tokens, Components, Admin, WYSIWYG, Icons, Brand, and operational quality sections so visual review follows the same boundaries as the catalogs. The sample script may toggle representative states for review, but it does not define production behavior.
 
 ## Update Rules
 
@@ -31,3 +31,4 @@ The showcase groups the current system into Overview, Tokens, Components, Admin,
 - If a sample exposes a specification gap, update the authoritative document or catalog first.
 - When Samples change, check whether `Docs/Master_Spec`, `Docs/Document_Index`, and `Tools/check/check-adlaire-design.sh` also need synchronization.
 - Sample HTML, CSS, and JS must not introduce npm, bundling, minification, CSS preprocessors, or source-of-truth values.
+- Sample state toggles must use `data-sample-*` attributes so they remain separate from production `data-adlaire-*` behavior.
