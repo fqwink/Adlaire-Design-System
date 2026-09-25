@@ -382,6 +382,12 @@ if command -v ruby >/dev/null 2>&1; then
   ROOT="$ROOT" ruby - <<'RUBY'
 root = ENV.fetch("ROOT")
 
+token_source = File.read(File.join(root, "TypeScript/CSS/tokens.ts"))
+token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "[^"]+", css: `(.*?)`\s*\}/m).each do |output, css|
+  generated = File.read(File.join(root, output))
+  abort("generated token CSS differs from source: TypeScript/CSS/tokens.ts -> #{output}") unless css == generated
+end
+
 pairs = {
   "TypeScript/CSS/rules-adlaire.ts" => "UI/adlaire.css",
   "TypeScript/CSS/rules-base.ts" => "UI/base.css",
