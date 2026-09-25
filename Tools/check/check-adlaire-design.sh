@@ -378,6 +378,47 @@ if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >
   exit 1
 fi
 
+if command -v ruby >/dev/null 2>&1; then
+  ROOT="$ROOT" ruby - <<'RUBY'
+root = ENV.fetch("ROOT")
+
+pairs = {
+  "TypeScript/CSS/rules-adlaire.ts" => "UI/adlaire.css",
+  "TypeScript/CSS/rules-base.ts" => "UI/base.css",
+  "TypeScript/CSS/rules-grid.ts" => "UI/grid.css",
+  "TypeScript/CSS/rules-layout.ts" => "UI/layout.css",
+  "TypeScript/CSS/rules-components.ts" => "UI/components.css",
+  "TypeScript/CSS/rules-site.ts" => "UI/site.css",
+  "TypeScript/CSS/rules-forms.ts" => "UI/forms.css",
+  "TypeScript/CSS/rules-content.ts" => "UI/content.css",
+  "TypeScript/CSS/rules-utilities.ts" => "UI/utilities.css",
+  "TypeScript/CSS/rules-compat-agws.ts" => "UI/compat-agws.css",
+  "TypeScript/CSS/rules-wysiwyg.ts" => "EditorUI/wysiwyg.css",
+}
+
+pairs.each do |source, output|
+  source_text = File.read(File.join(root, source))
+  match = source_text.match(/css: `(.*)` \} as const;/m)
+  abort("missing css template in #{source}") unless match
+  generated = File.read(File.join(root, output))
+  abort("generated CSS differs from source: #{source} -> #{output}") unless match[1] == generated
+end
+
+defined_vars = Dir.glob(File.join(root, "Tokens", "*.css")).each_with_object({}) do |file, vars|
+  File.read(file).scan(/(--adlaire-[a-z0-9-]+)\s*:/).flatten.each { |name| vars[name] = true }
+end
+allowed_component_vars = {
+  "--adlaire-progress-value" => true,
+  "--adlaire-upload-progress" => true,
+}
+used_vars = Dir.glob(File.join(root, "{Tokens,UI,EditorUI,Samples/design}", "**", "*.css")).each_with_object({}) do |file, vars|
+  File.read(file).scan(/var\((--adlaire-[a-z0-9-]+)/).flatten.each { |name| vars[name] = true }
+end
+missing = used_vars.keys.reject { |name| defined_vars[name] || allowed_component_vars[name] }.sort
+abort("undefined CSS variables: #{missing.join(", ")}") unless missing.empty?
+RUBY
+fi
+
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
 if [ "$ICON_COUNT" -ne 500 ]; then
   echo "Icons/ must contain exactly 500 official SVG icons. Found: $ICON_COUNT" >&2

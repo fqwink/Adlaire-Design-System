@@ -169,7 +169,7 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 The release check assumes `git fetch backup --prune`, local `main` synchronized with `backup/main`, merged head branch cleanup, and no patches outside `backup/main`.
 
-Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, required JavaScript hooks, source/generated CSS consistency when Deno is available, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, required JavaScript hooks, source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, and post-merge release readiness.
 
 ## Change Units
 
