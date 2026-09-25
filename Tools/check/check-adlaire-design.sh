@@ -373,6 +373,29 @@ for js_hook in \
   require_text "UI/components.js" "$js_hook"
 done
 
+for sample_class in \
+  'adlaire-workbench-layout' \
+  'adlaire-filter-builder' \
+  'adlaire-stepper' \
+  'adlaire-progress' \
+  'adlaire-skeleton' \
+  'adlaire-bulk-feedback' \
+  'adlaire-wysiwyg-slash-menu' \
+  'adlaire-wysiwyg-suggestion-card' \
+  'adlaire-wysiwyg-save-banner' \
+  'adlaire-wysiwyg-lock-banner' \
+  'data-adlaire-toast-dismiss'; do
+  require_text "Samples/design/index.html" "$sample_class"
+done
+
+for sample_term in \
+  'Layout System v2' \
+  'operational feedback' \
+  'slash menu' \
+  'save/lock/suggestion states'; do
+  require_text "Samples/README.md" "$sample_term"
+done
+
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
   echo "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-." >&2
   exit 1

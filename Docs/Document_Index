@@ -50,7 +50,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 | Path | Role |
 | --- | --- |
-| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, CSS variable, asset, and release checks. |
+| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, CSS variable, sample coverage, asset, and release checks. |
 
 ## Operational Quality
 

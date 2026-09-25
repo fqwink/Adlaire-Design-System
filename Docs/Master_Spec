@@ -153,6 +153,8 @@ Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Ad
 
 Samples must not become the source of truth for tokens, CSS contracts, JavaScript behavior, or catalog state.
 
+Checks keep representative sample coverage for Layout System v2, operational feedback, and WYSIWYG state UI so sample drift is visible without making Samples authoritative.
+
 ## Checks
 
 Normal check:
