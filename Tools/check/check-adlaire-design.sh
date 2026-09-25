@@ -476,7 +476,13 @@ if command -v ruby >/dev/null 2>&1; then
 root = ENV.fetch("ROOT")
 
 token_source = File.read(File.join(root, "TypeScript/CSS/tokens.ts"))
-token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "[^"]+", css: `(.*?)`\s*\}/m).each do |output, css|
+token_outputs = token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "[^"]+", css: `(.*?)`\s*\}/m)
+source_token_files = token_outputs.map(&:first).sort
+actual_token_files = Dir.chdir(root) { Dir.glob("Tokens/*.css").sort }
+token_file_delta = (source_token_files - actual_token_files) + (actual_token_files - source_token_files)
+abort("token source/output file list mismatch: #{token_file_delta.join(", ")}") unless source_token_files == actual_token_files
+
+token_outputs.each do |output, css|
   generated = File.read(File.join(root, output))
   abort("generated token CSS differs from source: TypeScript/CSS/tokens.ts -> #{output}") unless css == generated
 end
@@ -503,9 +509,15 @@ pairs.each do |source, output|
   abort("generated CSS differs from source: #{source} -> #{output}") unless match[1] == generated
 end
 
-defined_vars = Dir.glob(File.join(root, "Tokens", "*.css")).each_with_object({}) do |file, vars|
-  File.read(file).scan(/(--adlaire-[a-z0-9-]+)\s*:/).flatten.each { |name| vars[name] = true }
+defined_vars = {}
+duplicate_vars = []
+Dir.glob(File.join(root, "Tokens", "*.css")).each do |file|
+  File.read(file).scan(/(--adlaire-[a-z0-9-]+)\s*:/).flatten.each do |name|
+    duplicate_vars << name if defined_vars[name] && defined_vars[name] != file
+    defined_vars[name] = file
+  end
 end
+abort("duplicate CSS token definitions: #{duplicate_vars.uniq.sort.join(", ")}") unless duplicate_vars.empty?
 allowed_component_vars = {
   "--adlaire-progress-value" => true,
   "--adlaire-upload-progress" => true,
