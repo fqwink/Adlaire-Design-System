@@ -400,6 +400,15 @@ for editor_contract in \
   'Docs/Editor_Master_Spec|Event boundary' \
   'Docs/Editor_Master_Spec|Type boundary' \
   'Docs/Editor_Master_Spec|Output boundary' \
+  'Docs/Editor_Master_Spec|Runtime Responsibility Checkpoints' \
+  'Docs/Editor_Master_Spec|HeadlessEditorController' \
+  'Docs/Editor_Master_Spec|non-mutating failure results' \
+  'Docs/Editor_Master_Spec|ToolRegistry' \
+  'Docs/Editor_Master_Spec|selection equality' \
+  'Docs/Editor_Master_Spec|snapshot cloning' \
+  'Docs/Editor_Master_Spec|validateDocumentAsync' \
+  'Docs/Editor_Master_Spec|editorError construction' \
+  'Docs/Editor_Master_Spec|public controller types' \
   'TypeScript/Editor/index.ts|export * from "./types.ts"' \
   'TypeScript/Editor/index.ts|export * from "./document.ts"' \
   'TypeScript/Editor/index.ts|export * from "./selection.ts"' \
@@ -409,6 +418,23 @@ for editor_contract in \
   'TypeScript/Editor/index.ts|export * from "./commands.ts"' \
   'TypeScript/Editor/index.ts|export * from "./core.ts"' \
   'TypeScript/Editor/index.ts|window.AdlaireEditor' \
+  'TypeScript/Editor/core.ts|HeadlessEditorController' \
+  'TypeScript/Editor/core.ts|dispatchBatch' \
+  'TypeScript/Editor/core.ts|command.readOnly' \
+  'TypeScript/Editor/commands.ts|applyCommand' \
+  'TypeScript/Editor/commands.ts|function failed' \
+  'TypeScript/Editor/document.ts|ToolRegistry' \
+  'TypeScript/Editor/document.ts|handlePaste' \
+  'TypeScript/Editor/selection.ts|normalizeSelection' \
+  'TypeScript/Editor/selection.ts|sameSelection' \
+  'TypeScript/Editor/history.ts|class History' \
+  'TypeScript/Editor/history.ts|cloneSnapshot' \
+  'TypeScript/Editor/validation.ts|sanitizeDocument' \
+  'TypeScript/Editor/validation.ts|validateDocumentAsync' \
+  'TypeScript/Editor/events.ts|class EventBus' \
+  'TypeScript/Editor/events.ts|editorError' \
+  'TypeScript/Editor/types.ts|EditorDocument' \
+  'TypeScript/Editor/types.ts|EditorController' \
   'EditorUI/editor.js|window.AdlaireEditor'; do
   file=${editor_contract%%|*}
   text=${editor_contract#*|}
