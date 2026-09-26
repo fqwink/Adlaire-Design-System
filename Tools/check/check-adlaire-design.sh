@@ -67,6 +67,7 @@ for path in \
   LICENSE \
   Docs/Master_Spec \
   Docs/Editor_Master_Spec \
+  Docs/Component_Contract_Matrix \
   Docs/Document_Index \
   Docs/Generic_Component_Catalog \
   Docs/Admin_UI_Catalog \
@@ -170,6 +171,7 @@ fi
 find "$ROOT/Docs" -type f \
   ! -name 'Master_Spec' \
   ! -name 'Editor_Master_Spec' \
+  ! -name 'Component_Contract_Matrix' \
   ! -name 'Document_Index' \
   ! -name 'Generic_Component_Catalog' \
   ! -name 'Admin_UI_Catalog' \
@@ -395,6 +397,36 @@ for js_pair in \
   require_text "$output_file" "$hook"
 done
 
+for editor_contract in \
+  'Docs/Editor_Master_Spec|Runtime Contract' \
+  'Docs/Editor_Master_Spec|Command boundary' \
+  'Docs/Editor_Master_Spec|Document boundary' \
+  'Docs/Editor_Master_Spec|Selection boundary' \
+  'Docs/Editor_Master_Spec|History boundary' \
+  'Docs/Editor_Master_Spec|Validation boundary' \
+  'Docs/Editor_Master_Spec|Event boundary' \
+  'Docs/Editor_Master_Spec|Type boundary' \
+  'Docs/Editor_Master_Spec|Output boundary' \
+  'TypeScript/Editor/index.ts|export * from "./types.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./document.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./selection.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./history.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./events.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./validation.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./commands.ts"' \
+  'TypeScript/Editor/index.ts|export * from "./core.ts"' \
+  'TypeScript/Editor/index.ts|window.AdlaireEditor' \
+  'EditorUI/editor.js|window.AdlaireEditor'; do
+  file=${editor_contract%%|*}
+  text=${editor_contract#*|}
+  require_text "$file" "$text"
+done
+
+if grep -R -n -E 'from "\.\./|from "\./CSS|from "\./UI|from "\./EditorUI' "$ROOT/TypeScript/Editor" >/dev/null 2>&1; then
+  echo "TypeScript/Editor modules must stay inside the editor runtime boundary." >&2
+  exit 1
+fi
+
 for sample_class in \
   'adlaire-workbench-layout' \
   'adlaire-filter-builder' \
@@ -406,8 +438,38 @@ for sample_class in \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \
   'adlaire-wysiwyg-lock-banner' \
-  'data-adlaire-toast-dismiss'; do
+  'data-adlaire-toast-dismiss' \
+  'data-sample-toggle-hidden' \
+  'data-sample-toggle-class' \
+  'data-sample-cycle-progress' \
+  'role="dialog"' \
+  'aria-modal='; do
   require_text "Samples/design/index.html" "$sample_class"
+done
+
+for a11y_contract in \
+  'Samples/design/index.html|aria-labelledby="sample-dialog-title"' \
+  'Samples/design/index.html|aria-label="Close dialog"' \
+  'Samples/design/index.html|aria-label="Close drawer"' \
+  'Samples/design/index.html|aria-label="Popover sample"' \
+  'Samples/design/index.html|aria-hidden="true"' \
+  'Samples/design/index.html|aria-current="step"' \
+  'Samples/design/index.html|adlaire-wysiwyg-readonly' \
+  'Samples/design/index.html|adlaire-wysiwyg-locked' \
+  'Samples/design/index.html|adlaire-wysiwyg-a11y-panel' \
+  'TypeScript/UI/components.ts|containFocus' \
+  'TypeScript/UI/components.ts|event.key !== "Escape"' \
+  'TypeScript/UI/components.ts|data-adlaire-dismiss' \
+  'TypeScript/UI/components.ts|aria-expanded' \
+  'TypeScript/UI/components.ts|aria-pressed' \
+  'UI/components.js|containFocus' \
+  'UI/components.js|event.key !== "Escape"' \
+  'UI/components.js|data-adlaire-dismiss' \
+  'UI/components.js|aria-expanded' \
+  'UI/components.js|aria-pressed'; do
+  file=${a11y_contract%%|*}
+  text=${a11y_contract#*|}
+  require_text "$file" "$text"
 done
 
 for sample_term in \
@@ -416,6 +478,18 @@ for sample_term in \
   'slash menu' \
   'save/lock/suggestion states'; do
   require_text "Samples/README.md" "$sample_term"
+done
+
+for matrix_term in \
+  'Layout System v2' \
+  'Interaction readiness' \
+  'Form and data UI' \
+  'WYSIWYG Editor UI' \
+  'Editor runtime' \
+  'generated token CSS' \
+  'accessibility hooks' \
+  'New component families require a matrix row'; do
+  require_text "Docs/Component_Contract_Matrix" "$matrix_term"
 done
 
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
@@ -428,7 +502,13 @@ if command -v ruby >/dev/null 2>&1; then
 root = ENV.fetch("ROOT")
 
 token_source = File.read(File.join(root, "TypeScript/CSS/tokens.ts"))
-token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "[^"]+", css: `(.*?)`\s*\}/m).each do |output, css|
+token_outputs = token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "[^"]+", css: `(.*?)`\s*\}/m)
+source_token_files = token_outputs.map(&:first).sort
+actual_token_files = Dir.chdir(root) { Dir.glob("Tokens/*.css").sort }
+token_file_delta = (source_token_files - actual_token_files) + (actual_token_files - source_token_files)
+abort("token source/output file list mismatch: #{token_file_delta.join(", ")}") unless source_token_files == actual_token_files
+
+token_outputs.each do |output, css|
   generated = File.read(File.join(root, output))
   abort("generated token CSS differs from source: TypeScript/CSS/tokens.ts -> #{output}") unless css == generated
 end
@@ -455,9 +535,15 @@ pairs.each do |source, output|
   abort("generated CSS differs from source: #{source} -> #{output}") unless match[1] == generated
 end
 
-defined_vars = Dir.glob(File.join(root, "Tokens", "*.css")).each_with_object({}) do |file, vars|
-  File.read(file).scan(/(--adlaire-[a-z0-9-]+)\s*:/).flatten.each { |name| vars[name] = true }
+defined_vars = {}
+duplicate_vars = []
+Dir.glob(File.join(root, "Tokens", "*.css")).each do |file|
+  File.read(file).scan(/(--adlaire-[a-z0-9-]+)\s*:/).flatten.each do |name|
+    duplicate_vars << name if defined_vars[name] && defined_vars[name] != file
+    defined_vars[name] = file
+  end
 end
+abort("duplicate CSS token definitions: #{duplicate_vars.uniq.sort.join(", ")}") unless duplicate_vars.empty?
 allowed_component_vars = {
   "--adlaire-progress-value" => true,
   "--adlaire-upload-progress" => true,
@@ -495,9 +581,11 @@ for doc_term in \
   'Adlaire-Design-System' \
   'Deno TypeScript' \
   'npm packages' \
+  'Component_Contract_Matrix' \
   'Samples are supporting' \
   'official 500 SVG icons' \
   'startup synchronization' \
+  'matching merged branch' \
   'output file unit' \
   'check-covered contract' \
   'Catalog Governance' \
@@ -548,7 +636,7 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
   current_branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || printf '%s' HEAD)"
   if [ "$current_branch" != "main" ]; then
     if git -C "$ROOT" rev-parse --verify "backup/$current_branch" >/dev/null 2>&1; then
-      echo "release check requires merged head branch to be deleted: backup/$current_branch" >&2
+      echo "release check requires the matching merged branch to be deleted: backup/$current_branch" >&2
       exit 1
     fi
     if git -C "$ROOT" cherry -v backup/main HEAD | grep -E '^\+' >/dev/null 2>&1; then

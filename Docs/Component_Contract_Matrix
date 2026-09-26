@@ -1,0 +1,26 @@
+# Adlaire-Design Component Contract Matrix
+
+This matrix maps component families to the documents, source files, generated files, JavaScript hooks, samples, and checks that keep each contract synchronized.
+
+`Docs/Master_Spec` remains the higher-level source of truth. This file is a navigation and verification matrix, not a separate implementation authority.
+
+## Contract Matrix
+
+| Family | Catalog / spec | CSS source | Generated CSS | JavaScript source | Generated JavaScript | Sample coverage | Check coverage |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Layout System v2 | `Docs/Generic_Component_Catalog` | `TypeScript/CSS/rules-grid.ts`, `TypeScript/CSS/rules-layout.ts` | `UI/grid.css`, `UI/layout.css` | `TypeScript/UI/components.ts` | `UI/components.js` | `Samples/design/index.html` | required classes, generated CSS, sample coverage |
+| Interaction readiness | `Docs/Generic_Component_Catalog` | `TypeScript/CSS/rules-components.ts` | `UI/components.css` | `TypeScript/UI/components.ts` | `UI/components.js` | `Samples/design/index.html` | required classes, JavaScript hooks, accessibility hooks |
+| Form and data UI | `Docs/Generic_Component_Catalog`, `Docs/Admin_UI_Catalog` | `TypeScript/CSS/rules-forms.ts`, `TypeScript/CSS/rules-components.ts` | `UI/forms.css`, `UI/components.css` | `TypeScript/UI/forms.ts`, `TypeScript/UI/content.ts` | `UI/forms.js`, `UI/content.js` | `Samples/design/index.html` | required classes, JavaScript hooks, sample coverage |
+| WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | `TypeScript/CSS/rules-wysiwyg.ts` | `EditorUI/wysiwyg.css` | `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` | `Samples/design/index.html` | required classes, JavaScript hooks, sample coverage |
+| Editor runtime | `Docs/Editor_Master_Spec` | Not CSS-owned | `EditorUI/editor.js` runtime output | `TypeScript/Editor/` | `EditorUI/editor.js` | Demonstrated through WYSIWYG sample states | module exports, module boundaries |
+| Tokens | `Docs/Master_Spec` | `TypeScript/CSS/tokens.ts` | `Tokens/*.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | generated token CSS, token inventory, duplicate tokens, undefined variables |
+| Icons and brand | `Docs/Icon_Set_Catalog`, `Docs/Brand_Asset_Catalog` | Asset files | `Icons/`, `Brand/` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | icon count, asset inventory |
+
+## Matrix Rules
+
+- Every contract family has exactly one primary catalog or specification.
+- Generated CSS and generated JavaScript stay repository-local outputs.
+- Samples confirm representative behavior, but Samples never become the source of truth.
+- Accessibility hooks for roles, labels, dismiss controls, focus containment, Escape handling, hidden decorative content, and selected/current state are part of interaction readiness.
+- Checks must fail with actionable messages when a source, generated output, catalog, sample, or hook drifts.
+- New component families require a matrix row, a catalog or specification owner, and check coverage.

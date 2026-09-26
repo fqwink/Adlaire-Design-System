@@ -286,19 +286,19 @@
         <h2 id="overlay-title">Dialog, Drawer, Popover, Tooltip, Toast</h2>
       </div>
       <div class="sample-overlay-grid">
-        <article class="adlaire-dialog" aria-labelledby="sample-dialog-title">
+        <article class="adlaire-dialog" aria-labelledby="sample-dialog-title" role="dialog" aria-modal="true" data-sample-dialog>
           <div class="adlaire-dialog-header">
             <h3 id="sample-dialog-title" class="adlaire-dialog-title">Publish confirmation</h3>
-            <button class="adlaire-dialog-close" type="button" aria-label="Close dialog">x</button>
+            <button class="adlaire-dialog-close" type="button" aria-label="Close dialog" data-sample-toggle-hidden="[data-sample-dialog]">x</button>
           </div>
           <div class="adlaire-dialog-body">PR前にチェック、生成物、カタログ同期を確認する。</div>
           <div class="adlaire-dialog-footer">
-            <button class="adlaire-button adlaire-button-secondary" type="button">Cancel</button>
-            <button class="adlaire-button adlaire-button-primary" type="button">Confirm</button>
+            <button class="adlaire-button adlaire-button-secondary" type="button" data-sample-toggle-hidden="[data-sample-dialog]">Cancel</button>
+            <button class="adlaire-button adlaire-button-primary" type="button" data-sample-toggle-hidden="[data-sample-dialog]">Confirm</button>
           </div>
         </article>
 
-        <article class="adlaire-drawer is-open">
+        <article class="adlaire-drawer is-open" role="dialog" aria-modal="false">
           <div class="adlaire-drawer-panel">
             <div class="adlaire-drawer-header">
               <h3 class="adlaire-drawer-title">Review drawer</h3>
@@ -309,7 +309,7 @@
         </article>
 
         <div class="sample-overlay-stack">
-          <div class="adlaire-popover">
+          <div class="adlaire-popover" role="dialog" aria-label="Popover sample" data-placement="bottom">
             <strong class="adlaire-popover-title">Popover</strong>
             <span class="adlaire-popover-body">短い補助情報や選択肢を面として表示。</span>
           </div>
@@ -356,8 +356,9 @@
         <aside class="adlaire-layout-region">
           <div class="adlaire-progress" aria-label="Quality progress">
             <span>Verification</span>
-            <span class="adlaire-progress-track"><span class="adlaire-progress-value" style="--adlaire-progress-value: 72%"></span></span>
+            <span class="adlaire-progress-track"><span class="adlaire-progress-value" style="--adlaire-progress-value: 72%" data-sample-progress></span></span>
           </div>
+          <button class="adlaire-button adlaire-button-secondary" type="button" data-sample-cycle-progress>Cycle progress</button>
           <div class="adlaire-skeleton" aria-hidden="true"></div>
           <div class="adlaire-bulk-feedback"><span>4 selected</span><button class="adlaire-button adlaire-button-primary" type="button">Run</button></div>
         </aside>
@@ -426,7 +427,7 @@
         </div>
       </article>
 
-      <article class="adlaire-wysiwyg adlaire-wysiwyg-readonly">
+      <article class="adlaire-wysiwyg adlaire-wysiwyg-readonly" data-sample-editor-state>
         <div class="adlaire-wysiwyg-header">
           <div class="adlaire-wysiwyg-title">Mobile surface</div>
           <div class="adlaire-wysiwyg-status">readonly</div>
@@ -442,8 +443,9 @@
           <button class="adlaire-wysiwyg-command-item" type="button">コード</button>
         </div>
         <div class="adlaire-wysiwyg-alert">Readonly content cannot be edited.</div>
-        <div class="adlaire-wysiwyg-save-banner">Saved locally</div>
+        <div class="adlaire-wysiwyg-save-banner" data-sample-save-state>Saved locally</div>
         <div class="adlaire-wysiwyg-lock-banner">Locked by reviewer</div>
+        <button class="adlaire-wysiwyg-mobile-action" type="button" data-sample-toggle-class="[data-sample-editor-state]|adlaire-wysiwyg-locked">Toggle lock</button>
         <div class="adlaire-wysiwyg-a11y-panel">
           <strong>Accessibility</strong>
           <span>見出し順、代替テキスト、キーボード操作を確認。</span>
