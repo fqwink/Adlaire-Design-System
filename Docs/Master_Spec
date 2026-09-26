@@ -35,7 +35,9 @@ Every repository task starts by reading `AGENTS.md` and checking Git consistency
 
 Implementation, commit, push, and PR creation do not proceed until that startup synchronization is complete.
 
-After a PR is merged by the user, the next repository task treats post-merge cleanup as part of startup synchronization. The cleanup verifies the merged PR state, fetches `backup --prune`, fast-forwards local `main` to `backup/main`, and deletes only the matching local branch whose head is already contained in `backup/main`.
+After a PR is merged by the user, the next repository task treats post-merge cleanup as part of startup synchronization. The cleanup verifies the merged PR state, fetches `backup --prune`, fast-forwards local `main` to `backup/main`, and deletes only the matching merged local branch whose head is already contained in `backup/main`.
+
+Post-merge cleanup is scoped to the matching merged branch for the PR just handled. Older unrelated local branches, including branches whose upstream was already pruned before the current task, are not deleted or treated as release blockers unless the user explicitly makes them part of the task.
 
 ## Technical Baseline
 
@@ -174,7 +176,7 @@ Release check:
 sh Tools/check/check-adlaire-design.sh --release-check
 ```
 
-The release check assumes `git fetch backup --prune`, local `main` synchronized with `backup/main`, merged head branch cleanup, and no patches outside `backup/main`.
+The release check assumes `git fetch backup --prune`, local `main` synchronized with `backup/main`, matching merged branch cleanup, and no patches outside `backup/main`.
 
 Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, and post-merge release readiness.
 

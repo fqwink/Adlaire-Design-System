@@ -585,6 +585,7 @@ for doc_term in \
   'Samples are supporting' \
   'official 500 SVG icons' \
   'startup synchronization' \
+  'matching merged branch' \
   'output file unit' \
   'check-covered contract' \
   'Catalog Governance' \
@@ -635,7 +636,7 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
   current_branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || printf '%s' HEAD)"
   if [ "$current_branch" != "main" ]; then
     if git -C "$ROOT" rev-parse --verify "backup/$current_branch" >/dev/null 2>&1; then
-      echo "release check requires merged head branch to be deleted: backup/$current_branch" >&2
+      echo "release check requires the matching merged branch to be deleted: backup/$current_branch" >&2
       exit 1
     fi
     if git -C "$ROOT" cherry -v backup/main HEAD | grep -E '^\+' >/dev/null 2>&1; then
