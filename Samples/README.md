@@ -32,3 +32,4 @@ The showcase groups the current system into Overview, Tokens, Components, Admin,
 - When Samples change, check whether `Docs/Master_Spec`, `Docs/Document_Index`, and `Tools/check/check-adlaire-design.sh` also need synchronization.
 - Sample HTML, CSS, and JS must not introduce npm, bundling, minification, CSS preprocessors, or source-of-truth values.
 - Sample state toggles must use `data-sample-*` attributes so they remain separate from production `data-adlaire-*` behavior.
+- Sample interaction controls cover overlay visibility, progress value changes, and WYSIWYG readonly, locked, accessibility, and save states without becoming production behavior.

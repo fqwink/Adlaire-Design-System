@@ -21,34 +21,38 @@ esac
 mkdir -p "$TMP_DIR"
 trap 'rm -rf "$TMP_DIR"' EXIT HUP INT TERM
 
+fail() {
+  family=$1
+  message=$2
+  echo "[$family] $message" >&2
+  exit 1
+}
+
 require_path() {
   if [ ! -e "$ROOT/$1" ]; then
-    echo "missing required path: $1" >&2
-    exit 1
+    fail "Repository structure" "missing required path: $1"
   fi
 }
 
 require_dir() {
   if [ ! -d "$ROOT/$1" ]; then
-    echo "required path must be a directory: $1" >&2
-    exit 1
+    fail "Repository structure" "required path must be a directory: $1"
   fi
 }
 
 require_text() {
   file=$1
   text=$2
+  family=${3:-Contract text}
   if ! grep -F -- "$text" "$ROOT/$file" >/dev/null 2>&1; then
-    echo "$file missing required text: $text" >&2
-    exit 1
+    fail "$family" "$file missing required text: $text"
   fi
 }
 
 require_class_in_css() {
   class=$1
   if ! grep -R -F -- "$class" "$ROOT/UI" "$ROOT/EditorUI" >/dev/null 2>&1; then
-    echo "missing required implemented class: $class" >&2
-    exit 1
+    fail "Component CSS contract" "missing required implemented class: $class"
   fi
 }
 
@@ -56,8 +60,7 @@ require_class_in_doc() {
   file=$1
   class=$2
   if ! grep -F -- "\`$class\`" "$ROOT/$file" >/dev/null 2>&1; then
-    echo "$file missing required catalog class: $class" >&2
-    exit 1
+    fail "Catalog contract" "$file missing required catalog class: $class"
   fi
 }
 
@@ -163,7 +166,7 @@ find "$ROOT" -mindepth 1 -maxdepth 1 \
   -print >"$TMP_DIR/unexpected-top-level"
 
 if [ -s "$TMP_DIR/unexpected-top-level" ]; then
-  echo "unexpected top-level entries:" >&2
+  echo "[Repository structure] unexpected top-level entries:" >&2
   cat "$TMP_DIR/unexpected-top-level" >&2
   exit 1
 fi
@@ -182,46 +185,39 @@ find "$ROOT/Docs" -type f \
   -print >"$TMP_DIR/unexpected-docs"
 
 if [ -s "$TMP_DIR/unexpected-docs" ]; then
-  echo "unexpected Docs files:" >&2
+  echo "[Documentation inventory] unexpected Docs files:" >&2
   cat "$TMP_DIR/unexpected-docs" >&2
   exit 1
 fi
 
 if find "$ROOT/TypeScript" -type f ! -name '*.ts' | grep . >/dev/null 2>&1; then
-  echo "TypeScript/ must contain only .ts files." >&2
-  exit 1
+  fail "TypeScript source boundary" "TypeScript/ must contain only .ts files."
 fi
 
 if find "$ROOT/TypeScript/CSS" -mindepth 1 -type d | grep . >/dev/null 2>&1; then
-  echo "TypeScript/CSS must not contain nested directories." >&2
-  exit 1
+  fail "TypeScript CSS boundary" "TypeScript/CSS must not contain nested directories."
 fi
 
 if find "$ROOT/TypeScript/Editor" -mindepth 1 -type d | grep . >/dev/null 2>&1; then
-  echo "TypeScript/Editor must stay flat." >&2
-  exit 1
+  fail "Editor runtime boundary" "TypeScript/Editor must stay flat."
 fi
 
 if [ -e "$ROOT/package.json" ] || [ -e "$ROOT/package-lock.json" ] || [ -e "$ROOT/node_modules" ]; then
-  echo "npm and Node dependency files are prohibited." >&2
-  exit 1
+  fail "Dependency policy" "npm and Node dependency files are prohibited."
 fi
 
 for forbidden in '@import' '@charset'; do
   if grep -R -n "$forbidden" "$ROOT/Tokens" "$ROOT/UI" "$ROOT/EditorUI" --include='*.css' >/dev/null 2>&1; then
-    echo "CSS must not contain $forbidden." >&2
-    exit 1
+    fail "Generated CSS policy" "CSS must not contain $forbidden."
   fi
 done
 
 if grep -R -n '!important' "$ROOT/UI" "$ROOT/EditorUI" --include='*.css' >/dev/null 2>&1; then
-  echo "UI and EditorUI CSS must not use !important." >&2
-  exit 1
+  fail "Generated CSS policy" "UI and EditorUI CSS must not use !important."
 fi
 
 if grep -R -n -E '#[0-9a-fA-F]{3,8}|rgba?\(' "$ROOT/UI" "$ROOT/EditorUI" --include='*.css' >/dev/null 2>&1; then
-  echo "UI and EditorUI CSS must not contain direct color literals." >&2
-  exit 1
+  fail "Token usage contract" "UI and EditorUI CSS must not contain direct color literals."
 fi
 
 for first_line in \
@@ -249,15 +245,13 @@ for first_line in \
   file=${first_line%%|*}
   expected=${first_line#*|}
   if [ "$(sed -n '1p' "$ROOT/$file")" != "$expected" ]; then
-    echo "$file has unexpected first line." >&2
-    exit 1
+    fail "Generated output identity" "$file has unexpected first line."
   fi
 done
 
 for token_file in "$ROOT"/Tokens/*.css; do
   if [ "$(grep -c '^:root {' "$token_file")" -ne 1 ]; then
-    echo "$token_file must contain exactly one :root block." >&2
-    exit 1
+    fail "Token output contract" "$token_file must contain exactly one :root block."
   fi
 done
 
@@ -273,8 +267,7 @@ for token in \
   '--adlaire-semantic-selected-bg' \
   '--adlaire-shadow-focus-ring'; do
   if ! grep -R -F -- "$token" "$ROOT/Tokens" >/dev/null 2>&1; then
-    echo "missing required token: $token" >&2
-    exit 1
+    fail "Token inventory" "missing required token: $token"
   fi
 done
 
@@ -371,8 +364,8 @@ for js_hook in \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
   'adlaire-popover.is-open'; do
-  require_text "TypeScript/UI/components.ts" "$js_hook"
-  require_text "UI/components.js" "$js_hook"
+  require_text "TypeScript/UI/components.ts" "$js_hook" "Interaction readiness"
+  require_text "UI/components.js" "$js_hook" "Interaction readiness"
 done
 
 for js_pair in \
@@ -393,8 +386,8 @@ for js_pair in \
   rest=${js_pair#*|}
   output_file=${rest%%|*}
   hook=${rest#*|}
-  require_text "$source_file" "$hook"
-  require_text "$output_file" "$hook"
+  require_text "$source_file" "$hook" "JavaScript hook contract"
+  require_text "$output_file" "$hook" "JavaScript hook contract"
 done
 
 for editor_contract in \
@@ -407,6 +400,15 @@ for editor_contract in \
   'Docs/Editor_Master_Spec|Event boundary' \
   'Docs/Editor_Master_Spec|Type boundary' \
   'Docs/Editor_Master_Spec|Output boundary' \
+  'Docs/Editor_Master_Spec|Runtime Responsibility Checkpoints' \
+  'Docs/Editor_Master_Spec|HeadlessEditorController' \
+  'Docs/Editor_Master_Spec|non-mutating failure results' \
+  'Docs/Editor_Master_Spec|ToolRegistry' \
+  'Docs/Editor_Master_Spec|selection equality' \
+  'Docs/Editor_Master_Spec|snapshot cloning' \
+  'Docs/Editor_Master_Spec|validateDocumentAsync' \
+  'Docs/Editor_Master_Spec|editorError construction' \
+  'Docs/Editor_Master_Spec|public controller types' \
   'TypeScript/Editor/index.ts|export * from "./types.ts"' \
   'TypeScript/Editor/index.ts|export * from "./document.ts"' \
   'TypeScript/Editor/index.ts|export * from "./selection.ts"' \
@@ -416,15 +418,31 @@ for editor_contract in \
   'TypeScript/Editor/index.ts|export * from "./commands.ts"' \
   'TypeScript/Editor/index.ts|export * from "./core.ts"' \
   'TypeScript/Editor/index.ts|window.AdlaireEditor' \
+  'TypeScript/Editor/core.ts|HeadlessEditorController' \
+  'TypeScript/Editor/core.ts|dispatchBatch' \
+  'TypeScript/Editor/core.ts|command.readOnly' \
+  'TypeScript/Editor/commands.ts|applyCommand' \
+  'TypeScript/Editor/commands.ts|function failed' \
+  'TypeScript/Editor/document.ts|ToolRegistry' \
+  'TypeScript/Editor/document.ts|handlePaste' \
+  'TypeScript/Editor/selection.ts|normalizeSelection' \
+  'TypeScript/Editor/selection.ts|sameSelection' \
+  'TypeScript/Editor/history.ts|class History' \
+  'TypeScript/Editor/history.ts|cloneSnapshot' \
+  'TypeScript/Editor/validation.ts|sanitizeDocument' \
+  'TypeScript/Editor/validation.ts|validateDocumentAsync' \
+  'TypeScript/Editor/events.ts|class EventBus' \
+  'TypeScript/Editor/events.ts|editorError' \
+  'TypeScript/Editor/types.ts|EditorDocument' \
+  'TypeScript/Editor/types.ts|EditorController' \
   'EditorUI/editor.js|window.AdlaireEditor'; do
   file=${editor_contract%%|*}
   text=${editor_contract#*|}
-  require_text "$file" "$text"
+  require_text "$file" "$text" "Editor runtime"
 done
 
 if grep -R -n -E 'from "\.\./|from "\./CSS|from "\./UI|from "\./EditorUI' "$ROOT/TypeScript/Editor" >/dev/null 2>&1; then
-  echo "TypeScript/Editor modules must stay inside the editor runtime boundary." >&2
-  exit 1
+  fail "Editor runtime boundary" "TypeScript/Editor modules must stay inside the editor runtime boundary."
 fi
 
 for sample_class in \
@@ -441,10 +459,13 @@ for sample_class in \
   'data-adlaire-toast-dismiss' \
   'data-sample-toggle-hidden' \
   'data-sample-toggle-class' \
+  'data-sample-cycle-text' \
+  'data-sample-state-output' \
   'data-sample-cycle-progress' \
+  'data-sample-progress-meter' \
   'role="dialog"' \
   'aria-modal='; do
-  require_text "Samples/design/index.html" "$sample_class"
+  require_text "Samples/design/index.html" "$sample_class" "Sample coverage"
 done
 
 for a11y_contract in \
@@ -469,15 +490,17 @@ for a11y_contract in \
   'UI/components.js|aria-pressed'; do
   file=${a11y_contract%%|*}
   text=${a11y_contract#*|}
-  require_text "$file" "$text"
+  require_text "$file" "$text" "Accessibility contract"
 done
 
 for sample_term in \
   'Layout System v2' \
   'operational feedback' \
   'slash menu' \
+  'overlay visibility' \
+  'progress value changes' \
   'save/lock/suggestion states'; do
-  require_text "Samples/README.md" "$sample_term"
+  require_text "Samples/README.md" "$sample_term" "Sample governance"
 done
 
 for matrix_term in \
@@ -486,15 +509,22 @@ for matrix_term in \
   'Form and data UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
+  'Representative Subcontracts' \
+  'layout frame, public layout, master-detail layout' \
+  'dialog, drawer, popover, toast' \
+  'filter input, filter chip, file input' \
+  'slash menu, suggestion card, save banner' \
+  'command, document, selection, history' \
+  'color, typography, spacing, layout' \
   'generated token CSS' \
   'accessibility hooks' \
+  'minimum review granularity' \
   'New component families require a matrix row'; do
-  require_text "Docs/Component_Contract_Matrix" "$matrix_term"
+  require_text "Docs/Component_Contract_Matrix" "$matrix_term" "Component Contract Matrix"
 done
 
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
-  echo "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-." >&2
-  exit 1
+  fail "WYSIWYG Editor UI" "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-."
 fi
 
 if command -v ruby >/dev/null 2>&1; then
@@ -502,15 +532,31 @@ if command -v ruby >/dev/null 2>&1; then
 root = ENV.fetch("ROOT")
 
 token_source = File.read(File.join(root, "TypeScript/CSS/tokens.ts"))
-token_outputs = token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "[^"]+", css: `(.*?)`\s*\}/m)
-source_token_files = token_outputs.map(&:first).sort
+expected_token_categories = {
+  "Tokens/colors.css" => "color",
+  "Tokens/typography.css" => "typography",
+  "Tokens/spacing.css" => "spacing",
+  "Tokens/layout.css" => "layout",
+  "Tokens/motion.css" => "motion",
+  "Tokens/layer.css" => "layer",
+  "Tokens/breakpoints.css" => "breakpoint",
+  "Tokens/surface.css" => "surface",
+  "Tokens/status.css" => "status",
+  "Tokens/effects.css" => "effects",
+}
+
+token_outputs = token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "([^"]+)", css: `(.*?)`\s*\}/m)
+source_token_files = token_outputs.map { |output, _category, _css| output }.sort
 actual_token_files = Dir.chdir(root) { Dir.glob("Tokens/*.css").sort }
 token_file_delta = (source_token_files - actual_token_files) + (actual_token_files - source_token_files)
-abort("token source/output file list mismatch: #{token_file_delta.join(", ")}") unless source_token_files == actual_token_files
+abort("[Token inventory] source/output file list mismatch: #{token_file_delta.join(", ")}") unless source_token_files == actual_token_files
+abort("[Token category boundary] token source/output file list must match category map") unless source_token_files == expected_token_categories.keys.sort
 
-token_outputs.each do |output, css|
+token_outputs.each do |output, category, css|
+  expected_category = expected_token_categories.fetch(output)
+  abort("[Token category boundary] #{output} uses category #{category}, expected #{expected_category}") unless category == expected_category
   generated = File.read(File.join(root, output))
-  abort("generated token CSS differs from source: TypeScript/CSS/tokens.ts -> #{output}") unless css == generated
+  abort("[Generated token CSS] differs from source: TypeScript/CSS/tokens.ts -> #{output}") unless css == generated
 end
 
 pairs = {
@@ -530,9 +576,9 @@ pairs = {
 pairs.each do |source, output|
   source_text = File.read(File.join(root, source))
   match = source_text.match(/css: `(.*)` \} as const;/m)
-  abort("missing css template in #{source}") unless match
+  abort("[Generated CSS source] missing css template in #{source}") unless match
   generated = File.read(File.join(root, output))
-  abort("generated CSS differs from source: #{source} -> #{output}") unless match[1] == generated
+  abort("[Generated CSS] differs from source: #{source} -> #{output}") unless match[1] == generated
 end
 
 defined_vars = {}
@@ -543,7 +589,7 @@ Dir.glob(File.join(root, "Tokens", "*.css")).each do |file|
     defined_vars[name] = file
   end
 end
-abort("duplicate CSS token definitions: #{duplicate_vars.uniq.sort.join(", ")}") unless duplicate_vars.empty?
+abort("[Token inventory] duplicate CSS token definitions: #{duplicate_vars.uniq.sort.join(", ")}") unless duplicate_vars.empty?
 allowed_component_vars = {
   "--adlaire-progress-value" => true,
   "--adlaire-upload-progress" => true,
@@ -552,19 +598,18 @@ used_vars = Dir.glob(File.join(root, "{Tokens,UI,EditorUI,Samples/design}", "**"
   File.read(file).scan(/var\((--adlaire-[a-z0-9-]+)/).flatten.each { |name| vars[name] = true }
 end
 missing = used_vars.keys.reject { |name| defined_vars[name] || allowed_component_vars[name] }.sort
-abort("undefined CSS variables: #{missing.join(", ")}") unless missing.empty?
+abort("[Token usage contract] undefined CSS variables: #{missing.join(", ")}") unless missing.empty?
 RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
 if [ "$ICON_COUNT" -ne 500 ]; then
-  echo "Icons/ must contain exactly 500 official SVG icons. Found: $ICON_COUNT" >&2
-  exit 1
+  fail "Icon inventory" "Icons/ must contain exactly 500 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
 if [ -s "$TMP_DIR/unexpected-icons" ]; then
-  echo "Icons/ contains unexpected files:" >&2
+  echo "[Icon inventory] Icons/ contains unexpected files:" >&2
   cat "$TMP_DIR/unexpected-icons" >&2
   exit 1
 fi
@@ -586,19 +631,19 @@ for doc_term in \
   'official 500 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
+  'family-labelled diagnostics' \
+  'Token category boundaries' \
   'output file unit' \
   'check-covered contract' \
   'Catalog Governance' \
   'Pending Tasks'; do
   if ! grep -R -F -- "$doc_term" "$ROOT/README.md" "$ROOT/Docs" "$ROOT/Samples/README.md" "$ROOT/Brand/README.md" >/dev/null 2>&1; then
-    echo "documentation missing required governance term: $doc_term" >&2
-    exit 1
+    fail "Documentation governance" "documentation missing required governance term: $doc_term"
   fi
 done
 
 if grep -R -n -E 'TODO|FIXME|未修正|未完了タスク|保留' "$ROOT/README.md" "$ROOT/Docs" "$ROOT/Samples/README.md" "$ROOT/Brand/README.md" >/dev/null 2>&1; then
-  echo "documentation must not contain unresolved task markers." >&2
-  exit 1
+  fail "Documentation governance" "documentation must not contain unresolved task markers."
 fi
 
 if command -v deno >/dev/null 2>&1; then
@@ -617,30 +662,26 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
   git -C "$ROOT" diff --check
   git -C "$ROOT" status --short --branch >"$TMP_DIR/git-status"
   if grep -E '^(M|A|D|R|C|U|\?\?)' "$TMP_DIR/git-status" >/dev/null 2>&1; then
-    echo "release check requires a clean git worktree:" >&2
+    echo "[Release readiness] release check requires a clean git worktree:" >&2
     cat "$TMP_DIR/git-status" >&2
     exit 1
   fi
   if ! git -C "$ROOT" rev-parse --verify backup/main >/dev/null 2>&1; then
-    echo "release check requires backup/main." >&2
-    exit 1
+    fail "Release readiness" "release check requires backup/main."
   fi
   if ! git -C "$ROOT" rev-parse --verify main >/dev/null 2>&1; then
-    echo "release check requires local main." >&2
-    exit 1
+    fail "Release readiness" "release check requires local main."
   fi
   if [ "$(git -C "$ROOT" rev-parse main)" != "$(git -C "$ROOT" rev-parse backup/main)" ]; then
-    echo "release check requires local main to match backup/main." >&2
-    exit 1
+    fail "Release readiness" "release check requires local main to match backup/main."
   fi
   current_branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || printf '%s' HEAD)"
   if [ "$current_branch" != "main" ]; then
     if git -C "$ROOT" rev-parse --verify "backup/$current_branch" >/dev/null 2>&1; then
-      echo "release check requires the matching merged branch to be deleted: backup/$current_branch" >&2
-      exit 1
+      fail "Release readiness" "release check requires the matching merged branch to be deleted: backup/$current_branch"
     fi
     if git -C "$ROOT" cherry -v backup/main HEAD | grep -E '^\+' >/dev/null 2>&1; then
-      echo "release check requires no patches outside backup/main." >&2
+      echo "[Release readiness] release check requires no patches outside backup/main." >&2
       git -C "$ROOT" cherry -v backup/main HEAD >&2
       exit 1
     fi

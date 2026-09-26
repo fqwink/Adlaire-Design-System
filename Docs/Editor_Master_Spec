@@ -42,6 +42,19 @@ The runtime keeps invalid commands from mutating document state. Duplicate block
 | Type boundary | `types.ts` owns shared runtime types and does not import implementation modules. |
 | Output boundary | `EditorUI/editor.js` is generated runtime output and is checked for the public browser global. |
 
+## Runtime Responsibility Checkpoints
+
+| Module | Checkpoint |
+| --- | --- |
+| `core.ts` | `HeadlessEditorController`, `dispatch`, `dispatchBatch`, read-only enforcement, save request, and publish request stay in runtime coordination. |
+| `commands.ts` | `applyCommand`, block mutation commands, and non-mutating failure results stay in the command boundary. |
+| `document.ts` | `ToolRegistry`, `BlockRegistry`, document cloning, block lookup, normalization, and paste handling stay in the document boundary. |
+| `selection.ts` | selection validation, normalization, first/last/next/previous position helpers, and selection equality stay in the selection boundary. |
+| `history.ts` | `History`, undo, redo, snapshot cloning, and history limit enforcement stay in the history boundary. |
+| `validation.ts` | `sanitizeDocument`, `validateDocument`, `validateDocumentAsync`, and block validation stay in the validation boundary. |
+| `events.ts` | `EventBus`, event subscription, event emission, and editorError construction stay in the event boundary. |
+| `types.ts` | `EditorDocument`, `EditorBlock`, `EditorCommand`, `EditorSelection`, `EditorError`, and public controller types stay in the type boundary. |
+
 ## UI Surface
 
 WYSIWYG Editor UI covers:
