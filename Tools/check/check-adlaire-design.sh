@@ -478,8 +478,16 @@ for matrix_term in \
   'Form and data UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
+  'Representative Subcontracts' \
+  'layout frame, public layout, master-detail layout' \
+  'dialog, drawer, popover, toast' \
+  'filter input, filter chip, file input' \
+  'slash menu, suggestion card, save banner' \
+  'command, document, selection, history' \
+  'color, typography, spacing, layout' \
   'generated token CSS' \
   'accessibility hooks' \
+  'minimum review granularity' \
   'New component families require a matrix row'; do
   require_text "Docs/Component_Contract_Matrix" "$matrix_term" "Component Contract Matrix"
 done

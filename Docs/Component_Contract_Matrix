@@ -16,6 +16,18 @@ This matrix maps component families to the documents, source files, generated fi
 | Tokens | `Docs/Master_Spec` | `TypeScript/CSS/tokens.ts` | `Tokens/*.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | generated token CSS, token inventory, duplicate tokens, undefined variables |
 | Icons and brand | `Docs/Icon_Set_Catalog`, `Docs/Brand_Asset_Catalog` | Asset files | `Icons/`, `Brand/` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | icon count, asset inventory |
 
+## Representative Subcontracts
+
+| Family | Representative subcontracts | Required synchronization |
+| --- | --- | --- |
+| Layout System v2 | layout frame, public layout, master-detail layout, workbench layout, dashboard grid, resource grid, editor grid | Catalog classes, `rules-grid.ts`, `rules-layout.ts`, generated CSS, sample coverage, and check terms move together. |
+| Interaction readiness | dialog, drawer, popover, toast, progress, skeleton, bulk feedback, stepper, filter builder | Catalog classes, generated CSS, component JavaScript hooks, accessibility hooks, sample states, and check terms move together. |
+| Form and data UI | filter input, filter chip, file input, toggle input, validation, sortable content, copyable code | Catalog rows, forms/content TypeScript, generated JavaScript, sample coverage, and check terms move together. |
+| WYSIWYG Editor UI | slash menu, suggestion card, save banner, lock banner, readonly state, locked state, accessibility panel | WYSIWYG catalog classes, `rules-wysiwyg.ts`, `wysiwyg.ts`, generated EditorUI files, sample states, and check terms move together. |
+| Editor runtime | command, document, selection, history, validation, event, type, output | `Docs/Editor_Master_Spec`, `TypeScript/Editor/`, `EditorUI/editor.js`, module exports, and boundary checks move together. |
+| Tokens | color, typography, spacing, layout, motion, layer, breakpoint, surface, status, effect | `TypeScript/CSS/tokens.ts`, generated token CSS, token inventory checks, duplicate checks, and undefined variable checks move together. |
+| Icons and brand | official SVG inventory, semantic icon categories, decorative icon policy, brand asset inventory | Icon catalog, brand catalog, asset files, sample coverage, and inventory checks move together. |
+
 ## Matrix Rules
 
 - Every contract family has exactly one primary catalog or specification.
@@ -23,4 +35,5 @@ This matrix maps component families to the documents, source files, generated fi
 - Samples confirm representative behavior, but Samples never become the source of truth.
 - Accessibility hooks for roles, labels, dismiss controls, focus containment, Escape handling, hidden decorative content, and selected/current state are part of interaction readiness.
 - Checks must fail with actionable messages when a source, generated output, catalog, sample, or hook drifts.
+- Representative subcontracts define the minimum review granularity for a component family.
 - New component families require a matrix row, a catalog or specification owner, and check coverage.
