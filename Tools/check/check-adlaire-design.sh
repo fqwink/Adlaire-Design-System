@@ -532,13 +532,29 @@ if command -v ruby >/dev/null 2>&1; then
 root = ENV.fetch("ROOT")
 
 token_source = File.read(File.join(root, "TypeScript/CSS/tokens.ts"))
-token_outputs = token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "[^"]+", css: `(.*?)`\s*\}/m)
-source_token_files = token_outputs.map(&:first).sort
+expected_token_categories = {
+  "Tokens/colors.css" => "color",
+  "Tokens/typography.css" => "typography",
+  "Tokens/spacing.css" => "spacing",
+  "Tokens/layout.css" => "layout",
+  "Tokens/motion.css" => "motion",
+  "Tokens/layer.css" => "layer",
+  "Tokens/breakpoints.css" => "breakpoint",
+  "Tokens/surface.css" => "surface",
+  "Tokens/status.css" => "status",
+  "Tokens/effects.css" => "effects",
+}
+
+token_outputs = token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "([^"]+)", css: `(.*?)`\s*\}/m)
+source_token_files = token_outputs.map { |output, _category, _css| output }.sort
 actual_token_files = Dir.chdir(root) { Dir.glob("Tokens/*.css").sort }
 token_file_delta = (source_token_files - actual_token_files) + (actual_token_files - source_token_files)
 abort("[Token inventory] source/output file list mismatch: #{token_file_delta.join(", ")}") unless source_token_files == actual_token_files
+abort("[Token category boundary] token source/output file list must match category map") unless source_token_files == expected_token_categories.keys.sort
 
-token_outputs.each do |output, css|
+token_outputs.each do |output, category, css|
+  expected_category = expected_token_categories.fetch(output)
+  abort("[Token category boundary] #{output} uses category #{category}, expected #{expected_category}") unless category == expected_category
   generated = File.read(File.join(root, output))
   abort("[Generated token CSS] differs from source: TypeScript/CSS/tokens.ts -> #{output}") unless css == generated
 end
@@ -616,6 +632,7 @@ for doc_term in \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
+  'Token category boundaries' \
   'output file unit' \
   'check-covered contract' \
   'Catalog Governance' \
