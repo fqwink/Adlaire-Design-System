@@ -180,6 +180,8 @@ The release check assumes `git fetch backup --prune`, local `main` synchronized 
 
 Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, and post-merge release readiness.
 
+Check failures use family-labelled diagnostics so the broken contract area is visible before reading the full failure details.
+
 ## Change Units
 
 | Change | Required synchronization |
