@@ -136,6 +136,8 @@ Layout System v2 adds named application structures: layout frame, header, footer
 
 Dialog, drawer, popover, toast, progress, skeleton, data table state, bulk feedback, stepper, and filter builder UI are interaction-ready component contracts. Their CSS, JavaScript hooks, catalog rows, and checks are updated together.
 
+Interaction contracts include representative accessibility hooks: dialog roles, modal state, labelled headings, dismiss buttons, Escape handling, focus containment, hidden decorative content, current-step indication, and expanded/pressed state synchronization.
+
 ## WYSIWYG Editor Direction
 
 WYSIWYG Editor UI is part of Adlaire-Design-System. Editor details are governed by `Docs/Editor_Master_Spec`; UI component coverage is governed by `Docs/WYSIWYG_Editor_UI_Catalog`.
@@ -174,7 +176,7 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 The release check assumes `git fetch backup --prune`, local `main` synchronized with `backup/main`, merged head branch cleanup, and no patches outside `backup/main`.
 
-Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, and post-merge release readiness.
 
 ## Change Units
 

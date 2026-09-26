@@ -447,6 +447,31 @@ for sample_class in \
   require_text "Samples/design/index.html" "$sample_class"
 done
 
+for a11y_contract in \
+  'Samples/design/index.html|aria-labelledby="sample-dialog-title"' \
+  'Samples/design/index.html|aria-label="Close dialog"' \
+  'Samples/design/index.html|aria-label="Close drawer"' \
+  'Samples/design/index.html|aria-label="Popover sample"' \
+  'Samples/design/index.html|aria-hidden="true"' \
+  'Samples/design/index.html|aria-current="step"' \
+  'Samples/design/index.html|adlaire-wysiwyg-readonly' \
+  'Samples/design/index.html|adlaire-wysiwyg-locked' \
+  'Samples/design/index.html|adlaire-wysiwyg-a11y-panel' \
+  'TypeScript/UI/components.ts|containFocus' \
+  'TypeScript/UI/components.ts|event.key !== "Escape"' \
+  'TypeScript/UI/components.ts|data-adlaire-dismiss' \
+  'TypeScript/UI/components.ts|aria-expanded' \
+  'TypeScript/UI/components.ts|aria-pressed' \
+  'UI/components.js|containFocus' \
+  'UI/components.js|event.key !== "Escape"' \
+  'UI/components.js|data-adlaire-dismiss' \
+  'UI/components.js|aria-expanded' \
+  'UI/components.js|aria-pressed'; do
+  file=${a11y_contract%%|*}
+  text=${a11y_contract#*|}
+  require_text "$file" "$text"
+done
+
 for sample_term in \
   'Layout System v2' \
   'operational feedback' \
@@ -462,6 +487,7 @@ for matrix_term in \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'generated token CSS' \
+  'accessibility hooks' \
   'New component families require a matrix row'; do
   require_text "Docs/Component_Contract_Matrix" "$matrix_term"
 done

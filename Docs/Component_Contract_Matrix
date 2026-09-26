@@ -21,5 +21,6 @@ This matrix maps component families to the documents, source files, generated fi
 - Every contract family has exactly one primary catalog or specification.
 - Generated CSS and generated JavaScript stay repository-local outputs.
 - Samples confirm representative behavior, but Samples never become the source of truth.
+- Accessibility hooks for roles, labels, dismiss controls, focus containment, Escape handling, hidden decorative content, and selected/current state are part of interaction readiness.
 - Checks must fail with actionable messages when a source, generated output, catalog, sample, or hook drifts.
 - New component families require a matrix row, a catalog or specification owner, and check coverage.
