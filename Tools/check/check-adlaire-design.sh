@@ -433,7 +433,10 @@ for sample_class in \
   'data-adlaire-toast-dismiss' \
   'data-sample-toggle-hidden' \
   'data-sample-toggle-class' \
+  'data-sample-cycle-text' \
+  'data-sample-state-output' \
   'data-sample-cycle-progress' \
+  'data-sample-progress-meter' \
   'role="dialog"' \
   'aria-modal='; do
   require_text "Samples/design/index.html" "$sample_class" "Sample coverage"
@@ -468,6 +471,8 @@ for sample_term in \
   'Layout System v2' \
   'operational feedback' \
   'slash menu' \
+  'overlay visibility' \
+  'progress value changes' \
   'save/lock/suggestion states'; do
   require_text "Samples/README.md" "$sample_term" "Sample governance"
 done
