@@ -320,6 +320,10 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-git-repo-card' \
   'Docs/Generic_Component_Catalog|.adlaire-git-pr-detail' \
   'Docs/Generic_Component_Catalog|.adlaire-git-diff-viewer' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-review-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-ci-status' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-merge-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-diff-hunk' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-dashboard' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-settings' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-data-list' \
@@ -467,6 +471,10 @@ for sample_class in \
   'adlaire-toggle' \
   'data-adlaire-validate-summary' \
   'data-adlaire-file-empty' \
+  'adlaire-git-review-state' \
+  'adlaire-git-ci-status' \
+  'adlaire-git-merge-state' \
+  'adlaire-git-diff-hunk' \
   'adlaire-wysiwyg-slash-menu' \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \

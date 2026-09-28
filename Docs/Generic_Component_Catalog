@@ -98,6 +98,10 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-git-repo-card`
 - `.adlaire-git-pr-detail`
 - `.adlaire-git-diff-viewer`
+- `.adlaire-git-review-state`
+- `.adlaire-git-ci-status`
+- `.adlaire-git-merge-state`
+- `.adlaire-git-diff-hunk`
 
 ## Catalog Governance
 
