@@ -47,6 +47,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Activity UI | notification list, activity feed, shortcut key, empty action | 実装済み |
 | Operational UI | status timeline, monitoring card, deployment card, release notes, query result, team card, organization switcher, approval flow, review checklist, responsive preview | 実装済み |
 | Application UI | app navigation, sidebar section, command launcher, inbox list, message thread, file card, upload queue, agent card, workspace switcher, audit log | 実装済み |
+| Product UI | product card, plan selector, billing summary, invoice list, account profile, member list, role matrix, support ticket, analytics panel, workflow builder, integration card, trust center | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -133,6 +134,22 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-agent-card`
 - `.adlaire-workspace-switcher`
 - `.adlaire-audit-log`
+- `.adlaire-product-card`
+- `.adlaire-plan-selector`
+- `.adlaire-billing-summary`
+- `.adlaire-invoice-list`
+- `.adlaire-account-profile`
+- `.adlaire-member-list`
+- `.adlaire-role-matrix`
+- `.adlaire-support-ticket`
+- `.adlaire-support-conversation`
+- `.adlaire-analytics-panel`
+- `.adlaire-report-card`
+- `.adlaire-workflow-builder`
+- `.adlaire-integration-card`
+- `.adlaire-api-key-list`
+- `.adlaire-trust-center`
+- `.adlaire-compliance-evidence`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`
