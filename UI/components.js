@@ -267,6 +267,27 @@
     var routeSelect = event.target.closest("[data-adlaire-route-select]");
     var carePlanCheck = event.target.closest("[data-adlaire-care-plan-check]");
     var evidenceSelect = event.target.closest("[data-adlaire-evidence-select]");
+    var ticketPrioritySelect = event.target.closest("[data-adlaire-ticket-priority-select]");
+    var successPlaybookCheck = event.target.closest("[data-adlaire-success-playbook-check]");
+    var reportParameterSelect = event.target.closest("[data-adlaire-report-parameter-select]");
+    var channelSelect = event.target.closest("[data-adlaire-channel-select]");
+    var quietHoursToggle = event.target.closest("[data-adlaire-quiet-hours-toggle]");
+    var topicPreferenceToggle = event.target.closest("[data-adlaire-topic-preference-toggle]");
+    var editorialGateSelect = event.target.closest("[data-adlaire-editorial-gate-select]");
+    var localeSelect = event.target.closest("[data-adlaire-locale-select]");
+    var moderationDecision = event.target.closest("[data-adlaire-moderation-decision]");
+    var deviceSelect = event.target.closest("[data-adlaire-device-select]");
+    var deploymentRingSelect = event.target.closest("[data-adlaire-deployment-ring-select]");
+    var handoffCheck = event.target.closest("[data-adlaire-handoff-check]");
+    var fareOptionSelect = event.target.closest("[data-adlaire-fare-option-select]");
+    var roomSelect = event.target.closest("[data-adlaire-room-select]");
+    var recoveryTaskCheck = event.target.closest("[data-adlaire-recovery-task-check]");
+    var eligibilityCheck = event.target.closest("[data-adlaire-eligibility-check]");
+    var permitStepSelect = event.target.closest("[data-adlaire-permit-step-select]");
+    var volunteerShiftSelect = event.target.closest("[data-adlaire-volunteer-shift-select]");
+    var demandResponseSelect = event.target.closest("[data-adlaire-demand-response-select]");
+    var outageReportSelect = event.target.closest("[data-adlaire-outage-report-select]");
+    var disclosureCheck = event.target.closest("[data-adlaire-disclosure-check]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -408,6 +429,111 @@
     if (evidenceSelect) {
       event.preventDefault();
       selectInteractiveChoice(evidenceSelect, ".adlaire-evidence-list", "[data-adlaire-evidence-select]", "aria-selected");
+    }
+
+    if (ticketPrioritySelect) {
+      event.preventDefault();
+      selectInteractiveChoice(ticketPrioritySelect, ".adlaire-ticket-priority-board", "[data-adlaire-ticket-priority-select]", "aria-selected");
+    }
+
+    if (successPlaybookCheck) {
+      event.preventDefault();
+      toggleBooleanState(successPlaybookCheck, "aria-checked");
+    }
+
+    if (reportParameterSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(reportParameterSelect, ".adlaire-report-parameter-bar", "[data-adlaire-report-parameter-select]", "aria-pressed");
+    }
+
+    if (channelSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(channelSelect, ".adlaire-channel-list", "[data-adlaire-channel-select]", "aria-selected");
+    }
+
+    if (quietHoursToggle) {
+      event.preventDefault();
+      toggleBooleanState(quietHoursToggle, "aria-pressed");
+    }
+
+    if (topicPreferenceToggle) {
+      event.preventDefault();
+      toggleBooleanState(topicPreferenceToggle, "aria-checked");
+    }
+
+    if (editorialGateSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(editorialGateSelect, ".adlaire-review-gate-panel", "[data-adlaire-editorial-gate-select]", "aria-selected");
+    }
+
+    if (localeSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(localeSelect, ".adlaire-locale-switcher-panel", "[data-adlaire-locale-select]", "aria-selected");
+    }
+
+    if (moderationDecision) {
+      event.preventDefault();
+      selectInteractiveChoice(moderationDecision, ".adlaire-moderation-queue", "[data-adlaire-moderation-decision]", "aria-pressed");
+    }
+
+    if (deviceSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(deviceSelect, ".adlaire-device-registry-table", "[data-adlaire-device-select]", "aria-selected");
+    }
+
+    if (deploymentRingSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(deploymentRingSelect, ".adlaire-deployment-ring-selector", "[data-adlaire-deployment-ring-select]", "aria-selected");
+    }
+
+    if (handoffCheck) {
+      event.preventDefault();
+      toggleBooleanState(handoffCheck, "aria-checked");
+    }
+
+    if (fareOptionSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(fareOptionSelect, ".adlaire-booking-summary-panel", "[data-adlaire-fare-option-select]", "aria-selected");
+    }
+
+    if (roomSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(roomSelect, ".adlaire-room-inventory-board", "[data-adlaire-room-select]", "aria-selected");
+    }
+
+    if (recoveryTaskCheck) {
+      event.preventDefault();
+      toggleBooleanState(recoveryTaskCheck, "aria-checked");
+    }
+
+    if (eligibilityCheck) {
+      event.preventDefault();
+      toggleBooleanState(eligibilityCheck, "aria-checked");
+    }
+
+    if (permitStepSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(permitStepSelect, ".adlaire-document-requirement-list", "[data-adlaire-permit-step-select]", "aria-selected");
+    }
+
+    if (volunteerShiftSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(volunteerShiftSelect, ".adlaire-volunteer-shift-board", "[data-adlaire-volunteer-shift-select]", "aria-selected");
+    }
+
+    if (demandResponseSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(demandResponseSelect, ".adlaire-demand-response-panel", "[data-adlaire-demand-response-select]", "aria-selected");
+    }
+
+    if (outageReportSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(outageReportSelect, ".adlaire-service-appointment-board", "[data-adlaire-outage-report-select]", "aria-selected");
+    }
+
+    if (disclosureCheck) {
+      event.preventDefault();
+      toggleBooleanState(disclosureCheck, "aria-checked");
     }
   });
 

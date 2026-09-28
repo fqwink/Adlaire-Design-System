@@ -76,6 +76,41 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Healthcare / Care Operations UI | patient summary card, appointment queue, care plan checklist, medication schedule, triage status panel, consent record row | 実装済み |
 | Education / Learning UI | course card, lesson progress, assignment queue, grading rubric, learner profile, certification tracker | 実装済み |
 | Legal / Case Management UI | case file card, matter timeline, evidence list, filing deadline tracker, review privilege badge, counsel task list | 実装済み |
+| Contact Center / Support UI | support inbox, ticket priority board, SLA breach card, agent status panel, customer sentiment card, escalation path | 実装済み |
+| Marketing / Growth UI | campaign card, audience segment panel, content calendar, experiment card, funnel stage board, attribution summary | 実装済み |
+| Customer Success / Account Ops UI | health score panel, renewal risk card, onboarding plan, success playbook, QBR summary, adoption metric grid | 実装済み |
+| Research / Feedback UI | survey result card, feedback inbox, insight cluster, user interview note, feature request board, NPS trend | 実装済み |
+| BI / Reporting UI | report builder, dashboard tile, report parameter bar, pivot table, export job card, scheduled report list | 実装済み |
+| Messaging UI | message composer, channel list, conversation preview, message delivery state, mention picker, unread marker | 実装済み |
+| Notification Operations UI | notification center, notification rule card, delivery channel row, notification template card, quiet hours panel, digest schedule | 実装済み |
+| Broadcast / Announcement UI | broadcast banner, announcement composer, audience targeting panel, publish queue, delivery report card, acknowledgement tracker | 実装済み |
+| Inbox Workflow UI | inbox triage board, inbox assignment row, response timer card, canned reply panel, follow-up reminder, resolution summary | 実装済み |
+| Subscription / Preference UI | subscription plan row, topic preference list, opt-in card, consent channel matrix, unsubscribe reason panel, preference audit row | 実装済み |
+| Editorial Production UI | editorial calendar, content brief card, draft status board, editor assignment row, review gate panel, publish readiness card | 実装済み |
+| Media / Asset Governance UI | media library panel, asset rights card, usage license badge, rendition list, asset approval queue, metadata completeness meter | 実装済み |
+| Localization / Translation UI | locale switcher panel, translation queue, translation memory card, locale coverage matrix, missing string list, glossary term card | 実装済み |
+| SEO / Discovery UI | SEO checklist, search preview card, metadata editor panel, keyword cluster, canonical URL card, crawl status row | 実装済み |
+| Moderation / Community UI | moderation queue, flagged content card, moderation decision row, report reason panel, user trust score, appeal status tracker | 実装済み |
+| Device Fleet UI | device card, device registry table, enrollment panel, device health tile, firmware version badge, remote command queue | 実装済み |
+| Edge Deployment UI | edge node card, sync status panel, offline queue, bandwidth usage meter, deployment ring selector, rollback checkpoint card | 実装済み |
+| Sensor / Telemetry UI | telemetry stream, sensor reading card, threshold rule panel, alert event list, calibration record row, signal quality indicator | 実装済み |
+| Kiosk / POS Operations UI | kiosk status board, terminal session card, cash drawer status, receipt printer panel, checkout lane row, store device map | 実装済み |
+| Mobile Workforce Device UI | mobile device assignment, app version compliance, battery status row, location ping timeline, lost mode banner, device handoff checklist | 実装済み |
+| Travel Booking UI | itinerary card, traveler profile row, fare option card, booking summary panel, trip status timeline, disruption alert card | 実装済み |
+| Hospitality / Stay UI | room inventory board, reservation card, guest folio panel, housekeeping task row, amenity request queue, check-in readiness card | 実装済み |
+| Event Operations UI | event schedule board, session card, speaker profile card, attendee check-in row, badge print queue, capacity warning panel | 実装済み |
+| Venue / Seating UI | venue map panel, seating section card, seat hold row, access pass card, gate status board, crowd flow meter | 実装済み |
+| Service Recovery UI | incident guest card, compensation option list, recovery task board, refund status row, service note panel, satisfaction follow-up card | 実装済み |
+| Civic Services UI | service application card, eligibility checklist, appointment slot row, case status timeline, public notice banner, service counter queue | 実装済み |
+| Permit / Licensing UI | permit application panel, license status card, document requirement list, inspection schedule row, compliance finding card, renewal reminder panel | 実装済み |
+| Grant / Aid Operations UI | grant program card, aid eligibility summary, application review board, funding allocation row, disbursement status card, beneficiary profile panel | 実装済み |
+| Community / Nonprofit UI | donation campaign card, volunteer shift board, impact metric tile, pledge tracker row, outreach list, donor acknowledgement card | 実装済み |
+| Emergency / Public Response UI | incident command panel, resource request card, shelter status board, alert broadcast row, response team roster, recovery milestone card | 実装済み |
+| Energy Operations UI | energy usage card, demand response panel, load forecast card, grid event timeline, generation mix card, energy contract summary | 実装済み |
+| Utility Customer UI | utility account card, meter reading row, outage report card, service appointment board, consumption alert banner, payment assistance panel | 実装済み |
+| Water / Waste Operations UI | water quality panel, leak alert card, maintenance route row, waste pickup schedule, treatment plant status, compliance sample log | 実装済み |
+| Sustainability / Carbon UI | carbon footprint tile, emissions ledger row, offset portfolio card, sustainability target tracker, disclosure checklist, audit evidence panel | 実装済み |
+| Environmental Field Monitoring UI | monitoring station card, sensor threshold board, field inspection checklist, sample collection row, incident map panel, remediation task list | 実装済み |
 | Product UI | product card, plan selector, billing summary, invoice list, account profile, member list, role matrix, support ticket, analytics panel, workflow builder, integration card, trust center | 実装済み |
 | Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
@@ -331,6 +366,216 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-filing-deadline-tracker`
 - `.adlaire-review-privilege-badge`
 - `.adlaire-counsel-task-list`
+- `.adlaire-support-inbox`
+- `.adlaire-ticket-priority-board`
+- `.adlaire-sla-breach-card`
+- `.adlaire-agent-status-panel`
+- `.adlaire-customer-sentiment-card`
+- `.adlaire-escalation-path`
+- `.adlaire-campaign-card`
+- `.adlaire-audience-segment-panel`
+- `.adlaire-content-calendar`
+- `.adlaire-experiment-card`
+- `.adlaire-funnel-stage-board`
+- `.adlaire-attribution-summary`
+- `.adlaire-health-score-panel`
+- `.adlaire-renewal-risk-card`
+- `.adlaire-onboarding-plan`
+- `.adlaire-success-playbook`
+- `.adlaire-qbr-summary`
+- `.adlaire-adoption-metric-grid`
+- `.adlaire-survey-result-card`
+- `.adlaire-feedback-inbox`
+- `.adlaire-insight-cluster`
+- `.adlaire-user-interview-note`
+- `.adlaire-feature-request-board`
+- `.adlaire-nps-trend`
+- `.adlaire-report-builder`
+- `.adlaire-dashboard-tile`
+- `.adlaire-report-parameter-bar`
+- `.adlaire-pivot-table`
+- `.adlaire-export-job-card`
+- `.adlaire-scheduled-report-list`
+- `.adlaire-message-composer`
+- `.adlaire-channel-list`
+- `.adlaire-conversation-preview`
+- `.adlaire-message-delivery-state`
+- `.adlaire-mention-picker`
+- `.adlaire-unread-marker`
+- `.adlaire-notification-center`
+- `.adlaire-notification-rule-card`
+- `.adlaire-delivery-channel-row`
+- `.adlaire-notification-template-card`
+- `.adlaire-quiet-hours-panel`
+- `.adlaire-digest-schedule`
+- `.adlaire-broadcast-banner`
+- `.adlaire-announcement-composer`
+- `.adlaire-audience-targeting-panel`
+- `.adlaire-publish-queue`
+- `.adlaire-delivery-report-card`
+- `.adlaire-acknowledgement-tracker`
+- `.adlaire-inbox-triage-board`
+- `.adlaire-inbox-assignment-row`
+- `.adlaire-response-timer-card`
+- `.adlaire-canned-reply-panel`
+- `.adlaire-follow-up-reminder`
+- `.adlaire-resolution-summary`
+- `.adlaire-subscription-plan-row`
+- `.adlaire-topic-preference-list`
+- `.adlaire-opt-in-card`
+- `.adlaire-consent-channel-matrix`
+- `.adlaire-unsubscribe-reason-panel`
+- `.adlaire-preference-audit-row`
+- `.adlaire-editorial-calendar`
+- `.adlaire-content-brief-card`
+- `.adlaire-draft-status-board`
+- `.adlaire-editor-assignment-row`
+- `.adlaire-review-gate-panel`
+- `.adlaire-publish-readiness-card`
+- `.adlaire-media-library-panel`
+- `.adlaire-asset-rights-card`
+- `.adlaire-usage-license-badge`
+- `.adlaire-rendition-list`
+- `.adlaire-asset-approval-queue`
+- `.adlaire-metadata-completeness-meter`
+- `.adlaire-locale-switcher-panel`
+- `.adlaire-translation-queue`
+- `.adlaire-translation-memory-card`
+- `.adlaire-locale-coverage-matrix`
+- `.adlaire-missing-string-list`
+- `.adlaire-glossary-term-card`
+- `.adlaire-seo-checklist`
+- `.adlaire-search-preview-card`
+- `.adlaire-metadata-editor-panel`
+- `.adlaire-keyword-cluster`
+- `.adlaire-canonical-url-card`
+- `.adlaire-crawl-status-row`
+- `.adlaire-moderation-queue`
+- `.adlaire-flagged-content-card`
+- `.adlaire-moderation-decision-row`
+- `.adlaire-report-reason-panel`
+- `.adlaire-user-trust-score`
+- `.adlaire-appeal-status-tracker`
+- `.adlaire-device-card`
+- `.adlaire-device-registry-table`
+- `.adlaire-enrollment-panel`
+- `.adlaire-device-health-tile`
+- `.adlaire-firmware-version-badge`
+- `.adlaire-remote-command-queue`
+- `.adlaire-edge-node-card`
+- `.adlaire-sync-status-panel`
+- `.adlaire-offline-queue`
+- `.adlaire-bandwidth-usage-meter`
+- `.adlaire-deployment-ring-selector`
+- `.adlaire-rollback-checkpoint-card`
+- `.adlaire-telemetry-stream`
+- `.adlaire-sensor-reading-card`
+- `.adlaire-threshold-rule-panel`
+- `.adlaire-alert-event-list`
+- `.adlaire-calibration-record-row`
+- `.adlaire-signal-quality-indicator`
+- `.adlaire-kiosk-status-board`
+- `.adlaire-terminal-session-card`
+- `.adlaire-cash-drawer-status`
+- `.adlaire-receipt-printer-panel`
+- `.adlaire-checkout-lane-row`
+- `.adlaire-store-device-map`
+- `.adlaire-mobile-device-assignment`
+- `.adlaire-app-version-compliance`
+- `.adlaire-battery-status-row`
+- `.adlaire-location-ping-timeline`
+- `.adlaire-lost-mode-banner`
+- `.adlaire-device-handoff-checklist`
+- `.adlaire-itinerary-card`
+- `.adlaire-traveler-profile-row`
+- `.adlaire-fare-option-card`
+- `.adlaire-booking-summary-panel`
+- `.adlaire-trip-status-timeline`
+- `.adlaire-disruption-alert-card`
+- `.adlaire-room-inventory-board`
+- `.adlaire-reservation-card`
+- `.adlaire-guest-folio-panel`
+- `.adlaire-housekeeping-task-row`
+- `.adlaire-amenity-request-queue`
+- `.adlaire-check-in-readiness-card`
+- `.adlaire-event-schedule-board`
+- `.adlaire-session-card`
+- `.adlaire-speaker-profile-card`
+- `.adlaire-attendee-check-in-row`
+- `.adlaire-badge-print-queue`
+- `.adlaire-capacity-warning-panel`
+- `.adlaire-venue-map-panel`
+- `.adlaire-seating-section-card`
+- `.adlaire-seat-hold-row`
+- `.adlaire-access-pass-card`
+- `.adlaire-gate-status-board`
+- `.adlaire-crowd-flow-meter`
+- `.adlaire-incident-guest-card`
+- `.adlaire-compensation-option-list`
+- `.adlaire-recovery-task-board`
+- `.adlaire-refund-status-row`
+- `.adlaire-service-note-panel`
+- `.adlaire-satisfaction-follow-up-card`
+- `.adlaire-service-application-card`
+- `.adlaire-eligibility-checklist`
+- `.adlaire-appointment-slot-row`
+- `.adlaire-case-status-timeline`
+- `.adlaire-public-notice-banner`
+- `.adlaire-service-counter-queue`
+- `.adlaire-permit-application-panel`
+- `.adlaire-license-status-card`
+- `.adlaire-document-requirement-list`
+- `.adlaire-inspection-schedule-row`
+- `.adlaire-compliance-finding-card`
+- `.adlaire-renewal-reminder-panel`
+- `.adlaire-grant-program-card`
+- `.adlaire-aid-eligibility-summary`
+- `.adlaire-application-review-board`
+- `.adlaire-funding-allocation-row`
+- `.adlaire-disbursement-status-card`
+- `.adlaire-beneficiary-profile-panel`
+- `.adlaire-donation-campaign-card`
+- `.adlaire-volunteer-shift-board`
+- `.adlaire-impact-metric-tile`
+- `.adlaire-pledge-tracker-row`
+- `.adlaire-outreach-list`
+- `.adlaire-donor-acknowledgement-card`
+- `.adlaire-incident-command-panel`
+- `.adlaire-resource-request-card`
+- `.adlaire-shelter-status-board`
+- `.adlaire-alert-broadcast-row`
+- `.adlaire-response-team-roster`
+- `.adlaire-recovery-milestone-card`
+- `.adlaire-energy-usage-card`
+- `.adlaire-demand-response-panel`
+- `.adlaire-load-forecast-card`
+- `.adlaire-grid-event-timeline`
+- `.adlaire-generation-mix-card`
+- `.adlaire-energy-contract-summary`
+- `.adlaire-utility-account-card`
+- `.adlaire-meter-reading-row`
+- `.adlaire-outage-report-card`
+- `.adlaire-service-appointment-board`
+- `.adlaire-consumption-alert-banner`
+- `.adlaire-payment-assistance-panel`
+- `.adlaire-water-quality-panel`
+- `.adlaire-leak-alert-card`
+- `.adlaire-maintenance-route-row`
+- `.adlaire-waste-pickup-schedule`
+- `.adlaire-treatment-plant-status`
+- `.adlaire-compliance-sample-log`
+- `.adlaire-carbon-footprint-tile`
+- `.adlaire-emissions-ledger-row`
+- `.adlaire-offset-portfolio-card`
+- `.adlaire-sustainability-target-tracker`
+- `.adlaire-disclosure-checklist`
+- `.adlaire-audit-evidence-panel`
+- `.adlaire-monitoring-station-card`
+- `.adlaire-sensor-threshold-board`
+- `.adlaire-field-inspection-checklist`
+- `.adlaire-sample-collection-row`
+- `.adlaire-incident-map-panel`
+- `.adlaire-remediation-task-list`
 - `.adlaire-product-card`
 - `.adlaire-plan-selector`
 - `.adlaire-billing-summary`
