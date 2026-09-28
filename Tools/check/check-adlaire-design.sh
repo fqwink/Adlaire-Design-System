@@ -645,12 +645,34 @@ if [ -s "$TMP_DIR/unexpected-icons" ]; then
   exit 1
 fi
 
+find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | while IFS= read -r icon_file; do
+  icon_name=$(basename "$icon_file")
+  case "$icon_name" in
+    adlaire-icon-navigation-*.svg|adlaire-icon-action-*.svg|adlaire-icon-status-*.svg|adlaire-icon-content-*.svg|adlaire-icon-editor-*.svg|adlaire-icon-media-*.svg|adlaire-icon-form-*.svg)
+      ;;
+    *)
+      fail "Icon inventory" "icon filename must use an approved category: $icon_name"
+      ;;
+  esac
+done
+
 for asset in \
   Brand/adlaire-logo-primary.svg \
   Brand/adlaire-logo-mark.svg \
   Brand/adlaire-ogp-default.png \
   Brand/adlaire-image-brand-overview.webp; do
   require_path "$asset"
+done
+
+find "$ROOT/Brand" -maxdepth 1 -type f ! -name '.gitkeep' ! -name 'README.md' | while IFS= read -r brand_file; do
+  brand_name=$(basename "$brand_file")
+  case "$brand_name" in
+    adlaire-logo-*.svg|adlaire-image-*.png|adlaire-image-*.webp|adlaire-ogp-*.png|adlaire-ogp-*.webp|adlaire-icon-*.svg|adlaire-brand-*.svg|adlaire-brand-*.png|adlaire-brand-*.webp)
+      ;;
+    *)
+      fail "Brand asset inventory" "brand asset has an unsupported name or extension: $brand_name"
+      ;;
+  esac
 done
 
 for doc_term in \
@@ -664,6 +686,8 @@ for doc_term in \
   'matching merged branch' \
   'family-labelled diagnostics' \
   'Token category boundaries' \
+  'Category naming' \
+  'Brand asset inventory is checked' \
   'output file unit' \
   'check-covered contract' \
   'Catalog Governance' \
