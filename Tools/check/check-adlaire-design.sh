@@ -461,6 +461,36 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-policy-acknowledgement' \
   'Docs/Generic_Component_Catalog|.adlaire-quick-link-grid' \
   'Docs/Generic_Component_Catalog|.adlaire-internal-app-launcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-objective-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-key-result-tracker' \
+  'Docs/Generic_Component_Catalog|.adlaire-initiative-map' \
+  'Docs/Generic_Component_Catalog|.adlaire-confidence-indicator' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-cadence' \
+  'Docs/Generic_Component_Catalog|.adlaire-alignment-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-portfolio-overview' \
+  'Docs/Generic_Component_Catalog|.adlaire-program-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-project-health-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-milestone-tracker' \
+  'Docs/Generic_Component_Catalog|.adlaire-dependency-register' \
+  'Docs/Generic_Component_Catalog|.adlaire-risk-issue-log' \
+  'Docs/Generic_Component_Catalog|.adlaire-capacity-planner' \
+  'Docs/Generic_Component_Catalog|.adlaire-allocation-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-utilization-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-staffing-request-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-allocation-conflict' \
+  'Docs/Generic_Component_Catalog|.adlaire-availability-forecast' \
+  'Docs/Generic_Component_Catalog|.adlaire-supplier-profile' \
+  'Docs/Generic_Component_Catalog|.adlaire-vendor-scorecard' \
+  'Docs/Generic_Component_Catalog|.adlaire-contract-renewal-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-sla-tracker' \
+  'Docs/Generic_Component_Catalog|.adlaire-procurement-pipeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-compliance-attestation-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-service-request-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-change-calendar-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-asset-inventory-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-license-assignment-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-maintenance-window-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-postmortem-summary' \
   'Docs/Generic_Component_Catalog|.adlaire-product-card' \
   'Docs/Generic_Component_Catalog|.adlaire-plan-selector' \
   'Docs/Generic_Component_Catalog|.adlaire-billing-summary' \
@@ -703,6 +733,9 @@ for js_hook in \
   'data-adlaire-pipeline-stage-select' \
   'data-adlaire-service-check' \
   'data-adlaire-policy-acknowledgement' \
+  'data-adlaire-confidence-select' \
+  'data-adlaire-milestone-select' \
+  'data-adlaire-attestation-toggle' \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
   'adlaire-bottom-sheet.is-open' \
@@ -1057,6 +1090,39 @@ for sample_class in \
   'data-adlaire-policy-acknowledgement' \
   'adlaire-quick-link-grid' \
   'adlaire-internal-app-launcher' \
+  'adlaire-objective-card' \
+  'adlaire-key-result-tracker' \
+  'adlaire-initiative-map' \
+  'adlaire-confidence-indicator' \
+  'data-adlaire-confidence-select' \
+  'adlaire-review-cadence' \
+  'adlaire-alignment-summary' \
+  'adlaire-portfolio-overview' \
+  'adlaire-program-card' \
+  'adlaire-project-health-panel' \
+  'adlaire-milestone-tracker' \
+  'data-adlaire-milestone-select' \
+  'adlaire-dependency-register' \
+  'adlaire-risk-issue-log' \
+  'adlaire-capacity-planner' \
+  'adlaire-allocation-row' \
+  'adlaire-utilization-summary' \
+  'adlaire-staffing-request-card' \
+  'adlaire-allocation-conflict' \
+  'adlaire-availability-forecast' \
+  'adlaire-supplier-profile' \
+  'adlaire-vendor-scorecard' \
+  'adlaire-contract-renewal-card' \
+  'adlaire-sla-tracker' \
+  'adlaire-procurement-pipeline' \
+  'adlaire-compliance-attestation-row' \
+  'data-adlaire-attestation-toggle' \
+  'adlaire-service-request-card' \
+  'adlaire-change-calendar-panel' \
+  'adlaire-asset-inventory-row' \
+  'adlaire-license-assignment-card' \
+  'adlaire-maintenance-window-card' \
+  'adlaire-postmortem-summary' \
   'adlaire-product-card' \
   'adlaire-plan-selector' \
   'adlaire-billing-summary' \
@@ -1240,6 +1306,7 @@ for matrix_term in \
   'Workspace Command and Productivity UI' \
   'Business Operations UI' \
   'Enterprise Domain UI' \
+  'Strategic Operations UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'Representative Subcontracts' \
@@ -1250,6 +1317,7 @@ for matrix_term in \
   'tab workspace, dock panel, status bar' \
   'agenda view, time slot grid, resource calendar' \
   'budget panel, expense card, purchase request' \
+  'objective card, key result tracker, initiative map' \
   'slash menu, suggestion card, save banner' \
   'command, document, selection, history' \
   'color, typography, spacing, layout' \
