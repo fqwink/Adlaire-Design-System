@@ -62,7 +62,9 @@
     if (fileInput) {
       const selector = fileInput.getAttribute("data-adlaire-file-output");
       const output = selector ? document.querySelector(selector) : null;
-      if (output) output.textContent = Array.from(fileInput.files ?? []).map((file) => file.name).join(", ");
+      const emptyText = fileInput.getAttribute("data-adlaire-file-empty") ?? "No file selected";
+      const names = Array.from(fileInput.files ?? []).map((file) => file.name);
+      if (output) output.textContent = names.length > 0 ? names.join(", ") : emptyText;
     }
 
     if (toggleInput) {
@@ -81,5 +83,26 @@
     field.setAttribute("aria-invalid", invalid ? "true" : "false");
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
+    updateValidationSummary(field);
   });
+
+  function updateValidationSummary(field: Element): void {
+    const form = field.closest("form");
+    const summary = form?.querySelector<HTMLElement>("[data-adlaire-validate-summary]");
+    if (!form || !summary) return;
+
+    const invalidFields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-adlaire-validate]"))
+      .filter((item) => item.getAttribute("aria-invalid") === "true");
+    summary.hidden = invalidFields.length === 0;
+    summary.classList.toggle("is-open", invalidFields.length > 0);
+    summary.textContent = invalidFields.length === 0
+      ? ""
+      : invalidFields.map((item) => fieldLabel(item)).join(", ");
+  }
+
+  function fieldLabel(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): string {
+    const label = field.closest("label");
+    const labelText = label?.textContent?.replace(field.value, "").trim();
+    return labelText || field.getAttribute("aria-label") || field.name || "Field";
+  }
 })();

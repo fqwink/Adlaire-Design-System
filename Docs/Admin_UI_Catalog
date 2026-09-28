@@ -41,8 +41,12 @@ This catalog governs Admin-only UI patterns used by administrators, operators, e
 - `.adlaire-admin-data-toolbar`
 - `.adlaire-admin-approval-panel`
 - `.adlaire-admin-health-check`
+- `.adlaire-admin-incident-panel`
+- `.adlaire-admin-maintenance-window`
 - `.adlaire-admin-release-panel`
 - `.adlaire-admin-security-overview`
+- `.adlaire-admin-secret-panel`
+- `.adlaire-admin-risk-signal`
 - `.adlaire-admin-state-badge`
 - `.adlaire-admin-empty-state`
 - `.adlaire-admin-mobile-stack`

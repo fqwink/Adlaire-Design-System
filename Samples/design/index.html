@@ -265,10 +265,23 @@
         <article class="adlaire-admin-security-overview">
           <h3>Security overview</h3>
           <p>Role, scope, session, device state.</p>
+          <div class="adlaire-admin-secret-panel">
+            <span class="adlaire-admin-security-state">Secrets healthy</span>
+            <span class="adlaire-admin-secret-expiry">rotation in 14 days</span>
+          </div>
+          <div class="adlaire-admin-risk-signal">
+            <span class="adlaire-admin-risk-level">low risk</span>
+            <span class="adlaire-admin-risk-signal-item">2FA enforced</span>
+          </div>
         </article>
-        <article class="adlaire-admin-empty-state">
+        <article class="adlaire-admin-incident-panel">
           <h3>No incidents</h3>
-          <p>未処理インシデントはありません。</p>
+          <span class="adlaire-admin-incident-severity">normal</span>
+          <p class="adlaire-admin-incident-update">未処理インシデントはありません。</p>
+          <div class="adlaire-admin-maintenance-window">
+            <span class="adlaire-admin-maintenance-time">02:00-03:00 JST</span>
+            <span class="adlaire-admin-maintenance-impact">no downtime expected</span>
+          </div>
         </article>
         <article class="adlaire-admin-mobile-stack">
           <h3>Mobile actions</h3>
@@ -349,14 +362,28 @@
           </div>
         </aside>
         <article class="adlaire-layout-region">
-          <div class="adlaire-filter-builder">
+          <form class="adlaire-filter-builder" data-adlaire-filter aria-label="Data form sample">
+            <div class="adlaire-error-summary" data-adlaire-validate-summary hidden aria-live="polite"></div>
             <div class="adlaire-filter-rule">
-              <label class="adlaire-field">Field<input class="adlaire-form-control" value="State"></label>
-              <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is"></label>
-              <label class="adlaire-field">Value<input class="adlaire-form-control" value="Ready"></label>
+              <label class="adlaire-field">Field<input class="adlaire-form-control" value="State" data-adlaire-validate required></label>
+              <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is" data-adlaire-validate required></label>
+              <label class="adlaire-field">Value<input class="adlaire-form-control" value="Ready" data-adlaire-validate required></label>
               <button class="adlaire-button adlaire-button-secondary" type="button">Apply</button>
             </div>
-          </div>
+            <div class="adlaire-date-range" aria-label="Release period">
+              <label class="adlaire-date-input">Start<input class="adlaire-form-control" type="date" value="2026-09-28"></label>
+              <span>to</span>
+              <label class="adlaire-date-input">End<input class="adlaire-form-control" type="date" value="2026-10-05"></label>
+            </div>
+            <div class="adlaire-file-picker">
+              <label class="adlaire-dropzone">Attach report<input type="file" data-adlaire-file-input data-adlaire-file-output="[data-sample-file-output]" data-adlaire-file-empty="No attachment selected"></label>
+              <span class="adlaire-file-output" data-sample-file-output aria-live="polite">No attachment selected</span>
+            </div>
+            <div class="adlaire-settings-row">
+              <span>Only show checked states</span>
+              <label><input type="checkbox" data-adlaire-toggle-input="[data-sample-form-toggle]" checked><span class="adlaire-toggle" role="switch" aria-checked="true" data-sample-form-toggle></span></label>
+            </div>
+          </form>
           <div class="adlaire-data-table-state">Generated CSS, catalogs, samples, and JS hooks are treated as one check-covered contract.</div>
         </article>
         <aside class="adlaire-layout-region">
@@ -491,14 +518,18 @@
           <div class="adlaire-git-review-thread">
             <div class="adlaire-git-review-comment">Docsと実装の同期を確認。</div>
             <div class="adlaire-git-review-resolved">resolved</div>
+            <span class="adlaire-git-review-state">review approved</span>
           </div>
           <div class="adlaire-git-check-list">
             <span class="adlaire-git-check-status">check ok</span>
+            <span class="adlaire-git-ci-status" data-state="passed">CI passed</span>
+            <span class="adlaire-git-merge-state">ready to merge</span>
             <span class="adlaire-git-alert-status">no unresolved bugs</span>
           </div>
         </article>
 
         <article class="adlaire-git-diff-viewer">
+          <div class="adlaire-git-diff-hunk">@@ Tokens/status.css @@</div>
           <div class="adlaire-git-diff-added">+ --adlaire-semantic-selected-bg</div>
           <div class="adlaire-git-diff-removed">- direct status reference</div>
           <div class="adlaire-git-settings-panel">

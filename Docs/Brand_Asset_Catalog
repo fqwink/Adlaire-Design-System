@@ -16,6 +16,8 @@ This catalog governs brand assets stored in `Brand/`.
 
 JPG, JPEG, GIF, PDF, AI, PSD, and EPS are not used.
 
+Brand asset inventory is checked by required file, allowed naming pattern, and allowed extension. Files outside the approved logo, image, OGP, brand-specific icon, and explanatory asset patterns are not accepted.
+
 ## Assets
 
 | ID | File | Type | Role | State |

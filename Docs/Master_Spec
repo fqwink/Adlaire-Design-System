@@ -164,6 +164,8 @@ Samples must not become the source of truth for tokens, CSS contracts, JavaScrip
 
 Checks keep representative sample coverage for Layout System v2, operational feedback, and WYSIWYG state UI so sample drift is visible without making Samples authoritative.
 
+`Samples/sample-current.png` is the reference screenshot for human visual review. It is updated only with the related sample, catalog, token, CSS, JavaScript, or check change that intentionally changes the rendered showcase.
+
 ## Checks
 
 Normal check:

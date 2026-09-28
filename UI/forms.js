@@ -67,10 +67,12 @@
 
     if (fileInput) {
       var output = document.querySelector(fileInput.getAttribute("data-adlaire-file-output"));
+      var emptyText = fileInput.getAttribute("data-adlaire-file-empty") || "No file selected";
+      var names = Array.prototype.map.call(fileInput.files || [], function (file) {
+        return file.name;
+      });
       if (output) {
-        output.textContent = Array.prototype.map.call(fileInput.files || [], function (file) {
-          return file.name;
-        }).join(", ");
+        output.textContent = names.length > 0 ? names.join(", ") : emptyText;
       }
     }
 
@@ -97,5 +99,27 @@
     field.setAttribute("aria-invalid", invalid ? "true" : "false");
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
+    updateValidationSummary(field);
   });
+
+  function updateValidationSummary(field) {
+    var form = field.closest("form");
+    var summary = form ? form.querySelector("[data-adlaire-validate-summary]") : null;
+    if (!form || !summary) {
+      return;
+    }
+
+    var invalidFields = Array.prototype.filter.call(form.querySelectorAll("[data-adlaire-validate]"), function (item) {
+      return item.getAttribute("aria-invalid") === "true";
+    });
+    summary.hidden = invalidFields.length === 0;
+    summary.classList.toggle("is-open", invalidFields.length > 0);
+    summary.textContent = invalidFields.length === 0 ? "" : invalidFields.map(fieldLabel).join(", ");
+  }
+
+  function fieldLabel(field) {
+    var label = field.closest("label");
+    var labelText = label && label.textContent ? label.textContent.replace(field.value, "").trim() : "";
+    return labelText || field.getAttribute("aria-label") || field.name || "Field";
+  }
 }());

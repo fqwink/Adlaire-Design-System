@@ -23,6 +23,7 @@ The icon set contains exactly 500 SVG files. The file system is the implementati
 | Count | `Icons/` contains exactly 500 SVG files. |
 | Format | SVG only. |
 | Naming | `adlaire-icon-<category>-<name>.svg`. |
+| Category naming | `<category>` must be one of `navigation`, `action`, `status`, `content`, `editor`, `media`, or `form`. |
 | State | Implemented icon files are `実装済み`. |
 | Decorative icons | Use empty alt text when the icon is decorative. |
 | Meaning icons | Provide a contextual label at the usage site. |

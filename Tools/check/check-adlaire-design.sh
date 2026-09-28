@@ -294,6 +294,13 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-app-shell' \
   'Docs/Generic_Component_Catalog|.adlaire-split-pane' \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
+  'Docs/Generic_Component_Catalog|.adlaire-input-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-date-range' \
+  'Docs/Generic_Component_Catalog|.adlaire-file-picker' \
+  'Docs/Generic_Component_Catalog|.adlaire-dropzone' \
+  'Docs/Generic_Component_Catalog|.adlaire-toggle' \
+  'Docs/Generic_Component_Catalog|.adlaire-error-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-validation-message' \
   'Docs/Generic_Component_Catalog|.adlaire-pagination' \
   'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
@@ -313,6 +320,10 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-git-repo-card' \
   'Docs/Generic_Component_Catalog|.adlaire-git-pr-detail' \
   'Docs/Generic_Component_Catalog|.adlaire-git-diff-viewer' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-review-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-ci-status' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-merge-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-git-diff-hunk' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-dashboard' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-settings' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-data-list' \
@@ -323,8 +334,12 @@ for catalog_class in \
   'Docs/Admin_UI_Catalog|.adlaire-admin-data-toolbar' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-approval-panel' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-health-check' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-incident-panel' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-maintenance-window' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-release-panel' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-security-overview' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-secret-panel' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-risk-signal' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-state-badge' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-empty-state' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-stack' \
@@ -372,8 +387,10 @@ for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-chip' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-input' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-empty' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-toggle-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate-summary' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-line' \
@@ -452,6 +469,20 @@ for sample_class in \
   'adlaire-progress' \
   'adlaire-skeleton' \
   'adlaire-bulk-feedback' \
+  'adlaire-date-range' \
+  'adlaire-file-picker' \
+  'adlaire-dropzone' \
+  'adlaire-toggle' \
+  'data-adlaire-validate-summary' \
+  'data-adlaire-file-empty' \
+  'adlaire-git-review-state' \
+  'adlaire-git-ci-status' \
+  'adlaire-git-merge-state' \
+  'adlaire-git-diff-hunk' \
+  'adlaire-admin-incident-panel' \
+  'adlaire-admin-maintenance-window' \
+  'adlaire-admin-secret-panel' \
+  'adlaire-admin-risk-signal' \
   'adlaire-wysiwyg-slash-menu' \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \
@@ -614,12 +645,36 @@ if [ -s "$TMP_DIR/unexpected-icons" ]; then
   exit 1
 fi
 
+find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | while IFS= read -r icon_file; do
+  icon_name=$(basename "$icon_file")
+  case "$icon_name" in
+    adlaire-icon-navigation-*.svg|adlaire-icon-action-*.svg|adlaire-icon-status-*.svg|adlaire-icon-content-*.svg|adlaire-icon-editor-*.svg|adlaire-icon-media-*.svg|adlaire-icon-form-*.svg)
+      ;;
+    *)
+      fail "Icon inventory" "icon filename must use an approved category: $icon_name"
+      ;;
+  esac
+done
+
 for asset in \
   Brand/adlaire-logo-primary.svg \
   Brand/adlaire-logo-mark.svg \
   Brand/adlaire-ogp-default.png \
   Brand/adlaire-image-brand-overview.webp; do
   require_path "$asset"
+done
+
+require_path "Samples/sample-current.png"
+
+find "$ROOT/Brand" -maxdepth 1 -type f ! -name '.gitkeep' ! -name 'README.md' | while IFS= read -r brand_file; do
+  brand_name=$(basename "$brand_file")
+  case "$brand_name" in
+    adlaire-logo-*.svg|adlaire-image-*.png|adlaire-image-*.webp|adlaire-ogp-*.png|adlaire-ogp-*.webp|adlaire-icon-*.svg|adlaire-brand-*.svg|adlaire-brand-*.png|adlaire-brand-*.webp)
+      ;;
+    *)
+      fail "Brand asset inventory" "brand asset has an unsupported name or extension: $brand_name"
+      ;;
+  esac
 done
 
 for doc_term in \
@@ -633,6 +688,10 @@ for doc_term in \
   'matching merged branch' \
   'family-labelled diagnostics' \
   'Token category boundaries' \
+  'Category naming' \
+  'Brand asset inventory is checked' \
+  'Visual Baseline' \
+  'Reference screenshot changes require' \
   'output file unit' \
   'check-covered contract' \
   'Catalog Governance' \
