@@ -293,6 +293,9 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-workbench-layout' \
   'Docs/Generic_Component_Catalog|.adlaire-app-shell' \
   'Docs/Generic_Component_Catalog|.adlaire-split-pane' \
+  'Docs/Generic_Component_Catalog|.adlaire-split-pane-collapsed' \
+  'Docs/Generic_Component_Catalog|.adlaire-mobile-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-mobile-action-bar' \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
   'Docs/Generic_Component_Catalog|.adlaire-input-group' \
   'Docs/Generic_Component_Catalog|.adlaire-date-range' \
@@ -343,6 +346,9 @@ for catalog_class in \
   'Docs/Admin_UI_Catalog|.adlaire-admin-state-badge' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-empty-state' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-stack' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-scroll' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-actions' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-collapse' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-action-bar' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-layout' \
   'Docs/Admin_UI_Catalog|.adlaire-bulk-feedback' \
@@ -464,6 +470,9 @@ fi
 
 for sample_class in \
   'adlaire-workbench-layout' \
+  'adlaire-mobile-stack' \
+  'adlaire-mobile-action-bar' \
+  'adlaire-split-pane-collapsed' \
   'adlaire-filter-builder' \
   'adlaire-stepper' \
   'adlaire-progress' \
@@ -483,6 +492,9 @@ for sample_class in \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
   'adlaire-admin-risk-signal' \
+  'adlaire-admin-mobile-scroll' \
+  'adlaire-admin-mobile-actions' \
+  'adlaire-admin-mobile-collapse' \
   'adlaire-wysiwyg-slash-menu' \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \

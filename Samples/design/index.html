@@ -285,7 +285,10 @@
         </article>
         <article class="adlaire-admin-mobile-stack">
           <h3>Mobile actions</h3>
-          <div class="adlaire-admin-action-bar">
+          <div class="adlaire-admin-mobile-scroll">
+            <span class="adlaire-admin-mobile-collapse">Collapsed audit row</span>
+          </div>
+          <div class="adlaire-admin-action-bar adlaire-admin-mobile-actions">
             <button class="adlaire-button adlaire-button-secondary" type="button">Hold</button>
             <button class="adlaire-button adlaire-button-primary" type="button">Apply</button>
           </div>
@@ -361,7 +364,7 @@
             <span class="adlaire-step">3 PR</span>
           </div>
         </aside>
-        <article class="adlaire-layout-region">
+        <article class="adlaire-layout-region adlaire-mobile-stack">
           <form class="adlaire-filter-builder" data-adlaire-filter aria-label="Data form sample">
             <div class="adlaire-error-summary" data-adlaire-validate-summary hidden aria-live="polite"></div>
             <div class="adlaire-filter-rule">
@@ -384,6 +387,13 @@
               <label><input type="checkbox" data-adlaire-toggle-input="[data-sample-form-toggle]" checked><span class="adlaire-toggle" role="switch" aria-checked="true" data-sample-form-toggle></span></label>
             </div>
           </form>
+          <div class="adlaire-mobile-action-bar" aria-label="Responsive action sample">
+            <button class="adlaire-button adlaire-button-secondary" type="button">Save draft</button>
+            <button class="adlaire-button adlaire-button-primary" type="button">Submit</button>
+          </div>
+          <div class="adlaire-split-pane adlaire-split-pane-collapsed">
+            <div class="adlaire-pane">Collapsed split pane preview</div>
+          </div>
           <div class="adlaire-data-table-state">Generated CSS, catalogs, samples, and JS hooks are treated as one check-covered contract.</div>
         </article>
         <aside class="adlaire-layout-region">
