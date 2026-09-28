@@ -53,6 +53,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Collaboration / Review UI | collaborator list, presence stack, review request card, review decision, change request list, comment thread, annotation card, suggestion panel, version history, diff summary, task board, checklist panel, notification digest, escalation banner, meeting notes, signoff panel | 実装済み |
 | Workflow / Governance UI | workflow runner, automation rule card, trigger list, condition builder, action chain, schedule panel, policy card, compliance checklist, evidence locker, approval route, access review panel, risk banner, audit event stream, retention policy panel, incident summary, control status grid | 実装済み |
 | Observability / Diagnostics UI | health overview, service status card, uptime panel, log stream, log event row, trace timeline, span detail, metric threshold card, alert rule card, alert incident list, error rate panel, latency distribution, dependency map, SLO summary, diagnostic run card, remediation panel | 実装済み |
+| Experience / Guidance UI | onboarding flow, onboarding step card, tour callout, guided task list, help center panel, help article card, search result list, search result item, recent item list, recommendation panel, personalization card, preference panel, notification preference list, language selector panel, keyboard shortcut panel, release highlight | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -235,6 +236,22 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-slo-summary`
 - `.adlaire-diagnostic-run-card`
 - `.adlaire-remediation-panel`
+- `.adlaire-onboarding-flow`
+- `.adlaire-onboarding-step-card`
+- `.adlaire-tour-callout`
+- `.adlaire-guided-task-list`
+- `.adlaire-help-center-panel`
+- `.adlaire-help-article-card`
+- `.adlaire-search-result-list`
+- `.adlaire-search-result-item`
+- `.adlaire-recent-item-list`
+- `.adlaire-recommendation-panel`
+- `.adlaire-personalization-card`
+- `.adlaire-preference-panel`
+- `.adlaire-notification-preference-list`
+- `.adlaire-language-selector-panel`
+- `.adlaire-keyboard-shortcut-panel`
+- `.adlaire-release-highlight`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`

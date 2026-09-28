@@ -447,6 +447,22 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-slo-summary' \
   'Docs/Generic_Component_Catalog|.adlaire-diagnostic-run-card' \
   'Docs/Generic_Component_Catalog|.adlaire-remediation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-onboarding-flow' \
+  'Docs/Generic_Component_Catalog|.adlaire-onboarding-step-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-tour-callout' \
+  'Docs/Generic_Component_Catalog|.adlaire-guided-task-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-help-center-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-help-article-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-search-result-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-search-result-item' \
+  'Docs/Generic_Component_Catalog|.adlaire-recent-item-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-recommendation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-personalization-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-preference-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-notification-preference-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-language-selector-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-keyboard-shortcut-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-release-highlight' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -819,6 +835,22 @@ for sample_class in \
   'adlaire-slo-summary' \
   'adlaire-diagnostic-run-card' \
   'adlaire-remediation-panel' \
+  'adlaire-onboarding-flow' \
+  'adlaire-onboarding-step-card' \
+  'adlaire-tour-callout' \
+  'adlaire-guided-task-list' \
+  'adlaire-help-center-panel' \
+  'adlaire-help-article-card' \
+  'adlaire-search-result-list' \
+  'adlaire-search-result-item' \
+  'adlaire-recent-item-list' \
+  'adlaire-recommendation-panel' \
+  'adlaire-personalization-card' \
+  'adlaire-preference-panel' \
+  'adlaire-notification-preference-list' \
+  'adlaire-language-selector-panel' \
+  'adlaire-keyboard-shortcut-panel' \
+  'adlaire-release-highlight' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -996,8 +1028,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 1280 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 1280 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 1360 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 1360 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -1045,7 +1077,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 1280 SVG icons' \
+  'official 1360 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
