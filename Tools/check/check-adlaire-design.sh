@@ -431,6 +431,36 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-device-trust-card' \
   'Docs/Generic_Component_Catalog|.adlaire-security-event-row' \
   'Docs/Generic_Component_Catalog|.adlaire-policy-exception-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-budget-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-expense-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-purchase-request' \
+  'Docs/Generic_Component_Catalog|.adlaire-invoice-approval-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-payment-schedule' \
+  'Docs/Generic_Component_Catalog|.adlaire-ledger-entry-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-employee-profile-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-shift-roster' \
+  'Docs/Generic_Component_Catalog|.adlaire-attendance-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-leave-request-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-skill-matrix' \
+  'Docs/Generic_Component_Catalog|.adlaire-training-progress' \
+  'Docs/Generic_Component_Catalog|.adlaire-customer-profile-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-account-health-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-opportunity-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-pipeline-stage-rail' \
+  'Docs/Generic_Component_Catalog|.adlaire-contact-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-next-action-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-work-order-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-dispatch-board' \
+  'Docs/Generic_Component_Catalog|.adlaire-technician-route-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-parts-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-service-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-completion-report' \
+  'Docs/Generic_Component_Catalog|.adlaire-knowledge-article-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-collection-index' \
+  'Docs/Generic_Component_Catalog|.adlaire-announcement-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-policy-acknowledgement' \
+  'Docs/Generic_Component_Catalog|.adlaire-quick-link-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-internal-app-launcher' \
   'Docs/Generic_Component_Catalog|.adlaire-product-card' \
   'Docs/Generic_Component_Catalog|.adlaire-plan-selector' \
   'Docs/Generic_Component_Catalog|.adlaire-billing-summary' \
@@ -669,6 +699,10 @@ for js_hook in \
   'data-adlaire-option-select' \
   'data-adlaire-folder-toggle' \
   'data-adlaire-policy-exception-toggle' \
+  'data-adlaire-shift-select' \
+  'data-adlaire-pipeline-stage-select' \
+  'data-adlaire-service-check' \
+  'data-adlaire-policy-acknowledgement' \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
   'adlaire-bottom-sheet.is-open' \
@@ -989,6 +1023,40 @@ for sample_class in \
   'adlaire-security-event-row' \
   'adlaire-policy-exception-panel' \
   'data-adlaire-policy-exception-toggle' \
+  'adlaire-budget-panel' \
+  'adlaire-expense-card' \
+  'adlaire-purchase-request' \
+  'adlaire-invoice-approval-row' \
+  'adlaire-payment-schedule' \
+  'adlaire-ledger-entry-row' \
+  'adlaire-employee-profile-card' \
+  'adlaire-shift-roster' \
+  'data-adlaire-shift-select' \
+  'adlaire-attendance-summary' \
+  'adlaire-leave-request-card' \
+  'adlaire-skill-matrix' \
+  'adlaire-training-progress' \
+  'adlaire-customer-profile-panel' \
+  'adlaire-account-health-card' \
+  'adlaire-opportunity-card' \
+  'adlaire-pipeline-stage-rail' \
+  'data-adlaire-pipeline-stage-select' \
+  'adlaire-contact-timeline' \
+  'adlaire-next-action-panel' \
+  'adlaire-work-order-card' \
+  'adlaire-dispatch-board' \
+  'adlaire-technician-route-card' \
+  'adlaire-parts-list' \
+  'adlaire-service-checklist' \
+  'data-adlaire-service-check' \
+  'adlaire-completion-report' \
+  'adlaire-knowledge-article-card' \
+  'adlaire-collection-index' \
+  'adlaire-announcement-banner' \
+  'adlaire-policy-acknowledgement' \
+  'data-adlaire-policy-acknowledgement' \
+  'adlaire-quick-link-grid' \
+  'adlaire-internal-app-launcher' \
   'adlaire-product-card' \
   'adlaire-plan-selector' \
   'adlaire-billing-summary' \
@@ -1171,6 +1239,7 @@ for matrix_term in \
   'Advanced Input and Design-System UI' \
   'Workspace Command and Productivity UI' \
   'Business Operations UI' \
+  'Enterprise Domain UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'Representative Subcontracts' \
@@ -1180,6 +1249,7 @@ for matrix_term in \
   'combobox, multi-select, token input' \
   'tab workspace, dock panel, status bar' \
   'agenda view, time slot grid, resource calendar' \
+  'budget panel, expense card, purchase request' \
   'slash menu, suggestion card, save banner' \
   'command, document, selection, history' \
   'color, typography, spacing, layout' \

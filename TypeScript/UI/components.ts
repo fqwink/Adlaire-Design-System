@@ -208,6 +208,10 @@
     const optionSelect = source?.closest("[data-adlaire-option-select]");
     const folderToggle = source?.closest("[data-adlaire-folder-toggle]");
     const policyExceptionToggle = source?.closest("[data-adlaire-policy-exception-toggle]");
+    const shiftSelect = source?.closest("[data-adlaire-shift-select]");
+    const pipelineStageSelect = source?.closest("[data-adlaire-pipeline-stage-select]");
+    const serviceCheck = source?.closest("[data-adlaire-service-check]");
+    const policyAcknowledgement = source?.closest("[data-adlaire-policy-acknowledgement]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -292,6 +296,26 @@
     if (policyExceptionToggle) {
       event.preventDefault();
       toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
+    }
+
+    if (shiftSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(shiftSelect, ".adlaire-shift-roster", "[data-adlaire-shift-select]", "aria-selected");
+    }
+
+    if (pipelineStageSelect) {
+      event.preventDefault();
+      selectCurrentStep(pipelineStageSelect, ".adlaire-pipeline-stage-rail", "[data-adlaire-pipeline-stage-select]");
+    }
+
+    if (serviceCheck) {
+      event.preventDefault();
+      toggleBooleanState(serviceCheck, "aria-checked");
+    }
+
+    if (policyAcknowledgement) {
+      event.preventDefault();
+      toggleBooleanState(policyAcknowledgement, "aria-pressed");
     }
   });
 
@@ -390,6 +414,27 @@
       item.setAttribute(selectedAttribute, selected ? "true" : "false");
       item.classList.toggle("is-selected", selected);
     });
+  }
+
+  function selectCurrentStep(trigger: Element, rootSelector: string, itemSelector: string): void {
+    const root = trigger.closest(rootSelector);
+    if (!root) return;
+
+    root.querySelectorAll<HTMLElement>(itemSelector).forEach((item) => {
+      const selected = item === trigger;
+      if (selected) {
+        item.setAttribute("aria-current", "step");
+      } else {
+        item.removeAttribute("aria-current");
+      }
+      item.classList.toggle("is-selected", selected);
+    });
+  }
+
+  function toggleBooleanState(trigger: Element, stateAttribute: string): void {
+    const active = trigger.getAttribute(stateAttribute) !== "true";
+    trigger.setAttribute(stateAttribute, active ? "true" : "false");
+    trigger.classList.toggle("is-selected", active);
   }
 
   function toggleFolderBranch(trigger: Element): void {

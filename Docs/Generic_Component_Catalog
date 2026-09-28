@@ -61,6 +61,11 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Comparison / Decision UI | comparison matrix, option card, decision scorecard, tradeoff list, recommendation banner, selection summary | 実装済み |
 | Document / File Management UI | document library, folder tree, file version card, document approval state, retention badge, download queue | 実装済み |
 | Permission / Security Operations UI | access request card, permission grant row, session list, device trust card, security event row, policy exception panel | 実装済み |
+| Finance / Backoffice UI | budget panel, expense card, purchase request, invoice approval row, payment schedule, ledger entry row | 実装済み |
+| People / Workforce UI | employee profile card, shift roster, attendance summary, leave request card, skill matrix, training progress | 実装済み |
+| CRM / Sales UI | customer profile panel, account health card, opportunity card, pipeline stage rail, contact timeline, next action panel | 実装済み |
+| Field Service / Work Order UI | work order card, dispatch board, technician route card, parts list, service checklist, completion report | 実装済み |
+| Knowledge / Internal Portal UI | knowledge article card, collection index, announcement banner, policy acknowledgement, quick link grid, internal app launcher | 実装済み |
 | Product UI | product card, plan selector, billing summary, invoice list, account profile, member list, role matrix, support ticket, analytics panel, workflow builder, integration card, trust center | 実装済み |
 | Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
@@ -226,6 +231,36 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-device-trust-card`
 - `.adlaire-security-event-row`
 - `.adlaire-policy-exception-panel`
+- `.adlaire-budget-panel`
+- `.adlaire-expense-card`
+- `.adlaire-purchase-request`
+- `.adlaire-invoice-approval-row`
+- `.adlaire-payment-schedule`
+- `.adlaire-ledger-entry-row`
+- `.adlaire-employee-profile-card`
+- `.adlaire-shift-roster`
+- `.adlaire-attendance-summary`
+- `.adlaire-leave-request-card`
+- `.adlaire-skill-matrix`
+- `.adlaire-training-progress`
+- `.adlaire-customer-profile-panel`
+- `.adlaire-account-health-card`
+- `.adlaire-opportunity-card`
+- `.adlaire-pipeline-stage-rail`
+- `.adlaire-contact-timeline`
+- `.adlaire-next-action-panel`
+- `.adlaire-work-order-card`
+- `.adlaire-dispatch-board`
+- `.adlaire-technician-route-card`
+- `.adlaire-parts-list`
+- `.adlaire-service-checklist`
+- `.adlaire-completion-report`
+- `.adlaire-knowledge-article-card`
+- `.adlaire-collection-index`
+- `.adlaire-announcement-banner`
+- `.adlaire-policy-acknowledgement`
+- `.adlaire-quick-link-grid`
+- `.adlaire-internal-app-launcher`
 - `.adlaire-product-card`
 - `.adlaire-plan-selector`
 - `.adlaire-billing-summary`

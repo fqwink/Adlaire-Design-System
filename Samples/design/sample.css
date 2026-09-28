@@ -481,6 +481,11 @@ body {
 .adlaire-kanban-board,
 .adlaire-resource-calendar,
 .adlaire-document-library,
+.adlaire-dispatch-board,
+.adlaire-budget-panel,
+.adlaire-skill-matrix,
+.adlaire-quick-link-grid,
+.adlaire-internal-app-launcher,
 .adlaire-component-preview {
   min-width: 0;
 }
@@ -505,7 +510,12 @@ body {
   .adlaire-workbench-layout,
   .adlaire-asset-browser,
   .adlaire-resource-calendar,
-  .adlaire-document-library {
+  .adlaire-document-library,
+  .adlaire-dispatch-board,
+  .adlaire-budget-panel,
+  .adlaire-skill-matrix,
+  .adlaire-quick-link-grid,
+  .adlaire-internal-app-launcher {
     grid-template-columns: 1fr;
   }
 }

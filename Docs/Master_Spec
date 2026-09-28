@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.130
+Version: rev.131
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -152,6 +152,8 @@ Workspace, command, board, visualization, asset, and productivity UI are first-c
 
 Business operations UI is a first-class reusable contract. Scheduling, facility/location, comparison/decision, document/file management, and permission/security operations components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
 
+Enterprise domain UI is a first-class reusable contract. Finance/backoffice, people/workforce, CRM/sales, field service/work order, and knowledge/internal portal components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
+
 Interaction contracts include representative accessibility hooks: dialog roles, modal state, labelled headings, dismiss buttons, Escape handling, focus containment, hidden decorative content, current-step indication, and expanded/pressed state synchronization.
 
 ## WYSIWYG Editor Direction
@@ -170,7 +172,7 @@ WYSIWYG UI contracts include slash menu, suggestion card, save banner, lock bann
 
 ## Samples
 
-Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Advanced Input and Design-System UI, Workspace / Command / Productivity UI, Business Operations UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Tokens, Brand, and the official 1520 SVG icons.
+Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Advanced Input and Design-System UI, Workspace / Command / Productivity UI, Business Operations UI, Enterprise Domain UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Tokens, Brand, and the official 1520 SVG icons.
 
 Samples must not become the source of truth for tokens, CSS contracts, JavaScript behavior, or catalog state.
 

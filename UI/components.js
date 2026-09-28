@@ -257,6 +257,10 @@
     var optionSelect = event.target.closest("[data-adlaire-option-select]");
     var folderToggle = event.target.closest("[data-adlaire-folder-toggle]");
     var policyExceptionToggle = event.target.closest("[data-adlaire-policy-exception-toggle]");
+    var shiftSelect = event.target.closest("[data-adlaire-shift-select]");
+    var pipelineStageSelect = event.target.closest("[data-adlaire-pipeline-stage-select]");
+    var serviceCheck = event.target.closest("[data-adlaire-service-check]");
+    var policyAcknowledgement = event.target.closest("[data-adlaire-policy-acknowledgement]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -348,6 +352,26 @@
     if (policyExceptionToggle) {
       event.preventDefault();
       toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
+    }
+
+    if (shiftSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(shiftSelect, ".adlaire-shift-roster", "[data-adlaire-shift-select]", "aria-selected");
+    }
+
+    if (pipelineStageSelect) {
+      event.preventDefault();
+      selectCurrentStep(pipelineStageSelect, ".adlaire-pipeline-stage-rail", "[data-adlaire-pipeline-stage-select]");
+    }
+
+    if (serviceCheck) {
+      event.preventDefault();
+      toggleBooleanState(serviceCheck, "aria-checked");
+    }
+
+    if (policyAcknowledgement) {
+      event.preventDefault();
+      toggleBooleanState(policyAcknowledgement, "aria-pressed");
     }
   });
 
@@ -467,6 +491,29 @@
       item.setAttribute(selectedAttribute, selected ? "true" : "false");
       item.classList.toggle("is-selected", selected);
     });
+  }
+
+  function selectCurrentStep(trigger, rootSelector, itemSelector) {
+    var root = trigger.closest(rootSelector);
+    if (!root) {
+      return;
+    }
+
+    root.querySelectorAll(itemSelector).forEach(function (item) {
+      var selected = item === trigger;
+      if (selected) {
+        item.setAttribute("aria-current", "step");
+      } else {
+        item.removeAttribute("aria-current");
+      }
+      item.classList.toggle("is-selected", selected);
+    });
+  }
+
+  function toggleBooleanState(trigger, stateAttribute) {
+    var active = trigger.getAttribute(stateAttribute) !== "true";
+    trigger.setAttribute(stateAttribute, active ? "true" : "false");
+    trigger.classList.toggle("is-selected", active);
   }
 
   function toggleFolderBranch(trigger) {
