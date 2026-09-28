@@ -383,6 +383,22 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-shipping-tracker' \
   'Docs/Generic_Component_Catalog|.adlaire-return-request' \
   'Docs/Generic_Component_Catalog|.adlaire-dispute-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-dataset-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-schema-table' \
+  'Docs/Generic_Component_Catalog|.adlaire-query-console' \
+  'Docs/Generic_Component_Catalog|.adlaire-pipeline-board' \
+  'Docs/Generic_Component_Catalog|.adlaire-job-run-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-run-queue' \
+  'Docs/Generic_Component_Catalog|.adlaire-worker-pool' \
+  'Docs/Generic_Component_Catalog|.adlaire-model-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-prompt-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-eval-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-score-breakdown' \
+  'Docs/Generic_Component_Catalog|.adlaire-vector-index' \
+  'Docs/Generic_Component_Catalog|.adlaire-guardrail-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-drift-monitor' \
+  'Docs/Generic_Component_Catalog|.adlaire-anomaly-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-data-access-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -691,6 +707,22 @@ for sample_class in \
   'adlaire-shipping-tracker' \
   'adlaire-return-request' \
   'adlaire-dispute-panel' \
+  'adlaire-dataset-card' \
+  'adlaire-schema-table' \
+  'adlaire-query-console' \
+  'adlaire-pipeline-board' \
+  'adlaire-job-run-card' \
+  'adlaire-run-queue' \
+  'adlaire-worker-pool' \
+  'adlaire-model-card' \
+  'adlaire-prompt-panel' \
+  'adlaire-eval-summary' \
+  'adlaire-score-breakdown' \
+  'adlaire-vector-index' \
+  'adlaire-guardrail-panel' \
+  'adlaire-drift-monitor' \
+  'adlaire-anomaly-list' \
+  'adlaire-data-access-panel' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -868,8 +900,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 960 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 960 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 1040 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 1040 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -917,7 +949,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 960 SVG icons' \
+  'official 1040 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
