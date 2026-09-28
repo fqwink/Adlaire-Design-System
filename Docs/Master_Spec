@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.126
+Version: rev.127
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -31,13 +31,17 @@ Samples are supporting confirmation material. They are not a specification sourc
 
 ## Startup Synchronization
 
-Every repository task starts by reading `AGENTS.md` and checking Git consistency as one required step. The startup check covers worktree status, remotes, remote pruning when needed, and the relationship between `HEAD`, local `main`, and `backup/main`.
+Every repository task starts by reading `AGENTS.md` and checking Git consistency as one required step. The startup check covers worktree status, remotes, `git fetch backup --prune`, and the relationship between `HEAD`, local `main`, and `backup/main`.
 
 Implementation, commit, push, and PR creation do not proceed until that startup synchronization is complete.
 
+The local Git consistency baseline is `fetch.prune=true`, `pull.ff=only`, `remote.pushDefault=backup`, `push.default=current`, and `push.autoSetupRemote=true`. Local `main` tracks `backup/main`. `origin` remains available as a same-repository fallback remote, while `backup` is the default push target.
+
+GitHub requires changes to `main` to pass through a pull request. Repository merge policy allows merge commits only, disables squash and rebase merging, keeps automatic head-branch deletion enabled, and allows an out-of-date PR branch to be updated. `main` protection blocks force pushes and branch deletion; it requires no approving review and no status check until those controls are separately adopted.
+
 After a PR is merged by the user, the next repository task treats post-merge cleanup as part of startup synchronization. The cleanup verifies the merged PR state, fetches `backup --prune`, fast-forwards local `main` to `backup/main`, and deletes only the matching merged local branch whose head is already contained in `backup/main`.
 
-Post-merge cleanup is scoped to the matching merged branch for the PR just handled. Older unrelated local branches, including branches whose upstream was already pruned before the current task, are not deleted or treated as release blockers unless the user explicitly makes them part of the task.
+Routine post-merge cleanup is scoped to the matching merged branch for the PR just handled. Older unrelated branches are never deleted automatically. The release check reports every local branch and `backup/*` remote-tracking branch already contained in `backup/main` as a stale merged branch; resolving any additional reported branch requires an explicit cleanup scope.
 
 ## Technical Baseline
 
@@ -182,9 +186,9 @@ Release check:
 sh Tools/check/check-adlaire-design.sh --release-check
 ```
 
-The release check assumes `git fetch backup --prune`, local `main` synchronized with `backup/main`, matching merged branch cleanup, and no patches outside `backup/main`.
+The release check assumes the local Git consistency baseline, `git fetch backup --prune`, local `main` synchronized with `backup/main`, no stale merged local or `backup/*` remote-tracking branches, matching merged branch cleanup, and no patches outside `backup/main`.
 
-Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, local Git configuration drift, stale merged branches, and post-merge release readiness.
 
 Check failures use family-labelled diagnostics so the broken contract area is visible before reading the full failure details.
 

@@ -9,8 +9,13 @@
 - リポジトリ索引は `Docs/Document_Index` とする。
 - 作業開始時に `AGENTS.md` を読むと同時に、マージ状況、リモート、ローカル整合性を確認すること。
 - この確認は後回しにせず、`AGENTS.md` 読了と不可分の作業開始手順として実施すること。
-- 整合性確認では、`git status --short --branch`、`git remote -v`、必要に応じた `git fetch backup`、`HEAD` と `backup/main` の一致または差分を確認すること。
+- 整合性確認では、`git status --short --branch`、`git remote -v`、`git fetch backup --prune`、`HEAD` と `backup/main` の一致または差分を確認すること。
 - `AGENTS.md` の読了と整合性確認が完了するまでは、実装、コミット、push、PR作成へ進まないこと。
+- ローカルGit整合性の基準値は、`fetch.prune=true`、`pull.ff=only`、`remote.pushDefault=backup`、`push.default=current`、`push.autoSetupRemote=true` とし、ローカル `main` は `backup/main` を追跡すること。
+- `origin` は同一リポジトリのフォールバックリモートとして保持し、既定のpush先は `backup` とすること。
+- GitHub側は `main` へのPR経由を必須とし、merge commitのみを許可し、squash mergeとrebase mergeを無効化し、マージ後の作業ブランチ自動削除を有効とすること。
+- `main` の強制pushと削除を禁止し、PRブランチの更新操作を有効とすること。
+- リリース検査は、基準Git設定のドリフトと `backup/main` に含まれるマージ済み残存ブランチを検出すること。検査がブランチを自動削除してはならない。
 - Adlaire-Design-Systemは、デザインシステムを中核に、Deno TypeScript正本からCSS/JavaScript生成物を生成・検査・管理するフロントエンド基盤システムとして扱うこと。
 - TypeScriptはDenoランタイム環境を前提とすること。
 - 標準採用ライブラリはDeno標準ライブラリ(`jsr:@std/*`)に限定すること。

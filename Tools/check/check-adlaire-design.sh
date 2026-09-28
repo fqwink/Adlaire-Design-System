@@ -49,6 +49,15 @@ require_text() {
   fi
 }
 
+require_local_git_config() {
+  key=$1
+  expected=$2
+  actual=$(git -C "$ROOT" config --local --get "$key" 2>/dev/null || printf '%s' '<unset>')
+  if [ "$actual" != "$expected" ]; then
+    fail "Release readiness" "local Git config $key must be $expected; found $actual."
+  fi
+}
+
 require_class_in_css() {
   class=$1
   if ! grep -R -F -- "$class" "$ROOT/UI" "$ROOT/EditorUI" >/dev/null 2>&1; then
@@ -1144,6 +1153,9 @@ for doc_term in \
   'official 1520 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
+  'local Git consistency baseline' \
+  'merge commits only' \
+  'stale merged branch' \
   'family-labelled diagnostics' \
   'Token category boundaries' \
   'Token family usage discipline' \
@@ -1177,11 +1189,19 @@ fi
 
 if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
   git -C "$ROOT" fetch backup --prune
+  require_local_git_config "fetch.prune" "true"
+  require_local_git_config "pull.ff" "only"
+  require_local_git_config "remote.pushDefault" "backup"
+  require_local_git_config "push.default" "current"
+  require_local_git_config "push.autoSetupRemote" "true"
+  require_local_git_config "branch.main.remote" "backup"
+  require_local_git_config "branch.main.merge" "refs/heads/main"
   git -C "$ROOT" diff --check
   git -C "$ROOT" status --short --branch >"$TMP_DIR/git-status"
-  if grep -E '^(M|A|D|R|C|U|\?\?)' "$TMP_DIR/git-status" >/dev/null 2>&1; then
+  grep -v -E '^## ' "$TMP_DIR/git-status" >"$TMP_DIR/git-worktree-status" || true
+  if [ -s "$TMP_DIR/git-worktree-status" ]; then
     echo "[Release readiness] release check requires a clean git worktree:" >&2
-    cat "$TMP_DIR/git-status" >&2
+    cat "$TMP_DIR/git-worktree-status" >&2
     exit 1
   fi
   if ! git -C "$ROOT" rev-parse --verify backup/main >/dev/null 2>&1; then
@@ -1192,6 +1212,20 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
   fi
   if [ "$(git -C "$ROOT" rev-parse main)" != "$(git -C "$ROOT" rev-parse backup/main)" ]; then
     fail "Release readiness" "release check requires local main to match backup/main."
+  fi
+  git -C "$ROOT" for-each-ref --merged=backup/main --format='%(refname:short)' refs/heads >"$TMP_DIR/merged-local-branches"
+  grep -v -E '^main$' "$TMP_DIR/merged-local-branches" >"$TMP_DIR/stale-local-branches" || true
+  if [ -s "$TMP_DIR/stale-local-branches" ]; then
+    echo "[Release readiness] release check found stale merged local branches:" >&2
+    cat "$TMP_DIR/stale-local-branches" >&2
+    exit 1
+  fi
+  git -C "$ROOT" for-each-ref --merged=backup/main --format='%(refname:short)' refs/remotes/backup >"$TMP_DIR/merged-backup-branches"
+  grep -v -E '^backup$|^backup/(HEAD|main)$' "$TMP_DIR/merged-backup-branches" >"$TMP_DIR/stale-backup-branches" || true
+  if [ -s "$TMP_DIR/stale-backup-branches" ]; then
+    echo "[Release readiness] release check found stale merged backup remote-tracking branches:" >&2
+    cat "$TMP_DIR/stale-backup-branches" >&2
+    exit 1
   fi
   current_branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || printf '%s' HEAD)"
   if [ "$current_branch" != "main" ]; then
