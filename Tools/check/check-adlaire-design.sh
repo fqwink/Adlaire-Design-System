@@ -331,6 +331,16 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-resource-card' \
   'Docs/Generic_Component_Catalog|.adlaire-pricing-card' \
   'Docs/Generic_Component_Catalog|.adlaire-permission-matrix' \
+  'Docs/Generic_Component_Catalog|.adlaire-status-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-monitoring-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-deployment-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-release-notes' \
+  'Docs/Generic_Component_Catalog|.adlaire-query-result' \
+  'Docs/Generic_Component_Catalog|.adlaire-team-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-organization-switcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-approval-flow' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-responsive-preview' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -587,6 +597,16 @@ for sample_class in \
   'adlaire-resource-card' \
   'adlaire-pricing-card' \
   'adlaire-permission-matrix' \
+  'adlaire-status-timeline' \
+  'adlaire-monitoring-card' \
+  'adlaire-deployment-card' \
+  'adlaire-release-notes' \
+  'adlaire-query-result' \
+  'adlaire-team-card' \
+  'adlaire-organization-switcher' \
+  'adlaire-approval-flow' \
+  'adlaire-review-checklist' \
+  'adlaire-responsive-preview' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -764,8 +784,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 640 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 640 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 720 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 720 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -813,7 +833,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 640 SVG icons' \
+  'official 720 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
