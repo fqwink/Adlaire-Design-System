@@ -280,6 +280,13 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-badge' \
   'Docs/Generic_Component_Catalog|.adlaire-note' \
   'Docs/Generic_Component_Catalog|.adlaire-alert' \
+  'Docs/Generic_Component_Catalog|.adlaire-content-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-code-block' \
+  'Docs/Generic_Component_Catalog|.adlaire-code-copy' \
+  'Docs/Generic_Component_Catalog|.adlaire-content-table' \
+  'Docs/Generic_Component_Catalog|.adlaire-faq-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-markdown-body' \
   'Docs/Generic_Component_Catalog|.adlaire-chip' \
   'Docs/Generic_Component_Catalog|.adlaire-status-pill' \
   'Docs/Generic_Component_Catalog|.adlaire-container' \
@@ -293,6 +300,9 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-workbench-layout' \
   'Docs/Generic_Component_Catalog|.adlaire-app-shell' \
   'Docs/Generic_Component_Catalog|.adlaire-split-pane' \
+  'Docs/Generic_Component_Catalog|.adlaire-split-pane-collapsed' \
+  'Docs/Generic_Component_Catalog|.adlaire-mobile-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-mobile-action-bar' \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
   'Docs/Generic_Component_Catalog|.adlaire-input-group' \
   'Docs/Generic_Component_Catalog|.adlaire-date-range' \
@@ -343,6 +353,9 @@ for catalog_class in \
   'Docs/Admin_UI_Catalog|.adlaire-admin-state-badge' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-empty-state' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-stack' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-scroll' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-actions' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-collapse' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-action-bar' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-layout' \
   'Docs/Admin_UI_Catalog|.adlaire-bulk-feedback' \
@@ -363,6 +376,11 @@ for catalog_class in \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-command-item' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-alert' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-readonly' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-disabled' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-warning' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-comment' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-reorder' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-publish-check' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-a11y-panel' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-slash-menu' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-suggestion-card' \
@@ -393,6 +411,7 @@ for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate-summary' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy-status' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-line' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-mode' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-toggle' \
@@ -462,8 +481,61 @@ if grep -R -n -E 'from "\.\./|from "\./CSS|from "\./UI|from "\./EditorUI' "$ROOT
   fail "Editor runtime boundary" "TypeScript/Editor modules must stay inside the editor runtime boundary."
 fi
 
+ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+expected_files = %w[
+  TypeScript/Editor/commands.ts
+  TypeScript/Editor/core.ts
+  TypeScript/Editor/document.ts
+  TypeScript/Editor/events.ts
+  TypeScript/Editor/history.ts
+  TypeScript/Editor/index.ts
+  TypeScript/Editor/selection.ts
+  TypeScript/Editor/types.ts
+  TypeScript/Editor/validation.ts
+].sort
+actual_files = Dir.chdir(root) { Dir.glob("TypeScript/Editor/*.ts").sort }
+unless actual_files == expected_files
+  delta = ((expected_files - actual_files) + (actual_files - expected_files)).join(", ")
+  abort("[Editor runtime structural check] TypeScript/Editor file set mismatch: #{delta}")
+end
+
+exports = {
+  "TypeScript/Editor/commands.ts" => ["export function applyCommand"],
+  "TypeScript/Editor/core.ts" => ["export class HeadlessEditorController", "export function createEditor"],
+  "TypeScript/Editor/document.ts" => ["export class ToolRegistry", "export class BlockRegistry", "function handlePaste", "export function normalizeDocument"],
+  "TypeScript/Editor/events.ts" => ["export class EventBus", "export function editorError"],
+  "TypeScript/Editor/history.ts" => ["export class History"],
+  "TypeScript/Editor/selection.ts" => ["export function normalizeSelection", "export function sameSelection"],
+  "TypeScript/Editor/types.ts" => ["export interface EditorDocument", "export interface EditorController"],
+  "TypeScript/Editor/validation.ts" => ["export function validateDocument", "export async function validateDocumentAsync"],
+}
+
+exports.each do |file, markers|
+  text = File.read(File.join(root, file))
+  markers.each do |marker|
+    abort("[Editor runtime structural check] missing #{marker} in #{file}") unless text.include?(marker)
+  end
+end
+
+index_text = File.read(File.join(root, "TypeScript/Editor/index.ts"))
+%w[commands core document events history selection types validation].each do |name|
+  abort("[Editor runtime structural check] index.ts must re-export #{name}.ts") unless index_text.include?(%Q(export * from "./#{name}.ts"))
+end
+RUBY
+
 for sample_class in \
   'adlaire-workbench-layout' \
+  'adlaire-mobile-stack' \
+  'adlaire-mobile-action-bar' \
+  'adlaire-split-pane-collapsed' \
+  'adlaire-content-card' \
+  'adlaire-code-block' \
+  'adlaire-code-copy' \
+  'adlaire-content-table' \
+  'adlaire-faq-list' \
+  'adlaire-timeline' \
+  'adlaire-markdown-body' \
   'adlaire-filter-builder' \
   'adlaire-stepper' \
   'adlaire-progress' \
@@ -483,9 +555,17 @@ for sample_class in \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
   'adlaire-admin-risk-signal' \
+  'adlaire-admin-mobile-scroll' \
+  'adlaire-admin-mobile-actions' \
+  'adlaire-admin-mobile-collapse' \
   'adlaire-wysiwyg-slash-menu' \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \
+  'adlaire-wysiwyg-disabled' \
+  'adlaire-wysiwyg-warning' \
+  'adlaire-wysiwyg-comment' \
+  'adlaire-wysiwyg-reorder' \
+  'adlaire-wysiwyg-publish-check' \
   'adlaire-wysiwyg-lock-banner' \
   'data-adlaire-toast-dismiss' \
   'data-sample-toggle-hidden' \
@@ -630,6 +710,20 @@ used_vars = Dir.glob(File.join(root, "{Tokens,UI,EditorUI,Samples/design}", "**"
 end
 missing = used_vars.keys.reject { |name| defined_vars[name] || allowed_component_vars[name] }.sort
 abort("[Token usage contract] undefined CSS variables: #{missing.join(", ")}") unless missing.empty?
+
+generated_css = Dir.glob(File.join(root, "{UI,EditorUI}", "**", "*.css")).map { |file| File.read(file) }.join("\n")
+required_token_families = {
+  "spacing" => "--adlaire-space-",
+  "layout" => "--adlaire-layout-",
+  "surface" => "--adlaire-surface-",
+  "semantic" => "--adlaire-semantic-",
+  "radius" => "--adlaire-radius-",
+  "shadow" => "--adlaire-shadow-",
+  "motion" => "--adlaire-motion-",
+  "transition" => "--adlaire-transition-",
+}
+missing_families = required_token_families.reject { |_family, prefix| generated_css.include?(prefix) }.keys
+abort("[Token family usage discipline] generated UI CSS missing token families: #{missing_families.join(", ")}") unless missing_families.empty?
 RUBY
 fi
 
@@ -688,6 +782,7 @@ for doc_term in \
   'matching merged branch' \
   'family-labelled diagnostics' \
   'Token category boundaries' \
+  'Token family usage discipline' \
   'Category naming' \
   'Brand asset inventory is checked' \
   'Visual Baseline' \

@@ -144,6 +144,44 @@
         <div class="adlaire-card-body">
           <p class="adlaire-note adlaire-note-info">本文、注記、コード、関連記事、エラー状態を同じCSS契約で扱う。</p>
           <pre class="sample-code-block"><code>.adlaire-card + .adlaire-note + .adlaire-state</code></pre>
+          <article class="adlaire-content-card">
+            <h3>Documentation block</h3>
+            <p class="adlaire-markdown-body">構造化された本文、コード、FAQ、更新履歴を同じコンテンツ面で扱う。</p>
+            <div id="sample-code-copy-target" class="adlaire-code-block">
+              <div class="adlaire-code-header">
+                <span>Sample</span>
+                <button class="adlaire-code-copy" type="button" data-adlaire-code-copy="#sample-code-copy-target" data-adlaire-code-copy-status="[data-sample-code-copy-status]">Copy</button>
+                <span data-sample-code-copy-status aria-live="polite"></span>
+              </div>
+              <pre><code>adlaire.content.copy()</code></pre>
+            </div>
+            <div class="adlaire-table-scroll">
+              <table class="adlaire-content-table">
+                <thead>
+                  <tr>
+                    <th><button type="button" data-adlaire-sort="text">Item</button></th>
+                    <th><button type="button" data-adlaire-sort="number">Count</button></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Spec</td><td>4</td></tr>
+                  <tr><td>Sample</td><td>2</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <ul class="adlaire-faq-list">
+              <li class="adlaire-faq-item">
+                <details>
+                  <summary>FAQ</summary>
+                  <p>コンテンツUIの展開状態をサンプル対象に含める。</p>
+                </details>
+              </li>
+            </ul>
+            <ol class="adlaire-timeline">
+              <li class="adlaire-timeline-item">Draft</li>
+              <li class="adlaire-timeline-item">Review</li>
+            </ol>
+          </article>
           <div class="adlaire-state adlaire-state-empty">
             <strong>Empty state</strong>
             <span>データがない状態も部品として揃える。</span>
@@ -285,7 +323,10 @@
         </article>
         <article class="adlaire-admin-mobile-stack">
           <h3>Mobile actions</h3>
-          <div class="adlaire-admin-action-bar">
+          <div class="adlaire-admin-mobile-scroll">
+            <span class="adlaire-admin-mobile-collapse">Collapsed audit row</span>
+          </div>
+          <div class="adlaire-admin-action-bar adlaire-admin-mobile-actions">
             <button class="adlaire-button adlaire-button-secondary" type="button">Hold</button>
             <button class="adlaire-button adlaire-button-primary" type="button">Apply</button>
           </div>
@@ -361,7 +402,7 @@
             <span class="adlaire-step">3 PR</span>
           </div>
         </aside>
-        <article class="adlaire-layout-region">
+        <article class="adlaire-layout-region adlaire-mobile-stack">
           <form class="adlaire-filter-builder" data-adlaire-filter aria-label="Data form sample">
             <div class="adlaire-error-summary" data-adlaire-validate-summary hidden aria-live="polite"></div>
             <div class="adlaire-filter-rule">
@@ -384,6 +425,13 @@
               <label><input type="checkbox" data-adlaire-toggle-input="[data-sample-form-toggle]" checked><span class="adlaire-toggle" role="switch" aria-checked="true" data-sample-form-toggle></span></label>
             </div>
           </form>
+          <div class="adlaire-mobile-action-bar" aria-label="Responsive action sample">
+            <button class="adlaire-button adlaire-button-secondary" type="button">Save draft</button>
+            <button class="adlaire-button adlaire-button-primary" type="button">Submit</button>
+          </div>
+          <div class="adlaire-split-pane adlaire-split-pane-collapsed">
+            <div class="adlaire-pane">Collapsed split pane preview</div>
+          </div>
           <div class="adlaire-data-table-state">Generated CSS, catalogs, samples, and JS hooks are treated as one check-covered contract.</div>
         </article>
         <aside class="adlaire-layout-region">
@@ -448,6 +496,9 @@
             <span class="adlaire-wysiwyg-block-label">Error</span>
             <div class="adlaire-wysiwyg-block-content">alt確認などの警告表示枠。</div>
           </div>
+          <div class="adlaire-wysiwyg-warning">Warning: media block needs alternative text.</div>
+          <div class="adlaire-wysiwyg-comment">Comment: review the publication heading.</div>
+          <div class="adlaire-wysiwyg-reorder">Reorder target is active.</div>
           <div class="adlaire-wysiwyg-insert">
             <button class="adlaire-wysiwyg-insert-item" type="button">Insert block</button>
             <button class="adlaire-wysiwyg-transform" type="button">Transform</button>
@@ -476,6 +527,8 @@
           <button class="adlaire-wysiwyg-command-item" type="button">コード</button>
         </div>
         <div class="adlaire-wysiwyg-alert">Readonly content cannot be edited.</div>
+        <div class="adlaire-wysiwyg-disabled">Editor controls are disabled during sync.</div>
+        <div class="adlaire-wysiwyg-publish-check">Publish check: all required fields are complete.</div>
         <div class="adlaire-wysiwyg-save-banner" data-sample-save-state>Saved locally</div>
         <div class="adlaire-wysiwyg-lock-banner">Locked by reviewer</div>
         <div class="adlaire-action-row" aria-label="Editor sample state controls">

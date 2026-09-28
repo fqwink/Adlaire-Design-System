@@ -236,6 +236,23 @@ export const LAYOUT_RULE_FILE: CssRuleFile = { path: "UI/layout.css", css: `/* A
   display: none;
 }
 
+.adlaire-split-pane-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.adlaire-mobile-stack {
+  display: grid;
+  gap: var(--adlaire-space-3);
+}
+
+.adlaire-mobile-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--adlaire-space-2);
+  align-items: center;
+  justify-content: flex-end;
+}
+
 @media (max-width: 768px) {
   .adlaire-app-shell {
     grid-template-columns: 1fr;
@@ -248,6 +265,14 @@ export const LAYOUT_RULE_FILE: CssRuleFile = { path: "UI/layout.css", css: `/* A
 
   .adlaire-split-pane {
     grid-template-columns: 1fr;
+  }
+
+  .adlaire-mobile-action-bar {
+    justify-content: stretch;
+  }
+
+  .adlaire-mobile-action-bar > * {
+    flex: 1 1 140px;
   }
 
   .adlaire-pane-resize-handle {

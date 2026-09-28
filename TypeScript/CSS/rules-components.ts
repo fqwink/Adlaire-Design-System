@@ -2523,7 +2523,7 @@ export const COMPONENTS_RULE_FILE: CssRuleFile = { path: "UI/components.css", cs
   border-top-color: var(--adlaire-surface-accent);
   border-radius: var(--adlaire-radius-round);
   content: "";
-  animation: adlaire-spin 0.8s linear infinite;
+  animation: adlaire-spin var(--adlaire-motion-duration-slow) var(--adlaire-motion-ease-standard) infinite;
 }
 
 @keyframes adlaire-spin {

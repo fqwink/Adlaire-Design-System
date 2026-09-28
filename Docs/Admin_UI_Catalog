@@ -50,6 +50,9 @@ This catalog governs Admin-only UI patterns used by administrators, operators, e
 - `.adlaire-admin-state-badge`
 - `.adlaire-admin-empty-state`
 - `.adlaire-admin-mobile-stack`
+- `.adlaire-admin-mobile-scroll`
+- `.adlaire-admin-mobile-actions`
+- `.adlaire-admin-mobile-collapse`
 - `.adlaire-admin-action-bar`
 - `.adlaire-admin-layout`
 - `.adlaire-bulk-feedback`
