@@ -56,7 +56,7 @@ Post-merge cleanup is scoped to the matching merged branch for the PR just handl
 | `UI/` | Public UI CSS and JavaScript outputs. |
 | `EditorUI/` | WYSIWYG Editor UI CSS/JavaScript and editor runtime output. |
 | `TypeScript/` | Deno TypeScript source. |
-| `Icons/` | Official 800 SVG icons. |
+| `Icons/` | Official 880 SVG icons. |
 | `Brand/` | Brand assets. |
 | `Samples/` | Supporting confirmation samples. |
 | `Tools/check/` | Repository checks. |
@@ -154,13 +154,13 @@ WYSIWYG UI contracts include slash menu, suggestion card, save banner, lock bann
 
 ## Icons and Brand
 
-`Icons/` contains the official 800 SVG icons. `Docs/Icon_Set_Catalog` governs icon categories, usage, semantic/decorative distinction, and alt-text policy.
+`Icons/` contains the official 880 SVG icons. `Docs/Icon_Set_Catalog` governs icon categories, usage, semantic/decorative distinction, and alt-text policy.
 
 `Brand/` contains brand assets. `Docs/Brand_Asset_Catalog` governs brand asset files, types, formats, and descriptions.
 
 ## Samples
 
-Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Tokens, Brand, and the official 800 SVG icons.
+Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Tokens, Brand, and the official 880 SVG icons.
 
 Samples must not become the source of truth for tokens, CSS contracts, JavaScript behavior, or catalog state.
 

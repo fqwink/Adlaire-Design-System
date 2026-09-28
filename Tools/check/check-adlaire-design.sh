@@ -351,6 +351,22 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-agent-card' \
   'Docs/Generic_Component_Catalog|.adlaire-workspace-switcher' \
   'Docs/Generic_Component_Catalog|.adlaire-audit-log' \
+  'Docs/Generic_Component_Catalog|.adlaire-product-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-plan-selector' \
+  'Docs/Generic_Component_Catalog|.adlaire-billing-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-invoice-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-account-profile' \
+  'Docs/Generic_Component_Catalog|.adlaire-member-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-role-matrix' \
+  'Docs/Generic_Component_Catalog|.adlaire-support-ticket' \
+  'Docs/Generic_Component_Catalog|.adlaire-support-conversation' \
+  'Docs/Generic_Component_Catalog|.adlaire-analytics-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-report-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-workflow-builder' \
+  'Docs/Generic_Component_Catalog|.adlaire-integration-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-api-key-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-trust-center' \
+  'Docs/Generic_Component_Catalog|.adlaire-compliance-evidence' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -627,6 +643,22 @@ for sample_class in \
   'adlaire-agent-card' \
   'adlaire-workspace-switcher' \
   'adlaire-audit-log' \
+  'adlaire-product-card' \
+  'adlaire-plan-selector' \
+  'adlaire-billing-summary' \
+  'adlaire-invoice-list' \
+  'adlaire-account-profile' \
+  'adlaire-member-list' \
+  'adlaire-role-matrix' \
+  'adlaire-support-ticket' \
+  'adlaire-support-conversation' \
+  'adlaire-analytics-panel' \
+  'adlaire-report-card' \
+  'adlaire-workflow-builder' \
+  'adlaire-integration-card' \
+  'adlaire-api-key-list' \
+  'adlaire-trust-center' \
+  'adlaire-compliance-evidence' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -804,8 +836,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 800 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 800 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 880 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 880 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -853,7 +885,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 800 SVG icons' \
+  'official 880 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
