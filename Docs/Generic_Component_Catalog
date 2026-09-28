@@ -48,6 +48,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Operational UI | status timeline, monitoring card, deployment card, release notes, query result, team card, organization switcher, approval flow, review checklist, responsive preview | 実装済み |
 | Application UI | app navigation, sidebar section, command launcher, inbox list, message thread, file card, upload queue, agent card, workspace switcher, audit log | 実装済み |
 | Product UI | product card, plan selector, billing summary, invoice list, account profile, member list, role matrix, support ticket, analytics panel, workflow builder, integration card, trust center | 実装済み |
+| Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -150,6 +151,22 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-api-key-list`
 - `.adlaire-trust-center`
 - `.adlaire-compliance-evidence`
+- `.adlaire-commerce-cart`
+- `.adlaire-checkout-summary`
+- `.adlaire-order-card`
+- `.adlaire-order-timeline`
+- `.adlaire-product-grid`
+- `.adlaire-product-tile`
+- `.adlaire-sku-list`
+- `.adlaire-inventory-panel`
+- `.adlaire-price-rule-card`
+- `.adlaire-coupon-list`
+- `.adlaire-marketplace-listing`
+- `.adlaire-seller-card`
+- `.adlaire-review-summary`
+- `.adlaire-shipping-tracker`
+- `.adlaire-return-request`
+- `.adlaire-dispute-panel`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`

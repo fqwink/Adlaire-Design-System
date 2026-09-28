@@ -367,6 +367,22 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-api-key-list' \
   'Docs/Generic_Component_Catalog|.adlaire-trust-center' \
   'Docs/Generic_Component_Catalog|.adlaire-compliance-evidence' \
+  'Docs/Generic_Component_Catalog|.adlaire-commerce-cart' \
+  'Docs/Generic_Component_Catalog|.adlaire-checkout-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-order-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-order-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-product-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-product-tile' \
+  'Docs/Generic_Component_Catalog|.adlaire-sku-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-inventory-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-price-rule-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-coupon-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-marketplace-listing' \
+  'Docs/Generic_Component_Catalog|.adlaire-seller-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-shipping-tracker' \
+  'Docs/Generic_Component_Catalog|.adlaire-return-request' \
+  'Docs/Generic_Component_Catalog|.adlaire-dispute-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -659,6 +675,22 @@ for sample_class in \
   'adlaire-api-key-list' \
   'adlaire-trust-center' \
   'adlaire-compliance-evidence' \
+  'adlaire-commerce-cart' \
+  'adlaire-checkout-summary' \
+  'adlaire-order-card' \
+  'adlaire-order-timeline' \
+  'adlaire-product-grid' \
+  'adlaire-product-tile' \
+  'adlaire-sku-list' \
+  'adlaire-inventory-panel' \
+  'adlaire-price-rule-card' \
+  'adlaire-coupon-list' \
+  'adlaire-marketplace-listing' \
+  'adlaire-seller-card' \
+  'adlaire-review-summary' \
+  'adlaire-shipping-tracker' \
+  'adlaire-return-request' \
+  'adlaire-dispute-panel' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -836,8 +868,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 880 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 880 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 960 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 960 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -885,7 +917,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 880 SVG icons' \
+  'official 960 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
