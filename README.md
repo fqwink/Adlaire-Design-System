@@ -44,13 +44,15 @@ This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG
 
 ## Checks
 
+Repository work starts with `AGENTS.md`, `git fetch backup --prune`, and a local/remote consistency check. The local Git consistency baseline uses automatic pruning, fast-forward-only pulls, `backup` as the default push remote, the current branch as the default push target, and automatic upstream setup. GitHub accepts merge commits only, requires PRs for `main`, automatically deletes merged head branches, and blocks force pushes and deletion of `main`.
+
 Run the normal repository check:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh
 ```
 
-Run the release check only after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization:
+Run the release check only after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift and stale merged local or `backup/*` remote-tracking branches:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh --release-check
