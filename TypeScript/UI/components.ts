@@ -218,6 +218,27 @@
     const routeSelect = source?.closest("[data-adlaire-route-select]");
     const carePlanCheck = source?.closest("[data-adlaire-care-plan-check]");
     const evidenceSelect = source?.closest("[data-adlaire-evidence-select]");
+    const ticketPrioritySelect = source?.closest("[data-adlaire-ticket-priority-select]");
+    const successPlaybookCheck = source?.closest("[data-adlaire-success-playbook-check]");
+    const reportParameterSelect = source?.closest("[data-adlaire-report-parameter-select]");
+    const channelSelect = source?.closest("[data-adlaire-channel-select]");
+    const quietHoursToggle = source?.closest("[data-adlaire-quiet-hours-toggle]");
+    const topicPreferenceToggle = source?.closest("[data-adlaire-topic-preference-toggle]");
+    const editorialGateSelect = source?.closest("[data-adlaire-editorial-gate-select]");
+    const localeSelect = source?.closest("[data-adlaire-locale-select]");
+    const moderationDecision = source?.closest("[data-adlaire-moderation-decision]");
+    const deviceSelect = source?.closest("[data-adlaire-device-select]");
+    const deploymentRingSelect = source?.closest("[data-adlaire-deployment-ring-select]");
+    const handoffCheck = source?.closest("[data-adlaire-handoff-check]");
+    const fareOptionSelect = source?.closest("[data-adlaire-fare-option-select]");
+    const roomSelect = source?.closest("[data-adlaire-room-select]");
+    const recoveryTaskCheck = source?.closest("[data-adlaire-recovery-task-check]");
+    const eligibilityCheck = source?.closest("[data-adlaire-eligibility-check]");
+    const permitStepSelect = source?.closest("[data-adlaire-permit-step-select]");
+    const volunteerShiftSelect = source?.closest("[data-adlaire-volunteer-shift-select]");
+    const demandResponseSelect = source?.closest("[data-adlaire-demand-response-select]");
+    const outageReportSelect = source?.closest("[data-adlaire-outage-report-select]");
+    const disclosureCheck = source?.closest("[data-adlaire-disclosure-check]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -352,6 +373,111 @@
     if (evidenceSelect) {
       event.preventDefault();
       selectInteractiveChoice(evidenceSelect, ".adlaire-evidence-list", "[data-adlaire-evidence-select]", "aria-selected");
+    }
+
+    if (ticketPrioritySelect) {
+      event.preventDefault();
+      selectInteractiveChoice(ticketPrioritySelect, ".adlaire-ticket-priority-board", "[data-adlaire-ticket-priority-select]", "aria-selected");
+    }
+
+    if (successPlaybookCheck) {
+      event.preventDefault();
+      toggleBooleanState(successPlaybookCheck, "aria-checked");
+    }
+
+    if (reportParameterSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(reportParameterSelect, ".adlaire-report-parameter-bar", "[data-adlaire-report-parameter-select]", "aria-pressed");
+    }
+
+    if (channelSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(channelSelect, ".adlaire-channel-list", "[data-adlaire-channel-select]", "aria-selected");
+    }
+
+    if (quietHoursToggle) {
+      event.preventDefault();
+      toggleBooleanState(quietHoursToggle, "aria-pressed");
+    }
+
+    if (topicPreferenceToggle) {
+      event.preventDefault();
+      toggleBooleanState(topicPreferenceToggle, "aria-checked");
+    }
+
+    if (editorialGateSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(editorialGateSelect, ".adlaire-review-gate-panel", "[data-adlaire-editorial-gate-select]", "aria-selected");
+    }
+
+    if (localeSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(localeSelect, ".adlaire-locale-switcher-panel", "[data-adlaire-locale-select]", "aria-selected");
+    }
+
+    if (moderationDecision) {
+      event.preventDefault();
+      selectInteractiveChoice(moderationDecision, ".adlaire-moderation-queue", "[data-adlaire-moderation-decision]", "aria-pressed");
+    }
+
+    if (deviceSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(deviceSelect, ".adlaire-device-registry-table", "[data-adlaire-device-select]", "aria-selected");
+    }
+
+    if (deploymentRingSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(deploymentRingSelect, ".adlaire-deployment-ring-selector", "[data-adlaire-deployment-ring-select]", "aria-selected");
+    }
+
+    if (handoffCheck) {
+      event.preventDefault();
+      toggleBooleanState(handoffCheck, "aria-checked");
+    }
+
+    if (fareOptionSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(fareOptionSelect, ".adlaire-booking-summary-panel", "[data-adlaire-fare-option-select]", "aria-selected");
+    }
+
+    if (roomSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(roomSelect, ".adlaire-room-inventory-board", "[data-adlaire-room-select]", "aria-selected");
+    }
+
+    if (recoveryTaskCheck) {
+      event.preventDefault();
+      toggleBooleanState(recoveryTaskCheck, "aria-checked");
+    }
+
+    if (eligibilityCheck) {
+      event.preventDefault();
+      toggleBooleanState(eligibilityCheck, "aria-checked");
+    }
+
+    if (permitStepSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(permitStepSelect, ".adlaire-document-requirement-list", "[data-adlaire-permit-step-select]", "aria-selected");
+    }
+
+    if (volunteerShiftSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(volunteerShiftSelect, ".adlaire-volunteer-shift-board", "[data-adlaire-volunteer-shift-select]", "aria-selected");
+    }
+
+    if (demandResponseSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(demandResponseSelect, ".adlaire-demand-response-panel", "[data-adlaire-demand-response-select]", "aria-selected");
+    }
+
+    if (outageReportSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(outageReportSelect, ".adlaire-service-appointment-board", "[data-adlaire-outage-report-select]", "aria-selected");
+    }
+
+    if (disclosureCheck) {
+      event.preventDefault();
+      toggleBooleanState(disclosureCheck, "aria-checked");
     }
   });
 
