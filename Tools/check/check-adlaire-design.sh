@@ -376,6 +376,11 @@ for catalog_class in \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-command-item' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-alert' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-readonly' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-disabled' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-warning' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-comment' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-reorder' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-publish-check' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-a11y-panel' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-slash-menu' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-suggestion-card' \
@@ -513,6 +518,11 @@ for sample_class in \
   'adlaire-wysiwyg-slash-menu' \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \
+  'adlaire-wysiwyg-disabled' \
+  'adlaire-wysiwyg-warning' \
+  'adlaire-wysiwyg-comment' \
+  'adlaire-wysiwyg-reorder' \
+  'adlaire-wysiwyg-publish-check' \
   'adlaire-wysiwyg-lock-banner' \
   'data-adlaire-toast-dismiss' \
   'data-sample-toggle-hidden' \
