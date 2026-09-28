@@ -754,6 +754,115 @@
       </div>
     </section>
 
+    <section class="sample-section" aria-labelledby="business-operations-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Business Operations UI</p>
+        <h2 id="business-operations-title">予約、拠点、比較、文書、権限の業務部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-agenda-view" aria-label="Agenda sample">
+          <h3>Scheduling</h3>
+          <div class="adlaire-agenda-row"><time>09:00</time><span>Facility review</span><span class="adlaire-status-pill">confirmed</span></div>
+          <div class="adlaire-calendar-event"><time>10:30</time><span>Onsite setup</span><span class="adlaire-status-pill">draft</span></div>
+          <div class="adlaire-time-slot-grid" aria-label="Time slots">
+            <button class="adlaire-time-slot" type="button" aria-selected="true" data-adlaire-time-slot>09:00</button>
+            <button class="adlaire-time-slot" type="button" aria-selected="false" data-adlaire-time-slot>10:00</button>
+            <button class="adlaire-time-slot" type="button" aria-selected="false" data-adlaire-time-slot>11:00</button>
+          </div>
+          <div class="adlaire-resource-calendar">
+            <div class="adlaire-booking-card"><strong>Room A</strong><span>3 bookings</span><span>today</span></div>
+            <div class="adlaire-availability-matrix" aria-label="Availability matrix">
+              <span class="adlaire-availability-cell" data-state="available">Open</span>
+              <span class="adlaire-availability-cell" data-state="busy">Busy</span>
+              <span class="adlaire-availability-cell">Hold</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="adlaire-location-card" aria-label="Location sample">
+          <h3>Facility</h3>
+          <div class="adlaire-floor-selector" aria-label="Floor selector">
+            <button class="adlaire-floor-selector-button" type="button" aria-pressed="true" data-adlaire-floor-select>1F</button>
+            <button class="adlaire-floor-selector-button" type="button" aria-pressed="false" data-adlaire-floor-select>2F</button>
+            <button class="adlaire-floor-selector-button" type="button" aria-pressed="false" data-adlaire-floor-select>3F</button>
+          </div>
+          <div class="adlaire-facility-map-panel" aria-label="Facility map panel">Area map</div>
+          <div class="adlaire-area-status-grid" aria-label="Area status grid">
+            <span class="adlaire-area-status-cell" data-state="open">Lobby</span>
+            <span class="adlaire-area-status-cell" data-state="busy">Studio</span>
+            <span class="adlaire-area-status-cell">Storage</span>
+          </div>
+          <div class="adlaire-route-summary"><strong>Route</strong><span>Gate A to Studio</span><span>4 min</span></div>
+          <div class="adlaire-site-operating-hours"><strong>Hours</strong><span>09:00 - 18:00</span><span>weekday</span></div>
+        </article>
+
+        <article class="adlaire-component-preview" data-adlaire-option-group aria-label="Decision sample">
+          <h3>Decision</h3>
+          <div class="adlaire-comparison-matrix">
+            <table>
+              <thead><tr><th>Option</th><th>Cost</th><th>Risk</th></tr></thead>
+              <tbody><tr><td>A</td><td>Low</td><td>Medium</td></tr><tr><td>B</td><td>Medium</td><td>Low</td></tr></tbody>
+            </table>
+          </div>
+          <button class="adlaire-option-card" type="button" aria-selected="true" data-adlaire-option-select><strong>Option A</strong><span>Fastest rollout</span></button>
+          <button class="adlaire-option-card" type="button" aria-selected="false" data-adlaire-option-select><strong>Option B</strong><span>Lowest risk</span></button>
+          <div class="adlaire-decision-scorecard" aria-label="Decision scorecard">
+            <span class="adlaire-decision-score"><strong>82</strong><span>fit</span></span>
+            <span class="adlaire-decision-score"><strong>74</strong><span>risk</span></span>
+          </div>
+          <ul class="adlaire-tradeoff-list">
+            <li class="adlaire-tradeoff-item">Speed improves while approval depth stays visible.</li>
+            <li class="adlaire-tradeoff-item">Cost stays predictable with staged adoption.</li>
+          </ul>
+          <div class="adlaire-recommendation-banner"><strong>Recommended</strong><span>Option A</span></div>
+          <div class="adlaire-selection-summary"><strong>Selection</strong><span>Option A selected</span></div>
+        </article>
+
+        <article class="adlaire-document-library" aria-label="Document library sample">
+          <nav class="adlaire-folder-tree" aria-label="Folder tree">
+            <ul class="adlaire-folder-list">
+              <li class="adlaire-folder-item">
+                <div class="adlaire-folder-row"><button class="adlaire-folder-toggle" type="button" aria-expanded="true" aria-controls="sample-folder-branch" data-adlaire-folder-toggle="sample-folder-branch">+</button><span>Policies</span></div>
+                <ul id="sample-folder-branch" class="adlaire-folder-branch">
+                  <li class="adlaire-folder-row">Retention</li>
+                  <li class="adlaire-folder-row">Approval</li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          <div class="adlaire-stack">
+            <article class="adlaire-file-version-card"><strong>Spec v3</strong><span>Updated today</span><span class="adlaire-retention-badge">7 years</span></article>
+            <div class="adlaire-document-approval-state"><strong>Approval</strong><span>Legal review</span><span class="adlaire-status-pill">pending</span></div>
+            <div class="adlaire-download-queue" aria-label="Download queue">
+              <div class="adlaire-download-queue-item"><span>spec.pdf</span><span>ready</span></div>
+              <div class="adlaire-download-queue-item"><span>evidence.zip</span><span>queued</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Permission sample">
+          <h3>Permission and security</h3>
+          <article class="adlaire-access-request-card"><strong>Access request</strong><span>Finance folder</span><span class="adlaire-status-pill">review</span></article>
+          <div class="adlaire-permission-grant-row"><span>Design team</span><strong>read</strong></div>
+          <div class="adlaire-session-list" aria-label="Session list">
+            <div class="adlaire-session-list-item"><span>macOS desktop</span><span>active</span></div>
+            <div class="adlaire-session-list-item"><span>Mobile web</span><span>expired</span></div>
+          </div>
+          <article class="adlaire-device-trust-card"><strong>Device trust</strong><span>Managed and encrypted</span><span>trusted</span></article>
+          <div class="adlaire-security-event-row"><time>12:40</time><span>Policy evaluated</span><span>pass</span></div>
+          <section class="adlaire-policy-exception-panel" aria-label="Policy exception">
+            <div class="adlaire-policy-exception-header">
+              <strong>Policy exception</strong>
+              <button class="adlaire-button adlaire-button-secondary" type="button" aria-expanded="true" data-adlaire-policy-exception-toggle="#sample-policy-exception-body">Toggle</button>
+            </div>
+            <div id="sample-policy-exception-body" class="adlaire-policy-exception-body">
+              <span>Temporary access expires after approval window.</span>
+            </div>
+          </section>
+        </article>
+      </div>
+    </section>
+
     <section class="sample-section" aria-labelledby="icon-title">
       <div class="sample-section-heading">
         <p class="sample-kicker">Icons</p>

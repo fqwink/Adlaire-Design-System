@@ -479,6 +479,8 @@ body {
 .adlaire-asset-browser,
 .adlaire-tab-workspace,
 .adlaire-kanban-board,
+.adlaire-resource-calendar,
+.adlaire-document-library,
 .adlaire-component-preview {
   min-width: 0;
 }
@@ -501,7 +503,9 @@ body {
   .sample-brand-grid,
   .sample-git-layout,
   .adlaire-workbench-layout,
-  .adlaire-asset-browser {
+  .adlaire-asset-browser,
+  .adlaire-resource-calendar,
+  .adlaire-document-library {
     grid-template-columns: 1fr;
   }
 }
