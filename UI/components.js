@@ -261,6 +261,9 @@
     var pipelineStageSelect = event.target.closest("[data-adlaire-pipeline-stage-select]");
     var serviceCheck = event.target.closest("[data-adlaire-service-check]");
     var policyAcknowledgement = event.target.closest("[data-adlaire-policy-acknowledgement]");
+    var confidenceSelect = event.target.closest("[data-adlaire-confidence-select]");
+    var milestoneSelect = event.target.closest("[data-adlaire-milestone-select]");
+    var attestationToggle = event.target.closest("[data-adlaire-attestation-toggle]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -372,6 +375,21 @@
     if (policyAcknowledgement) {
       event.preventDefault();
       toggleBooleanState(policyAcknowledgement, "aria-pressed");
+    }
+
+    if (confidenceSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(confidenceSelect, ".adlaire-confidence-indicator", "[data-adlaire-confidence-select]", "aria-pressed");
+    }
+
+    if (milestoneSelect) {
+      event.preventDefault();
+      selectCurrentStep(milestoneSelect, ".adlaire-milestone-tracker", "[data-adlaire-milestone-select]");
+    }
+
+    if (attestationToggle) {
+      event.preventDefault();
+      toggleBooleanState(attestationToggle, "aria-pressed");
     }
   });
 

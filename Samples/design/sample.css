@@ -486,6 +486,11 @@ body {
 .adlaire-skill-matrix,
 .adlaire-quick-link-grid,
 .adlaire-internal-app-launcher,
+.adlaire-initiative-map,
+.adlaire-portfolio-overview,
+.adlaire-capacity-planner,
+.adlaire-procurement-pipeline,
+.adlaire-change-calendar-panel,
 .adlaire-component-preview {
   min-width: 0;
 }
@@ -515,7 +520,12 @@ body {
   .adlaire-budget-panel,
   .adlaire-skill-matrix,
   .adlaire-quick-link-grid,
-  .adlaire-internal-app-launcher {
+  .adlaire-internal-app-launcher,
+  .adlaire-initiative-map,
+  .adlaire-portfolio-overview,
+  .adlaire-capacity-planner,
+  .adlaire-procurement-pipeline,
+  .adlaire-change-calendar-panel {
     grid-template-columns: 1fr;
   }
 }

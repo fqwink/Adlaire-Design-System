@@ -212,6 +212,9 @@
     const pipelineStageSelect = source?.closest("[data-adlaire-pipeline-stage-select]");
     const serviceCheck = source?.closest("[data-adlaire-service-check]");
     const policyAcknowledgement = source?.closest("[data-adlaire-policy-acknowledgement]");
+    const confidenceSelect = source?.closest("[data-adlaire-confidence-select]");
+    const milestoneSelect = source?.closest("[data-adlaire-milestone-select]");
+    const attestationToggle = source?.closest("[data-adlaire-attestation-toggle]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -316,6 +319,21 @@
     if (policyAcknowledgement) {
       event.preventDefault();
       toggleBooleanState(policyAcknowledgement, "aria-pressed");
+    }
+
+    if (confidenceSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(confidenceSelect, ".adlaire-confidence-indicator", "[data-adlaire-confidence-select]", "aria-pressed");
+    }
+
+    if (milestoneSelect) {
+      event.preventDefault();
+      selectCurrentStep(milestoneSelect, ".adlaire-milestone-tracker", "[data-adlaire-milestone-select]");
+    }
+
+    if (attestationToggle) {
+      event.preventDefault();
+      toggleBooleanState(attestationToggle, "aria-pressed");
     }
   });
 
