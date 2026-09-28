@@ -484,6 +484,38 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-git-ci-status' \
   'Docs/Generic_Component_Catalog|.adlaire-git-merge-state' \
   'Docs/Generic_Component_Catalog|.adlaire-git-diff-hunk' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-product-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-product-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-action-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-copilot-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-security-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-dependabot-alert' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-codespace-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-package-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-pages-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-project-board-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-discussion-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-release-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-marketplace-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-integration-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-webhook-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-api-key-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-service-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-region-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-environment-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-resource-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-topology-map' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-deployment-target' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-runtime-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-database-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-storage-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-queue-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-worker-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-domain-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-certificate-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-secret-vault' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-quota-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-cost-summary' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-dashboard' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-settings' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-data-list' \
@@ -701,6 +733,38 @@ for sample_class in \
   'adlaire-git-ci-status' \
   'adlaire-git-merge-state' \
   'adlaire-git-diff-hunk' \
+  'adlaire-github-product-grid' \
+  'adlaire-github-product-card' \
+  'adlaire-github-action-card' \
+  'adlaire-github-copilot-card' \
+  'adlaire-github-security-panel' \
+  'adlaire-github-dependabot-alert' \
+  'adlaire-github-codespace-card' \
+  'adlaire-github-package-card' \
+  'adlaire-github-pages-card' \
+  'adlaire-github-project-board-card' \
+  'adlaire-github-discussion-card' \
+  'adlaire-github-release-card' \
+  'adlaire-github-marketplace-card' \
+  'adlaire-github-integration-list' \
+  'adlaire-github-webhook-panel' \
+  'adlaire-github-api-key-panel' \
+  'adlaire-cloud-service-card' \
+  'adlaire-cloud-region-card' \
+  'adlaire-cloud-environment-card' \
+  'adlaire-cloud-resource-grid' \
+  'adlaire-cloud-topology-map' \
+  'adlaire-cloud-deployment-target' \
+  'adlaire-cloud-runtime-card' \
+  'adlaire-cloud-database-card' \
+  'adlaire-cloud-storage-card' \
+  'adlaire-cloud-queue-card' \
+  'adlaire-cloud-worker-card' \
+  'adlaire-cloud-domain-panel' \
+  'adlaire-cloud-certificate-panel' \
+  'adlaire-cloud-secret-vault' \
+  'adlaire-cloud-quota-panel' \
+  'adlaire-cloud-cost-summary' \
   'adlaire-icon-button' \
   'adlaire-icon-button-group' \
   'adlaire-icon-tile' \
@@ -1028,8 +1092,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 1360 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 1360 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 1520 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 1520 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -1077,7 +1141,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 1360 SVG icons' \
+  'official 1520 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
