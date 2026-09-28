@@ -334,8 +334,12 @@ for catalog_class in \
   'Docs/Admin_UI_Catalog|.adlaire-admin-data-toolbar' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-approval-panel' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-health-check' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-incident-panel' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-maintenance-window' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-release-panel' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-security-overview' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-secret-panel' \
+  'Docs/Admin_UI_Catalog|.adlaire-admin-risk-signal' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-state-badge' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-empty-state' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-mobile-stack' \
@@ -475,6 +479,10 @@ for sample_class in \
   'adlaire-git-ci-status' \
   'adlaire-git-merge-state' \
   'adlaire-git-diff-hunk' \
+  'adlaire-admin-incident-panel' \
+  'adlaire-admin-maintenance-window' \
+  'adlaire-admin-secret-panel' \
+  'adlaire-admin-risk-signal' \
   'adlaire-wysiwyg-slash-menu' \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \
