@@ -399,6 +399,70 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-drift-monitor' \
   'Docs/Generic_Component_Catalog|.adlaire-anomaly-list' \
   'Docs/Generic_Component_Catalog|.adlaire-data-access-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-collaborator-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-presence-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-request-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-decision' \
+  'Docs/Generic_Component_Catalog|.adlaire-change-request-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-comment-thread' \
+  'Docs/Generic_Component_Catalog|.adlaire-annotation-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-suggestion-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-version-history' \
+  'Docs/Generic_Component_Catalog|.adlaire-diff-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-task-board' \
+  'Docs/Generic_Component_Catalog|.adlaire-checklist-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-notification-digest' \
+  'Docs/Generic_Component_Catalog|.adlaire-escalation-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-meeting-notes' \
+  'Docs/Generic_Component_Catalog|.adlaire-signoff-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-workflow-runner' \
+  'Docs/Generic_Component_Catalog|.adlaire-automation-rule-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-trigger-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-condition-builder' \
+  'Docs/Generic_Component_Catalog|.adlaire-action-chain' \
+  'Docs/Generic_Component_Catalog|.adlaire-schedule-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-policy-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-compliance-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-evidence-locker' \
+  'Docs/Generic_Component_Catalog|.adlaire-approval-route' \
+  'Docs/Generic_Component_Catalog|.adlaire-access-review-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-risk-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-audit-event-stream' \
+  'Docs/Generic_Component_Catalog|.adlaire-retention-policy-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-incident-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-control-status-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-health-overview' \
+  'Docs/Generic_Component_Catalog|.adlaire-service-status-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-uptime-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-log-stream' \
+  'Docs/Generic_Component_Catalog|.adlaire-log-event-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-trace-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-span-detail' \
+  'Docs/Generic_Component_Catalog|.adlaire-metric-threshold-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-alert-rule-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-alert-incident-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-error-rate-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-latency-distribution' \
+  'Docs/Generic_Component_Catalog|.adlaire-dependency-map' \
+  'Docs/Generic_Component_Catalog|.adlaire-slo-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-diagnostic-run-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-remediation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-onboarding-flow' \
+  'Docs/Generic_Component_Catalog|.adlaire-onboarding-step-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-tour-callout' \
+  'Docs/Generic_Component_Catalog|.adlaire-guided-task-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-help-center-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-help-article-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-search-result-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-search-result-item' \
+  'Docs/Generic_Component_Catalog|.adlaire-recent-item-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-recommendation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-personalization-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-preference-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-notification-preference-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-language-selector-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-keyboard-shortcut-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-release-highlight' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -420,6 +484,38 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-git-ci-status' \
   'Docs/Generic_Component_Catalog|.adlaire-git-merge-state' \
   'Docs/Generic_Component_Catalog|.adlaire-git-diff-hunk' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-product-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-product-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-action-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-copilot-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-security-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-dependabot-alert' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-codespace-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-package-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-pages-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-project-board-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-discussion-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-release-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-marketplace-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-integration-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-webhook-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-api-key-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-service-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-region-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-environment-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-resource-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-topology-map' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-deployment-target' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-runtime-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-database-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-storage-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-queue-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-worker-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-domain-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-certificate-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-secret-vault' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-quota-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-cloud-cost-summary' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-dashboard' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-settings' \
   'Docs/Admin_UI_Catalog|.adlaire-admin-data-list' \
@@ -637,6 +733,38 @@ for sample_class in \
   'adlaire-git-ci-status' \
   'adlaire-git-merge-state' \
   'adlaire-git-diff-hunk' \
+  'adlaire-github-product-grid' \
+  'adlaire-github-product-card' \
+  'adlaire-github-action-card' \
+  'adlaire-github-copilot-card' \
+  'adlaire-github-security-panel' \
+  'adlaire-github-dependabot-alert' \
+  'adlaire-github-codespace-card' \
+  'adlaire-github-package-card' \
+  'adlaire-github-pages-card' \
+  'adlaire-github-project-board-card' \
+  'adlaire-github-discussion-card' \
+  'adlaire-github-release-card' \
+  'adlaire-github-marketplace-card' \
+  'adlaire-github-integration-list' \
+  'adlaire-github-webhook-panel' \
+  'adlaire-github-api-key-panel' \
+  'adlaire-cloud-service-card' \
+  'adlaire-cloud-region-card' \
+  'adlaire-cloud-environment-card' \
+  'adlaire-cloud-resource-grid' \
+  'adlaire-cloud-topology-map' \
+  'adlaire-cloud-deployment-target' \
+  'adlaire-cloud-runtime-card' \
+  'adlaire-cloud-database-card' \
+  'adlaire-cloud-storage-card' \
+  'adlaire-cloud-queue-card' \
+  'adlaire-cloud-worker-card' \
+  'adlaire-cloud-domain-panel' \
+  'adlaire-cloud-certificate-panel' \
+  'adlaire-cloud-secret-vault' \
+  'adlaire-cloud-quota-panel' \
+  'adlaire-cloud-cost-summary' \
   'adlaire-icon-button' \
   'adlaire-icon-button-group' \
   'adlaire-icon-tile' \
@@ -723,6 +851,70 @@ for sample_class in \
   'adlaire-drift-monitor' \
   'adlaire-anomaly-list' \
   'adlaire-data-access-panel' \
+  'adlaire-collaborator-list' \
+  'adlaire-presence-stack' \
+  'adlaire-review-request-card' \
+  'adlaire-review-decision' \
+  'adlaire-change-request-list' \
+  'adlaire-comment-thread' \
+  'adlaire-annotation-card' \
+  'adlaire-suggestion-panel' \
+  'adlaire-version-history' \
+  'adlaire-diff-summary' \
+  'adlaire-task-board' \
+  'adlaire-checklist-panel' \
+  'adlaire-notification-digest' \
+  'adlaire-escalation-banner' \
+  'adlaire-meeting-notes' \
+  'adlaire-signoff-panel' \
+  'adlaire-workflow-runner' \
+  'adlaire-automation-rule-card' \
+  'adlaire-trigger-list' \
+  'adlaire-condition-builder' \
+  'adlaire-action-chain' \
+  'adlaire-schedule-panel' \
+  'adlaire-policy-card' \
+  'adlaire-compliance-checklist' \
+  'adlaire-evidence-locker' \
+  'adlaire-approval-route' \
+  'adlaire-access-review-panel' \
+  'adlaire-risk-banner' \
+  'adlaire-audit-event-stream' \
+  'adlaire-retention-policy-panel' \
+  'adlaire-incident-summary' \
+  'adlaire-control-status-grid' \
+  'adlaire-health-overview' \
+  'adlaire-service-status-card' \
+  'adlaire-uptime-panel' \
+  'adlaire-log-stream' \
+  'adlaire-log-event-row' \
+  'adlaire-trace-timeline' \
+  'adlaire-span-detail' \
+  'adlaire-metric-threshold-card' \
+  'adlaire-alert-rule-card' \
+  'adlaire-alert-incident-list' \
+  'adlaire-error-rate-panel' \
+  'adlaire-latency-distribution' \
+  'adlaire-dependency-map' \
+  'adlaire-slo-summary' \
+  'adlaire-diagnostic-run-card' \
+  'adlaire-remediation-panel' \
+  'adlaire-onboarding-flow' \
+  'adlaire-onboarding-step-card' \
+  'adlaire-tour-callout' \
+  'adlaire-guided-task-list' \
+  'adlaire-help-center-panel' \
+  'adlaire-help-article-card' \
+  'adlaire-search-result-list' \
+  'adlaire-search-result-item' \
+  'adlaire-recent-item-list' \
+  'adlaire-recommendation-panel' \
+  'adlaire-personalization-card' \
+  'adlaire-preference-panel' \
+  'adlaire-notification-preference-list' \
+  'adlaire-language-selector-panel' \
+  'adlaire-keyboard-shortcut-panel' \
+  'adlaire-release-highlight' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -900,8 +1092,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 1040 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 1040 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 1520 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 1520 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -949,7 +1141,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 1040 SVG icons' \
+  'official 1520 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
