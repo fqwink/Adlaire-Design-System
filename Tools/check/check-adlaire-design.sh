@@ -664,6 +664,8 @@ for asset in \
   require_path "$asset"
 done
 
+require_path "Samples/sample-current.png"
+
 find "$ROOT/Brand" -maxdepth 1 -type f ! -name '.gitkeep' ! -name 'README.md' | while IFS= read -r brand_file; do
   brand_name=$(basename "$brand_file")
   case "$brand_name" in
@@ -688,6 +690,8 @@ for doc_term in \
   'Token category boundaries' \
   'Category naming' \
   'Brand asset inventory is checked' \
+  'Visual Baseline' \
+  'Reference screenshot changes require' \
   'output file unit' \
   'check-covered contract' \
   'Catalog Governance' \

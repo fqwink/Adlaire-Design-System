@@ -13,6 +13,12 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 | `Samples/design/sample.js` | Sample-only display and state-toggle support. |
 | `Samples/sample-current.png` | Reference screenshot. |
 
+## Visual Baseline
+
+`Samples/sample-current.png` is the current reference screenshot for human visual review. It is not a generated source of truth and must not override catalogs, tokens, generated CSS, generated JavaScript, or checks.
+
+Update the screenshot only when the rendered showcase intentionally changes. A screenshot update must be reviewed together with the matching sample, catalog, token, CSS, JavaScript, or check change that caused the visual change.
+
 ## Coverage
 
 | Area | Source | Sample coverage |
@@ -33,3 +39,4 @@ The showcase groups the current system into Overview, Tokens, Components, Admin,
 - Sample HTML, CSS, and JS must not introduce npm, bundling, minification, CSS preprocessors, or source-of-truth values.
 - Sample state toggles must use `data-sample-*` attributes so they remain separate from production `data-adlaire-*` behavior.
 - Sample interaction controls cover overlay visibility, progress value changes, and WYSIWYG readonly, locked, accessibility, and save states without becoming production behavior.
+- Reference screenshot changes require the related source or contract change in the same review unit.
