@@ -17,6 +17,19 @@
     return document.getElementById(selector.slice(1));
   }
 
+  function queryReferencedTarget(trigger: Element, attribute: string): HTMLElement | null {
+    const selector = trigger.getAttribute(attribute) ?? trigger.getAttribute("data-adlaire-target") ?? trigger.getAttribute("aria-controls");
+    if (!selector) return null;
+    if (selector.startsWith("#")) return document.getElementById(selector.slice(1));
+    const byId = document.getElementById(selector);
+    if (byId) return byId;
+    try {
+      return document.querySelector<HTMLElement>(selector);
+    } catch {
+      return null;
+    }
+  }
+
   function setExpanded(trigger: Element, target: HTMLElement | null, expanded: boolean): void {
     trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
     if (!target) return;
@@ -115,10 +128,13 @@
     }
     if (event.key !== "Escape") return;
 
-    document.querySelectorAll<HTMLElement>(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open`).forEach((target) => {
+    document.querySelectorAll<HTMLElement>(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open`).forEach((target) => {
       target.hidden = true;
       target.classList.remove("is-open");
       triggersForTarget(target).forEach((trigger) => trigger.setAttribute("aria-expanded", "false"));
+    });
+    document.querySelectorAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach((trigger) => {
+      trigger.setAttribute("aria-expanded", "false");
     });
     document.documentElement.classList.remove("adlaire-overlay-open");
     lastFocus?.focus();
@@ -182,6 +198,11 @@
     const select = source?.closest("[data-adlaire-select]");
     const sidebarToggle = source?.closest("[data-adlaire-sidebar-toggle]");
     const treeToggle = source?.closest("[data-adlaire-tree-toggle]");
+    const workspaceTab = source?.closest("[data-adlaire-workspace-tab]");
+    const contextMenu = source?.closest("[data-adlaire-context-menu]");
+    const splitToggle = source?.closest("[data-adlaire-split-button-toggle]");
+    const overflowToggle = source?.closest("[data-adlaire-overflow-toggle]");
+    const dockToggle = source?.closest("[data-adlaire-dock-toggle]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -216,6 +237,31 @@
     if (treeToggle) {
       event.preventDefault();
       toggleTree(treeToggle);
+    }
+
+    if (workspaceTab) {
+      event.preventDefault();
+      selectWorkspaceTab(workspaceTab);
+    }
+
+    if (contextMenu) {
+      event.preventDefault();
+      toggleDisclosureSurface(contextMenu, "data-adlaire-context-menu");
+    }
+
+    if (splitToggle) {
+      event.preventDefault();
+      toggleDisclosureSurface(splitToggle, "data-adlaire-split-button-toggle", ".adlaire-split-button", ".adlaire-context-menu, .adlaire-overflow-toolbar-menu");
+    }
+
+    if (overflowToggle) {
+      event.preventDefault();
+      toggleDisclosureSurface(overflowToggle, "data-adlaire-overflow-toggle", ".adlaire-overflow-toolbar", ".adlaire-overflow-toolbar-menu");
+    }
+
+    if (dockToggle) {
+      event.preventDefault();
+      toggleDockPanel(dockToggle);
     }
   });
 
@@ -267,12 +313,52 @@
     return trigger.closest(".adlaire-tree-item")?.querySelector<HTMLElement>(".adlaire-tree-branch") ?? null;
   }
 
+  function selectWorkspaceTab(trigger: Element): void {
+    const root = trigger.closest(".adlaire-tab-workspace") ?? document;
+    const group = trigger.getAttribute("data-adlaire-group");
+    const tabs = Array.from(root.querySelectorAll<HTMLElement>("[data-adlaire-workspace-tab]"))
+      .filter((tab) => !group || tab.getAttribute("data-adlaire-group") === group);
+
+    tabs.forEach((tab) => {
+      const selected = tab === trigger;
+      tab.setAttribute("aria-selected", selected ? "true" : "false");
+      tab.setAttribute("tabindex", selected ? "0" : "-1");
+      const panel = queryReferencedTarget(tab, "data-adlaire-workspace-tab");
+      if (!panel) return;
+      panel.hidden = !selected;
+      panel.classList.toggle("is-open", selected);
+    });
+  }
+
+  function toggleDisclosureSurface(trigger: Element, attribute: string, rootSelector?: string, fallbackSelector?: string): void {
+    const root = rootSelector ? trigger.closest(rootSelector) : null;
+    const target = queryReferencedTarget(trigger, attribute) ?? root?.querySelector<HTMLElement>(fallbackSelector ?? "");
+    if (!target) return;
+
+    const expanded = trigger.getAttribute("aria-expanded") !== "true";
+    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    target.hidden = !expanded;
+    target.classList.toggle("is-open", expanded);
+  }
+
+  function toggleDockPanel(trigger: Element): void {
+    const panel = queryReferencedTarget(trigger, "data-adlaire-dock-toggle") ?? trigger.closest<HTMLElement>(".adlaire-dock-panel");
+    if (!panel) return;
+
+    const collapsed = !panel.classList.contains("is-collapsed");
+    panel.classList.toggle("is-collapsed", collapsed);
+    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+  }
+
   document.addEventListener("input", (event) => {
     const source = targetElement(event.target);
     const filter = source?.closest<HTMLInputElement>("[data-adlaire-filter-input]");
     const search = source?.closest<HTMLInputElement>("[data-adlaire-search-input]");
+    const previewCompare = source?.closest<HTMLInputElement>("[data-adlaire-preview-compare]");
     if (filter) applyTextFilter(filter);
     if (search) applyTextFilter(search);
+    if (previewCompare) updatePreviewCompare(previewCompare);
   });
 
   function applyTextFilter(input: HTMLInputElement): void {
@@ -286,6 +372,15 @@
       const matched = (item.textContent ?? "").toLowerCase().includes(query);
       item.hidden = !matched;
     });
+  }
+
+  function updatePreviewCompare(input: HTMLInputElement): void {
+    const compare = queryReferencedTarget(input, "data-adlaire-preview-compare") ?? input.closest<HTMLElement>(".adlaire-preview-compare");
+    if (!compare) return;
+
+    const value = Number(input.value);
+    if (!Number.isFinite(value)) return;
+    compare.style.setProperty("--adlaire-preview-compare-position", `${Math.max(0, Math.min(100, value))}%`);
   }
 
   document.querySelectorAll<HTMLElement>("[data-adlaire-split-pane]").forEach((root) => {

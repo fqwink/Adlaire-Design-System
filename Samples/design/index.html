@@ -609,6 +609,151 @@
       </div>
     </section>
 
+    <section class="sample-section" aria-labelledby="workspace-command-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Workspace / Command / Productivity UI</p>
+        <h2 id="workspace-command-title">作業画面、コマンド、計画、可視化、制作補助部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-tab-workspace" aria-label="Workspace tabs">
+          <div class="adlaire-tab-workspace-list" role="tablist" aria-label="Workspace surfaces">
+            <button class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="true" data-adlaire-workspace-tab="#sample-workspace-design">Design</button>
+            <button class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-adlaire-workspace-tab="#sample-workspace-review">Review</button>
+          </div>
+          <div id="sample-workspace-design" class="adlaire-tab-workspace-panel is-open" role="tabpanel">
+            <div class="adlaire-status-bar"><span>Design workspace</span><span>Synced</span></div>
+            <div class="adlaire-panel-rail" aria-label="Panel rail">
+              <button class="adlaire-panel-rail-item" type="button" aria-current="true">L</button>
+              <button class="adlaire-panel-rail-item" type="button">P</button>
+              <button class="adlaire-panel-rail-item" type="button">A</button>
+            </div>
+          </div>
+          <div id="sample-workspace-review" class="adlaire-tab-workspace-panel" role="tabpanel" hidden>
+            <div class="adlaire-status-bar"><span>Review workspace</span><span>2 checks</span></div>
+          </div>
+          <section id="sample-dock-panel" class="adlaire-dock-panel" aria-label="Dock panel sample">
+            <div class="adlaire-dock-panel-header">
+              <strong>Inspector dock</strong>
+              <button class="adlaire-icon-button" type="button" aria-label="Toggle dock" aria-expanded="true" data-adlaire-dock-toggle="#sample-dock-panel">−</button>
+            </div>
+            <div class="adlaire-dock-panel-body">
+              <span class="adlaire-status-pill">Layer 4 selected</span>
+              <span>Dock panels keep dense work controls near the canvas.</span>
+            </div>
+          </section>
+        </article>
+
+        <article class="adlaire-component-preview">
+          <h3>Command surfaces</h3>
+          <div class="adlaire-action-row adlaire-action-row-start">
+            <button class="adlaire-button adlaire-button-secondary" type="button" aria-expanded="true" data-adlaire-context-menu="#sample-context-menu">Open menu</button>
+            <div id="sample-context-menu" class="adlaire-context-menu is-open" role="menu">
+              <button class="adlaire-context-menu-item" type="button" role="menuitem"><span>Rename</span><kbd class="adlaire-shortcut-key">R</kbd></button>
+              <button class="adlaire-context-menu-item" type="button" role="menuitem"><span>Duplicate</span><kbd class="adlaire-shortcut-key">D</kbd></button>
+              <button class="adlaire-context-menu-item" type="button" role="menuitem"><span>Archive</span><kbd class="adlaire-shortcut-key">A</kbd></button>
+            </div>
+          </div>
+          <div class="adlaire-split-button">
+            <button class="adlaire-split-button-primary" type="button">Publish</button>
+            <button class="adlaire-split-button-toggle" type="button" aria-label="Publish options" aria-expanded="false" data-adlaire-split-button-toggle>▼</button>
+            <div class="adlaire-context-menu" role="menu" hidden>
+              <button class="adlaire-context-menu-item" type="button" role="menuitem">Schedule</button>
+            </div>
+          </div>
+          <div class="adlaire-overflow-toolbar" aria-label="Overflow toolbar">
+            <button class="adlaire-overflow-toolbar-button" type="button">Save</button>
+            <button class="adlaire-overflow-toolbar-button" type="button" aria-expanded="false" data-adlaire-overflow-toggle>More</button>
+            <div class="adlaire-overflow-toolbar-menu" hidden>
+              <button class="adlaire-context-menu-item" type="button">Export</button>
+              <button class="adlaire-context-menu-item" type="button">History</button>
+            </div>
+          </div>
+          <div class="adlaire-quick-action-list" aria-label="Quick actions">
+            <button class="adlaire-quick-action-item" type="button"><span>Run checks</span><span>Ready</span></button>
+            <button class="adlaire-quick-action-item" type="button"><span>Assign reviewer</span><span>Team</span></button>
+          </div>
+        </article>
+
+        <article class="adlaire-kanban-board" aria-label="Kanban board sample">
+          <section class="adlaire-swimlane" aria-label="Ready lane">
+            <div class="adlaire-swimlane-header"><strong>Ready</strong><span>2</span></div>
+            <article class="adlaire-board-card"><strong>Catalog sync</strong><span>Docs + CSS + checks</span></article>
+            <article class="adlaire-board-card adlaire-board-card-dragging"><strong>Sample review</strong><span>Visual pass</span></article>
+            <div class="adlaire-lane-summary"><span>Next</span><span>Implement</span></div>
+          </section>
+          <section class="adlaire-swimlane" aria-label="Done lane">
+            <div class="adlaire-swimlane-header"><strong>Done</strong><span>1</span></div>
+            <article class="adlaire-board-card"><strong>Token audit</strong><span>Passed</span></article>
+            <div class="adlaire-lane-summary"><span>Closed</span><span>1 task</span></div>
+          </section>
+        </article>
+
+        <article class="adlaire-component-preview">
+          <h3>Visualization primitives</h3>
+          <div class="adlaire-sparkline" aria-label="Sparkline sample">
+            <svg viewBox="0 0 120 48" role="img" aria-label="Trend line"><polyline points="0,36 20,30 40,34 60,16 80,20 100,10 120,14" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+          </div>
+          <div class="adlaire-gauge" aria-label="Gauge sample"><div class="adlaire-gauge-value">70%</div></div>
+          <div class="adlaire-heatmap" aria-label="Heatmap sample">
+            <span class="adlaire-heatmap-cell" data-level="1"></span>
+            <span class="adlaire-heatmap-cell" data-level="2"></span>
+            <span class="adlaire-heatmap-cell" data-level="3"></span>
+            <span class="adlaire-heatmap-cell" data-level="2"></span>
+            <span class="adlaire-heatmap-cell" data-level="1"></span>
+          </div>
+          <div class="adlaire-distribution-bar" aria-label="Distribution sample">
+            <span class="adlaire-distribution-segment"></span>
+            <span class="adlaire-distribution-segment"></span>
+            <span class="adlaire-distribution-segment"></span>
+          </div>
+          <div class="adlaire-status-meter" aria-label="Status meter sample">
+            <span>Readiness</span>
+            <span class="adlaire-status-meter-track"><span class="adlaire-status-meter-value" style="width: 68%"></span></span>
+          </div>
+        </article>
+
+        <article class="adlaire-asset-browser" aria-label="Asset browser sample">
+          <div class="adlaire-thumbnail-grid">
+            <button class="adlaire-thumbnail-item" type="button" aria-selected="true"><span class="adlaire-thumbnail-preview"></span><span>Hero</span></button>
+            <button class="adlaire-thumbnail-item" type="button" aria-selected="false"><span class="adlaire-thumbnail-preview"></span><span>Icon</span></button>
+            <button class="adlaire-thumbnail-item" type="button" aria-selected="false"><span class="adlaire-thumbnail-preview"></span><span>OGP</span></button>
+          </div>
+          <aside class="adlaire-media-metadata-panel">
+            <strong>Metadata</strong>
+            <span>Type: image</span>
+            <span>Usage: sample</span>
+          </aside>
+          <div id="sample-preview-compare" class="adlaire-preview-compare" style="--adlaire-preview-compare-position: 56%" aria-label="Preview compare sample">
+            <div class="adlaire-preview-compare-before">Before</div>
+            <div class="adlaire-preview-compare-after">After</div>
+          </div>
+          <label class="adlaire-field">Compare<input class="adlaire-range-input" type="range" min="0" max="100" value="56" data-adlaire-preview-compare="#sample-preview-compare"></label>
+        </article>
+
+        <article class="adlaire-component-preview">
+          <h3>Productivity surfaces</h3>
+          <nav class="adlaire-document-outline" aria-label="Document outline">
+            <a class="adlaire-outline-item" href="#workspace-command-title" aria-current="true"><span>Workspace</span><span>1</span></a>
+            <a class="adlaire-outline-item" href="#icon-title"><span>Icons</span><span>2</span></a>
+          </nav>
+          <div class="adlaire-mini-map" aria-label="Mini map">
+            <span class="adlaire-mini-map-marker"></span>
+            <span class="adlaire-mini-map-marker" aria-current="true"></span>
+            <span class="adlaire-mini-map-marker"></span>
+            <span class="adlaire-mini-map-marker"></span>
+          </div>
+          <div class="adlaire-comment-resolver" aria-label="Comment resolver">
+            <div class="adlaire-comment-resolver-item" data-state="open"><span>Review copy</span><button class="adlaire-button adlaire-button-secondary" type="button">Resolve</button></div>
+            <div class="adlaire-comment-resolver-item" data-state="resolved"><span>Alt text</span><strong>resolved</strong></div>
+          </div>
+          <div class="adlaire-publication-checklist" aria-label="Publication checklist">
+            <div class="adlaire-publication-checklist-item" role="checkbox" aria-checked="true"><span>Catalog updated</span><strong>done</strong></div>
+            <div class="adlaire-publication-checklist-item" role="checkbox" aria-checked="false"><span>Visual pass</span><strong>next</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="sample-section" aria-labelledby="icon-title">
       <div class="sample-section-heading">
         <p class="sample-kicker">Icons</p>

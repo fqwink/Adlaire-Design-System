@@ -51,6 +51,11 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Activity UI | notification list, activity feed, shortcut key, empty action | 実装済み |
 | Operational UI | status timeline, monitoring card, deployment card, release notes, query result, team card, organization switcher, approval flow, review checklist, responsive preview | 実装済み |
 | Application UI | app navigation, sidebar section, command launcher, inbox list, message thread, file card, upload queue, agent card, workspace switcher, audit log | 実装済み |
+| Workspace / Command UI | tab workspace, dock panel, status bar, panel rail, context menu, split button, overflow toolbar, quick action list | 実装済み |
+| Board / Planning UI | kanban board, swimlane, board card, lane summary | 実装済み |
+| Data Visualization UI | sparkline, gauge, heatmap, distribution bar, status meter | 実装済み |
+| Asset / Preview UI | asset browser, thumbnail grid, media metadata panel, preview compare | 実装済み |
+| Productivity UI | document outline, mini map, comment resolver, publication checklist | 実装済み |
 | Product UI | product card, plan selector, billing summary, invoice list, account profile, member list, role matrix, support ticket, analytics panel, workflow builder, integration card, trust center | 実装済み |
 | Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
@@ -161,6 +166,31 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-agent-card`
 - `.adlaire-workspace-switcher`
 - `.adlaire-audit-log`
+- `.adlaire-tab-workspace`
+- `.adlaire-dock-panel`
+- `.adlaire-status-bar`
+- `.adlaire-panel-rail`
+- `.adlaire-context-menu`
+- `.adlaire-split-button`
+- `.adlaire-overflow-toolbar`
+- `.adlaire-quick-action-list`
+- `.adlaire-kanban-board`
+- `.adlaire-swimlane`
+- `.adlaire-board-card`
+- `.adlaire-lane-summary`
+- `.adlaire-sparkline`
+- `.adlaire-gauge`
+- `.adlaire-heatmap`
+- `.adlaire-distribution-bar`
+- `.adlaire-status-meter`
+- `.adlaire-asset-browser`
+- `.adlaire-thumbnail-grid`
+- `.adlaire-media-metadata-panel`
+- `.adlaire-preview-compare`
+- `.adlaire-document-outline`
+- `.adlaire-mini-map`
+- `.adlaire-comment-resolver`
+- `.adlaire-publication-checklist`
 - `.adlaire-product-card`
 - `.adlaire-plan-selector`
 - `.adlaire-billing-summary`

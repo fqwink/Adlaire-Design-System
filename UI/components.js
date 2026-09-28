@@ -14,6 +14,25 @@
     return document.getElementById(selector.slice(1));
   }
 
+  function queryReferencedTarget(trigger, attribute) {
+    var selector = trigger.getAttribute(attribute) || trigger.getAttribute("data-adlaire-target") || trigger.getAttribute("aria-controls");
+    if (!selector) {
+      return null;
+    }
+    if (selector.charAt(0) === "#") {
+      return document.getElementById(selector.slice(1));
+    }
+    var byId = document.getElementById(selector);
+    if (byId) {
+      return byId;
+    }
+    try {
+      return document.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
   function setExpanded(trigger, target, expanded) {
     trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
     if (target) {
@@ -143,12 +162,15 @@
       return;
     }
 
-    document.querySelectorAll(openOverlaySelector + ", .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open").forEach(function (target) {
+    document.querySelectorAll(openOverlaySelector + ", .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open").forEach(function (target) {
       target.hidden = true;
       target.classList.remove("is-open");
       triggersForTarget(target).forEach(function (trigger) {
         trigger.setAttribute("aria-expanded", "false");
       });
+    });
+    document.querySelectorAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach(function (trigger) {
+      trigger.setAttribute("aria-expanded", "false");
     });
     document.documentElement.classList.remove("adlaire-overlay-open");
     if (lastFocus && typeof lastFocus.focus === "function") {
@@ -225,6 +247,11 @@
     var select = event.target.closest("[data-adlaire-select]");
     var sidebarToggle = event.target.closest("[data-adlaire-sidebar-toggle]");
     var treeToggle = event.target.closest("[data-adlaire-tree-toggle]");
+    var workspaceTab = event.target.closest("[data-adlaire-workspace-tab]");
+    var contextMenu = event.target.closest("[data-adlaire-context-menu]");
+    var splitToggle = event.target.closest("[data-adlaire-split-button-toggle]");
+    var overflowToggle = event.target.closest("[data-adlaire-overflow-toggle]");
+    var dockToggle = event.target.closest("[data-adlaire-dock-toggle]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -266,6 +293,31 @@
     if (treeToggle) {
       event.preventDefault();
       toggleTree(treeToggle);
+    }
+
+    if (workspaceTab) {
+      event.preventDefault();
+      selectWorkspaceTab(workspaceTab);
+    }
+
+    if (contextMenu) {
+      event.preventDefault();
+      toggleDisclosureSurface(contextMenu, "data-adlaire-context-menu");
+    }
+
+    if (splitToggle) {
+      event.preventDefault();
+      toggleDisclosureSurface(splitToggle, "data-adlaire-split-button-toggle", ".adlaire-split-button", ".adlaire-context-menu, .adlaire-overflow-toolbar-menu");
+    }
+
+    if (overflowToggle) {
+      event.preventDefault();
+      toggleDisclosureSurface(overflowToggle, "data-adlaire-overflow-toggle", ".adlaire-overflow-toolbar", ".adlaire-overflow-toolbar-menu");
+    }
+
+    if (dockToggle) {
+      event.preventDefault();
+      toggleDockPanel(dockToggle);
     }
   });
 
@@ -330,14 +382,62 @@
     return item ? item.querySelector(".adlaire-tree-branch") : null;
   }
 
+  function selectWorkspaceTab(trigger) {
+    var root = trigger.closest(".adlaire-tab-workspace") || document;
+    var group = trigger.getAttribute("data-adlaire-group");
+    var tabs = Array.prototype.filter.call(root.querySelectorAll("[data-adlaire-workspace-tab]"), function (tab) {
+      return !group || tab.getAttribute("data-adlaire-group") === group;
+    });
+
+    tabs.forEach(function (tab) {
+      var selected = tab === trigger;
+      tab.setAttribute("aria-selected", selected ? "true" : "false");
+      tab.setAttribute("tabindex", selected ? "0" : "-1");
+      var panel = queryReferencedTarget(tab, "data-adlaire-workspace-tab");
+      if (panel) {
+        panel.hidden = !selected;
+        panel.classList.toggle("is-open", selected);
+      }
+    });
+  }
+
+  function toggleDisclosureSurface(trigger, attribute, rootSelector, fallbackSelector) {
+    var root = rootSelector ? trigger.closest(rootSelector) : null;
+    var target = queryReferencedTarget(trigger, attribute) || (root && fallbackSelector ? root.querySelector(fallbackSelector) : null);
+    if (!target) {
+      return;
+    }
+
+    var expanded = trigger.getAttribute("aria-expanded") !== "true";
+    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    target.hidden = !expanded;
+    target.classList.toggle("is-open", expanded);
+  }
+
+  function toggleDockPanel(trigger) {
+    var panel = queryReferencedTarget(trigger, "data-adlaire-dock-toggle") || trigger.closest(".adlaire-dock-panel");
+    if (!panel) {
+      return;
+    }
+
+    var collapsed = !panel.classList.contains("is-collapsed");
+    panel.classList.toggle("is-collapsed", collapsed);
+    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+  }
+
   document.addEventListener("input", function (event) {
     var filter = event.target.closest("[data-adlaire-filter-input]");
     var search = event.target.closest("[data-adlaire-search-input]");
+    var previewCompare = event.target.closest("[data-adlaire-preview-compare]");
     if (filter) {
       applyTextFilter(filter);
     }
     if (search) {
       applyTextFilter(search);
+    }
+    if (previewCompare) {
+      updatePreviewCompare(previewCompare);
     }
   });
 
@@ -353,6 +453,19 @@
       var matched = item.textContent.toLowerCase().indexOf(query) !== -1;
       item.hidden = !matched;
     });
+  }
+
+  function updatePreviewCompare(input) {
+    var compare = queryReferencedTarget(input, "data-adlaire-preview-compare") || input.closest(".adlaire-preview-compare");
+    if (!compare) {
+      return;
+    }
+
+    var value = Number(input.value);
+    if (!Number.isFinite(value)) {
+      return;
+    }
+    compare.style.setProperty("--adlaire-preview-compare-position", Math.max(0, Math.min(100, value)) + "%");
   }
 
   document.querySelectorAll("[data-adlaire-split-pane]").forEach(function (root) {
