@@ -415,6 +415,54 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-escalation-banner' \
   'Docs/Generic_Component_Catalog|.adlaire-meeting-notes' \
   'Docs/Generic_Component_Catalog|.adlaire-signoff-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-workflow-runner' \
+  'Docs/Generic_Component_Catalog|.adlaire-automation-rule-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-trigger-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-condition-builder' \
+  'Docs/Generic_Component_Catalog|.adlaire-action-chain' \
+  'Docs/Generic_Component_Catalog|.adlaire-schedule-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-policy-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-compliance-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-evidence-locker' \
+  'Docs/Generic_Component_Catalog|.adlaire-approval-route' \
+  'Docs/Generic_Component_Catalog|.adlaire-access-review-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-risk-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-audit-event-stream' \
+  'Docs/Generic_Component_Catalog|.adlaire-retention-policy-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-incident-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-control-status-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-health-overview' \
+  'Docs/Generic_Component_Catalog|.adlaire-service-status-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-uptime-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-log-stream' \
+  'Docs/Generic_Component_Catalog|.adlaire-log-event-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-trace-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-span-detail' \
+  'Docs/Generic_Component_Catalog|.adlaire-metric-threshold-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-alert-rule-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-alert-incident-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-error-rate-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-latency-distribution' \
+  'Docs/Generic_Component_Catalog|.adlaire-dependency-map' \
+  'Docs/Generic_Component_Catalog|.adlaire-slo-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-diagnostic-run-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-remediation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-onboarding-flow' \
+  'Docs/Generic_Component_Catalog|.adlaire-onboarding-step-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-tour-callout' \
+  'Docs/Generic_Component_Catalog|.adlaire-guided-task-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-help-center-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-help-article-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-search-result-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-search-result-item' \
+  'Docs/Generic_Component_Catalog|.adlaire-recent-item-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-recommendation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-personalization-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-preference-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-notification-preference-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-language-selector-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-keyboard-shortcut-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-release-highlight' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -755,6 +803,54 @@ for sample_class in \
   'adlaire-escalation-banner' \
   'adlaire-meeting-notes' \
   'adlaire-signoff-panel' \
+  'adlaire-workflow-runner' \
+  'adlaire-automation-rule-card' \
+  'adlaire-trigger-list' \
+  'adlaire-condition-builder' \
+  'adlaire-action-chain' \
+  'adlaire-schedule-panel' \
+  'adlaire-policy-card' \
+  'adlaire-compliance-checklist' \
+  'adlaire-evidence-locker' \
+  'adlaire-approval-route' \
+  'adlaire-access-review-panel' \
+  'adlaire-risk-banner' \
+  'adlaire-audit-event-stream' \
+  'adlaire-retention-policy-panel' \
+  'adlaire-incident-summary' \
+  'adlaire-control-status-grid' \
+  'adlaire-health-overview' \
+  'adlaire-service-status-card' \
+  'adlaire-uptime-panel' \
+  'adlaire-log-stream' \
+  'adlaire-log-event-row' \
+  'adlaire-trace-timeline' \
+  'adlaire-span-detail' \
+  'adlaire-metric-threshold-card' \
+  'adlaire-alert-rule-card' \
+  'adlaire-alert-incident-list' \
+  'adlaire-error-rate-panel' \
+  'adlaire-latency-distribution' \
+  'adlaire-dependency-map' \
+  'adlaire-slo-summary' \
+  'adlaire-diagnostic-run-card' \
+  'adlaire-remediation-panel' \
+  'adlaire-onboarding-flow' \
+  'adlaire-onboarding-step-card' \
+  'adlaire-tour-callout' \
+  'adlaire-guided-task-list' \
+  'adlaire-help-center-panel' \
+  'adlaire-help-article-card' \
+  'adlaire-search-result-list' \
+  'adlaire-search-result-item' \
+  'adlaire-recent-item-list' \
+  'adlaire-recommendation-panel' \
+  'adlaire-personalization-card' \
+  'adlaire-preference-panel' \
+  'adlaire-notification-preference-list' \
+  'adlaire-language-selector-panel' \
+  'adlaire-keyboard-shortcut-panel' \
+  'adlaire-release-highlight' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -932,8 +1028,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 1120 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 1120 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 1360 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 1360 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -981,7 +1077,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 1120 SVG icons' \
+  'official 1360 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \

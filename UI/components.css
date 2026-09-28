@@ -2006,6 +2006,335 @@
   border-radius: var(--adlaire-radius-md);
 }
 
+.adlaire-workflow-runner,
+.adlaire-automation-rule-card,
+.adlaire-policy-card,
+.adlaire-evidence-locker,
+.adlaire-incident-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-lg);
+}
+
+.adlaire-workflow-runner img,
+.adlaire-automation-rule-card img,
+.adlaire-trigger-list img,
+.adlaire-action-chain img,
+.adlaire-policy-card img,
+.adlaire-evidence-locker img,
+.adlaire-risk-banner img,
+.adlaire-audit-event-stream img,
+.adlaire-incident-summary img {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.adlaire-workflow-runner span,
+.adlaire-automation-rule-card span,
+.adlaire-policy-card span,
+.adlaire-evidence-locker span,
+.adlaire-incident-summary span {
+  display: block;
+  margin-top: 2px;
+  color: var(--adlaire-surface-text-subtle);
+  font-size: 0.875rem;
+}
+
+.adlaire-trigger-list,
+.adlaire-action-chain,
+.adlaire-approval-route,
+.adlaire-audit-event-stream {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  list-style: none;
+}
+
+.adlaire-trigger-item,
+.adlaire-action-chain-item,
+.adlaire-approval-route-item,
+.adlaire-audit-event-item,
+.adlaire-risk-banner {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-condition-builder,
+.adlaire-schedule-panel,
+.adlaire-compliance-checklist,
+.adlaire-access-review-panel,
+.adlaire-retention-policy-panel {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-lg);
+}
+
+.adlaire-condition-builder > span,
+.adlaire-schedule-panel > span,
+.adlaire-access-review-panel > span,
+.adlaire-retention-policy-panel > span {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.adlaire-control-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-control-status-grid > div {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-control-status-grid strong {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 1.25rem;
+  line-height: 1.1;
+}
+
+.adlaire-control-status-grid span {
+  color: var(--adlaire-surface-text-subtle);
+  font-size: 0.875rem;
+}
+
+.adlaire-service-status-card,
+.adlaire-span-detail,
+.adlaire-metric-threshold-card,
+.adlaire-alert-rule-card,
+.adlaire-diagnostic-run-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-lg);
+}
+
+.adlaire-service-status-card img,
+.adlaire-log-stream img,
+.adlaire-trace-timeline img,
+.adlaire-span-detail img,
+.adlaire-metric-threshold-card img,
+.adlaire-alert-rule-card img,
+.adlaire-alert-incident-list img,
+.adlaire-diagnostic-run-card img {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.adlaire-service-status-card span,
+.adlaire-span-detail span,
+.adlaire-metric-threshold-card span,
+.adlaire-alert-rule-card span,
+.adlaire-diagnostic-run-card span {
+  display: block;
+  margin-top: 2px;
+  color: var(--adlaire-surface-text-subtle);
+  font-size: 0.875rem;
+}
+
+.adlaire-log-stream,
+.adlaire-trace-timeline,
+.adlaire-alert-incident-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  list-style: none;
+}
+
+.adlaire-log-event-row,
+.adlaire-trace-step,
+.adlaire-alert-incident-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-health-overview,
+.adlaire-uptime-panel,
+.adlaire-error-rate-panel,
+.adlaire-latency-distribution,
+.adlaire-slo-summary,
+.adlaire-remediation-panel {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-lg);
+}
+
+.adlaire-health-overview > span,
+.adlaire-uptime-panel > span,
+.adlaire-error-rate-panel > span,
+.adlaire-latency-distribution > span,
+.adlaire-slo-summary > span,
+.adlaire-remediation-panel > span {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.adlaire-dependency-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-dependency-map > div {
+  display: grid;
+  min-height: 52px;
+  place-items: center;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text-muted);
+  font-weight: 700;
+}
+
+.adlaire-help-article-card,
+.adlaire-personalization-card,
+.adlaire-release-highlight {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-lg);
+}
+
+.adlaire-onboarding-flow img,
+.adlaire-tour-callout img,
+.adlaire-guided-task-list img,
+.adlaire-help-article-card img,
+.adlaire-search-result-list img,
+.adlaire-recent-item-list img,
+.adlaire-personalization-card img,
+.adlaire-notification-preference-list img,
+.adlaire-release-highlight img {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.adlaire-help-article-card span,
+.adlaire-personalization-card span,
+.adlaire-release-highlight span {
+  display: block;
+  margin-top: 2px;
+  color: var(--adlaire-surface-text-subtle);
+  font-size: 0.875rem;
+}
+
+.adlaire-onboarding-flow,
+.adlaire-guided-task-list,
+.adlaire-search-result-list,
+.adlaire-recent-item-list,
+.adlaire-notification-preference-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  list-style: none;
+}
+
+.adlaire-onboarding-step-card,
+.adlaire-guided-task-item,
+.adlaire-search-result-item,
+.adlaire-recent-item,
+.adlaire-notification-preference-item,
+.adlaire-tour-callout {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-help-center-panel,
+.adlaire-recommendation-panel,
+.adlaire-preference-panel,
+.adlaire-language-selector-panel,
+.adlaire-keyboard-shortcut-panel {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-lg);
+}
+
+.adlaire-help-center-panel > span,
+.adlaire-recommendation-panel > span,
+.adlaire-preference-panel > span,
+.adlaire-language-selector-panel > span,
+.adlaire-keyboard-shortcut-panel > span {
+  color: var(--adlaire-surface-accent-strong);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
 .adlaire-split-block {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

@@ -51,6 +51,9 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
 | Collaboration / Review UI | collaborator list, presence stack, review request card, review decision, change request list, comment thread, annotation card, suggestion panel, version history, diff summary, task board, checklist panel, notification digest, escalation banner, meeting notes, signoff panel | 実装済み |
+| Workflow / Governance UI | workflow runner, automation rule card, trigger list, condition builder, action chain, schedule panel, policy card, compliance checklist, evidence locker, approval route, access review panel, risk banner, audit event stream, retention policy panel, incident summary, control status grid | 実装済み |
+| Observability / Diagnostics UI | health overview, service status card, uptime panel, log stream, log event row, trace timeline, span detail, metric threshold card, alert rule card, alert incident list, error rate panel, latency distribution, dependency map, SLO summary, diagnostic run card, remediation panel | 実装済み |
+| Experience / Guidance UI | onboarding flow, onboarding step card, tour callout, guided task list, help center panel, help article card, search result list, search result item, recent item list, recommendation panel, personalization card, preference panel, notification preference list, language selector panel, keyboard shortcut panel, release highlight | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -201,6 +204,54 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-escalation-banner`
 - `.adlaire-meeting-notes`
 - `.adlaire-signoff-panel`
+- `.adlaire-workflow-runner`
+- `.adlaire-automation-rule-card`
+- `.adlaire-trigger-list`
+- `.adlaire-condition-builder`
+- `.adlaire-action-chain`
+- `.adlaire-schedule-panel`
+- `.adlaire-policy-card`
+- `.adlaire-compliance-checklist`
+- `.adlaire-evidence-locker`
+- `.adlaire-approval-route`
+- `.adlaire-access-review-panel`
+- `.adlaire-risk-banner`
+- `.adlaire-audit-event-stream`
+- `.adlaire-retention-policy-panel`
+- `.adlaire-incident-summary`
+- `.adlaire-control-status-grid`
+- `.adlaire-health-overview`
+- `.adlaire-service-status-card`
+- `.adlaire-uptime-panel`
+- `.adlaire-log-stream`
+- `.adlaire-log-event-row`
+- `.adlaire-trace-timeline`
+- `.adlaire-span-detail`
+- `.adlaire-metric-threshold-card`
+- `.adlaire-alert-rule-card`
+- `.adlaire-alert-incident-list`
+- `.adlaire-error-rate-panel`
+- `.adlaire-latency-distribution`
+- `.adlaire-dependency-map`
+- `.adlaire-slo-summary`
+- `.adlaire-diagnostic-run-card`
+- `.adlaire-remediation-panel`
+- `.adlaire-onboarding-flow`
+- `.adlaire-onboarding-step-card`
+- `.adlaire-tour-callout`
+- `.adlaire-guided-task-list`
+- `.adlaire-help-center-panel`
+- `.adlaire-help-article-card`
+- `.adlaire-search-result-list`
+- `.adlaire-search-result-item`
+- `.adlaire-recent-item-list`
+- `.adlaire-recommendation-panel`
+- `.adlaire-personalization-card`
+- `.adlaire-preference-panel`
+- `.adlaire-notification-preference-list`
+- `.adlaire-language-selector-panel`
+- `.adlaire-keyboard-shortcut-panel`
+- `.adlaire-release-highlight`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`
