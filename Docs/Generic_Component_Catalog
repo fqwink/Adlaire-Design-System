@@ -72,6 +72,13 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-app-shell`
 - `.adlaire-split-pane`
 - `.adlaire-filter`
+- `.adlaire-input-group`
+- `.adlaire-date-range`
+- `.adlaire-file-picker`
+- `.adlaire-dropzone`
+- `.adlaire-toggle`
+- `.adlaire-error-summary`
+- `.adlaire-validation-message`
 - `.adlaire-pagination`
 - `.adlaire-command-palette`
 - `.adlaire-dialog`

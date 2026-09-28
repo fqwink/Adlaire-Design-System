@@ -294,6 +294,13 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-app-shell' \
   'Docs/Generic_Component_Catalog|.adlaire-split-pane' \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
+  'Docs/Generic_Component_Catalog|.adlaire-input-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-date-range' \
+  'Docs/Generic_Component_Catalog|.adlaire-file-picker' \
+  'Docs/Generic_Component_Catalog|.adlaire-dropzone' \
+  'Docs/Generic_Component_Catalog|.adlaire-toggle' \
+  'Docs/Generic_Component_Catalog|.adlaire-error-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-validation-message' \
   'Docs/Generic_Component_Catalog|.adlaire-pagination' \
   'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
@@ -372,8 +379,10 @@ for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-chip' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-input' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-empty' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-toggle-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate-summary' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-line' \
@@ -452,6 +461,12 @@ for sample_class in \
   'adlaire-progress' \
   'adlaire-skeleton' \
   'adlaire-bulk-feedback' \
+  'adlaire-date-range' \
+  'adlaire-file-picker' \
+  'adlaire-dropzone' \
+  'adlaire-toggle' \
+  'data-adlaire-validate-summary' \
+  'data-adlaire-file-empty' \
   'adlaire-wysiwyg-slash-menu' \
   'adlaire-wysiwyg-suggestion-card' \
   'adlaire-wysiwyg-save-banner' \

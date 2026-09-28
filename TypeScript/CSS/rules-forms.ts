@@ -284,7 +284,8 @@ select.form-control {
 .adlaire-dropzone,
 .adlaire-upload-progress,
 .adlaire-upload-list,
-.adlaire-attachment-list {
+.adlaire-attachment-list,
+.adlaire-file-output {
   display: grid;
   gap: 10px;
 }
@@ -329,6 +330,11 @@ select.form-control {
   background-color: var(--adlaire-surface-card);
   border: 1px solid var(--adlaire-surface-border);
   border-radius: var(--adlaire-radius-sm);
+}
+
+.adlaire-file-output {
+  color: var(--adlaire-surface-text-muted);
+  font-size: 0.875rem;
 }
 
 .adlaire-settings-form,
@@ -390,7 +396,8 @@ select.form-control {
 .adlaire-field-error,
 .adlaire-field-success,
 .adlaire-error-summary,
-.adlaire-error-summary-list {
+.adlaire-error-summary-list,
+.adlaire-validation-message {
   display: grid;
   gap: 8px;
 }
@@ -416,6 +423,15 @@ select.form-control {
   color: var(--adlaire-surface-text-subtle);
   font-size: 0.875rem;
   line-height: 1.5;
+}
+
+.adlaire-validation-message {
+  color: var(--adlaire-semantic-danger-text);
+  font-size: 0.875rem;
+}
+
+.adlaire-field-success .adlaire-validation-message {
+  color: var(--adlaire-semantic-success-color);
 }
 
 .adlaire-admin-form {

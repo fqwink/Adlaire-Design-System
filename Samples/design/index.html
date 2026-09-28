@@ -349,14 +349,28 @@
           </div>
         </aside>
         <article class="adlaire-layout-region">
-          <div class="adlaire-filter-builder">
+          <form class="adlaire-filter-builder" data-adlaire-filter aria-label="Data form sample">
+            <div class="adlaire-error-summary" data-adlaire-validate-summary hidden aria-live="polite"></div>
             <div class="adlaire-filter-rule">
-              <label class="adlaire-field">Field<input class="adlaire-form-control" value="State"></label>
-              <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is"></label>
-              <label class="adlaire-field">Value<input class="adlaire-form-control" value="Ready"></label>
+              <label class="adlaire-field">Field<input class="adlaire-form-control" value="State" data-adlaire-validate required></label>
+              <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is" data-adlaire-validate required></label>
+              <label class="adlaire-field">Value<input class="adlaire-form-control" value="Ready" data-adlaire-validate required></label>
               <button class="adlaire-button adlaire-button-secondary" type="button">Apply</button>
             </div>
-          </div>
+            <div class="adlaire-date-range" aria-label="Release period">
+              <label class="adlaire-date-input">Start<input class="adlaire-form-control" type="date" value="2026-09-28"></label>
+              <span>to</span>
+              <label class="adlaire-date-input">End<input class="adlaire-form-control" type="date" value="2026-10-05"></label>
+            </div>
+            <div class="adlaire-file-picker">
+              <label class="adlaire-dropzone">Attach report<input type="file" data-adlaire-file-input data-adlaire-file-output="[data-sample-file-output]" data-adlaire-file-empty="No attachment selected"></label>
+              <span class="adlaire-file-output" data-sample-file-output aria-live="polite">No attachment selected</span>
+            </div>
+            <div class="adlaire-settings-row">
+              <span>Only show checked states</span>
+              <label><input type="checkbox" data-adlaire-toggle-input="[data-sample-form-toggle]" checked><span class="adlaire-toggle" role="switch" aria-checked="true" data-sample-form-toggle></span></label>
+            </div>
+          </form>
           <div class="adlaire-data-table-state">Generated CSS, catalogs, samples, and JS hooks are treated as one check-covered contract.</div>
         </article>
         <aside class="adlaire-layout-region">
