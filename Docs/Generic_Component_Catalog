@@ -40,9 +40,10 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Form UI | input groups, composite inputs, date/time/period inputs, validation UI | 実装済み |
 | Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
 | Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
+| Icon UI | icon button, icon button group, icon tile, icon list, icon picker | 実装済み |
 | Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, backdrop | 実装済み |
 | Interaction Readiness UI | toast viewport, progress, skeleton, data table state, bulk feedback | 実装済み |
-| Data UI | KPI, metrics, charts, comparison, timeline | 実装済み |
+| Data UI | KPI, metrics, charts, comparison, timeline, stat strip | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -91,6 +92,14 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-validation-message`
 - `.adlaire-pagination`
 - `.adlaire-command-palette`
+- `.adlaire-icon-button`
+- `.adlaire-icon-button-group`
+- `.adlaire-icon-tile`
+- `.adlaire-icon-list`
+- `.adlaire-icon-picker`
+- `.adlaire-feature-list`
+- `.adlaire-action-menu`
+- `.adlaire-stat-strip`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`

@@ -313,6 +313,14 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-validation-message' \
   'Docs/Generic_Component_Catalog|.adlaire-pagination' \
   'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
+  'Docs/Generic_Component_Catalog|.adlaire-icon-button' \
+  'Docs/Generic_Component_Catalog|.adlaire-icon-button-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-icon-tile' \
+  'Docs/Generic_Component_Catalog|.adlaire-icon-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-icon-picker' \
+  'Docs/Generic_Component_Catalog|.adlaire-feature-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-action-menu' \
+  'Docs/Generic_Component_Catalog|.adlaire-stat-strip' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -551,6 +559,14 @@ for sample_class in \
   'adlaire-git-ci-status' \
   'adlaire-git-merge-state' \
   'adlaire-git-diff-hunk' \
+  'adlaire-icon-button' \
+  'adlaire-icon-button-group' \
+  'adlaire-icon-tile' \
+  'adlaire-icon-list' \
+  'adlaire-icon-picker' \
+  'adlaire-feature-list' \
+  'adlaire-action-menu' \
+  'adlaire-stat-strip' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -728,8 +744,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 500 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 500 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 560 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 560 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -777,7 +793,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 500 SVG icons' \
+  'official 560 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \

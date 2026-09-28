@@ -40,11 +40,11 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 | Path | Role |
 | --- | --- |
-| `Icons/` | Official 500 SVG icons. |
+| `Icons/` | Official 560 SVG icons. |
 | `Brand/` | Brand assets. |
 | `Brand/README.md` | Brand asset rules. |
 | `Samples/README.md` | Sample rules and coverage. |
-| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, official 500 SVG icons, Tokens, Brand, and sample-only state toggles. |
+| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, official 560 SVG icons, Tokens, Brand, and sample-only state toggles. |
 | `Samples/*.png`, `Samples/*.webp` | Supporting screenshots. |
 
 ## Checks
