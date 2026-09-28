@@ -710,6 +710,20 @@ used_vars = Dir.glob(File.join(root, "{Tokens,UI,EditorUI,Samples/design}", "**"
 end
 missing = used_vars.keys.reject { |name| defined_vars[name] || allowed_component_vars[name] }.sort
 abort("[Token usage contract] undefined CSS variables: #{missing.join(", ")}") unless missing.empty?
+
+generated_css = Dir.glob(File.join(root, "{UI,EditorUI}", "**", "*.css")).map { |file| File.read(file) }.join("\n")
+required_token_families = {
+  "spacing" => "--adlaire-space-",
+  "layout" => "--adlaire-layout-",
+  "surface" => "--adlaire-surface-",
+  "semantic" => "--adlaire-semantic-",
+  "radius" => "--adlaire-radius-",
+  "shadow" => "--adlaire-shadow-",
+  "motion" => "--adlaire-motion-",
+  "transition" => "--adlaire-transition-",
+}
+missing_families = required_token_families.reject { |_family, prefix| generated_css.include?(prefix) }.keys
+abort("[Token family usage discipline] generated UI CSS missing token families: #{missing_families.join(", ")}") unless missing_families.empty?
 RUBY
 fi
 
@@ -768,6 +782,7 @@ for doc_term in \
   'matching merged branch' \
   'family-labelled diagnostics' \
   'Token category boundaries' \
+  'Token family usage discipline' \
   'Category naming' \
   'Brand asset inventory is checked' \
   'Visual Baseline' \
