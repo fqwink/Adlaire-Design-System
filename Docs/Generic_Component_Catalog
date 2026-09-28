@@ -40,10 +40,11 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Form UI | input groups, composite inputs, date/time/period inputs, validation UI | 実装済み |
 | Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
 | Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
-| Icon UI | icon button, icon button group, icon tile, icon list, icon picker | 実装済み |
+| Icon UI | icon button, icon button group, icon tile, icon list, icon picker, avatar group | 実装済み |
 | Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, backdrop | 実装済み |
 | Interaction Readiness UI | toast viewport, progress, skeleton, data table state, bulk feedback | 実装済み |
-| Data UI | KPI, metrics, charts, comparison, timeline, stat strip | 実装済み |
+| Data UI | KPI, metrics, charts, comparison, timeline, stat strip, key-value list, resource card, pricing card, permission matrix | 実装済み |
+| Activity UI | notification list, activity feed, shortcut key, empty action | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -100,6 +101,16 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-feature-list`
 - `.adlaire-action-menu`
 - `.adlaire-stat-strip`
+- `.adlaire-avatar`
+- `.adlaire-avatar-group`
+- `.adlaire-notification-list`
+- `.adlaire-activity-feed`
+- `.adlaire-empty-action`
+- `.adlaire-shortcut-key`
+- `.adlaire-key-value-list`
+- `.adlaire-resource-card`
+- `.adlaire-pricing-card`
+- `.adlaire-permission-matrix`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`

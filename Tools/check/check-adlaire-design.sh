@@ -321,6 +321,16 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-feature-list' \
   'Docs/Generic_Component_Catalog|.adlaire-action-menu' \
   'Docs/Generic_Component_Catalog|.adlaire-stat-strip' \
+  'Docs/Generic_Component_Catalog|.adlaire-avatar' \
+  'Docs/Generic_Component_Catalog|.adlaire-avatar-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-notification-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-activity-feed' \
+  'Docs/Generic_Component_Catalog|.adlaire-empty-action' \
+  'Docs/Generic_Component_Catalog|.adlaire-shortcut-key' \
+  'Docs/Generic_Component_Catalog|.adlaire-key-value-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-resource-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-pricing-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-permission-matrix' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -567,6 +577,16 @@ for sample_class in \
   'adlaire-feature-list' \
   'adlaire-action-menu' \
   'adlaire-stat-strip' \
+  'adlaire-avatar' \
+  'adlaire-avatar-group' \
+  'adlaire-notification-list' \
+  'adlaire-activity-feed' \
+  'adlaire-empty-action' \
+  'adlaire-shortcut-key' \
+  'adlaire-key-value-list' \
+  'adlaire-resource-card' \
+  'adlaire-pricing-card' \
+  'adlaire-permission-matrix' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -744,8 +764,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 560 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 560 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 640 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 640 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -793,7 +813,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 560 SVG icons' \
+  'official 640 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
