@@ -46,6 +46,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Data UI | KPI, metrics, charts, comparison, timeline, stat strip, key-value list, resource card, pricing card, permission matrix | 実装済み |
 | Activity UI | notification list, activity feed, shortcut key, empty action | 実装済み |
 | Operational UI | status timeline, monitoring card, deployment card, release notes, query result, team card, organization switcher, approval flow, review checklist, responsive preview | 実装済み |
+| Application UI | app navigation, sidebar section, command launcher, inbox list, message thread, file card, upload queue, agent card, workspace switcher, audit log | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -122,6 +123,16 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-approval-flow`
 - `.adlaire-review-checklist`
 - `.adlaire-responsive-preview`
+- `.adlaire-app-nav`
+- `.adlaire-sidebar-section`
+- `.adlaire-command-launcher`
+- `.adlaire-inbox-list`
+- `.adlaire-message-thread`
+- `.adlaire-file-card`
+- `.adlaire-upload-queue`
+- `.adlaire-agent-card`
+- `.adlaire-workspace-switcher`
+- `.adlaire-audit-log`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`

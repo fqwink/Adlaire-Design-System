@@ -341,6 +341,16 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-approval-flow' \
   'Docs/Generic_Component_Catalog|.adlaire-review-checklist' \
   'Docs/Generic_Component_Catalog|.adlaire-responsive-preview' \
+  'Docs/Generic_Component_Catalog|.adlaire-app-nav' \
+  'Docs/Generic_Component_Catalog|.adlaire-sidebar-section' \
+  'Docs/Generic_Component_Catalog|.adlaire-command-launcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-inbox-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-message-thread' \
+  'Docs/Generic_Component_Catalog|.adlaire-file-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-upload-queue' \
+  'Docs/Generic_Component_Catalog|.adlaire-agent-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-workspace-switcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-audit-log' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -607,6 +617,16 @@ for sample_class in \
   'adlaire-approval-flow' \
   'adlaire-review-checklist' \
   'adlaire-responsive-preview' \
+  'adlaire-app-nav' \
+  'adlaire-sidebar-section' \
+  'adlaire-command-launcher' \
+  'adlaire-inbox-list' \
+  'adlaire-message-thread' \
+  'adlaire-file-card' \
+  'adlaire-upload-queue' \
+  'adlaire-agent-card' \
+  'adlaire-workspace-switcher' \
+  'adlaire-audit-log' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -784,8 +804,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 720 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 720 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 800 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 800 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -833,7 +853,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 720 SVG icons' \
+  'official 800 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
