@@ -28,7 +28,7 @@ This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG
 | `UI/` | Generated public UI CSS and JavaScript. |
 | `EditorUI/` | Generated WYSIWYG Editor UI CSS and JavaScript, plus editor runtime output. |
 | `TypeScript/` | Deno TypeScript sources for generated CSS and JavaScript. |
-| `Icons/` | Official 500 SVG icons. |
+| `Icons/` | Official 560 SVG icons. |
 | `Brand/` | Brand assets and brand asset rules. |
 | `Samples/` | Non-authoritative visual confirmation materials. |
 | `Tools/check/` | Repository checks. |
@@ -58,4 +58,4 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 ## Samples
 
-`Samples/design/index.html` is a confirmation surface for Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Brand, Tokens, and the official 500 SVG icons. Samples are supporting materials, not specification sources.
+`Samples/design/index.html` is a confirmation surface for Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Brand, Tokens, and the official 560 SVG icons. Samples are supporting materials, not specification sources.
