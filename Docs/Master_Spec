@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.128
+Version: rev.129
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -148,6 +148,8 @@ Dialog, drawer, popover, toast, progress, skeleton, data table state, bulk feedb
 
 Design-system operations are first-class UI contracts. Token swatches, component previews, component state matrices, anatomy panels, accessibility checklists, keyboard maps, data grids, saved views, column managers, and property inspectors are reusable product surfaces rather than sample-only helpers.
 
+Workspace, command, board, visualization, asset, and productivity UI are first-class reusable contracts. Tab workspaces, dock panels, status bars, panel rails, context menus, split buttons, overflow toolbars, quick actions, kanban boards, swimlanes, board cards, metrics visuals, asset browsers, thumbnail grids, preview comparison, document outlines, mini maps, comment resolution, and publication checklists must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
+
 Interaction contracts include representative accessibility hooks: dialog roles, modal state, labelled headings, dismiss buttons, Escape handling, focus containment, hidden decorative content, current-step indication, and expanded/pressed state synchronization.
 
 ## WYSIWYG Editor Direction
@@ -166,7 +168,7 @@ WYSIWYG UI contracts include slash menu, suggestion card, save banner, lock bann
 
 ## Samples
 
-Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Tokens, Brand, and the official 1520 SVG icons.
+Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Advanced Input and Design-System UI, Workspace / Command / Productivity UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Tokens, Brand, and the official 1520 SVG icons.
 
 Samples must not become the source of truth for tokens, CSS contracts, JavaScript behavior, or catalog state.
 

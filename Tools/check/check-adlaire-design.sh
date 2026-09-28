@@ -376,6 +376,31 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-agent-card' \
   'Docs/Generic_Component_Catalog|.adlaire-workspace-switcher' \
   'Docs/Generic_Component_Catalog|.adlaire-audit-log' \
+  'Docs/Generic_Component_Catalog|.adlaire-tab-workspace' \
+  'Docs/Generic_Component_Catalog|.adlaire-dock-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-status-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-panel-rail' \
+  'Docs/Generic_Component_Catalog|.adlaire-context-menu' \
+  'Docs/Generic_Component_Catalog|.adlaire-split-button' \
+  'Docs/Generic_Component_Catalog|.adlaire-overflow-toolbar' \
+  'Docs/Generic_Component_Catalog|.adlaire-quick-action-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-kanban-board' \
+  'Docs/Generic_Component_Catalog|.adlaire-swimlane' \
+  'Docs/Generic_Component_Catalog|.adlaire-board-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-lane-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-sparkline' \
+  'Docs/Generic_Component_Catalog|.adlaire-gauge' \
+  'Docs/Generic_Component_Catalog|.adlaire-heatmap' \
+  'Docs/Generic_Component_Catalog|.adlaire-distribution-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-status-meter' \
+  'Docs/Generic_Component_Catalog|.adlaire-asset-browser' \
+  'Docs/Generic_Component_Catalog|.adlaire-thumbnail-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-media-metadata-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-preview-compare' \
+  'Docs/Generic_Component_Catalog|.adlaire-document-outline' \
+  'Docs/Generic_Component_Catalog|.adlaire-mini-map' \
+  'Docs/Generic_Component_Catalog|.adlaire-comment-resolver' \
+  'Docs/Generic_Component_Catalog|.adlaire-publication-checklist' \
   'Docs/Generic_Component_Catalog|.adlaire-product-card' \
   'Docs/Generic_Component_Catalog|.adlaire-plan-selector' \
   'Docs/Generic_Component_Catalog|.adlaire-billing-summary' \
@@ -603,6 +628,12 @@ done
 for js_hook in \
   'data-adlaire-sidebar-toggle' \
   'data-adlaire-tree-toggle' \
+  'data-adlaire-workspace-tab' \
+  'data-adlaire-context-menu' \
+  'data-adlaire-split-button-toggle' \
+  'data-adlaire-overflow-toggle' \
+  'data-adlaire-dock-toggle' \
+  'data-adlaire-preview-compare' \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
   'adlaire-bottom-sheet.is-open' \
@@ -857,6 +888,37 @@ for sample_class in \
   'adlaire-agent-card' \
   'adlaire-workspace-switcher' \
   'adlaire-audit-log' \
+  'adlaire-tab-workspace' \
+  'data-adlaire-workspace-tab' \
+  'adlaire-dock-panel' \
+  'data-adlaire-dock-toggle' \
+  'adlaire-status-bar' \
+  'adlaire-panel-rail' \
+  'adlaire-context-menu' \
+  'data-adlaire-context-menu' \
+  'adlaire-split-button' \
+  'data-adlaire-split-button-toggle' \
+  'adlaire-overflow-toolbar' \
+  'data-adlaire-overflow-toggle' \
+  'adlaire-quick-action-list' \
+  'adlaire-kanban-board' \
+  'adlaire-swimlane' \
+  'adlaire-board-card' \
+  'adlaire-lane-summary' \
+  'adlaire-sparkline' \
+  'adlaire-gauge' \
+  'adlaire-heatmap' \
+  'adlaire-distribution-bar' \
+  'adlaire-status-meter' \
+  'adlaire-asset-browser' \
+  'adlaire-thumbnail-grid' \
+  'adlaire-media-metadata-panel' \
+  'adlaire-preview-compare' \
+  'data-adlaire-preview-compare' \
+  'adlaire-document-outline' \
+  'adlaire-mini-map' \
+  'adlaire-comment-resolver' \
+  'adlaire-publication-checklist' \
   'adlaire-product-card' \
   'adlaire-plan-selector' \
   'adlaire-billing-summary' \
@@ -1037,6 +1099,7 @@ for matrix_term in \
   'Interaction readiness' \
   'Form and data UI' \
   'Advanced Input and Design-System UI' \
+  'Workspace Command and Productivity UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'Representative Subcontracts' \
@@ -1044,6 +1107,7 @@ for matrix_term in \
   'dialog, drawer, popover, toast' \
   'filter input, filter chip, file input' \
   'combobox, multi-select, token input' \
+  'tab workspace, dock panel, status bar' \
   'slash menu, suggestion card, save banner' \
   'command, document, selection, history' \
   'color, typography, spacing, layout' \
@@ -1125,6 +1189,7 @@ allowed_component_vars = {
   "--adlaire-progress-value" => true,
   "--adlaire-upload-progress" => true,
   "--adlaire-token-swatch-color" => true,
+  "--adlaire-preview-compare-position" => true,
 }
 used_vars = Dir.glob(File.join(root, "{Tokens,UI,EditorUI,Samples/design}", "**", "*.css")).each_with_object({}) do |file, vars|
   File.read(file).scan(/var\((--adlaire-[a-z0-9-]+)/).flatten.each { |name| vars[name] = true }

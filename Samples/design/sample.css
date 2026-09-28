@@ -476,6 +476,13 @@ body {
   min-width: 0;
 }
 
+.adlaire-asset-browser,
+.adlaire-tab-workspace,
+.adlaire-kanban-board,
+.adlaire-component-preview {
+  min-width: 0;
+}
+
 .adlaire-skeleton {
   min-height: 42px;
   margin: 12px 0;
@@ -493,7 +500,8 @@ body {
   .sample-coverage-grid,
   .sample-brand-grid,
   .sample-git-layout,
-  .adlaire-workbench-layout {
+  .adlaire-workbench-layout,
+  .adlaire-asset-browser {
     grid-template-columns: 1fr;
   }
 }
