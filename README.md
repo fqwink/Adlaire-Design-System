@@ -60,4 +60,4 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 ## Samples
 
-`Samples/design/index.html` is a confirmation surface for Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Brand, Tokens, and the official 1520 SVG icons. Samples are supporting materials, not specification sources.
+`Samples/design/index.html` is a confirmation surface for Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Brand, Tokens, and the official 1520 SVG icons. Samples are supporting materials, not specification sources.

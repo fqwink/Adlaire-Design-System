@@ -315,6 +315,11 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
   'Docs/Generic_Component_Catalog|.adlaire-input-group' \
   'Docs/Generic_Component_Catalog|.adlaire-date-range' \
+  'Docs/Generic_Component_Catalog|.adlaire-combobox' \
+  'Docs/Generic_Component_Catalog|.adlaire-multi-select' \
+  'Docs/Generic_Component_Catalog|.adlaire-token-input' \
+  'Docs/Generic_Component_Catalog|.adlaire-date-picker' \
+  'Docs/Generic_Component_Catalog|.adlaire-calendar' \
   'Docs/Generic_Component_Catalog|.adlaire-file-picker' \
   'Docs/Generic_Component_Catalog|.adlaire-dropzone' \
   'Docs/Generic_Component_Catalog|.adlaire-toggle' \
@@ -322,6 +327,17 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-validation-message' \
   'Docs/Generic_Component_Catalog|.adlaire-pagination' \
   'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
+  'Docs/Generic_Component_Catalog|.adlaire-tree-view' \
+  'Docs/Generic_Component_Catalog|.adlaire-data-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-column-manager' \
+  'Docs/Generic_Component_Catalog|.adlaire-saved-view-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-property-inspector' \
+  'Docs/Generic_Component_Catalog|.adlaire-token-swatch' \
+  'Docs/Generic_Component_Catalog|.adlaire-component-preview' \
+  'Docs/Generic_Component_Catalog|.adlaire-component-state-matrix' \
+  'Docs/Generic_Component_Catalog|.adlaire-anatomy-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-a11y-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-keyboard-map' \
   'Docs/Generic_Component_Catalog|.adlaire-icon-button' \
   'Docs/Generic_Component_Catalog|.adlaire-icon-button-group' \
   'Docs/Generic_Component_Catalog|.adlaire-icon-tile' \
@@ -474,6 +490,7 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-release-highlight' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
+  'Docs/Generic_Component_Catalog|.adlaire-bottom-sheet' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
   'Docs/Generic_Component_Catalog|.adlaire-tooltip' \
   'Docs/Generic_Component_Catalog|.adlaire-toast' \
@@ -585,8 +602,10 @@ done
 
 for js_hook in \
   'data-adlaire-sidebar-toggle' \
+  'data-adlaire-tree-toggle' \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
+  'adlaire-bottom-sheet.is-open' \
   'adlaire-popover.is-open'; do
   require_text "TypeScript/UI/components.ts" "$js_hook" "Interaction readiness"
   require_text "UI/components.js" "$js_hook" "Interaction readiness"
@@ -595,6 +614,10 @@ done
 for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-chip' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-combobox-input' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-combobox-option' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-multi-select-option' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-date-preset' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-empty' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-toggle-input' \
@@ -728,6 +751,28 @@ for sample_class in \
   'adlaire-timeline' \
   'adlaire-markdown-body' \
   'adlaire-filter-builder' \
+  'adlaire-combobox' \
+  'data-adlaire-combobox-input' \
+  'data-adlaire-combobox-option' \
+  'adlaire-multi-select' \
+  'data-adlaire-multi-select-option' \
+  'adlaire-token-input' \
+  'adlaire-date-picker' \
+  'data-adlaire-date-preset' \
+  'adlaire-calendar' \
+  'adlaire-tree-view' \
+  'data-adlaire-tree-toggle' \
+  'adlaire-data-grid' \
+  'adlaire-column-manager' \
+  'adlaire-saved-view-bar' \
+  'adlaire-property-inspector' \
+  'adlaire-token-swatch' \
+  'adlaire-component-preview' \
+  'adlaire-component-state-matrix' \
+  'adlaire-anatomy-panel' \
+  'adlaire-a11y-checklist' \
+  'adlaire-keyboard-map' \
+  'adlaire-bottom-sheet' \
   'adlaire-stepper' \
   'adlaire-progress' \
   'adlaire-skeleton' \
@@ -991,12 +1036,14 @@ for matrix_term in \
   'Layout System v2' \
   'Interaction readiness' \
   'Form and data UI' \
+  'Advanced Input and Design-System UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'Representative Subcontracts' \
   'layout frame, public layout, master-detail layout' \
   'dialog, drawer, popover, toast' \
   'filter input, filter chip, file input' \
+  'combobox, multi-select, token input' \
   'slash menu, suggestion card, save banner' \
   'command, document, selection, history' \
   'color, typography, spacing, layout' \
@@ -1077,6 +1124,7 @@ abort("[Token inventory] duplicate CSS token definitions: #{duplicate_vars.uniq.
 allowed_component_vars = {
   "--adlaire-progress-value" => true,
   "--adlaire-upload-progress" => true,
+  "--adlaire-token-swatch-color" => true,
 }
 used_vars = Dir.glob(File.join(root, "{Tokens,UI,EditorUI,Samples/design}", "**", "*.css")).each_with_object({}) do |file, vars|
   File.read(file).scan(/var\((--adlaire-[a-z0-9-]+)/).flatten.each { |name| vars[name] = true }

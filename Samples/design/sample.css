@@ -173,6 +173,24 @@ body {
   gap: 12px;
 }
 
+.sample-bottom-sheet-preview {
+  min-height: 220px;
+  overflow: hidden;
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.sample-bottom-sheet-preview .adlaire-bottom-sheet {
+  position: static;
+  display: grid;
+  min-height: 220px;
+  background-color: var(--adlaire-surface-soft);
+}
+
+.sample-bottom-sheet-preview .adlaire-bottom-sheet-panel {
+  align-self: end;
+}
+
 .sample-backdrop-preview {
   position: relative;
   min-height: 72px;

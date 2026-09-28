@@ -49,6 +49,7 @@
       <a href="#coverage-title">Overview</a>
       <a href="#tokens-title">Tokens</a>
       <a href="#generic-title">Components</a>
+      <a href="#advanced-ui-title">Advanced UI</a>
       <a href="#admin-title">Admin</a>
       <a href="#editor-title">WYSIWYG</a>
       <a href="#icon-title">Icons</a>
@@ -443,6 +444,168 @@
           <div class="adlaire-skeleton" aria-hidden="true"></div>
           <div class="adlaire-bulk-feedback"><span>4 selected</span><button class="adlaire-button adlaire-button-primary" type="button">Run</button></div>
         </aside>
+      </div>
+    </section>
+
+    <section class="sample-section" aria-labelledby="advanced-ui-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Advanced Input and Design-System UI</p>
+        <h2 id="advanced-ui-title">入力補助、構造表示、設計運用部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-date-picker" data-adlaire-date-picker>
+          <h3>Input assist</h3>
+          <div class="adlaire-combobox" data-adlaire-combobox>
+            <label class="adlaire-field">Component
+              <input class="adlaire-form-control adlaire-combobox-input" value="Data" role="combobox" aria-expanded="true" aria-controls="sample-combobox-list" data-adlaire-combobox-input>
+            </label>
+            <div id="sample-combobox-list" class="adlaire-combobox-listbox" role="listbox">
+              <button class="adlaire-combobox-option" type="button" role="option" data-adlaire-combobox-option="Data grid">Data grid</button>
+              <button class="adlaire-combobox-option" type="button" role="option" data-adlaire-combobox-option="Tree view">Tree view</button>
+              <button class="adlaire-combobox-option" type="button" role="option" data-adlaire-combobox-option="Token swatch">Token swatch</button>
+            </div>
+          </div>
+          <div class="adlaire-multi-select" data-adlaire-multi-select data-adlaire-multi-select-output="[data-sample-multi-select-output]" data-adlaire-multi-select-empty="No surfaces selected">
+            <span class="adlaire-input-hint">Surfaces</span>
+            <div class="adlaire-multi-select-list" role="listbox" aria-multiselectable="true">
+              <button class="adlaire-multi-select-option" type="button" role="option" aria-selected="true" data-adlaire-multi-select-option="Desktop">Desktop</button>
+              <button class="adlaire-multi-select-option" type="button" role="option" aria-selected="true" data-adlaire-multi-select-option="Mobile">Mobile</button>
+              <button class="adlaire-multi-select-option" type="button" role="option" aria-selected="false" data-adlaire-multi-select-option="Editor">Editor</button>
+            </div>
+            <div class="adlaire-token-input">
+              <div class="adlaire-token-list" aria-live="polite">
+                <span class="adlaire-token" data-sample-multi-select-output>Desktop, Mobile</span>
+              </div>
+            </div>
+          </div>
+          <div class="adlaire-date-preset-list" aria-label="Date presets">
+            <button class="adlaire-date-preset" type="button" aria-pressed="true" data-adlaire-date-preset data-adlaire-date-start="[data-sample-date-start]" data-adlaire-date-start-value="2026-09-28" data-adlaire-date-end="[data-sample-date-end]" data-adlaire-date-end-value="2026-10-05">This week</button>
+            <button class="adlaire-date-preset" type="button" aria-pressed="false" data-adlaire-date-preset data-adlaire-date-start="[data-sample-date-start]" data-adlaire-date-start-value="2026-10-01" data-adlaire-date-end="[data-sample-date-end]" data-adlaire-date-end-value="2026-10-31">Next month</button>
+          </div>
+          <div class="adlaire-date-range" aria-label="Preset output">
+            <label class="adlaire-date-input">Start<input class="adlaire-form-control" type="date" value="2026-09-28" data-sample-date-start></label>
+            <span>to</span>
+            <label class="adlaire-date-input">End<input class="adlaire-form-control" type="date" value="2026-10-05" data-sample-date-end></label>
+          </div>
+          <div class="adlaire-calendar" aria-label="Calendar preview">
+            <div class="adlaire-calendar-header">
+              <button class="adlaire-icon-button" type="button" aria-label="Previous month">‹</button>
+              <span class="adlaire-calendar-title">September 2026</span>
+              <button class="adlaire-icon-button" type="button" aria-label="Next month">›</button>
+            </div>
+            <div class="adlaire-calendar-weekdays" aria-hidden="true">
+              <span class="adlaire-calendar-weekday">M</span><span class="adlaire-calendar-weekday">T</span><span class="adlaire-calendar-weekday">W</span><span class="adlaire-calendar-weekday">T</span><span class="adlaire-calendar-weekday">F</span><span class="adlaire-calendar-weekday">S</span><span class="adlaire-calendar-weekday">S</span>
+            </div>
+            <div class="adlaire-calendar-grid">
+              <button class="adlaire-calendar-day" type="button" aria-disabled="true">27</button>
+              <button class="adlaire-calendar-day" type="button">28</button>
+              <button class="adlaire-calendar-day" type="button" aria-selected="true">29</button>
+              <button class="adlaire-calendar-day" type="button">30</button>
+              <button class="adlaire-calendar-day" type="button">1</button>
+              <button class="adlaire-calendar-day" type="button">2</button>
+              <button class="adlaire-calendar-day" type="button">3</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview">
+          <h3>Structure and data</h3>
+          <div class="adlaire-tree-view" aria-label="Component tree">
+            <ul class="adlaire-tree-list">
+              <li class="adlaire-tree-item">
+                <div class="adlaire-tree-row" aria-current="true">
+                  <button class="adlaire-tree-toggle" type="button" aria-expanded="true" aria-controls="sample-tree-branch" data-adlaire-tree-toggle="sample-tree-branch">+</button>
+                  <span>Design surfaces</span>
+                </div>
+                <ul id="sample-tree-branch" class="adlaire-tree-branch">
+                  <li class="adlaire-tree-row">Input assist</li>
+                  <li class="adlaire-tree-row">Data operations</li>
+                  <li class="adlaire-tree-row">Mobile overlays</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="adlaire-data-grid" role="region" aria-label="Data grid sample">
+            <div class="adlaire-data-grid-toolbar">
+              <strong>Components</strong>
+              <span class="adlaire-status-pill">3 rows</span>
+            </div>
+            <div class="adlaire-data-grid-scroll">
+              <table class="adlaire-data-grid-table">
+                <thead><tr><th>Name</th><th>Family</th><th>State</th></tr></thead>
+                <tbody>
+                  <tr class="adlaire-data-grid-row-selected" aria-selected="true"><td>Combobox</td><td>Forms</td><td>Ready</td></tr>
+                  <tr><td>Tree view</td><td>Structure</td><td>Ready</td></tr>
+                  <tr><td>Bottom sheet</td><td>Overlay</td><td>Ready</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="adlaire-data-grid-footer">Saved view: Release review</div>
+          </div>
+          <div class="adlaire-saved-view-bar">
+            <span class="adlaire-saved-view">Release review</span>
+            <span class="adlaire-saved-view">Accessibility pass</span>
+          </div>
+          <div class="adlaire-column-manager">
+            <div class="adlaire-column-manager-item"><span>Name</span><span>visible</span></div>
+            <div class="adlaire-column-manager-item"><span>Owner</span><span>hidden</span></div>
+          </div>
+          <div class="adlaire-property-inspector">
+            <strong>Property inspector</strong>
+            <div class="adlaire-property-section">
+              <div class="adlaire-property-row"><span class="adlaire-property-name">Density</span><span class="adlaire-property-value">Comfortable</span></div>
+              <div class="adlaire-property-row"><span class="adlaire-property-name">State</span><span class="adlaire-property-value">Selected</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview">
+          <h3>Design-system operations</h3>
+          <div class="adlaire-token-swatch">
+            <span class="adlaire-token-swatch-color" style="--adlaire-token-swatch-color: var(--adlaire-surface-accent)"></span>
+            <div><strong>--adlaire-surface-accent</strong><span class="adlaire-token-swatch-meta">semantic surface token</span></div>
+          </div>
+          <div class="adlaire-component-preview-frame">
+            <button class="adlaire-button adlaire-button-primary" type="button">Preview action</button>
+          </div>
+          <div class="adlaire-component-state-matrix" aria-label="State matrix">
+            <span class="adlaire-component-state-cell">Default <strong>ok</strong></span>
+            <span class="adlaire-component-state-cell">Focus <strong>ok</strong></span>
+            <span class="adlaire-component-state-cell">Disabled <strong>ok</strong></span>
+          </div>
+          <div class="adlaire-anatomy-panel">
+            <strong>Anatomy</strong>
+            <ul class="adlaire-anatomy-panel-list">
+              <li>Trigger</li>
+              <li>Surface</li>
+              <li>Dismiss action</li>
+            </ul>
+            <span class="adlaire-anatomy-panel-meta">Component structure is documented separately from sample markup.</span>
+          </div>
+          <ul class="adlaire-a11y-checklist" aria-label="Accessibility checklist">
+            <li class="adlaire-a11y-checklist-item"><span>Label</span><strong>present</strong></li>
+            <li class="adlaire-a11y-checklist-item"><span>Keyboard</span><strong>covered</strong></li>
+          </ul>
+          <ol class="adlaire-keyboard-map" aria-label="Keyboard map">
+            <li class="adlaire-keyboard-map-row"><kbd class="adlaire-shortcut-key">Esc</kbd><span>Close overlay</span></li>
+            <li class="adlaire-keyboard-map-row"><kbd class="adlaire-shortcut-key">Tab</kbd><span>Move focus</span></li>
+          </ol>
+          <div class="sample-bottom-sheet-preview">
+            <section class="adlaire-bottom-sheet is-open" role="dialog" aria-modal="false" aria-label="Bottom sheet sample">
+              <div class="adlaire-bottom-sheet-panel">
+                <div class="adlaire-bottom-sheet-header">
+                  <strong>Bottom sheet</strong>
+                  <button class="adlaire-dialog-close" type="button" aria-label="Close bottom sheet" data-adlaire-dismiss>x</button>
+                </div>
+                <div class="adlaire-bottom-sheet-body">Mobile action surfaces share the overlay contract.</div>
+                <div class="adlaire-bottom-sheet-footer">
+                  <button class="adlaire-button adlaire-button-secondary" type="button">Cancel</button>
+                  <button class="adlaire-button adlaire-button-primary" type="button">Apply</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </article>
       </div>
     </section>
 
