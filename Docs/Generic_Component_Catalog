@@ -52,6 +52,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
 | Collaboration / Review UI | collaborator list, presence stack, review request card, review decision, change request list, comment thread, annotation card, suggestion panel, version history, diff summary, task board, checklist panel, notification digest, escalation banner, meeting notes, signoff panel | 実装済み |
 | Workflow / Governance UI | workflow runner, automation rule card, trigger list, condition builder, action chain, schedule panel, policy card, compliance checklist, evidence locker, approval route, access review panel, risk banner, audit event stream, retention policy panel, incident summary, control status grid | 実装済み |
+| Observability / Diagnostics UI | health overview, service status card, uptime panel, log stream, log event row, trace timeline, span detail, metric threshold card, alert rule card, alert incident list, error rate panel, latency distribution, dependency map, SLO summary, diagnostic run card, remediation panel | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -218,6 +219,22 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-retention-policy-panel`
 - `.adlaire-incident-summary`
 - `.adlaire-control-status-grid`
+- `.adlaire-health-overview`
+- `.adlaire-service-status-card`
+- `.adlaire-uptime-panel`
+- `.adlaire-log-stream`
+- `.adlaire-log-event-row`
+- `.adlaire-trace-timeline`
+- `.adlaire-span-detail`
+- `.adlaire-metric-threshold-card`
+- `.adlaire-alert-rule-card`
+- `.adlaire-alert-incident-list`
+- `.adlaire-error-rate-panel`
+- `.adlaire-latency-distribution`
+- `.adlaire-dependency-map`
+- `.adlaire-slo-summary`
+- `.adlaire-diagnostic-run-card`
+- `.adlaire-remediation-panel`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`
