@@ -70,10 +70,15 @@
     if (!copy) return;
 
     const selector = copy.getAttribute("data-adlaire-code-copy");
+    const statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     const target = selector ? document.querySelector(selector) : copy.closest(".adlaire-code-block");
     if (target && navigator.clipboard) {
       navigator.clipboard.writeText(target.textContent ?? "");
       copy.setAttribute("data-adlaire-copied", "true");
+      const status = statusSelector ? document.querySelector(statusSelector) : null;
+      if (status) {
+        status.textContent = "Copied";
+      }
     }
   });
 

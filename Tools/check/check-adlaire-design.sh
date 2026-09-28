@@ -280,6 +280,13 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-badge' \
   'Docs/Generic_Component_Catalog|.adlaire-note' \
   'Docs/Generic_Component_Catalog|.adlaire-alert' \
+  'Docs/Generic_Component_Catalog|.adlaire-content-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-code-block' \
+  'Docs/Generic_Component_Catalog|.adlaire-code-copy' \
+  'Docs/Generic_Component_Catalog|.adlaire-content-table' \
+  'Docs/Generic_Component_Catalog|.adlaire-faq-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-markdown-body' \
   'Docs/Generic_Component_Catalog|.adlaire-chip' \
   'Docs/Generic_Component_Catalog|.adlaire-status-pill' \
   'Docs/Generic_Component_Catalog|.adlaire-container' \
@@ -399,6 +406,7 @@ for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate-summary' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy-status' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-line' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-mode' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-toggle' \
@@ -473,6 +481,13 @@ for sample_class in \
   'adlaire-mobile-stack' \
   'adlaire-mobile-action-bar' \
   'adlaire-split-pane-collapsed' \
+  'adlaire-content-card' \
+  'adlaire-code-block' \
+  'adlaire-code-copy' \
+  'adlaire-content-table' \
+  'adlaire-faq-list' \
+  'adlaire-timeline' \
+  'adlaire-markdown-body' \
   'adlaire-filter-builder' \
   'adlaire-stepper' \
   'adlaire-progress' \

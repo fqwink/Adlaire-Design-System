@@ -58,6 +58,13 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-badge`
 - `.adlaire-note`
 - `.adlaire-alert`
+- `.adlaire-content-card`
+- `.adlaire-code-block`
+- `.adlaire-code-copy`
+- `.adlaire-content-table`
+- `.adlaire-faq-list`
+- `.adlaire-timeline`
+- `.adlaire-markdown-body`
 - `.adlaire-chip`
 - `.adlaire-status-pill`
 - `.adlaire-container`
