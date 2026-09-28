@@ -71,6 +71,11 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Resource / Capacity UI | capacity planner, allocation row, utilization summary, staffing request card, allocation conflict, availability forecast | 実装済み |
 | Vendor / Contract UI | supplier profile, vendor scorecard, contract renewal card, SLA tracker, procurement pipeline, compliance attestation row | 実装済み |
 | IT Service / Asset UI | service request card, change calendar panel, asset inventory row, license assignment card, maintenance window card, postmortem summary | 実装済み |
+| Supply Chain / Logistics UI | shipment tracker, warehouse bin card, inventory movement row, carrier handoff card, delivery route board, exception queue | 実装済み |
+| Manufacturing / Quality UI | production order card, work cell status, quality inspection panel, defect report row, batch trace card, downtime reason list | 実装済み |
+| Healthcare / Care Operations UI | patient summary card, appointment queue, care plan checklist, medication schedule, triage status panel, consent record row | 実装済み |
+| Education / Learning UI | course card, lesson progress, assignment queue, grading rubric, learner profile, certification tracker | 実装済み |
+| Legal / Case Management UI | case file card, matter timeline, evidence list, filing deadline tracker, review privilege badge, counsel task list | 実装済み |
 | Product UI | product card, plan selector, billing summary, invoice list, account profile, member list, role matrix, support ticket, analytics panel, workflow builder, integration card, trust center | 実装済み |
 | Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
@@ -296,6 +301,36 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-license-assignment-card`
 - `.adlaire-maintenance-window-card`
 - `.adlaire-postmortem-summary`
+- `.adlaire-shipment-tracker`
+- `.adlaire-warehouse-bin-card`
+- `.adlaire-inventory-movement-row`
+- `.adlaire-carrier-handoff-card`
+- `.adlaire-delivery-route-board`
+- `.adlaire-exception-queue`
+- `.adlaire-production-order-card`
+- `.adlaire-work-cell-status`
+- `.adlaire-quality-inspection-panel`
+- `.adlaire-defect-report-row`
+- `.adlaire-batch-trace-card`
+- `.adlaire-downtime-reason-list`
+- `.adlaire-patient-summary-card`
+- `.adlaire-appointment-queue`
+- `.adlaire-care-plan-checklist`
+- `.adlaire-medication-schedule`
+- `.adlaire-triage-status-panel`
+- `.adlaire-consent-record-row`
+- `.adlaire-course-card`
+- `.adlaire-lesson-progress`
+- `.adlaire-assignment-queue`
+- `.adlaire-grading-rubric`
+- `.adlaire-learner-profile`
+- `.adlaire-certification-tracker`
+- `.adlaire-case-file-card`
+- `.adlaire-matter-timeline`
+- `.adlaire-evidence-list`
+- `.adlaire-filing-deadline-tracker`
+- `.adlaire-review-privilege-badge`
+- `.adlaire-counsel-task-list`
 - `.adlaire-product-card`
 - `.adlaire-plan-selector`
 - `.adlaire-billing-summary`

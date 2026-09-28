@@ -215,6 +215,9 @@
     const confidenceSelect = source?.closest("[data-adlaire-confidence-select]");
     const milestoneSelect = source?.closest("[data-adlaire-milestone-select]");
     const attestationToggle = source?.closest("[data-adlaire-attestation-toggle]");
+    const routeSelect = source?.closest("[data-adlaire-route-select]");
+    const carePlanCheck = source?.closest("[data-adlaire-care-plan-check]");
+    const evidenceSelect = source?.closest("[data-adlaire-evidence-select]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -334,6 +337,21 @@
     if (attestationToggle) {
       event.preventDefault();
       toggleBooleanState(attestationToggle, "aria-pressed");
+    }
+
+    if (routeSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(routeSelect, ".adlaire-delivery-route-board", "[data-adlaire-route-select]", "aria-selected");
+    }
+
+    if (carePlanCheck) {
+      event.preventDefault();
+      toggleBooleanState(carePlanCheck, "aria-checked");
+    }
+
+    if (evidenceSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(evidenceSelect, ".adlaire-evidence-list", "[data-adlaire-evidence-select]", "aria-selected");
     }
   });
 

@@ -491,6 +491,12 @@ body {
 .adlaire-capacity-planner,
 .adlaire-procurement-pipeline,
 .adlaire-change-calendar-panel,
+.adlaire-shipment-tracker,
+.adlaire-delivery-route-board,
+.adlaire-quality-inspection-panel,
+.adlaire-appointment-queue,
+.adlaire-grading-rubric,
+.adlaire-evidence-list,
 .adlaire-component-preview {
   min-width: 0;
 }
@@ -525,7 +531,13 @@ body {
   .adlaire-portfolio-overview,
   .adlaire-capacity-planner,
   .adlaire-procurement-pipeline,
-  .adlaire-change-calendar-panel {
+  .adlaire-change-calendar-panel,
+  .adlaire-shipment-tracker,
+  .adlaire-delivery-route-board,
+  .adlaire-quality-inspection-panel,
+  .adlaire-appointment-queue,
+  .adlaire-grading-rubric,
+  .adlaire-evidence-list {
     grid-template-columns: 1fr;
   }
 }
