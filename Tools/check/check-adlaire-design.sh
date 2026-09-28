@@ -399,6 +399,22 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-drift-monitor' \
   'Docs/Generic_Component_Catalog|.adlaire-anomaly-list' \
   'Docs/Generic_Component_Catalog|.adlaire-data-access-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-collaborator-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-presence-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-request-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-decision' \
+  'Docs/Generic_Component_Catalog|.adlaire-change-request-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-comment-thread' \
+  'Docs/Generic_Component_Catalog|.adlaire-annotation-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-suggestion-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-version-history' \
+  'Docs/Generic_Component_Catalog|.adlaire-diff-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-task-board' \
+  'Docs/Generic_Component_Catalog|.adlaire-checklist-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-notification-digest' \
+  'Docs/Generic_Component_Catalog|.adlaire-escalation-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-meeting-notes' \
+  'Docs/Generic_Component_Catalog|.adlaire-signoff-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-dialog' \
   'Docs/Generic_Component_Catalog|.adlaire-drawer' \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
@@ -723,6 +739,22 @@ for sample_class in \
   'adlaire-drift-monitor' \
   'adlaire-anomaly-list' \
   'adlaire-data-access-panel' \
+  'adlaire-collaborator-list' \
+  'adlaire-presence-stack' \
+  'adlaire-review-request-card' \
+  'adlaire-review-decision' \
+  'adlaire-change-request-list' \
+  'adlaire-comment-thread' \
+  'adlaire-annotation-card' \
+  'adlaire-suggestion-panel' \
+  'adlaire-version-history' \
+  'adlaire-diff-summary' \
+  'adlaire-task-board' \
+  'adlaire-checklist-panel' \
+  'adlaire-notification-digest' \
+  'adlaire-escalation-banner' \
+  'adlaire-meeting-notes' \
+  'adlaire-signoff-panel' \
   'adlaire-admin-incident-panel' \
   'adlaire-admin-maintenance-window' \
   'adlaire-admin-secret-panel' \
@@ -900,8 +932,8 @@ RUBY
 fi
 
 ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 1040 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 1040 official SVG icons. Found: $ICON_COUNT"
+if [ "$ICON_COUNT" -ne 1120 ]; then
+  fail "Icon inventory" "Icons/ must contain exactly 1120 official SVG icons. Found: $ICON_COUNT"
 fi
 
 find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
@@ -949,7 +981,7 @@ for doc_term in \
   'npm packages' \
   'Component_Contract_Matrix' \
   'Samples are supporting' \
-  'official 1040 SVG icons' \
+  'official 1120 SVG icons' \
   'startup synchronization' \
   'matching merged branch' \
   'family-labelled diagnostics' \
