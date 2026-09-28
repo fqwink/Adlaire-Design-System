@@ -54,7 +54,8 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Workflow / Governance UI | workflow runner, automation rule card, trigger list, condition builder, action chain, schedule panel, policy card, compliance checklist, evidence locker, approval route, access review panel, risk banner, audit event stream, retention policy panel, incident summary, control status grid | 実装済み |
 | Observability / Diagnostics UI | health overview, service status card, uptime panel, log stream, log event row, trace timeline, span detail, metric threshold card, alert rule card, alert incident list, error rate panel, latency distribution, dependency map, SLO summary, diagnostic run card, remediation panel | 実装済み |
 | Experience / Guidance UI | onboarding flow, onboarding step card, tour callout, guided task list, help center panel, help article card, search result list, search result item, recent item list, recommendation panel, personalization card, preference panel, notification preference list, language selector panel, keyboard shortcut panel, release highlight | 実装済み |
-| Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
+| Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs, GitHub product cards | 実装済み |
+| Cloud / Infrastructure UI | service card, region, environment, resource grid, topology, runtime, database, storage, queue, worker, domain, certificate, secret, quota, cost | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
 ## Required Class Families
@@ -273,6 +274,38 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-git-ci-status`
 - `.adlaire-git-merge-state`
 - `.adlaire-git-diff-hunk`
+- `.adlaire-github-product-grid`
+- `.adlaire-github-product-card`
+- `.adlaire-github-action-card`
+- `.adlaire-github-copilot-card`
+- `.adlaire-github-security-panel`
+- `.adlaire-github-dependabot-alert`
+- `.adlaire-github-codespace-card`
+- `.adlaire-github-package-card`
+- `.adlaire-github-pages-card`
+- `.adlaire-github-project-board-card`
+- `.adlaire-github-discussion-card`
+- `.adlaire-github-release-card`
+- `.adlaire-github-marketplace-card`
+- `.adlaire-github-integration-list`
+- `.adlaire-github-webhook-panel`
+- `.adlaire-github-api-key-panel`
+- `.adlaire-cloud-service-card`
+- `.adlaire-cloud-region-card`
+- `.adlaire-cloud-environment-card`
+- `.adlaire-cloud-resource-grid`
+- `.adlaire-cloud-topology-map`
+- `.adlaire-cloud-deployment-target`
+- `.adlaire-cloud-runtime-card`
+- `.adlaire-cloud-database-card`
+- `.adlaire-cloud-storage-card`
+- `.adlaire-cloud-queue-card`
+- `.adlaire-cloud-worker-card`
+- `.adlaire-cloud-domain-panel`
+- `.adlaire-cloud-certificate-panel`
+- `.adlaire-cloud-secret-vault`
+- `.adlaire-cloud-quota-panel`
+- `.adlaire-cloud-cost-summary`
 
 ## Catalog Governance
 
