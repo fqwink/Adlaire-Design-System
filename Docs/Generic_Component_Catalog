@@ -56,6 +56,11 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Data Visualization UI | sparkline, gauge, heatmap, distribution bar, status meter | 実装済み |
 | Asset / Preview UI | asset browser, thumbnail grid, media metadata panel, preview compare | 実装済み |
 | Productivity UI | document outline, mini map, comment resolver, publication checklist | 実装済み |
+| Scheduling Operations UI | agenda view, time slot grid, resource calendar, availability matrix, booking card, calendar event | 実装済み |
+| Location / Facility UI | location card, facility map panel, floor selector, area status grid, route summary, site operating hours | 実装済み |
+| Comparison / Decision UI | comparison matrix, option card, decision scorecard, tradeoff list, recommendation banner, selection summary | 実装済み |
+| Document / File Management UI | document library, folder tree, file version card, document approval state, retention badge, download queue | 実装済み |
+| Permission / Security Operations UI | access request card, permission grant row, session list, device trust card, security event row, policy exception panel | 実装済み |
 | Product UI | product card, plan selector, billing summary, invoice list, account profile, member list, role matrix, support ticket, analytics panel, workflow builder, integration card, trust center | 実装済み |
 | Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
@@ -191,6 +196,36 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-mini-map`
 - `.adlaire-comment-resolver`
 - `.adlaire-publication-checklist`
+- `.adlaire-agenda-view`
+- `.adlaire-time-slot-grid`
+- `.adlaire-resource-calendar`
+- `.adlaire-availability-matrix`
+- `.adlaire-booking-card`
+- `.adlaire-calendar-event`
+- `.adlaire-location-card`
+- `.adlaire-facility-map-panel`
+- `.adlaire-floor-selector`
+- `.adlaire-area-status-grid`
+- `.adlaire-route-summary`
+- `.adlaire-site-operating-hours`
+- `.adlaire-comparison-matrix`
+- `.adlaire-option-card`
+- `.adlaire-decision-scorecard`
+- `.adlaire-tradeoff-list`
+- `.adlaire-recommendation-banner`
+- `.adlaire-selection-summary`
+- `.adlaire-document-library`
+- `.adlaire-folder-tree`
+- `.adlaire-file-version-card`
+- `.adlaire-document-approval-state`
+- `.adlaire-retention-badge`
+- `.adlaire-download-queue`
+- `.adlaire-access-request-card`
+- `.adlaire-permission-grant-row`
+- `.adlaire-session-list`
+- `.adlaire-device-trust-card`
+- `.adlaire-security-event-row`
+- `.adlaire-policy-exception-panel`
 - `.adlaire-product-card`
 - `.adlaire-plan-selector`
 - `.adlaire-billing-summary`

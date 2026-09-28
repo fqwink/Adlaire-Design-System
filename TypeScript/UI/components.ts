@@ -203,6 +203,11 @@
     const splitToggle = source?.closest("[data-adlaire-split-button-toggle]");
     const overflowToggle = source?.closest("[data-adlaire-overflow-toggle]");
     const dockToggle = source?.closest("[data-adlaire-dock-toggle]");
+    const timeSlot = source?.closest("[data-adlaire-time-slot]");
+    const floorSelect = source?.closest("[data-adlaire-floor-select]");
+    const optionSelect = source?.closest("[data-adlaire-option-select]");
+    const folderToggle = source?.closest("[data-adlaire-folder-toggle]");
+    const policyExceptionToggle = source?.closest("[data-adlaire-policy-exception-toggle]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -262,6 +267,31 @@
     if (dockToggle) {
       event.preventDefault();
       toggleDockPanel(dockToggle);
+    }
+
+    if (timeSlot) {
+      event.preventDefault();
+      selectInteractiveChoice(timeSlot, ".adlaire-time-slot-grid", "[data-adlaire-time-slot]", "aria-selected");
+    }
+
+    if (floorSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(floorSelect, ".adlaire-floor-selector", "[data-adlaire-floor-select]", "aria-pressed");
+    }
+
+    if (optionSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(optionSelect, "[data-adlaire-option-group]", "[data-adlaire-option-select]", "aria-selected");
+    }
+
+    if (folderToggle) {
+      event.preventDefault();
+      toggleFolderBranch(folderToggle);
+    }
+
+    if (policyExceptionToggle) {
+      event.preventDefault();
+      toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
     }
   });
 
@@ -349,6 +379,27 @@
     panel.classList.toggle("is-collapsed", collapsed);
     trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
     trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+  }
+
+  function selectInteractiveChoice(trigger: Element, rootSelector: string, itemSelector: string, selectedAttribute: string): void {
+    const root = trigger.closest(rootSelector);
+    if (!root) return;
+
+    root.querySelectorAll<HTMLElement>(itemSelector).forEach((item) => {
+      const selected = item === trigger;
+      item.setAttribute(selectedAttribute, selected ? "true" : "false");
+      item.classList.toggle("is-selected", selected);
+    });
+  }
+
+  function toggleFolderBranch(trigger: Element): void {
+    const branch = queryReferencedTarget(trigger, "data-adlaire-folder-toggle") ?? trigger.closest(".adlaire-folder-item")?.querySelector<HTMLElement>(".adlaire-folder-branch");
+    if (!branch) return;
+
+    const expanded = trigger.getAttribute("aria-expanded") !== "true";
+    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    branch.hidden = !expanded;
+    branch.classList.toggle("is-open", expanded);
   }
 
   document.addEventListener("input", (event) => {

@@ -401,6 +401,36 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-mini-map' \
   'Docs/Generic_Component_Catalog|.adlaire-comment-resolver' \
   'Docs/Generic_Component_Catalog|.adlaire-publication-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-agenda-view' \
+  'Docs/Generic_Component_Catalog|.adlaire-time-slot-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-resource-calendar' \
+  'Docs/Generic_Component_Catalog|.adlaire-availability-matrix' \
+  'Docs/Generic_Component_Catalog|.adlaire-booking-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-calendar-event' \
+  'Docs/Generic_Component_Catalog|.adlaire-location-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-facility-map-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-floor-selector' \
+  'Docs/Generic_Component_Catalog|.adlaire-area-status-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-route-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-site-operating-hours' \
+  'Docs/Generic_Component_Catalog|.adlaire-comparison-matrix' \
+  'Docs/Generic_Component_Catalog|.adlaire-option-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-decision-scorecard' \
+  'Docs/Generic_Component_Catalog|.adlaire-tradeoff-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-recommendation-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-selection-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-document-library' \
+  'Docs/Generic_Component_Catalog|.adlaire-folder-tree' \
+  'Docs/Generic_Component_Catalog|.adlaire-file-version-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-document-approval-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-retention-badge' \
+  'Docs/Generic_Component_Catalog|.adlaire-download-queue' \
+  'Docs/Generic_Component_Catalog|.adlaire-access-request-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-permission-grant-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-session-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-device-trust-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-security-event-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-policy-exception-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-product-card' \
   'Docs/Generic_Component_Catalog|.adlaire-plan-selector' \
   'Docs/Generic_Component_Catalog|.adlaire-billing-summary' \
@@ -634,6 +664,11 @@ for js_hook in \
   'data-adlaire-overflow-toggle' \
   'data-adlaire-dock-toggle' \
   'data-adlaire-preview-compare' \
+  'data-adlaire-time-slot' \
+  'data-adlaire-floor-select' \
+  'data-adlaire-option-select' \
+  'data-adlaire-folder-toggle' \
+  'data-adlaire-policy-exception-toggle' \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
   'adlaire-bottom-sheet.is-open' \
@@ -919,6 +954,41 @@ for sample_class in \
   'adlaire-mini-map' \
   'adlaire-comment-resolver' \
   'adlaire-publication-checklist' \
+  'adlaire-agenda-view' \
+  'adlaire-time-slot-grid' \
+  'data-adlaire-time-slot' \
+  'adlaire-resource-calendar' \
+  'adlaire-availability-matrix' \
+  'adlaire-booking-card' \
+  'adlaire-calendar-event' \
+  'adlaire-location-card' \
+  'adlaire-facility-map-panel' \
+  'adlaire-floor-selector' \
+  'data-adlaire-floor-select' \
+  'adlaire-area-status-grid' \
+  'adlaire-route-summary' \
+  'adlaire-site-operating-hours' \
+  'adlaire-comparison-matrix' \
+  'adlaire-option-card' \
+  'data-adlaire-option-select' \
+  'adlaire-decision-scorecard' \
+  'adlaire-tradeoff-list' \
+  'adlaire-recommendation-banner' \
+  'adlaire-selection-summary' \
+  'adlaire-document-library' \
+  'adlaire-folder-tree' \
+  'data-adlaire-folder-toggle' \
+  'adlaire-file-version-card' \
+  'adlaire-document-approval-state' \
+  'adlaire-retention-badge' \
+  'adlaire-download-queue' \
+  'adlaire-access-request-card' \
+  'adlaire-permission-grant-row' \
+  'adlaire-session-list' \
+  'adlaire-device-trust-card' \
+  'adlaire-security-event-row' \
+  'adlaire-policy-exception-panel' \
+  'data-adlaire-policy-exception-toggle' \
   'adlaire-product-card' \
   'adlaire-plan-selector' \
   'adlaire-billing-summary' \
@@ -1100,6 +1170,7 @@ for matrix_term in \
   'Form and data UI' \
   'Advanced Input and Design-System UI' \
   'Workspace Command and Productivity UI' \
+  'Business Operations UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'Representative Subcontracts' \
@@ -1108,6 +1179,7 @@ for matrix_term in \
   'filter input, filter chip, file input' \
   'combobox, multi-select, token input' \
   'tab workspace, dock panel, status bar' \
+  'agenda view, time slot grid, resource calendar' \
   'slash menu, suggestion card, save banner' \
   'command, document, selection, history' \
   'color, typography, spacing, layout' \

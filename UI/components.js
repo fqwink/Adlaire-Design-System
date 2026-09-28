@@ -252,6 +252,11 @@
     var splitToggle = event.target.closest("[data-adlaire-split-button-toggle]");
     var overflowToggle = event.target.closest("[data-adlaire-overflow-toggle]");
     var dockToggle = event.target.closest("[data-adlaire-dock-toggle]");
+    var timeSlot = event.target.closest("[data-adlaire-time-slot]");
+    var floorSelect = event.target.closest("[data-adlaire-floor-select]");
+    var optionSelect = event.target.closest("[data-adlaire-option-select]");
+    var folderToggle = event.target.closest("[data-adlaire-folder-toggle]");
+    var policyExceptionToggle = event.target.closest("[data-adlaire-policy-exception-toggle]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -318,6 +323,31 @@
     if (dockToggle) {
       event.preventDefault();
       toggleDockPanel(dockToggle);
+    }
+
+    if (timeSlot) {
+      event.preventDefault();
+      selectInteractiveChoice(timeSlot, ".adlaire-time-slot-grid", "[data-adlaire-time-slot]", "aria-selected");
+    }
+
+    if (floorSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(floorSelect, ".adlaire-floor-selector", "[data-adlaire-floor-select]", "aria-pressed");
+    }
+
+    if (optionSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(optionSelect, "[data-adlaire-option-group]", "[data-adlaire-option-select]", "aria-selected");
+    }
+
+    if (folderToggle) {
+      event.preventDefault();
+      toggleFolderBranch(folderToggle);
+    }
+
+    if (policyExceptionToggle) {
+      event.preventDefault();
+      toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
     }
   });
 
@@ -424,6 +454,32 @@
     panel.classList.toggle("is-collapsed", collapsed);
     trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
     trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+  }
+
+  function selectInteractiveChoice(trigger, rootSelector, itemSelector, selectedAttribute) {
+    var root = trigger.closest(rootSelector);
+    if (!root) {
+      return;
+    }
+
+    root.querySelectorAll(itemSelector).forEach(function (item) {
+      var selected = item === trigger;
+      item.setAttribute(selectedAttribute, selected ? "true" : "false");
+      item.classList.toggle("is-selected", selected);
+    });
+  }
+
+  function toggleFolderBranch(trigger) {
+    var item = trigger.closest(".adlaire-folder-item");
+    var branch = queryReferencedTarget(trigger, "data-adlaire-folder-toggle") || (item ? item.querySelector(".adlaire-folder-branch") : null);
+    if (!branch) {
+      return;
+    }
+
+    var expanded = trigger.getAttribute("aria-expanded") !== "true";
+    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    branch.hidden = !expanded;
+    branch.classList.toggle("is-open", expanded);
   }
 
   document.addEventListener("input", function (event) {
