@@ -42,15 +42,34 @@
 
   document.addEventListener("input", function (event) {
     var input = event.target.closest("[data-adlaire-filter-input]");
+    var comboboxInput = event.target.closest("[data-adlaire-combobox-input]");
     var root = input ? input.closest("[data-adlaire-filter]") : null;
     if (root) {
       applyFilter(root);
     }
+    if (comboboxInput) {
+      applyCombobox(comboboxInput);
+    }
   });
 
   document.addEventListener("click", function (event) {
+    var option = event.target.closest("[data-adlaire-combobox-option]");
+    var multiOption = event.target.closest("[data-adlaire-multi-select-option]");
+    var preset = event.target.closest("[data-adlaire-date-preset]");
     var chip = event.target.closest("[data-adlaire-filter-chip]");
     var root = chip ? chip.closest("[data-adlaire-filter]") : null;
+    if (option) {
+      selectComboboxOption(option);
+      return;
+    }
+    if (multiOption) {
+      toggleMultiSelectOption(multiOption);
+      return;
+    }
+    if (preset) {
+      applyDatePreset(preset);
+      return;
+    }
     if (!root) {
       return;
     }
@@ -121,5 +140,97 @@
     var label = field.closest("label");
     var labelText = label && label.textContent ? label.textContent.replace(field.value, "").trim() : "";
     return labelText || field.getAttribute("aria-label") || field.name || "Field";
+  }
+
+  function applyCombobox(input) {
+    var root = input.closest("[data-adlaire-combobox]");
+    var list = root ? root.querySelector("[role='listbox'], .adlaire-combobox-listbox") : null;
+    if (!root || !list) {
+      return;
+    }
+
+    var query = normalize(input.value);
+    var visibleCount = 0;
+    root.querySelectorAll("[data-adlaire-combobox-option]").forEach(function (option) {
+      var visible = !query || normalize(option.textContent).indexOf(query) !== -1;
+      option.hidden = !visible;
+      if (visible) {
+        visibleCount += 1;
+      }
+    });
+    list.hidden = visibleCount === 0;
+    input.setAttribute("aria-expanded", visibleCount > 0 ? "true" : "false");
+  }
+
+  function selectComboboxOption(option) {
+    var root = option.closest("[data-adlaire-combobox]");
+    var input = root ? root.querySelector("[data-adlaire-combobox-input]") : null;
+    var list = root ? root.querySelector("[role='listbox'], .adlaire-combobox-listbox") : null;
+    if (!root || !input) {
+      return;
+    }
+
+    var value = option.getAttribute("data-adlaire-combobox-option") || option.textContent.trim() || "";
+    input.value = value;
+    input.setAttribute("aria-expanded", "false");
+    root.querySelectorAll("[data-adlaire-combobox-option]").forEach(function (item) {
+      item.setAttribute("aria-selected", item === option ? "true" : "false");
+    });
+    if (list) {
+      list.hidden = true;
+    }
+  }
+
+  function toggleMultiSelectOption(option) {
+    var root = option.closest("[data-adlaire-multi-select]");
+    if (!root) {
+      return;
+    }
+
+    var selected = option.getAttribute("aria-selected") !== "true";
+    option.setAttribute("aria-selected", selected ? "true" : "false");
+    updateMultiSelectOutput(root);
+  }
+
+  function updateMultiSelectOutput(root) {
+    var selector = root.getAttribute("data-adlaire-multi-select-output");
+    var output = selector ? document.querySelector(selector) : null;
+    if (!output) {
+      return;
+    }
+
+    var selected = Array.prototype.map.call(root.querySelectorAll("[data-adlaire-multi-select-option][aria-selected='true']"), function (item) {
+      return item.getAttribute("data-adlaire-multi-select-option") || item.textContent.trim() || "";
+    }).filter(function (value) {
+      return value !== "";
+    });
+    output.textContent = selected.length > 0 ? selected.join(", ") : root.getAttribute("data-adlaire-multi-select-empty") || "No options selected";
+  }
+
+  function applyDatePreset(preset) {
+    var root = preset.closest("[data-adlaire-date-picker]");
+    if (!root) {
+      return;
+    }
+
+    root.querySelectorAll("[data-adlaire-date-preset]").forEach(function (item) {
+      item.setAttribute("aria-pressed", item === preset ? "true" : "false");
+    });
+    setInputValue(root, preset.getAttribute("data-adlaire-date-start"), preset.getAttribute("data-adlaire-date-start-value"));
+    setInputValue(root, preset.getAttribute("data-adlaire-date-end"), preset.getAttribute("data-adlaire-date-end-value"));
+  }
+
+  function setInputValue(root, selector, value) {
+    if (!selector || value === null) {
+      return;
+    }
+    try {
+      var input = root.querySelector(selector);
+      if (input) {
+        input.value = value;
+      }
+    } catch (error) {
+      return;
+    }
   }
 }());

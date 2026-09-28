@@ -38,12 +38,16 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | State UI | badge, chip, status pill, status dot, empty/error/loading states | 実装済み |
 | Content UI | notes, alerts, tables, FAQ, code, markdown-like surfaces | 実装済み |
 | Form UI | input groups, composite inputs, date/time/period inputs, validation UI | 実装済み |
+| Advanced Input UI | combobox, multi-select, token input, date picker, calendar, date presets | 実装済み |
 | Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
 | Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
 | Icon UI | icon button, icon button group, icon tile, icon list, icon picker, avatar group | 実装済み |
 | Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, backdrop | 実装済み |
+| Mobile Overlay UI | bottom sheet | 実装済み |
 | Interaction Readiness UI | toast viewport, progress, skeleton, data table state, bulk feedback | 実装済み |
 | Data UI | KPI, metrics, charts, comparison, timeline, stat strip, key-value list, resource card, pricing card, permission matrix | 実装済み |
+| Advanced Data / Structure UI | tree view, data grid, column manager, saved views, property inspector | 実装済み |
+| Design System Operations UI | token swatch, component preview, state matrix, anatomy panel, accessibility checklist, keyboard map | 実装済み |
 | Activity UI | notification list, activity feed, shortcut key, empty action | 実装済み |
 | Operational UI | status timeline, monitoring card, deployment card, release notes, query result, team card, organization switcher, approval flow, review checklist, responsive preview | 実装済み |
 | Application UI | app navigation, sidebar section, command launcher, inbox list, message thread, file card, upload queue, agent card, workspace switcher, audit log | 実装済み |
@@ -96,6 +100,11 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-filter`
 - `.adlaire-input-group`
 - `.adlaire-date-range`
+- `.adlaire-combobox`
+- `.adlaire-multi-select`
+- `.adlaire-token-input`
+- `.adlaire-date-picker`
+- `.adlaire-calendar`
 - `.adlaire-file-picker`
 - `.adlaire-dropzone`
 - `.adlaire-toggle`
@@ -103,6 +112,17 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-validation-message`
 - `.adlaire-pagination`
 - `.adlaire-command-palette`
+- `.adlaire-tree-view`
+- `.adlaire-data-grid`
+- `.adlaire-column-manager`
+- `.adlaire-saved-view-bar`
+- `.adlaire-property-inspector`
+- `.adlaire-token-swatch`
+- `.adlaire-component-preview`
+- `.adlaire-component-state-matrix`
+- `.adlaire-anatomy-panel`
+- `.adlaire-a11y-checklist`
+- `.adlaire-keyboard-map`
 - `.adlaire-icon-button`
 - `.adlaire-icon-button-group`
 - `.adlaire-icon-tile`
@@ -255,6 +275,7 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-release-highlight`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
+- `.adlaire-bottom-sheet`
 - `.adlaire-popover`
 - `.adlaire-tooltip`
 - `.adlaire-toast`

@@ -4,8 +4,8 @@
   "use strict";
 
   let lastFocus: HTMLElement | null = null;
-  const overlaySelector = ".adlaire-modal, .adlaire-dialog, .adlaire-drawer";
-  const openOverlaySelector = ".adlaire-modal.is-open, .adlaire-dialog.is-open, .adlaire-drawer.is-open";
+  const overlaySelector = ".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet";
+  const openOverlaySelector = ".adlaire-modal.is-open, .adlaire-dialog.is-open, .adlaire-drawer.is-open, .adlaire-bottom-sheet.is-open";
 
   function targetElement(target: EventTarget | null): Element | null {
     return target instanceof Element ? target : null;
@@ -76,7 +76,7 @@
     if (carouselIndicator?.hasAttribute("data-adlaire-carousel")) carouselIndicator = null;
 
     if (dismiss) {
-      const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
+      const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
       if (dismissTarget) {
         dismissTarget.hidden = true;
         dismissTarget.classList.remove("is-open");
@@ -181,6 +181,7 @@
     const toastDismiss = source?.closest("[data-adlaire-toast-dismiss]");
     const select = source?.closest("[data-adlaire-select]");
     const sidebarToggle = source?.closest("[data-adlaire-sidebar-toggle]");
+    const treeToggle = source?.closest("[data-adlaire-tree-toggle]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -211,6 +212,11 @@
       event.preventDefault();
       toggleSidebar(sidebarToggle);
     }
+
+    if (treeToggle) {
+      event.preventDefault();
+      toggleTree(treeToggle);
+    }
   });
 
   function toggleSidebar(trigger: Element): void {
@@ -233,6 +239,32 @@
     } catch {
       return null;
     }
+  }
+
+  function toggleTree(trigger: Element): void {
+    const selector = trigger.getAttribute("data-adlaire-tree-toggle") ?? trigger.getAttribute("aria-controls");
+    const branch = queryTreeBranch(selector, trigger);
+    if (!branch) return;
+
+    const expanded = trigger.getAttribute("aria-expanded") !== "true";
+    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    branch.hidden = !expanded;
+    branch.classList.toggle("is-open", expanded);
+  }
+
+  function queryTreeBranch(selector: string | null, trigger: Element): HTMLElement | null {
+    if (selector) {
+      const normalized = selector.startsWith("#") ? selector.slice(1) : selector;
+      const byId = document.getElementById(normalized);
+      if (byId) return byId;
+      try {
+        const queried = document.querySelector<HTMLElement>(selector);
+        if (queried) return queried;
+      } catch {
+        return null;
+      }
+    }
+    return trigger.closest(".adlaire-tree-item")?.querySelector<HTMLElement>(".adlaire-tree-branch") ?? null;
   }
 
   document.addEventListener("input", (event) => {

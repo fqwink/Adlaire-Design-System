@@ -18,7 +18,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 | Path | Role |
 | --- | --- |
-| `Docs/Generic_Component_Catalog` | Generic public UI, content UI, form UI, layout UI, Git Provider UI. |
+| `Docs/Generic_Component_Catalog` | Generic public UI, content UI, form UI, advanced input UI, design-system operations UI, layout UI, Git Provider UI. |
 | `Docs/Admin_UI_Catalog` | Admin-only UI. |
 | `Docs/WYSIWYG_Editor_UI_Catalog` | WYSIWYG Editor UI. |
 | `Docs/Icon_Set_Catalog` | Official icon set governance. |
@@ -44,7 +44,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `Brand/` | Brand assets. |
 | `Brand/README.md` | Brand asset rules. |
 | `Samples/README.md` | Sample rules and coverage. |
-| `Samples/design/` | Generic UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, official 1520 SVG icons, Tokens, Brand, and sample-only state toggles. |
+| `Samples/design/` | Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, official 1520 SVG icons, Tokens, Brand, and sample-only state toggles. |
 | `Samples/*.png`, `Samples/*.webp` | Supporting screenshots. |
 
 ## Checks
@@ -63,3 +63,4 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | Release branch audit | The release check reports local and `backup/*` remote-tracking branches already contained in `backup/main`; additional cleanup requires an explicit scope. |
 | Layout System v2 | Meaningful layout contracts are documented in `Docs/Master_Spec`, listed in `Docs/Generic_Component_Catalog`, implemented in `TypeScript/CSS/rules-grid.ts` and `TypeScript/CSS/rules-layout.ts`, and generated to `UI/grid.css` and `UI/layout.css`. |
 | Interaction readiness | Dialog, drawer, popover, toast, progress, skeleton, data state, bulk feedback, stepper, and filter builder classes remain catalog-listed and check-covered. |
+| Advanced Input and Design-System UI | Combobox, multi-select, date picker, tree view, data grid, property inspector, token swatch, component preview, and bottom sheet classes are catalog-listed, generated from TypeScript source, sample-covered, and check-covered. |
