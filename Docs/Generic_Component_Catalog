@@ -51,6 +51,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Commerce UI | commerce cart, checkout summary, order card, order timeline, product grid, SKU list, inventory panel, price rules, coupon list, marketplace listing, seller card, review summary, shipping tracker, return request, dispute panel | 実装済み |
 | Data / AI Operations UI | dataset card, schema table, query console, pipeline board, job run card, run queue, worker pool, model card, prompt panel, eval summary, score breakdown, vector index, guardrail panel, drift monitor, anomaly list, data access panel | 実装済み |
 | Collaboration / Review UI | collaborator list, presence stack, review request card, review decision, change request list, comment thread, annotation card, suggestion panel, version history, diff summary, task board, checklist panel, notification digest, escalation banner, meeting notes, signoff panel | 実装済み |
+| Workflow / Governance UI | workflow runner, automation rule card, trigger list, condition builder, action chain, schedule panel, policy card, compliance checklist, evidence locker, approval route, access review panel, risk banner, audit event stream, retention policy panel, incident summary, control status grid | 実装済み |
 | Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -201,6 +202,22 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-escalation-banner`
 - `.adlaire-meeting-notes`
 - `.adlaire-signoff-panel`
+- `.adlaire-workflow-runner`
+- `.adlaire-automation-rule-card`
+- `.adlaire-trigger-list`
+- `.adlaire-condition-builder`
+- `.adlaire-action-chain`
+- `.adlaire-schedule-panel`
+- `.adlaire-policy-card`
+- `.adlaire-compliance-checklist`
+- `.adlaire-evidence-locker`
+- `.adlaire-approval-route`
+- `.adlaire-access-review-panel`
+- `.adlaire-risk-banner`
+- `.adlaire-audit-event-stream`
+- `.adlaire-retention-policy-panel`
+- `.adlaire-incident-summary`
+- `.adlaire-control-status-grid`
 - `.adlaire-dialog`
 - `.adlaire-drawer`
 - `.adlaire-popover`
