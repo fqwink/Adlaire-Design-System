@@ -481,6 +481,49 @@ if grep -R -n -E 'from "\.\./|from "\./CSS|from "\./UI|from "\./EditorUI' "$ROOT
   fail "Editor runtime boundary" "TypeScript/Editor modules must stay inside the editor runtime boundary."
 fi
 
+ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+expected_files = %w[
+  TypeScript/Editor/commands.ts
+  TypeScript/Editor/core.ts
+  TypeScript/Editor/document.ts
+  TypeScript/Editor/events.ts
+  TypeScript/Editor/history.ts
+  TypeScript/Editor/index.ts
+  TypeScript/Editor/selection.ts
+  TypeScript/Editor/types.ts
+  TypeScript/Editor/validation.ts
+].sort
+actual_files = Dir.chdir(root) { Dir.glob("TypeScript/Editor/*.ts").sort }
+unless actual_files == expected_files
+  delta = ((expected_files - actual_files) + (actual_files - expected_files)).join(", ")
+  abort("[Editor runtime structural check] TypeScript/Editor file set mismatch: #{delta}")
+end
+
+exports = {
+  "TypeScript/Editor/commands.ts" => ["export function applyCommand"],
+  "TypeScript/Editor/core.ts" => ["export class HeadlessEditorController", "export function createEditor"],
+  "TypeScript/Editor/document.ts" => ["export class ToolRegistry", "export class BlockRegistry", "function handlePaste", "export function normalizeDocument"],
+  "TypeScript/Editor/events.ts" => ["export class EventBus", "export function editorError"],
+  "TypeScript/Editor/history.ts" => ["export class History"],
+  "TypeScript/Editor/selection.ts" => ["export function normalizeSelection", "export function sameSelection"],
+  "TypeScript/Editor/types.ts" => ["export interface EditorDocument", "export interface EditorController"],
+  "TypeScript/Editor/validation.ts" => ["export function validateDocument", "export async function validateDocumentAsync"],
+}
+
+exports.each do |file, markers|
+  text = File.read(File.join(root, file))
+  markers.each do |marker|
+    abort("[Editor runtime structural check] missing #{marker} in #{file}") unless text.include?(marker)
+  end
+end
+
+index_text = File.read(File.join(root, "TypeScript/Editor/index.ts"))
+%w[commands core document events history selection types validation].each do |name|
+  abort("[Editor runtime structural check] index.ts must re-export #{name}.ts") unless index_text.include?(%Q(export * from "./#{name}.ts"))
+end
+RUBY
+
 for sample_class in \
   'adlaire-workbench-layout' \
   'adlaire-mobile-stack' \

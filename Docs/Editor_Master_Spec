@@ -81,4 +81,4 @@ Concrete class coverage is maintained in `Docs/WYSIWYG_Editor_UI_Catalog`.
 
 ## Checks
 
-The repository check verifies required files, generated outputs, catalog governance terms, editor runtime exports, module boundaries, and forbidden dependency patterns.
+The repository check verifies required files, generated outputs, catalog governance terms, editor runtime exports, structural runtime file/API markers, module boundaries, and forbidden dependency patterns.
