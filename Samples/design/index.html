@@ -1057,6 +1057,96 @@
       </div>
     </section>
 
+    <section class="sample-section" aria-labelledby="industry-operations-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Industry Operations UI</p>
+        <h2 id="industry-operations-title">物流、製造、医療、教育、法務の業種別部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-component-preview" aria-label="Logistics sample">
+          <h3>Logistics</h3>
+          <div class="adlaire-shipment-tracker" aria-label="Shipment tracker">
+            <span class="adlaire-shipment-step" aria-current="step"><strong>Picked</strong><span>today</span></span>
+            <span class="adlaire-shipment-step"><strong>In transit</strong><span>next</span></span>
+          </div>
+          <article class="adlaire-warehouse-bin-card"><strong>Bin A-12</strong><span>24 units reserved</span></article>
+          <div class="adlaire-inventory-movement-row"><span>Inventory movement</span><strong>+120</strong></div>
+          <article class="adlaire-carrier-handoff-card"><strong>Carrier handoff</strong><span>Gate 4, 15:20</span></article>
+          <div class="adlaire-delivery-route-board" role="listbox" aria-label="Delivery route board">
+            <button class="adlaire-delivery-route-item" type="button" role="option" aria-selected="true" data-adlaire-route-select><span>Route A</span><strong>on time</strong></button>
+            <button class="adlaire-delivery-route-item" type="button" role="option" aria-selected="false" data-adlaire-route-select><span>Route B</span><strong>watch</strong></button>
+          </div>
+          <div class="adlaire-exception-queue" aria-label="Exception queue">
+            <div class="adlaire-exception-queue-item" data-state="blocked"><span>Missing scan</span><strong>blocked</strong></div>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Manufacturing sample">
+          <h3>Manufacturing</h3>
+          <article class="adlaire-production-order-card"><strong>Production order</strong><span>PO-842 ready for line 2</span></article>
+          <article class="adlaire-work-cell-status"><strong>Work cell</strong><span>Cell 4 running</span><span class="adlaire-status-pill">active</span></article>
+          <div class="adlaire-quality-inspection-panel" aria-label="Quality inspection panel">
+            <div class="adlaire-defect-report-row" data-severity="high"><span>Scratch defect</span><strong>high</strong></div>
+            <div class="adlaire-defect-report-row"><span>Packaging check</span><strong>pass</strong></div>
+          </div>
+          <article class="adlaire-batch-trace-card"><strong>Batch trace</strong><span>Lot B-204 linked to supplier record</span></article>
+          <div class="adlaire-downtime-reason-list" aria-label="Downtime reason list">
+            <div class="adlaire-downtime-reason-item"><span>Material wait</span><strong>18 min</strong></div>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Healthcare sample">
+          <h3>Care operations</h3>
+          <article class="adlaire-patient-summary-card"><strong>Patient summary</strong><span>Follow-up visit, stable</span></article>
+          <div class="adlaire-appointment-queue" aria-label="Appointment queue">
+            <div class="adlaire-appointment-queue-item"><span>09:30</span><strong>Check-in</strong></div>
+            <div class="adlaire-appointment-queue-item"><span>10:00</span><strong>Consult</strong></div>
+          </div>
+          <div class="adlaire-care-plan-checklist" aria-label="Care plan checklist">
+            <button class="adlaire-care-plan-checklist-item" type="button" role="checkbox" aria-checked="true" data-adlaire-care-plan-check><span>Vitals reviewed</span><strong>done</strong></button>
+            <button class="adlaire-care-plan-checklist-item" type="button" role="checkbox" aria-checked="false" data-adlaire-care-plan-check><span>Discharge note</span><strong>open</strong></button>
+          </div>
+          <div class="adlaire-medication-schedule" aria-label="Medication schedule">
+            <div class="adlaire-medication-schedule-item"><span>Morning dose</span><strong>08:00</strong></div>
+          </div>
+          <article class="adlaire-triage-status-panel" data-state="urgent"><strong>Triage</strong><span>Review within 15 minutes</span></article>
+          <div class="adlaire-consent-record-row" data-state="signed"><span>Consent record</span><strong>signed</strong></div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Education sample">
+          <h3>Learning</h3>
+          <article class="adlaire-course-card"><strong>Course</strong><span>Design operations foundation</span></article>
+          <article class="adlaire-lesson-progress"><strong>Lesson progress</strong><span>7 of 10 completed</span></article>
+          <div class="adlaire-assignment-queue" aria-label="Assignment queue">
+            <div class="adlaire-assignment-queue-item"><span>Portfolio review</span><strong>due Fri</strong></div>
+          </div>
+          <div class="adlaire-grading-rubric" aria-label="Grading rubric">
+            <div class="adlaire-grading-rubric-row"><span>Clarity</span><strong>4</strong></div>
+            <div class="adlaire-grading-rubric-row"><span>Evidence</span><strong>5</strong></div>
+          </div>
+          <article class="adlaire-learner-profile"><strong>Learner profile</strong><span>Mika, cohort A</span></article>
+          <article class="adlaire-certification-tracker" data-state="complete"><strong>Certification</strong><span>Completed</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Legal sample">
+          <h3>Legal</h3>
+          <article class="adlaire-case-file-card"><strong>Case file</strong><span>Matter A-204</span><span class="adlaire-review-privilege-badge">privileged</span></article>
+          <div class="adlaire-matter-timeline" aria-label="Matter timeline">
+            <div class="adlaire-matter-timeline-item"><span>Intake</span><strong>done</strong></div>
+            <div class="adlaire-matter-timeline-item"><span>Review</span><strong>active</strong></div>
+          </div>
+          <div class="adlaire-evidence-list" role="listbox" aria-label="Evidence list">
+            <button class="adlaire-evidence-list-item" type="button" role="option" aria-selected="true" data-adlaire-evidence-select><span>Contract.pdf</span><strong>primary</strong></button>
+            <button class="adlaire-evidence-list-item" type="button" role="option" aria-selected="false" data-adlaire-evidence-select><span>Email thread</span><strong>support</strong></button>
+          </div>
+          <article class="adlaire-filing-deadline-tracker" data-state="due"><strong>Filing deadline</strong><span>Due in 3 days</span></article>
+          <div class="adlaire-counsel-task-list" aria-label="Counsel task list">
+            <div class="adlaire-counsel-task-item"><span>Privilege review</span><strong>today</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="sample-section" aria-labelledby="icon-title">
       <div class="sample-section-heading">
         <p class="sample-kicker">Icons</p>

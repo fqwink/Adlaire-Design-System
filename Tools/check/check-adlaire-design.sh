@@ -491,6 +491,36 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-license-assignment-card' \
   'Docs/Generic_Component_Catalog|.adlaire-maintenance-window-card' \
   'Docs/Generic_Component_Catalog|.adlaire-postmortem-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-shipment-tracker' \
+  'Docs/Generic_Component_Catalog|.adlaire-warehouse-bin-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-inventory-movement-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-carrier-handoff-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-delivery-route-board' \
+  'Docs/Generic_Component_Catalog|.adlaire-exception-queue' \
+  'Docs/Generic_Component_Catalog|.adlaire-production-order-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-work-cell-status' \
+  'Docs/Generic_Component_Catalog|.adlaire-quality-inspection-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-defect-report-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-batch-trace-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-downtime-reason-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-patient-summary-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-appointment-queue' \
+  'Docs/Generic_Component_Catalog|.adlaire-care-plan-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-medication-schedule' \
+  'Docs/Generic_Component_Catalog|.adlaire-triage-status-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-consent-record-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-course-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-lesson-progress' \
+  'Docs/Generic_Component_Catalog|.adlaire-assignment-queue' \
+  'Docs/Generic_Component_Catalog|.adlaire-grading-rubric' \
+  'Docs/Generic_Component_Catalog|.adlaire-learner-profile' \
+  'Docs/Generic_Component_Catalog|.adlaire-certification-tracker' \
+  'Docs/Generic_Component_Catalog|.adlaire-case-file-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-matter-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-evidence-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-filing-deadline-tracker' \
+  'Docs/Generic_Component_Catalog|.adlaire-review-privilege-badge' \
+  'Docs/Generic_Component_Catalog|.adlaire-counsel-task-list' \
   'Docs/Generic_Component_Catalog|.adlaire-product-card' \
   'Docs/Generic_Component_Catalog|.adlaire-plan-selector' \
   'Docs/Generic_Component_Catalog|.adlaire-billing-summary' \
@@ -736,6 +766,9 @@ for js_hook in \
   'data-adlaire-confidence-select' \
   'data-adlaire-milestone-select' \
   'data-adlaire-attestation-toggle' \
+  'data-adlaire-route-select' \
+  'data-adlaire-care-plan-check' \
+  'data-adlaire-evidence-select' \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
   'adlaire-bottom-sheet.is-open' \
@@ -1123,6 +1156,39 @@ for sample_class in \
   'adlaire-license-assignment-card' \
   'adlaire-maintenance-window-card' \
   'adlaire-postmortem-summary' \
+  'adlaire-shipment-tracker' \
+  'adlaire-warehouse-bin-card' \
+  'adlaire-inventory-movement-row' \
+  'adlaire-carrier-handoff-card' \
+  'adlaire-delivery-route-board' \
+  'data-adlaire-route-select' \
+  'adlaire-exception-queue' \
+  'adlaire-production-order-card' \
+  'adlaire-work-cell-status' \
+  'adlaire-quality-inspection-panel' \
+  'adlaire-defect-report-row' \
+  'adlaire-batch-trace-card' \
+  'adlaire-downtime-reason-list' \
+  'adlaire-patient-summary-card' \
+  'adlaire-appointment-queue' \
+  'adlaire-care-plan-checklist' \
+  'data-adlaire-care-plan-check' \
+  'adlaire-medication-schedule' \
+  'adlaire-triage-status-panel' \
+  'adlaire-consent-record-row' \
+  'adlaire-course-card' \
+  'adlaire-lesson-progress' \
+  'adlaire-assignment-queue' \
+  'adlaire-grading-rubric' \
+  'adlaire-learner-profile' \
+  'adlaire-certification-tracker' \
+  'adlaire-case-file-card' \
+  'adlaire-matter-timeline' \
+  'adlaire-evidence-list' \
+  'data-adlaire-evidence-select' \
+  'adlaire-filing-deadline-tracker' \
+  'adlaire-review-privilege-badge' \
+  'adlaire-counsel-task-list' \
   'adlaire-product-card' \
   'adlaire-plan-selector' \
   'adlaire-billing-summary' \
@@ -1307,6 +1373,7 @@ for matrix_term in \
   'Business Operations UI' \
   'Enterprise Domain UI' \
   'Strategic Operations UI' \
+  'Industry Operations UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'Representative Subcontracts' \
@@ -1318,6 +1385,7 @@ for matrix_term in \
   'agenda view, time slot grid, resource calendar' \
   'budget panel, expense card, purchase request' \
   'objective card, key result tracker, initiative map' \
+  'shipment tracker, warehouse bin card, inventory movement row' \
   'slash menu, suggestion card, save banner' \
   'command, document, selection, history' \
   'color, typography, spacing, layout' \
