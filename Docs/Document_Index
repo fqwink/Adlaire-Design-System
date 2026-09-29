@@ -33,6 +33,8 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `EditorUI/` | Generated WYSIWYG Editor UI CSS and JavaScript, plus editor runtime output. |
 | `TypeScript/CSS/` | CSS generation source. |
 | `TypeScript/UI/` | Public UI JavaScript source. |
+| `TypeScript/UI/component-contracts.ts` | Representative UI component contract metadata used to review synchronized catalog, per-contract generated CSS/JavaScript targets, JavaScript hook, ARIA, state, icon, sample section, responsive mode, review surface, review tier, and check coverage gaps. |
+| `TypeScript/UI/interaction-contracts.ts` | UI interaction contract metadata used to review declarative hooks, shared interaction primitives, event partitions, generated JavaScript targets, optional sample requirements, audit records, and synchronized state attributes. |
 | `TypeScript/EditorUI/` | WYSIWYG Editor UI JavaScript source. |
 | `TypeScript/Editor/` | Structured editor source. |
 

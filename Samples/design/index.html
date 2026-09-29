@@ -382,6 +382,10 @@
             <div class="adlaire-toast adlaire-toast-success"><span class="adlaire-toast-title">Saved</span><button class="adlaire-toast-dismiss" data-adlaire-toast-dismiss type="button">x</button></div>
             <div class="adlaire-toast adlaire-toast-warning"><span class="adlaire-toast-body">Review required</span><button class="adlaire-toast-dismiss" data-adlaire-toast-dismiss type="button">x</button></div>
           </div>
+          <div class="adlaire-toast-queue" aria-live="polite">
+            <span class="adlaire-focus-sentry" tabindex="0">focus boundary</span>
+            <div class="adlaire-toast"><span class="adlaire-toast-body">Queued notification</span><button class="adlaire-touch-target adlaire-toast-dismiss" data-adlaire-toast-dismiss type="button" aria-label="Dismiss queued notification">x</button></div>
+          </div>
         </div>
       </div>
       <div class="sample-backdrop-preview">
@@ -406,12 +410,16 @@
         <article class="adlaire-layout-region adlaire-mobile-stack">
           <form class="adlaire-filter-builder" data-adlaire-filter aria-label="Data form sample">
             <div class="adlaire-error-summary" data-adlaire-validate-summary hidden aria-live="polite"></div>
-            <div class="adlaire-filter-rule">
-              <label class="adlaire-field">Field<input class="adlaire-form-control" value="State" data-adlaire-validate required></label>
-              <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is" data-adlaire-validate required></label>
-              <label class="adlaire-field">Value<input class="adlaire-form-control" value="Ready" data-adlaire-validate required></label>
+            <div class="adlaire-filter-rule adlaire-form-grid">
+              <label class="adlaire-field">Field <span class="adlaire-required-marker">*</span><input class="adlaire-form-control" value="State" data-adlaire-validate required><span class="adlaire-field-hint">Column name</span></label>
+              <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is" data-adlaire-validate required><span class="adlaire-field-hint">Comparison</span></label>
+              <label class="adlaire-field">Value<span class="adlaire-input-group"><span class="adlaire-input-addon">=</span><input class="adlaire-form-control" value="Ready" data-adlaire-validate required></span></label>
               <button class="adlaire-button adlaire-button-secondary" type="button">Apply</button>
             </div>
+            <ul class="adlaire-validation-list" aria-label="Validation requirements">
+              <li>Required fields must contain a value.</li>
+              <li>Invalid fields are mirrored into the summary.</li>
+            </ul>
             <div class="adlaire-date-range" aria-label="Release period">
               <label class="adlaire-date-input">Start<input class="adlaire-form-control" type="date" value="2026-09-28"></label>
               <span>to</span>
@@ -530,14 +538,20 @@
               <strong>Components</strong>
               <span class="adlaire-status-pill">3 rows</span>
             </div>
+            <div class="adlaire-data-density-toolbar adlaire-density-switcher" aria-label="Data density">
+              <button class="adlaire-button adlaire-button-secondary" type="button" aria-pressed="true" data-adlaire-density-select>Comfortable</button>
+              <button class="adlaire-button adlaire-button-secondary" type="button" aria-pressed="false" data-adlaire-density-select>Compact</button>
+            </div>
             <div class="adlaire-data-grid-scroll">
               <table class="adlaire-data-grid-table">
-                <thead><tr><th>Name</th><th>Family</th><th>State</th></tr></thead>
+                <thead><tr><th class="adlaire-row-selection-cell">Select</th><th>Name <span class="adlaire-column-resize-handle" role="separator" aria-orientation="vertical" tabindex="0"></span></th><th>Family</th><th>State</th></tr></thead>
                 <tbody>
-                  <tr class="adlaire-data-grid-row-selected" aria-selected="true"><td>Combobox</td><td>Forms</td><td>Ready</td></tr>
-                  <tr><td>Tree view</td><td>Structure</td><td>Ready</td></tr>
-                  <tr><td>Bottom sheet</td><td>Overlay</td><td>Ready</td></tr>
+                  <tr class="adlaire-data-grid-row-selected" aria-selected="true"><td class="adlaire-row-selection-cell"><input type="checkbox" checked aria-label="Select Combobox"></td><td>Combobox</td><td>Forms</td><td><span class="adlaire-cell-status" data-state="valid">Ready</span></td></tr>
+                  <tr><td class="adlaire-row-selection-cell"><input type="checkbox" aria-label="Select Tree view"></td><td>Tree view</td><td>Structure</td><td><span class="adlaire-cell-status" data-state="changed">Changed</span></td></tr>
+                  <tr class="adlaire-data-grid-detail-row"><td></td><td colspan="3">Tree view requires keyboard and aria-current coverage.</td></tr>
+                  <tr><td class="adlaire-row-selection-cell"><input type="checkbox" aria-label="Select Bottom sheet"></td><td>Bottom sheet</td><td>Overlay</td><td>Ready</td></tr>
                 </tbody>
+                <tfoot><tr class="adlaire-data-grid-summary-row"><td></td><td>Summary</td><td>3 families</td><td>2 verified</td></tr></tfoot>
               </table>
             </div>
             <div class="adlaire-data-grid-footer">Saved view: Release review</div>
@@ -556,6 +570,19 @@
               <div class="adlaire-property-row"><span class="adlaire-property-name">Density</span><span class="adlaire-property-value">Comfortable</span></div>
               <div class="adlaire-property-row"><span class="adlaire-property-name">State</span><span class="adlaire-property-value">Selected</span></div>
             </div>
+          </div>
+          <div class="adlaire-status-inspector" aria-label="Status inspector">
+            <div class="adlaire-status-inspector-row"><span>Schema</span><strong>valid</strong></div>
+            <div class="adlaire-status-inspector-row"><span>Rows</span><strong>3 changed</strong></div>
+          </div>
+          <div class="adlaire-import-preview-table" aria-label="Import preview table">
+            <table>
+              <thead><tr><th>Column</th><th>Sample</th><th>Status</th></tr></thead>
+              <tbody><tr><td>name</td><td>Combobox</td><td>mapped</td></tr><tr><td>state</td><td>Ready</td><td>verified</td></tr></tbody>
+            </table>
+          </div>
+          <div class="adlaire-empty-recovery-panel" aria-label="Empty recovery panel">
+            <div class="adlaire-empty-recovery-action"><span>No import errors</span><button class="adlaire-button adlaire-button-secondary" type="button">Retry sample</button></div>
           </div>
         </article>
 
@@ -616,6 +643,16 @@
       </div>
       <div class="sample-grid-three">
         <article class="adlaire-tab-workspace" aria-label="Workspace tabs">
+          <nav class="adlaire-workspace-breadcrumb" aria-label="Workspace breadcrumb">
+            <a href="#workspace-command-title">Workspace</a><span>/</span><a href="#workspace-command-title">Design</a><span>/</span><span>Canvas</span>
+          </nav>
+          <div class="adlaire-command-bar" aria-label="Workspace command bar">
+            <span class="adlaire-command-bar-item">Canvas ready</span>
+            <div class="adlaire-command-bar-actions">
+              <button class="adlaire-button adlaire-button-secondary" type="button">Preview</button>
+              <button class="adlaire-button adlaire-button-primary" type="button">Publish</button>
+            </div>
+          </div>
           <div class="adlaire-tab-workspace-list" role="tablist" aria-label="Workspace surfaces">
             <button class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="true" data-adlaire-workspace-tab="#sample-workspace-design">Design</button>
             <button class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-adlaire-workspace-tab="#sample-workspace-review">Review</button>
@@ -641,6 +678,15 @@
               <span>Dock panels keep dense work controls near the canvas.</span>
             </div>
           </section>
+          <div class="adlaire-resizable-panel" data-adlaire-resizable-panel data-adlaire-panel-size="320" data-adlaire-panel-min="180" data-adlaire-panel-max="520" data-adlaire-panel-step="24" aria-label="Resizable panel sample">
+            <section class="adlaire-resizable-panel-pane" aria-label="Navigation pane"><strong>Navigator</strong><span>Layer list</span></section>
+            <div class="adlaire-resize-handle" data-adlaire-resize-handle aria-label="Resize navigator"></div>
+            <section class="adlaire-resizable-panel-pane" aria-label="Canvas pane"><strong>Canvas</strong><span>Keyboard resize ready</span></section>
+          </div>
+          <aside class="adlaire-panel-stack" aria-label="Panel stack">
+            <section class="adlaire-panel-stack-item"><strong>Properties</strong><span>Size, spacing, state</span></section>
+            <section class="adlaire-panel-stack-item"><strong>Comments</strong><span>2 open notes</span></section>
+          </aside>
         </article>
 
         <article class="adlaire-component-preview">
@@ -671,6 +717,15 @@
           <div class="adlaire-quick-action-list" aria-label="Quick actions">
             <button class="adlaire-quick-action-item" type="button"><span>Run checks</span><span>Ready</span></button>
             <button class="adlaire-quick-action-item" type="button"><span>Assign reviewer</span><span>Team</span></button>
+          </div>
+          <div class="adlaire-quick-switcher" aria-label="Quick switcher">
+            <ul class="adlaire-quick-switcher-list">
+              <li class="adlaire-quick-switcher-item"><span>Design</span><kbd class="adlaire-shortcut-key">1</kbd></li>
+              <li class="adlaire-quick-switcher-item"><span>Review</span><kbd class="adlaire-shortcut-key">2</kbd></li>
+            </ul>
+          </div>
+          <div class="adlaire-shortcut-recorder" aria-label="Shortcut recorder">
+            <span class="adlaire-shortcut-recorder-key"><span>Command menu</span><kbd class="adlaire-shortcut-key">Ctrl K</kbd></span>
           </div>
         </article>
 
@@ -2783,7 +2838,7 @@
     </section>
 
     <section class="sample-section sample-grid-two" aria-labelledby="editor-title">
-      <article class="adlaire-wysiwyg">
+      <article class="adlaire-wysiwyg" data-adlaire-wysiwyg-mode="edit">
         <div class="adlaire-wysiwyg-header">
           <div>
             <p class="sample-kicker">Editor UI</p>
@@ -2792,20 +2847,20 @@
           <div class="adlaire-wysiwyg-status">draft</div>
         </div>
         <div class="adlaire-wysiwyg-toolbar">
-          <button class="adlaire-wysiwyg-tool" type="button">B</button>
-          <button class="adlaire-wysiwyg-tool" type="button">I</button>
-          <button class="adlaire-wysiwyg-tool" type="button">H</button>
+          <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="true" data-adlaire-wysiwyg-mode="edit">B</button>
+          <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="false" data-adlaire-wysiwyg-mode="review">I</button>
+          <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="false" data-adlaire-wysiwyg-mode="outline">H</button>
         </div>
         <div class="adlaire-wysiwyg-canvas">
           <div class="adlaire-wysiwyg-inline-toolbar">
             <button class="adlaire-wysiwyg-inline-button adlaire-wysiwyg-inline-active" type="button">Bold</button>
             <button class="adlaire-wysiwyg-inline-button" type="button">Link</button>
           </div>
-          <div class="adlaire-wysiwyg-block adlaire-wysiwyg-block-selected">
+          <div class="adlaire-wysiwyg-block adlaire-wysiwyg-block-selected" role="option" aria-selected="true" tabindex="0" data-adlaire-wysiwyg-select>
             <span class="adlaire-wysiwyg-block-label">Heading</span>
             <div class="adlaire-wysiwyg-block-content">Adlaire-Design sample block</div>
           </div>
-          <div class="adlaire-wysiwyg-block adlaire-wysiwyg-block-error">
+          <div class="adlaire-wysiwyg-block adlaire-wysiwyg-block-error" role="option" aria-selected="false" tabindex="0" data-adlaire-wysiwyg-select>
             <span class="adlaire-wysiwyg-block-label">Error</span>
             <div class="adlaire-wysiwyg-block-content">alt確認などの警告表示枠。</div>
           </div>
@@ -2847,7 +2902,7 @@
         <div class="adlaire-action-row" aria-label="Editor sample state controls">
           <button class="adlaire-wysiwyg-mobile-action" type="button" data-sample-toggle-class="[data-sample-editor-state]|adlaire-wysiwyg-readonly">Toggle readonly</button>
           <button class="adlaire-wysiwyg-mobile-action" type="button" data-sample-toggle-class="[data-sample-editor-state]|adlaire-wysiwyg-locked">Toggle lock</button>
-          <button class="adlaire-wysiwyg-mobile-action" type="button" data-sample-toggle-hidden="[data-sample-a11y-panel]">Toggle a11y</button>
+          <button class="adlaire-wysiwyg-mobile-action" type="button" aria-expanded="true" data-adlaire-wysiwyg-toggle data-adlaire-wysiwyg-target="[data-sample-a11y-panel]">Toggle a11y</button>
           <button class="adlaire-wysiwyg-mobile-action" type="button" data-sample-cycle-text="[data-sample-save-state]|Saved locally|Unsaved changes|Sync complete">Cycle save</button>
         </div>
         <div class="adlaire-wysiwyg-a11y-panel" data-sample-a11y-panel>
@@ -2893,6 +2948,22 @@
             <span class="adlaire-git-alert-status">no unresolved bugs</span>
           </div>
         </article>
+        <article class="adlaire-github-pr-card">
+          <img src="../../Icons/adlaire-icon-content-github-pull-request.svg" alt="">
+          <div><strong>PR readiness</strong><span class="adlaire-github-branch-badge">codex-ui-source-contract-expansion</span></div>
+        </article>
+        <section class="adlaire-github-checks-panel" aria-label="GitHub checks panel">
+          <img src="../../Icons/adlaire-icon-status-github-check-pending.svg" alt="">
+          <div><strong>Checks</strong><span>adlaire-design-check-ok</span></div>
+        </section>
+        <section class="adlaire-github-merge-readiness" aria-label="GitHub merge readiness">
+          <img src="../../Icons/adlaire-icon-status-github-pr-merged.svg" alt="">
+          <div><strong>Merge readiness</strong><span>merge commit only</span></div>
+        </section>
+        <ol class="adlaire-github-commit-timeline" aria-label="GitHub commit timeline">
+          <li class="adlaire-github-commit-item"><span class="adlaire-github-branch-badge">HEAD</span><span>Docs, generated CSS, sample, and checks synchronized</span></li>
+          <li class="adlaire-github-commit-item"><span class="adlaire-github-branch-badge">main</span><span>backup/main parity verified before work</span></li>
+        </ol>
 
         <article class="adlaire-git-diff-viewer">
           <div class="adlaire-git-diff-hunk">@@ Tokens/status.css @@</div>

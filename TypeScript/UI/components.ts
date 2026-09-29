@@ -345,6 +345,10 @@
     };
   }
 
+  function queryInteractionRoot(trigger: Element, rootSelector: string): Element | null {
+    return trigger.closest(rootSelector) ?? trigger.parentElement;
+  }
+
   const interactiveChoiceBindings: readonly InteractiveChoiceBinding[] = [
     choiceBinding("data-adlaire-time-slot", ".adlaire-time-slot-grid", "aria-selected"),
     choiceBinding("data-adlaire-floor-select", ".adlaire-floor-selector", "aria-pressed"),
@@ -613,7 +617,7 @@
   }
 
   function selectInteractiveChoice(trigger: Element, rootSelector: string, itemSelector: string, selectedAttribute: string): void {
-    const root = trigger.closest(rootSelector);
+    const root = queryInteractionRoot(trigger, rootSelector);
     if (!root) return;
 
     safeScopedQueryAll(root, itemSelector).forEach((item) => {
@@ -624,7 +628,7 @@
   }
 
   function selectCurrentStep(trigger: Element, rootSelector: string, itemSelector: string): void {
-    const root = trigger.closest(rootSelector);
+    const root = queryInteractionRoot(trigger, rootSelector);
     if (!root) return;
 
     safeScopedQueryAll(root, itemSelector).forEach((item) => {
@@ -684,6 +688,91 @@
     if (!Number.isFinite(value)) return;
     compare.style.setProperty("--adlaire-preview-compare-position", `${Math.max(0, Math.min(100, value))}%`);
   }
+
+  function numberAttribute(target: Element, attribute: string, fallback: number): number {
+    const raw = target.getAttribute(attribute);
+    if (raw === null) return fallback;
+    const value = Number(raw);
+    return Number.isFinite(value) ? value : fallback;
+  }
+
+  function clamp(value: number, min: number, max: number): number {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function panelSize(root: Element, handle: Element, min: number, max: number): number {
+    const raw = root.getAttribute("data-adlaire-panel-size") ?? handle.getAttribute("aria-valuenow");
+    if (raw === null) return clamp(320, min, max);
+    const value = Number(raw);
+    return Number.isFinite(value) ? clamp(value, min, max) : clamp(320, min, max);
+  }
+
+  function applyResizablePanelSize(root: HTMLElement, handle: HTMLElement, size: number): void {
+    const min = numberAttribute(root, "data-adlaire-panel-min", 180);
+    const max = numberAttribute(root, "data-adlaire-panel-max", 520);
+    const next = Math.round(clamp(size, min, max));
+    root.setAttribute("data-adlaire-panel-size", String(next));
+    root.style.gridTemplateColumns = `minmax(${min}px, ${next}px) 8px minmax(0, 1fr)`;
+    handle.setAttribute("aria-valuemin", String(min));
+    handle.setAttribute("aria-valuemax", String(max));
+    handle.setAttribute("aria-valuenow", String(next));
+  }
+
+  function resizePanelWithKeyboard(root: HTMLElement, handle: HTMLElement, event: KeyboardEvent): void {
+    const min = numberAttribute(root, "data-adlaire-panel-min", 180);
+    const max = numberAttribute(root, "data-adlaire-panel-max", 520);
+    const step = numberAttribute(root, "data-adlaire-panel-step", 24);
+    let next = panelSize(root, handle, min, max);
+    if (event.key === "ArrowLeft") {
+      next -= step;
+    } else if (event.key === "ArrowRight") {
+      next += step;
+    } else if (event.key === "Home") {
+      next = min;
+    } else if (event.key === "End") {
+      next = max;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    applyResizablePanelSize(root, handle, next);
+  }
+
+  function startResizablePanelDrag(root: HTMLElement, handle: HTMLElement, event: PointerEvent): void {
+    if (event.button !== 0) return;
+    const rect = root.getBoundingClientRect();
+    const move = (moveEvent: PointerEvent): void => {
+      applyResizablePanelSize(root, handle, moveEvent.clientX - rect.left);
+    };
+    const stop = (stopEvent: PointerEvent): void => {
+      document.removeEventListener("pointermove", move);
+      try {
+        handle.releasePointerCapture(stopEvent.pointerId);
+      } catch {
+        return;
+      }
+    };
+    event.preventDefault();
+    try {
+      handle.setPointerCapture(event.pointerId);
+    } catch {
+      return;
+    }
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", stop, { once: true });
+    document.addEventListener("pointercancel", stop, { once: true });
+  }
+
+  safeDocumentQueryAll("[data-adlaire-resizable-panel]").forEach((root) => {
+    const handle = safeScopedQuery(root, "[data-adlaire-resize-handle], .adlaire-resize-handle");
+    if (!handle) return;
+    if (!handle.hasAttribute("tabindex")) handle.setAttribute("tabindex", "0");
+    if (!handle.hasAttribute("role")) handle.setAttribute("role", "separator");
+    handle.setAttribute("aria-orientation", "vertical");
+    applyResizablePanelSize(root, handle, panelSize(root, handle, numberAttribute(root, "data-adlaire-panel-min", 180), numberAttribute(root, "data-adlaire-panel-max", 520)));
+    handle.addEventListener("keydown", (event) => resizePanelWithKeyboard(root, handle, event));
+    handle.addEventListener("pointerdown", (event) => startResizablePanelDrag(root, handle, event));
+  });
 
   safeDocumentQueryAll("[data-adlaire-split-pane]").forEach((root) => {
     const handle = safeScopedQuery(root, ".adlaire-pane-resize-handle");

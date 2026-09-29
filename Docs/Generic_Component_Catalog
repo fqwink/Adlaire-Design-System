@@ -42,16 +42,16 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
 | Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
 | Icon UI | icon button, icon button group, icon tile, icon list, icon picker, avatar group | 実装済み |
-| Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, backdrop | 実装済み |
+| Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, toast queue, backdrop, focus sentry, touch target | 実装済み |
 | Mobile Overlay UI | bottom sheet | 実装済み |
 | Interaction Readiness UI | toast viewport, progress, skeleton, data table state, bulk feedback | 実装済み |
 | Data UI | KPI, metrics, charts, comparison, timeline, stat strip, key-value list, resource card, pricing card, permission matrix | 実装済み |
-| Advanced Data / Structure UI | tree view, data grid, column manager, saved views, property inspector | 実装済み |
+| Advanced Data / Structure UI | tree view, data grid, data density toolbar, row selection cell, data grid detail row, data grid summary row, column resize handle, cell status, import preview table, column manager, saved views, property inspector, status inspector, empty recovery panel | 実装済み |
 | Design System Operations UI | token swatch, component preview, state matrix, anatomy panel, accessibility checklist, keyboard map | 実装済み |
 | Activity UI | notification list, activity feed, shortcut key, empty action | 実装済み |
 | Operational UI | status timeline, monitoring card, deployment card, release notes, query result, team card, organization switcher, approval flow, review checklist, responsive preview | 実装済み |
 | Application UI | app navigation, sidebar section, command launcher, inbox list, message thread, file card, upload queue, agent card, workspace switcher, audit log | 実装済み |
-| Workspace / Command UI | tab workspace, dock panel, status bar, panel rail, context menu, split button, overflow toolbar, quick action list | 実装済み |
+| Workspace / Command UI | tab workspace, dock panel, status bar, workspace breadcrumb, command bar, panel stack, panel rail, resizable panel, quick switcher, shortcut recorder, context menu, split button, overflow toolbar, quick action list | 実装済み |
 | Board / Planning UI | kanban board, swimlane, board card, lane summary | 実装済み |
 | Data Visualization UI | sparkline, gauge, heatmap, distribution bar, status meter | 実装済み |
 | Asset / Preview UI | asset browser, thumbnail grid, media metadata panel, preview compare | 実装済み |
@@ -143,7 +143,7 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | Workflow / Governance UI | workflow runner, automation rule card, trigger list, condition builder, action chain, schedule panel, policy card, compliance checklist, evidence locker, approval route, access review panel, risk banner, audit event stream, retention policy panel, incident summary, control status grid | 実装済み |
 | Observability / Diagnostics UI | health overview, service status card, uptime panel, log stream, log event row, trace timeline, span detail, metric threshold card, alert rule card, alert incident list, error rate panel, latency distribution, dependency map, SLO summary, diagnostic run card, remediation panel | 実装済み |
 | Experience / Guidance UI | onboarding flow, onboarding step card, tour callout, guided task list, help center panel, help article card, search result list, search result item, recent item list, recommendation panel, personalization card, preference panel, notification preference list, language selector panel, keyboard shortcut panel, release highlight | 実装済み |
-| Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs, GitHub product cards | 実装済み |
+| Git Provider UI | repository card, PR/Issue, diff, review, CI/CD, settings, mobile tabs, GitHub product cards, GitHub PR card, checks panel, merge readiness, branch badge, commit timeline | 実装済み |
 | Cloud / Infrastructure UI | service card, region, environment, resource grid, topology, runtime, database, storage, queue, worker, domain, certificate, secret, quota, cost | 実装済み |
 | Accessibility UI | skip link, focus ring, landmark label, screen-reader helpers | 実装済み |
 
@@ -180,10 +180,16 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-app-shell`
 - `.adlaire-split-pane`
 - `.adlaire-split-pane-collapsed`
+- `.adlaire-resizable-panel`
+- `.adlaire-resize-handle`
 - `.adlaire-mobile-stack`
 - `.adlaire-mobile-action-bar`
 - `.adlaire-filter`
+- `.adlaire-form-grid`
 - `.adlaire-input-group`
+- `.adlaire-input-addon`
+- `.adlaire-field-hint`
+- `.adlaire-required-marker`
 - `.adlaire-date-range`
 - `.adlaire-combobox`
 - `.adlaire-multi-select`
@@ -195,13 +201,23 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-toggle`
 - `.adlaire-error-summary`
 - `.adlaire-validation-message`
+- `.adlaire-validation-list`
 - `.adlaire-pagination`
 - `.adlaire-command-palette`
 - `.adlaire-tree-view`
 - `.adlaire-data-grid`
+- `.adlaire-data-density-toolbar`
+- `.adlaire-row-selection-cell`
+- `.adlaire-data-grid-detail-row`
+- `.adlaire-data-grid-summary-row`
+- `.adlaire-column-resize-handle`
+- `.adlaire-cell-status`
+- `.adlaire-import-preview-table`
 - `.adlaire-column-manager`
 - `.adlaire-saved-view-bar`
 - `.adlaire-property-inspector`
+- `.adlaire-status-inspector`
+- `.adlaire-empty-recovery-panel`
 - `.adlaire-token-swatch`
 - `.adlaire-component-preview`
 - `.adlaire-component-state-matrix`
@@ -249,7 +265,14 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-tab-workspace`
 - `.adlaire-dock-panel`
 - `.adlaire-status-bar`
+- `.adlaire-workspace-breadcrumb`
+- `.adlaire-command-bar`
+- `.adlaire-command-bar-item`
+- `.adlaire-panel-stack`
+- `.adlaire-panel-stack-item`
 - `.adlaire-panel-rail`
+- `.adlaire-quick-switcher`
+- `.adlaire-shortcut-recorder`
 - `.adlaire-context-menu`
 - `.adlaire-split-button`
 - `.adlaire-overflow-toolbar`
@@ -869,8 +892,11 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-popover`
 - `.adlaire-tooltip`
 - `.adlaire-toast`
+- `.adlaire-toast-queue`
 - `.adlaire-toast-viewport`
 - `.adlaire-backdrop`
+- `.adlaire-focus-sentry`
+- `.adlaire-touch-target`
 - `.adlaire-feedback-stack`
 - `.adlaire-progress`
 - `.adlaire-skeleton`
@@ -901,6 +927,12 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-github-integration-list`
 - `.adlaire-github-webhook-panel`
 - `.adlaire-github-api-key-panel`
+- `.adlaire-github-pr-card`
+- `.adlaire-github-checks-panel`
+- `.adlaire-github-merge-readiness`
+- `.adlaire-github-branch-badge`
+- `.adlaire-github-commit-timeline`
+- `.adlaire-github-commit-item`
 - `.adlaire-cloud-service-card`
 - `.adlaire-cloud-region-card`
 - `.adlaire-cloud-environment-card`

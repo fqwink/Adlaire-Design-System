@@ -155,7 +155,8 @@ export const COMPONENTS_PLATFORM_STATES_CSS = `.adlaire-loading-state,
   font-size: 0.875rem;
 }
 
-.adlaire-toast-stack {
+.adlaire-toast-stack,
+.adlaire-toast-queue {
   position: fixed;
   right: 16px;
   bottom: 16px;
@@ -163,6 +164,12 @@ export const COMPONENTS_PLATFORM_STATES_CSS = `.adlaire-loading-state,
   display: grid;
   width: min(360px, calc(100vw - 32px));
   gap: 10px;
+}
+
+.adlaire-toast-queue {
+  align-content: end;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
 }
 
 .adlaire-toast,

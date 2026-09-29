@@ -175,4 +175,21 @@ export const COMPONENTS_OVERLAY_SURFACES_CSS = `
   outline: 0;
 }
 
+.adlaire-focus-sentry {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.adlaire-touch-target {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
 `;

@@ -22,6 +22,43 @@
   content: " *";
 }
 
+.adlaire-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.adlaire-field-hint {
+  display: block;
+  margin-top: 4px;
+  color: var(--adlaire-surface-text-subtle);
+  font-size: 0.875rem;
+}
+
+.adlaire-required-marker {
+  color: var(--adlaire-semantic-danger-color);
+  font-weight: 800;
+}
+
+.adlaire-input-addon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-status-gray-ddd);
+  color: var(--adlaire-surface-text-subtle);
+  font-weight: 700;
+}
+
+.adlaire-validation-list {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--adlaire-semantic-danger-text);
+}
+
 .adlaire-form-control,
 .form-control {
   display: block;

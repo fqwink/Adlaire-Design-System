@@ -21,6 +21,7 @@
 - 標準採用ライブラリはDeno標準ライブラリ(`jsr:@std/*`)に限定すること。
 - parserなどが必要な場合は、明示的な例外採用ライブラリとして仕様に記録すること。
 - npm互換パッケージ、npm依存、Node.js依存、外部フレームワークは例外なく禁止すること。
+- 開発、ビルド、生成、検査、リリース検査に関する構造化設定ファイルはJSONに統一し、YAML形式(`*.yml`、`*.yaml`)を採用しないこと。
 - WYSIWYG Editor UIはAdlaire-Design採用とする。
 - WYSIWYG Editor UIはAdlaire-Design-Systemの仕様対象として管理すること。
 - Editor本体は、安全な構造化コンテンツ編集基盤としてAdlaire-Designに統合すること。
@@ -45,6 +46,7 @@
 - Node.js依存は完全禁止とし、npm互換パッケージ、npm依存物(`package.json`、`package-lock.json`、`node_modules`)を追加しないこと。
 - 既存トップレベル構造は維持し、追加してよいトップレベルは `TypeScript/` のみとすること。
 - Adlaire-Design-Systemの成果物は、本リポジトリ内で完結して管理すること。
+- 開発・ビルド設定をファイル化する場合はJSONのみを使用し、YAML設定ファイルを追加しないこと。
 - `Tokens/`、`UI/`、`EditorUI/` 配下のCSSファイルはDeno TypeScript正本から生成するCSS生成物へ段階移行し、Sass/SCSS/Less/Stylus/PostCSS等のCSSプリプロセッサを追加しないこと。
 - CSS/JavaScript生成はDeno TypeScriptで行い、CSS minify、CSS bundle、`Dist/`、`dist/`、`Build/`、`build/`、`*.min.css`、`*.bundle.css`、npm/webpack系フロントエンドビルド設定ファイルを追加しないこと。
 - Adlaire-Design-Systemでは、WYSIWYG Editor UIスキン、UI必須クラス、CSS/JavaScript読み込み順、表示境界、Editor UI JavaScript、Editor本体生成物を管理すること。

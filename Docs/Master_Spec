@@ -19,6 +19,8 @@ It is not a React/Vue/Svelte replacement, not a utility-first CSS framework, and
 | Overall source of truth | `Docs/Master_Spec` |
 | Editor-specific source of truth | `Docs/Editor_Master_Spec` |
 | Component synchronization matrix | `Docs/Component_Contract_Matrix` |
+| Representative UI component contract metadata | `TypeScript/UI/component-contracts.ts` |
+| Declarative UI interaction contract metadata | `TypeScript/UI/interaction-contracts.ts` |
 | Catalog sources | `Docs/*_Catalog` |
 | TypeScript implementation source | `TypeScript/` |
 | Generated CSS | `Tokens/`, `UI/`, `EditorUI/wysiwyg.css` |
@@ -48,6 +50,7 @@ Routine post-merge cleanup is scoped to the matching merged branch for the PR ju
 - TypeScript assumes the Deno runtime.
 - Standard adoption libraries are limited to Deno standard libraries when needed.
 - npm compatibility packages, npm dependencies, Node.js dependencies, external frontend frameworks, CSS preprocessors, CSS minification, CSS bundling, `dist/`, `build/`, and `node_modules/` are prohibited.
+- JSON is the only structured file format for development, build, generation, check, and release-check settings; YAML development/build configuration files are prohibited.
 - CSS and JavaScript are managed as separate outputs.
 - Generated outputs are kept in the repository and checked against local rules.
 
@@ -117,6 +120,7 @@ UI JavaScript is generated from Deno TypeScript and kept responsibility-based.
 | `UI/components.js` | `TypeScript/UI/components.ts` | Public UI behavior. |
 | `UI/forms.js` | `TypeScript/UI/forms.ts` | Form behavior. |
 | `UI/content.js` | `TypeScript/UI/content.ts` | Content behavior. |
+| UI interaction contract metadata | `TypeScript/UI/interaction-contracts.ts` | Checked source metadata for declarative UI hooks, shared interaction primitives, generated JavaScript targets, optional sample coverage, and synchronized state attributes; this file is not generated JavaScript output. |
 | `EditorUI/wysiwyg.js` | `TypeScript/EditorUI/wysiwyg.ts` | WYSIWYG Editor UI behavior. |
 | `EditorUI/editor.js` | `TypeScript/Editor/` | Structured editor runtime output. |
 
@@ -135,6 +139,10 @@ All catalogs use the same implementation-state vocabulary: `実装済み`, `策�
 Required Class Families in Generic, Admin, and WYSIWYG catalogs are a check-covered contract. Listed classes must stay present in the catalog and generated CSS together.
 
 `Docs/Component_Contract_Matrix` maps component families to their catalog or specification owner, TypeScript source, generated output, JavaScript hooks, sample coverage, and check coverage.
+
+`TypeScript/UI/component-contracts.ts` records representative high-risk UI component contracts as typed source metadata. It supports review and checks for synchronized catalog classes, per-contract generated CSS/JavaScript targets, JavaScript hooks, ARIA requirements, state attributes, required icons, sample sections, responsive modes, matrix coverage, review surface, review tier, and required coverage gaps across layout, content, admin, data, business, enterprise, strategic, industry, support, communication, publishing, device, travel, civic, energy, quality, agent, developer, theme, cloud, collaboration, product, commerce, observability, workflow, AI, guidance, and WYSIWYG families; it does not replace `Docs/Component_Contract_Matrix`.
+
+`TypeScript/UI/interaction-contracts.ts` records declarative UI interaction contract metadata for checked hooks across public components, forms, content, and WYSIWYG UI. It keeps shared interaction primitives, source files, generated JavaScript files, generated parity targets, optional sample requirements, event partitions, audit records, and state attributes synchronized without becoming a runtime bundle.
 
 ## Layout Direction
 
@@ -224,7 +232,7 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 The release check assumes the local Git consistency baseline, `git fetch backup --prune`, local `main` synchronized with `backup/main`, no stale merged local or `backup/*` remote-tracking branches, matching merged branch cleanup, and no patches outside `backup/main`.
 
-Checks verify required class families, forbidden dependency/build artifacts, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, local Git configuration drift, stale merged branches, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, the JSON development and build configuration baseline, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, sample coverage, local Git configuration drift, stale merged branches, and post-merge release readiness.
 
 Check failures use family-labelled diagnostics so the broken contract area is visible before reading the full failure details.
 

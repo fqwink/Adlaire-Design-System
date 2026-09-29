@@ -96,7 +96,10 @@ export const COMPONENTS_PLATFORM_GITHUB_CSS = `.adlaire-git-repo-list,
 .adlaire-github-project-board-card,
 .adlaire-github-discussion-card,
 .adlaire-github-release-card,
-.adlaire-github-marketplace-card {
+.adlaire-github-marketplace-card,
+.adlaire-github-pr-card,
+.adlaire-github-checks-panel,
+.adlaire-github-merge-readiness {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 12px;
@@ -124,11 +127,44 @@ export const COMPONENTS_PLATFORM_GITHUB_CSS = `.adlaire-git-repo-list,
 .adlaire-github-project-board-card span,
 .adlaire-github-discussion-card span,
 .adlaire-github-release-card span,
-.adlaire-github-marketplace-card span {
+.adlaire-github-marketplace-card span,
+.adlaire-github-pr-card span,
+.adlaire-github-checks-panel span,
+.adlaire-github-merge-readiness span {
   display: block;
   margin-top: 2px;
   color: var(--adlaire-surface-text-subtle);
   font-size: 0.875rem;
+}
+
+.adlaire-github-branch-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  padding: 4px 8px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-round);
+  color: var(--adlaire-surface-accent-strong);
+  font-family: var(--adlaire-font-family-mono);
+  font-size: 0.8125rem;
+}
+
+.adlaire-github-commit-timeline {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-github-commit-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  color: var(--adlaire-surface-text-muted);
 }
 
 .adlaire-github-security-panel,
