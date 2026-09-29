@@ -13,12 +13,16 @@ export function renderCssFile(target: CssTarget): GeneratedCssFile {
   if (css === undefined) {
     throw new Error(`Missing CSS source for ${target.path}`);
   }
-  if (!css.startsWith(`${target.firstLine}\n`) && css !== `${target.firstLine}\n`) {
-    throw new Error(`CSS source for ${target.path} must preserve first line: ${target.firstLine}`);
-  }
+  assertCssFirstLine(target, css);
   return {
     path: target.path,
     css,
     migrated: target.migrated,
   };
+}
+
+function assertCssFirstLine(target: CssTarget, css: string): void {
+  if (!css.startsWith(`${target.firstLine}\n`) && css !== `${target.firstLine}\n`) {
+    throw new Error(`CSS source for ${target.path} must preserve first line: ${target.firstLine}`);
+  }
 }

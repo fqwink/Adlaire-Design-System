@@ -16,6 +16,26 @@
     }
   }
 
+  function safeScopedQueryAll(root: ParentNode | null | undefined, selector: string | null | undefined): HTMLElement[] {
+    if (!root || !selector) return [];
+    try {
+      return Array.from(root.querySelectorAll<HTMLElement>(selector));
+    } catch {
+      return [];
+    }
+  }
+
+  function writeClipboardText(text: string): boolean {
+    const clipboard = navigator.clipboard;
+    if (!clipboard?.writeText) return false;
+    try {
+      void clipboard.writeText(text).catch(() => undefined);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   interface ContentClickBinding {
     readonly selector: string;
     readonly handle: (trigger: Element) => void;
@@ -109,8 +129,7 @@
     const selector = copy.getAttribute("data-adlaire-code-copy");
     const statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     const target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
-    if (target && navigator.clipboard) {
-      navigator.clipboard.writeText(target.textContent ?? "");
+    if (target && writeClipboardText(target.textContent ?? "")) {
       copy.setAttribute("data-adlaire-copied", "true");
       const status = safeDocumentQuery(statusSelector);
       if (status) {
@@ -122,7 +141,7 @@
   function selectCodeLine(line: Element): void {
     const viewer = line.closest(".adlaire-git-code-view");
     if (!viewer) return;
-    viewer.querySelectorAll(".adlaire-git-line-highlight").forEach((item) => item.classList.remove("adlaire-git-line-highlight"));
+    safeScopedQueryAll(viewer, ".adlaire-git-line-highlight").forEach((item) => item.classList.remove("adlaire-git-line-highlight"));
     line.classList.add("adlaire-git-line-highlight");
   }
 })();

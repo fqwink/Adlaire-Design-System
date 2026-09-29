@@ -30,6 +30,17 @@
     }
   }
 
+  function safeScopedQueryAll(root, selector) {
+    if (!root || !selector) {
+      return [];
+    }
+    try {
+      return Array.prototype.slice.call(root.querySelectorAll(selector));
+    } catch (error) {
+      return [];
+    }
+  }
+
   function hookSelector(attribute) {
     return "[" + attribute + "]";
   }
@@ -47,7 +58,7 @@
 
   function setMode(root, mode) {
     root.setAttribute("data-adlaire-wysiwyg-mode", mode);
-    root.querySelectorAll("[data-adlaire-wysiwyg-mode]").forEach(function (trigger) {
+    safeScopedQueryAll(root, "[data-adlaire-wysiwyg-mode]").forEach(function (trigger) {
       setBooleanAttribute(trigger, "aria-pressed", trigger.getAttribute("data-adlaire-wysiwyg-mode") === mode);
     });
   }
@@ -113,7 +124,7 @@
       return;
     }
 
-    root.querySelectorAll(".adlaire-wysiwyg-block-selected, [data-adlaire-wysiwyg-select][aria-selected='true']").forEach(function (item) {
+    safeScopedQueryAll(root, ".adlaire-wysiwyg-block-selected, [data-adlaire-wysiwyg-select][aria-selected='true']").forEach(function (item) {
       item.classList.remove("adlaire-wysiwyg-block-selected");
       setBooleanAttribute(item, "aria-selected", false);
     });

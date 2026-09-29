@@ -29,6 +29,15 @@
     }
   }
 
+  function safeScopedQueryAll(root: ParentNode | null | undefined, selector: string | null | undefined): HTMLElement[] {
+    if (!root || !selector) return [];
+    try {
+      return Array.from(root.querySelectorAll<HTMLElement>(selector));
+    } catch {
+      return [];
+    }
+  }
+
   interface WysiwygClickBinding {
     readonly selector: string;
     readonly handle: (trigger: Element) => void;
@@ -51,7 +60,7 @@
 
   function setMode(root: Element, mode: string): void {
     root.setAttribute("data-adlaire-wysiwyg-mode", mode);
-    root.querySelectorAll("[data-adlaire-wysiwyg-mode]").forEach((trigger) => {
+    safeScopedQueryAll(root, "[data-adlaire-wysiwyg-mode]").forEach((trigger) => {
       setBooleanAttribute(trigger, "aria-pressed", trigger.getAttribute("data-adlaire-wysiwyg-mode") === mode);
     });
   }
@@ -106,7 +115,7 @@
     const root = editorRoot(selectable);
     if (!root) return;
 
-    root.querySelectorAll(".adlaire-wysiwyg-block-selected, [data-adlaire-wysiwyg-select][aria-selected='true']").forEach((item) => {
+    safeScopedQueryAll(root, ".adlaire-wysiwyg-block-selected, [data-adlaire-wysiwyg-select][aria-selected='true']").forEach((item) => {
       item.classList.remove("adlaire-wysiwyg-block-selected");
       setBooleanAttribute(item, "aria-selected", false);
     });

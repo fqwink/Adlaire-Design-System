@@ -42,6 +42,15 @@
     }
   }
 
+  function safeScopedQueryAll<T extends Element = HTMLElement>(root: ParentNode | null | undefined, selector: string | null | undefined): T[] {
+    if (!root || !selector) return [];
+    try {
+      return Array.from(root.querySelectorAll(selector)) as T[];
+    } catch {
+      return [];
+    }
+  }
+
   interface FormInteractionBinding {
     readonly selector: string;
     readonly handle: (trigger: Element) => void;
@@ -75,16 +84,16 @@
   }
 
   function applyFilter(root: Element): void {
-    const queryInput = root.querySelector<HTMLInputElement>("[data-adlaire-filter-input]");
-    const activeChip = root.querySelector("[data-adlaire-filter-chip][aria-pressed='true']");
-    const count = root.querySelector("[data-adlaire-filter-count]");
-    const empty = root.querySelector<HTMLElement>("[data-adlaire-filter-empty]");
+    const queryInput = safeScopedQuery<HTMLInputElement>(root, "[data-adlaire-filter-input]");
+    const activeChip = safeScopedQuery(root, "[data-adlaire-filter-chip][aria-pressed='true']");
+    const count = safeScopedQuery(root, "[data-adlaire-filter-count]");
+    const empty = safeScopedQuery(root, "[data-adlaire-filter-empty]");
     const query = normalize(queryInput?.value ?? "");
     let filter = normalize(activeChip?.getAttribute("data-adlaire-filter-chip") ?? "");
     if (filter === "all") filter = "";
     let visibleCount = 0;
 
-    root.querySelectorAll<HTMLElement>("[data-adlaire-filter-item]").forEach((item) => {
+    safeScopedQueryAll(root, "[data-adlaire-filter-item]").forEach((item) => {
       const text = normalize(item.textContent);
       const group = normalize(item.getAttribute("data-adlaire-filter-item"));
       const groups = group ? group.split(/\s+/) : [];
@@ -157,7 +166,7 @@
     const root = chip.closest("[data-adlaire-filter]");
     if (!root) return;
 
-    root.querySelectorAll("[data-adlaire-filter-chip]").forEach((item) => {
+    safeScopedQueryAll(root, "[data-adlaire-filter-chip]").forEach((item) => {
       setBooleanAttribute(item, "aria-pressed", item === chip);
     });
     applyFilter(root);
@@ -190,10 +199,10 @@
 
   function updateValidationSummary(field: Element): void {
     const form = field.closest("form");
-    const summary = form?.querySelector<HTMLElement>("[data-adlaire-validate-summary]");
+    const summary = safeScopedQuery(form, "[data-adlaire-validate-summary]");
     if (!form || !summary) return;
 
-    const invalidFields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-adlaire-validate]"))
+    const invalidFields = safeScopedQueryAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(form, "[data-adlaire-validate]")
       .filter((item) => item.getAttribute("aria-invalid") === "true");
     setOpenState(summary, invalidFields.length > 0);
     summary.textContent = invalidFields.length === 0
@@ -209,12 +218,12 @@
 
   function applyCombobox(input: HTMLInputElement): void {
     const root = input.closest("[data-adlaire-combobox]");
-    const list = root?.querySelector<HTMLElement>("[role='listbox'], .adlaire-combobox-listbox");
+    const list = safeScopedQuery(root, "[role='listbox'], .adlaire-combobox-listbox");
     if (!root || !list) return;
 
     const query = normalize(input.value);
     let visibleCount = 0;
-    root.querySelectorAll<HTMLElement>("[data-adlaire-combobox-option]").forEach((option) => {
+    safeScopedQueryAll(root, "[data-adlaire-combobox-option]").forEach((option) => {
       const visible = !query || normalize(option.textContent).includes(query);
       option.hidden = !visible;
       if (visible) visibleCount += 1;
@@ -225,14 +234,14 @@
 
   function selectComboboxOption(option: Element): void {
     const root = option.closest("[data-adlaire-combobox]");
-    const input = root?.querySelector<HTMLInputElement>("[data-adlaire-combobox-input]");
-    const list = root?.querySelector<HTMLElement>("[role='listbox'], .adlaire-combobox-listbox");
+    const input = safeScopedQuery<HTMLInputElement>(root, "[data-adlaire-combobox-input]");
+    const list = safeScopedQuery(root, "[role='listbox'], .adlaire-combobox-listbox");
     if (!root || !input) return;
 
     const value = option.getAttribute("data-adlaire-combobox-option") ?? option.textContent?.trim() ?? "";
     input.value = value;
     setBooleanAttribute(input, "aria-expanded", false);
-    root.querySelectorAll("[data-adlaire-combobox-option]").forEach((item) => {
+    safeScopedQueryAll(root, "[data-adlaire-combobox-option]").forEach((item) => {
       setBooleanAttribute(item, "aria-selected", item === option);
     });
     if (list) list.hidden = true;
@@ -252,7 +261,7 @@
     const output = safeDocumentQuery(selector);
     if (!output) return;
 
-    const selected = Array.from(root.querySelectorAll("[data-adlaire-multi-select-option][aria-selected='true']"))
+    const selected = safeScopedQueryAll(root, "[data-adlaire-multi-select-option][aria-selected='true']")
       .map((item) => item.getAttribute("data-adlaire-multi-select-option") ?? item.textContent?.trim() ?? "")
       .filter((value) => value !== "");
     output.textContent = selected.length > 0
@@ -264,7 +273,7 @@
     const root = preset.closest("[data-adlaire-date-picker]");
     if (!root) return;
 
-    root.querySelectorAll("[data-adlaire-date-preset]").forEach((item) => {
+    safeScopedQueryAll(root, "[data-adlaire-date-preset]").forEach((item) => {
       setBooleanAttribute(item, "aria-pressed", item === preset);
     });
     setInputValue(root, preset.getAttribute("data-adlaire-date-start"), preset.getAttribute("data-adlaire-date-start-value"));

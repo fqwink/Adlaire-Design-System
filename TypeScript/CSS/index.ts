@@ -1,4 +1,4 @@
-import { CSS_TARGETS, CSS_COMPILER_REQUIRED_FILES, FORBIDDEN_CSS_COMPILER_PATHS } from "./manifest.ts";
+import { CSS_TARGETS, CSS_COMPILER_REQUIRED_FILES, FORBIDDEN_CSS_COMPILER_PATHS, cssCompilerSourceModules, cssTargetPaths } from "./manifest.ts";
 import { renderCssFile, type GeneratedCssFile } from "./emit.ts";
 
 export * from "./manifest.ts";
@@ -12,6 +12,7 @@ export interface CssCompilerManifest {
   readonly checkName: "check-generated-css";
   readonly requiredFiles: readonly string[];
   readonly forbiddenPaths: readonly string[];
+  readonly sourceModules: readonly string[];
   readonly targets: readonly string[];
 }
 
@@ -25,7 +26,8 @@ export function getCssCompilerManifest(): CssCompilerManifest {
     checkName: "check-generated-css",
     requiredFiles: CSS_COMPILER_REQUIRED_FILES,
     forbiddenPaths: FORBIDDEN_CSS_COMPILER_PATHS,
-    targets: CSS_TARGETS.map((target) => target.path),
+    sourceModules: cssCompilerSourceModules(),
+    targets: cssTargetPaths(),
   };
 }
 

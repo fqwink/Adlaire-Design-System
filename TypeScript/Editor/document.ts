@@ -285,7 +285,7 @@ function isInlineMark(value: unknown): value is InlineMark {
   return value.type === "link" && typeof value.href === "string" && (value.title === undefined || typeof value.title === "string");
 }
 
-function isSafeHref(href: string): boolean {
+export function isSafeHref(href: string): boolean {
   return href.startsWith("#") || href.startsWith("/") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:") || href.startsWith("tel:");
 }
 

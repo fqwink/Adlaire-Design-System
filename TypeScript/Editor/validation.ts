@@ -1,6 +1,6 @@
-import { asRecord, flattenBlocks, normalizeBlock, type ToolRegistry } from "./document.ts";
+import { asRecord, flattenBlocks, isSafeHref, normalizeBlock, type ToolRegistry } from "./document.ts";
 import { editorError } from "./events.ts";
-import type { EditorBlock, EditorDocument, EditorSelection, EditorValidationResult } from "./types.ts";
+import type { EditorBlock, EditorDocument, EditorError, EditorSelection, EditorValidationResult } from "./types.ts";
 
 export function sanitizeDocument(document: EditorDocument, registry?: ToolRegistry): EditorDocument {
   return {
@@ -21,8 +21,8 @@ export function sanitizeBlock(block: EditorBlock, registry?: ToolRegistry): Edit
 }
 
 export function validateDocument(document: EditorDocument, registry?: ToolRegistry, selection?: EditorSelection | null): EditorValidationResult {
-  const errors = [];
-  const warnings = [];
+  const errors: EditorError[] = [];
+  const warnings: EditorError[] = [];
   if (!document || typeof document !== "object") {
     return { valid: false, errors: [editorError("document.invalid", "Document must be an object.")], warnings: [] };
   }
@@ -52,7 +52,8 @@ export async function validateDocumentAsync(document: EditorDocument, registry?:
   const warnings = [...base.warnings];
   for (const block of Array.isArray(document?.blocks) ? flattenBlocks(document) : []) {
     const tool = registry?.get(block.type);
-    if (tool?.validate && await tool.validate(block.data) === false) {
+    const valid = tool?.validate ? await tool.validate(block.data) : true;
+    if (valid === false) {
       errors.push(editorError("block.data.invalid", `Block '${block.id}' failed async validation.`, block.id));
     }
   }
@@ -60,8 +61,8 @@ export async function validateDocumentAsync(document: EditorDocument, registry?:
 }
 
 export function validateBlock(block: EditorBlock, registry?: ToolRegistry): EditorValidationResult {
-  const errors = [];
-  const warnings = [];
+  const errors: EditorError[] = [];
+  const warnings: EditorError[] = [];
   if (!block || typeof block !== "object") {
     return { valid: false, errors: [editorError("block.invalid", "Block must be an object.")], warnings: [] };
   }
@@ -99,8 +100,4 @@ function sanitizeValue(value: unknown): void {
     delete record.href;
   }
   for (const key of Object.keys(record)) sanitizeValue(record[key]);
-}
-
-function isSafeHref(href: string): boolean {
-  return /^(https?:|mailto:|tel:|\/|#)/i.test(href);
 }

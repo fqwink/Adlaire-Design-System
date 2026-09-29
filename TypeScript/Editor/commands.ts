@@ -54,9 +54,9 @@ export function insertBlock(document: EditorDocument, payload: Partial<InsertBlo
   if (payload.parentBlockId) {
     const parent = findBlock(document, payload.parentBlockId);
     if (!parent) return failed(document, editorError("block.parent.notFound", "Parent block was not found.", payload.parentBlockId));
-    const parentTool = registry?.get(parent.type);
-    if (parentTool && !parentTool.allowsChildren) return failed(document, editorError("block.children.notAllowed", `Block type '${parent.type}' does not allow nested blocks.`, parent.id));
-    return changed({ ...document, blocks: updateBlockById(document.blocks, parent.id, (target) => ({ ...target, children: insertAt(target.children ?? [], block, payload.index) })) });
+    const boundaryError = childBoundaryError(parent, registry);
+    if (boundaryError) return failed(document, boundaryError);
+    return changed({ ...document, blocks: updateBlockById(document.blocks, parent.id, (target) => insertChildBlock(target, block, payload.index)) });
   }
   return changed({ ...document, blocks: insertAt(document.blocks, block, payload.index) });
 }
@@ -93,14 +93,15 @@ export function moveBlock(document: EditorDocument, payload: Partial<MoveBlockPa
   if (payload.fromParentBlockId !== undefined && source.parent?.id !== payload.fromParentBlockId) return failed(document, editorError("block.parent.mismatch", "Source block parent does not match fromParentBlockId.", payload.blockId));
   const removed = removeBlockById(document.blocks, payload.blockId);
   if (!removed.block) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
+  const movedBlock = removed.block;
   if (payload.toParentBlockId) {
     const parent = findBlock({ ...document, blocks: removed.blocks }, payload.toParentBlockId);
     if (!parent) return failed(document, editorError("block.parent.notFound", "Target parent block was not found.", payload.toParentBlockId));
-    const parentTool = registry?.get(parent.type);
-    if (parentTool && !parentTool.allowsChildren) return failed(document, editorError("block.children.notAllowed", `Block type '${parent.type}' does not allow nested blocks.`, parent.id));
-    return changed({ ...document, blocks: updateBlockById(removed.blocks, parent.id, (target) => ({ ...target, children: insertAt(target.children ?? [], removed.block as EditorBlock, payload.toIndex) })) });
+    const boundaryError = childBoundaryError(parent, registry);
+    if (boundaryError) return failed(document, boundaryError);
+    return changed({ ...document, blocks: updateBlockById(removed.blocks, parent.id, (target) => insertChildBlock(target, movedBlock, payload.toIndex)) });
   }
-  return changed({ ...document, blocks: insertAt(removed.blocks, removed.block, payload.toIndex) });
+  return changed({ ...document, blocks: insertAt(removed.blocks, movedBlock, payload.toIndex) });
 }
 
 export function splitBlock(document: EditorDocument, payload: Partial<SplitBlockPayload>, registry?: ToolRegistry): CommandResult {
@@ -178,6 +179,17 @@ function insertAt(blocks: EditorBlock[], block: EditorBlock, index = blocks.leng
   const next = blocks.map((item) => cloneJson(item));
   next.splice(Math.max(0, Math.min(index, next.length)), 0, cloneJson(block));
   return next;
+}
+
+function childBoundaryError(parent: EditorBlock, registry?: ToolRegistry): EditorError | null {
+  const parentTool = registry?.get(parent.type);
+  return parentTool && !parentTool.allowsChildren
+    ? editorError("block.children.notAllowed", `Block type '${parent.type}' does not allow nested blocks.`, parent.id)
+    : null;
+}
+
+function insertChildBlock(parent: EditorBlock, block: EditorBlock, index?: number): EditorBlock {
+  return { ...parent, children: insertAt(parent.children ?? [], block, index) };
 }
 
 function removeBlockById(blocks: EditorBlock[], blockId: string): { blocks: EditorBlock[]; block: EditorBlock | null } {
