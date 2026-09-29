@@ -1,5 +1,5 @@
 import { applyCommand } from "./commands.ts";
-import { cloneDocument, createDefaultBlockRegistry, createEmptyDocument, normalizeDocument, ToolRegistry } from "./document.ts";
+import { asRecord, cloneDocument, createDefaultBlockRegistry, createEmptyDocument, normalizeDocument, ToolRegistry } from "./document.ts";
 import { EventBus, editorError } from "./events.ts";
 import { History } from "./history.ts";
 import { normalizeSelection, sameSelection } from "./selection.ts";
@@ -63,9 +63,9 @@ export class HeadlessEditorController implements EditorController {
     if (!isEditorCommand(command)) return this.#error("command.invalid", "Command must be an object with a string type.");
     if (!knownCommands.has(command.type)) return this.#error("command.unknown", `Command '${command.type}' is not registered.`);
     if (!this.canDispatch(command)) return this.#error("command.readOnly", `Command '${command.type}' is not allowed in read-only mode.`);
-    if (command.type === "set-selection") return this.#setSelection((command.payload as SetSelectionPayload)?.selection ?? null, true);
-    if (command.type === "save") return this.#requestSave((command.payload as { context?: SaveContext })?.context);
-    if (command.type === "request-publish") return this.#requestPublish((command.payload as { context?: PublishContext })?.context);
+    if (command.type === "set-selection") return this.#setSelection(commandSelection(command), true);
+    if (command.type === "save") return this.#requestSave(commandContext<SaveContext>(command));
+    if (command.type === "request-publish") return this.#requestPublish(commandContext<PublishContext>(command));
     return this.#applyDocumentCommand(command, true);
   }
 
@@ -88,8 +88,9 @@ export class HeadlessEditorController implements EditorController {
 
     for (const command of commands) {
       if (command.type === "set-selection") {
-        const normalized = normalizeSelection(nextDocument, (command.payload as SetSelectionPayload)?.selection ?? null);
-        if ((command.payload as SetSelectionPayload)?.selection !== null && normalized === null) {
+        const selection = commandSelection(command);
+        const normalized = normalizeSelection(nextDocument, selection);
+        if (!commandSelectionIsExplicitNull(command) && normalized === null) {
           errors.push(editorError("selection.invalid", "Selection must reference valid document positions."));
           break;
         }
@@ -246,4 +247,20 @@ export function createEditor(config: EditorConfig = {}): EditorController {
 
 function isEditorCommand(value: unknown): value is EditorCommand {
   return typeof value === "object" && value !== null && !Array.isArray(value) && typeof (value as EditorCommand).type === "string" && "payload" in value;
+}
+
+function commandPayload<TPayload extends object>(command: EditorCommand): Partial<TPayload> {
+  return asRecord(command.payload) as Partial<TPayload>;
+}
+
+function commandSelection(command: EditorCommand): EditorSelection | null {
+  return commandPayload<SetSelectionPayload>(command).selection ?? null;
+}
+
+function commandSelectionIsExplicitNull(command: EditorCommand): boolean {
+  return commandPayload<SetSelectionPayload>(command).selection === null;
+}
+
+function commandContext<TContext>(command: EditorCommand): TContext | undefined {
+  return commandPayload<{ context?: TContext }>(command).context;
 }

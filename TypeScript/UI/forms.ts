@@ -11,6 +11,38 @@
     return String(value || "").trim().toLowerCase();
   }
 
+  interface FormInteractionBinding {
+    readonly selector: string;
+    readonly handle: (trigger: Element) => void;
+  }
+
+  function hookSelector(attribute: string): string {
+    return `[${attribute}]`;
+  }
+
+  function formBinding(attribute: string, handle: (trigger: Element) => void): FormInteractionBinding {
+    return {
+      selector: hookSelector(attribute),
+      handle,
+    };
+  }
+
+  function inputBinding(attribute: string, handle: (trigger: HTMLInputElement) => void): FormInteractionBinding {
+    return formBinding(attribute, (trigger) => {
+      if (trigger instanceof HTMLInputElement) handle(trigger);
+    });
+  }
+
+  function fieldBinding(attribute: string, handle: (trigger: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => void): FormInteractionBinding {
+    return formBinding(attribute, (trigger) => {
+      if (isSupportedField(trigger)) handle(trigger);
+    });
+  }
+
+  function isSupportedField(trigger: Element): trigger is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement {
+    return trigger instanceof HTMLInputElement || trigger instanceof HTMLTextAreaElement || trigger instanceof HTMLSelectElement;
+  }
+
   function applyFilter(root: Element): void {
     const queryInput = root.querySelector<HTMLInputElement>("[data-adlaire-filter-input]");
     const activeChip = root.querySelector("[data-adlaire-filter-chip][aria-pressed='true']");
@@ -37,67 +69,85 @@
     }
   }
 
+  const inputBindings: readonly FormInteractionBinding[] = [
+    formBinding("data-adlaire-filter-input", handleFilterInput),
+    inputBinding("data-adlaire-combobox-input", applyCombobox),
+    fieldBinding("data-adlaire-validate", validateField),
+  ] as const;
+
+  const clickBindings: readonly FormInteractionBinding[] = [
+    formBinding("data-adlaire-combobox-option", selectComboboxOption),
+    formBinding("data-adlaire-multi-select-option", toggleMultiSelectOption),
+    formBinding("data-adlaire-date-preset", applyDatePreset),
+    formBinding("data-adlaire-filter-chip", selectFilterChip),
+  ] as const;
+
+  const changeBindings: readonly FormInteractionBinding[] = [
+    inputBinding("data-adlaire-file-input", updateFileInput),
+    inputBinding("data-adlaire-toggle-input", syncToggleInput),
+  ] as const;
+
+  function handleEveryBoundInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): void {
+    if (!source) return;
+    bindings.forEach((binding) => {
+      const trigger = source.closest(binding.selector);
+      if (trigger) binding.handle(trigger);
+    });
+  }
+
+  function handleFirstBoundInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): boolean {
+    if (!source) return false;
+    for (const binding of bindings) {
+      const trigger = source.closest(binding.selector);
+      if (!trigger) continue;
+      binding.handle(trigger);
+      return true;
+    }
+    return false;
+  }
+
   document.addEventListener("input", (event) => {
-    const input = targetElement(event.target)?.closest("[data-adlaire-filter-input]");
-    const comboboxInput = targetElement(event.target)?.closest<HTMLInputElement>("[data-adlaire-combobox-input]");
-    const root = input?.closest("[data-adlaire-filter]");
-    if (root) applyFilter(root);
-    if (comboboxInput) applyCombobox(comboboxInput);
+    handleEveryBoundInteraction(targetElement(event.target), inputBindings);
   });
 
   document.addEventListener("click", (event) => {
-    const source = targetElement(event.target);
-    const option = source?.closest("[data-adlaire-combobox-option]");
-    const multiOption = source?.closest("[data-adlaire-multi-select-option]");
-    const preset = source?.closest("[data-adlaire-date-preset]");
-    const chip = source?.closest("[data-adlaire-filter-chip]");
-    const root = chip?.closest("[data-adlaire-filter]");
+    handleFirstBoundInteraction(targetElement(event.target), clickBindings);
+  });
 
-    if (option) {
-      selectComboboxOption(option);
-      return;
-    }
+  document.addEventListener("change", (event) => {
+    handleEveryBoundInteraction(targetElement(event.target), changeBindings);
+  });
 
-    if (multiOption) {
-      toggleMultiSelectOption(multiOption);
-      return;
-    }
+  function handleFilterInput(trigger: Element): void {
+    const root = trigger.closest("[data-adlaire-filter]");
+    if (root) applyFilter(root);
+  }
 
-    if (preset) {
-      applyDatePreset(preset);
-      return;
-    }
-
-    if (!chip || !root) return;
+  function selectFilterChip(chip: Element): void {
+    const root = chip.closest("[data-adlaire-filter]");
+    if (!root) return;
 
     root.querySelectorAll("[data-adlaire-filter-chip]").forEach((item) => {
       item.setAttribute("aria-pressed", item === chip ? "true" : "false");
     });
     applyFilter(root);
-  });
+  }
 
-  document.addEventListener("change", (event) => {
-    const target = targetElement(event.target);
-    const fileInput = target?.closest<HTMLInputElement>("[data-adlaire-file-input]");
-    const toggleInput = target?.closest<HTMLInputElement>("[data-adlaire-toggle-input]");
+  function updateFileInput(fileInput: HTMLInputElement): void {
+    const selector = fileInput.getAttribute("data-adlaire-file-output");
+    const output = selector ? document.querySelector(selector) : null;
+    const emptyText = fileInput.getAttribute("data-adlaire-file-empty") ?? "No file selected";
+    const names = Array.from(fileInput.files ?? []).map((file) => file.name);
+    if (output) output.textContent = names.length > 0 ? names.join(", ") : emptyText;
+  }
 
-    if (fileInput) {
-      const selector = fileInput.getAttribute("data-adlaire-file-output");
-      const output = selector ? document.querySelector(selector) : null;
-      const emptyText = fileInput.getAttribute("data-adlaire-file-empty") ?? "No file selected";
-      const names = Array.from(fileInput.files ?? []).map((file) => file.name);
-      if (output) output.textContent = names.length > 0 ? names.join(", ") : emptyText;
-    }
+  function syncToggleInput(toggleInput: HTMLInputElement): void {
+    const selector = toggleInput.getAttribute("data-adlaire-toggle-input");
+    const toggle = selector ? document.querySelector(selector) : null;
+    if (toggle) toggle.setAttribute("aria-checked", toggleInput.checked ? "true" : "false");
+  }
 
-    if (toggleInput) {
-      const selector = toggleInput.getAttribute("data-adlaire-toggle-input");
-      const toggle = selector ? document.querySelector(selector) : null;
-      if (toggle) toggle.setAttribute("aria-checked", toggleInput.checked ? "true" : "false");
-    }
-  });
-
-  document.addEventListener("input", (event) => {
-    const field = targetElement(event.target)?.closest<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-adlaire-validate]");
+  function validateField(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): void {
     const wrapper = field?.closest(".adlaire-field");
     if (!field || !wrapper) return;
 
@@ -106,7 +156,7 @@
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
     updateValidationSummary(field);
-  });
+  }
 
   function updateValidationSummary(field: Element): void {
     const form = field.closest("form");

@@ -2,6 +2,21 @@
 (function () {
   "use strict";
 
+  function targetElement(target) {
+    return target instanceof Element ? target : null;
+  }
+
+  function hookSelector(attribute) {
+    return "[" + attribute + "]";
+  }
+
+  function contentBinding(attribute, handle) {
+    return {
+      selector: hookSelector(attribute),
+      handle: handle
+    };
+  }
+
   function cellText(row, index) {
     var cell = row.children[index];
     return cell ? cell.textContent.trim() : "";
@@ -53,20 +68,37 @@
     };
   }
 
-  document.addEventListener("click", function (event) {
-    var header = event.target.closest("[data-adlaire-sort]");
-    if (!header) {
+  var contentClickBindings = [
+    contentBinding("data-adlaire-sort", sortTable),
+    contentBinding("data-adlaire-code-copy", copyCodeBlock),
+    contentBinding("data-adlaire-code-line", selectCodeLine)
+  ];
+
+  function handleContentClick(source) {
+    if (!source) {
       return;
     }
+    contentClickBindings.forEach(function (binding) {
+      var trigger = source.closest(binding.selector);
+      if (trigger) {
+        binding.handle(trigger);
+      }
+    });
+  }
 
+  document.addEventListener("click", function (event) {
+    handleContentClick(targetElement(event.target));
+  });
+
+  function sortTable(header) {
     var columnHeader = header.closest("th") || header;
     var table = columnHeader.closest("table");
     var body = table ? table.tBodies[0] : null;
-    if (!body) {
+    if (!body || !columnHeader.parentElement) {
       return;
     }
 
-    var headers = Array.prototype.slice.call(columnHeader.parentNode.children);
+    var headers = Array.prototype.slice.call(columnHeader.parentElement.children);
     var index = headers.indexOf(columnHeader);
     var direction = columnHeader.getAttribute("aria-sort") === "ascending" ? "desc" : "asc";
     var type = header.getAttribute("data-adlaire-sort") || columnHeader.getAttribute("data-adlaire-sort") || "text";
@@ -79,33 +111,23 @@
     Array.prototype.slice.call(body.rows).sort(compareRows(index, direction, type)).forEach(function (row) {
       body.appendChild(row);
     });
-  });
+  }
 
-  document.addEventListener("click", function (event) {
-    var copy = event.target.closest("[data-adlaire-code-copy]");
-    if (!copy) {
-      return;
-    }
-
+  function copyCodeBlock(copy) {
     var selector = copy.getAttribute("data-adlaire-code-copy");
     var statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     var target = selector ? document.querySelector(selector) : copy.closest(".adlaire-code-block");
     if (target && navigator.clipboard) {
-      navigator.clipboard.writeText(target.textContent);
+      navigator.clipboard.writeText(target.textContent || "");
       copy.setAttribute("data-adlaire-copied", "true");
       var status = statusSelector ? document.querySelector(statusSelector) : null;
       if (status) {
         status.textContent = "Copied";
       }
     }
-  });
+  }
 
-  document.addEventListener("click", function (event) {
-    var line = event.target.closest("[data-adlaire-code-line]");
-    if (!line) {
-      return;
-    }
-
+  function selectCodeLine(line) {
     var viewer = line.closest(".adlaire-git-code-view");
     if (!viewer) {
       return;
@@ -115,5 +137,5 @@
       item.classList.remove("adlaire-git-line-highlight");
     });
     line.classList.add("adlaire-git-line-highlight");
-  });
+  }
 }());

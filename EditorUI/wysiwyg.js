@@ -2,6 +2,21 @@
 (function () {
   "use strict";
 
+  function targetElement(target) {
+    return target instanceof Element ? target : null;
+  }
+
+  function hookSelector(attribute) {
+    return "[" + attribute + "]";
+  }
+
+  function wysiwygBinding(attribute, handle) {
+    return {
+      selector: hookSelector(attribute),
+      handle: handle
+    };
+  }
+
   function editorRoot(element) {
     return element.closest(".adlaire-wysiwyg");
   }
@@ -18,38 +33,58 @@
     return selector ? document.querySelector(selector) : null;
   }
 
-  document.addEventListener("click", function (event) {
-    var modeTrigger = event.target.closest("[data-adlaire-wysiwyg-mode]");
-    if (modeTrigger) {
-      var root = editorRoot(modeTrigger);
-      if (root) {
-        setMode(root, modeTrigger.getAttribute("data-adlaire-wysiwyg-mode"));
+  var wysiwygPrimaryClickBindings = [
+    wysiwygBinding("data-adlaire-wysiwyg-mode", selectMode),
+    wysiwygBinding("data-adlaire-wysiwyg-toggle", togglePanel)
+  ];
+
+  var wysiwygSelectionClickBindings = [
+    wysiwygBinding("data-adlaire-wysiwyg-select", selectBlock)
+  ];
+
+  function handleFirstWysiwygBinding(source, bindings) {
+    if (!source) {
+      return false;
+    }
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (!trigger) {
+        continue;
       }
-      return;
+      binding.handle(trigger);
+      return true;
     }
+    return false;
+  }
 
-    var toggle = event.target.closest("[data-adlaire-wysiwyg-toggle]");
-    if (!toggle) {
-      return;
+  document.addEventListener("click", function (event) {
+    var target = targetElement(event.target);
+    handleFirstWysiwygBinding(target, wysiwygPrimaryClickBindings);
+    handleFirstWysiwygBinding(target, wysiwygSelectionClickBindings);
+  });
+
+  function selectMode(modeTrigger) {
+    var root = editorRoot(modeTrigger);
+    var mode = modeTrigger.getAttribute("data-adlaire-wysiwyg-mode");
+    if (root && mode) {
+      setMode(root, mode);
     }
+  }
 
-    var target = targetFor(toggle);
-    if (!target) {
+  function togglePanel(toggle) {
+    var panel = targetFor(toggle);
+    if (!panel) {
       return;
     }
 
     var open = toggle.getAttribute("aria-expanded") !== "true";
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    target.hidden = !open;
-    target.classList.toggle("is-open", open);
-  });
+    panel.hidden = !open;
+    panel.classList.toggle("is-open", open);
+  }
 
-  document.addEventListener("click", function (event) {
-    var selectable = event.target.closest("[data-adlaire-wysiwyg-select]");
-    if (!selectable) {
-      return;
-    }
-
+  function selectBlock(selectable) {
     var root = editorRoot(selectable);
     if (!root) {
       return;
@@ -61,5 +96,5 @@
     });
     selectable.classList.add("adlaire-wysiwyg-block-selected");
     selectable.setAttribute("aria-selected", "true");
-  });
+  }
 }());

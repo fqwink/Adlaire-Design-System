@@ -1201,6 +1201,69 @@ if ! cmp -s "$components_ts_hooks" "$components_js_hooks"; then
   fail "Declarative UI interaction bindings" "TypeScript/UI/components.ts and UI/components.js data-adlaire hook sets differ: $(tr '\n' ' ' < "$components_hook_diff")"
 fi
 
+for form_binding_term in \
+  'hookSelector' \
+  'formBinding' \
+  'inputBinding' \
+  'fieldBinding' \
+  'inputBindings' \
+  'clickBindings' \
+  'changeBindings' \
+  'handleEveryBoundInteraction' \
+  'handleFirstBoundInteraction'; do
+  require_text "TypeScript/UI/forms.ts" "$form_binding_term" "Declarative form interaction bindings"
+  require_text "UI/forms.js" "$form_binding_term" "Declarative form interaction bindings"
+done
+
+forms_ts_hooks="$TMP_DIR/forms-ts-hooks.txt"
+forms_js_hooks="$TMP_DIR/forms-js-hooks.txt"
+forms_hook_diff="$TMP_DIR/forms-hook-diff.txt"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/TypeScript/UI/forms.ts" | sort -u > "$forms_ts_hooks"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/UI/forms.js" | sort -u > "$forms_js_hooks"
+if ! cmp -s "$forms_ts_hooks" "$forms_js_hooks"; then
+  comm -3 "$forms_ts_hooks" "$forms_js_hooks" > "$forms_hook_diff"
+  fail "Declarative form interaction bindings" "TypeScript/UI/forms.ts and UI/forms.js data-adlaire hook sets differ: $(tr '\n' ' ' < "$forms_hook_diff")"
+fi
+
+for content_binding_term in \
+  'hookSelector' \
+  'contentBinding' \
+  'contentClickBindings' \
+  'handleContentClick'; do
+  require_text "TypeScript/UI/content.ts" "$content_binding_term" "Declarative content interaction bindings"
+  require_text "UI/content.js" "$content_binding_term" "Declarative content interaction bindings"
+done
+
+content_ts_hooks="$TMP_DIR/content-ts-hooks.txt"
+content_js_hooks="$TMP_DIR/content-js-hooks.txt"
+content_hook_diff="$TMP_DIR/content-hook-diff.txt"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/TypeScript/UI/content.ts" | sort -u > "$content_ts_hooks"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/UI/content.js" | sort -u > "$content_js_hooks"
+if ! cmp -s "$content_ts_hooks" "$content_js_hooks"; then
+  comm -3 "$content_ts_hooks" "$content_js_hooks" > "$content_hook_diff"
+  fail "Declarative content interaction bindings" "TypeScript/UI/content.ts and UI/content.js data-adlaire hook sets differ: $(tr '\n' ' ' < "$content_hook_diff")"
+fi
+
+for wysiwyg_binding_term in \
+  'hookSelector' \
+  'wysiwygBinding' \
+  'wysiwygPrimaryClickBindings' \
+  'wysiwygSelectionClickBindings' \
+  'handleFirstWysiwygBinding'; do
+  require_text "TypeScript/EditorUI/wysiwyg.ts" "$wysiwyg_binding_term" "Declarative WYSIWYG interaction bindings"
+  require_text "EditorUI/wysiwyg.js" "$wysiwyg_binding_term" "Declarative WYSIWYG interaction bindings"
+done
+
+wysiwyg_ts_hooks="$TMP_DIR/wysiwyg-ts-hooks.txt"
+wysiwyg_js_hooks="$TMP_DIR/wysiwyg-js-hooks.txt"
+wysiwyg_hook_diff="$TMP_DIR/wysiwyg-hook-diff.txt"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/TypeScript/EditorUI/wysiwyg.ts" | sort -u > "$wysiwyg_ts_hooks"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/EditorUI/wysiwyg.js" | sort -u > "$wysiwyg_js_hooks"
+if ! cmp -s "$wysiwyg_ts_hooks" "$wysiwyg_js_hooks"; then
+  comm -3 "$wysiwyg_ts_hooks" "$wysiwyg_js_hooks" > "$wysiwyg_hook_diff"
+  fail "Declarative WYSIWYG interaction bindings" "TypeScript/EditorUI/wysiwyg.ts and EditorUI/wysiwyg.js data-adlaire hook sets differ: $(tr '\n' ' ' < "$wysiwyg_hook_diff")"
+fi
+
 for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-chip' \
@@ -1261,7 +1324,10 @@ for editor_contract in \
   'TypeScript/Editor/core.ts|HeadlessEditorController' \
   'TypeScript/Editor/core.ts|dispatchBatch' \
   'TypeScript/Editor/core.ts|command.readOnly' \
+  'TypeScript/Editor/core.ts|function commandSelection' \
+  'TypeScript/Editor/core.ts|function commandContext' \
   'TypeScript/Editor/commands.ts|applyCommand' \
+  'TypeScript/Editor/commands.ts|function commandPayload' \
   'TypeScript/Editor/commands.ts|function failed' \
   'TypeScript/Editor/document.ts|ToolRegistry' \
   'TypeScript/Editor/document.ts|handlePaste' \
@@ -1275,11 +1341,21 @@ for editor_contract in \
   'TypeScript/Editor/events.ts|editorError' \
   'TypeScript/Editor/types.ts|EditorDocument' \
   'TypeScript/Editor/types.ts|EditorController' \
-  'EditorUI/editor.js|window.AdlaireEditor'; do
+  'EditorUI/editor.js|window.AdlaireEditor' \
+  'EditorUI/editor.js|function commandPayload' \
+  'EditorUI/editor.js|function commandSelection'; do
   file=${editor_contract%%|*}
   text=${editor_contract#*|}
   require_text "$file" "$text" "Editor runtime"
 done
+
+if grep -n -F 'command.payload as' "$ROOT/TypeScript/Editor/core.ts" "$ROOT/TypeScript/Editor/commands.ts" >/dev/null 2>&1; then
+  fail "Editor runtime" "Editor command payload casts must stay centralized in command payload helpers."
+fi
+
+if grep -n -F 'command.payload || {}' "$ROOT/EditorUI/editor.js" >/dev/null 2>&1; then
+  fail "Editor runtime" "Editor generated runtime must use commandPayload helpers for command payload access."
+fi
 
 if grep -R -n -E 'from "\.\./|from "\./CSS|from "\./UI|from "\./EditorUI' "$ROOT/TypeScript/Editor" >/dev/null 2>&1; then
   fail "Editor runtime boundary" "TypeScript/Editor modules must stay inside the editor runtime boundary."

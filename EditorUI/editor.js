@@ -352,9 +352,9 @@
     if (!isEditorCommand(command)) return this.fail("command.invalid", "Command must be an object with a string type.");
     if (!isKnownCommand(command.type)) return this.fail("command.unknown", "Command '" + command.type + "' is not registered.");
     if (!this.canDispatch(command)) return this.fail("command.readOnly", "Command '" + command.type + "' is not allowed in read-only mode.");
-    if (command.type === "set-selection") return this.setSelectionResult((command.payload || {}).selection || null, true);
-    if (command.type === "save") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.save((command.payload || {}).context) };
-    if (command.type === "request-publish") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.requestPublish((command.payload || {}).context) };
+    if (command.type === "set-selection") return this.setSelectionResult(commandSelection(command), true);
+    if (command.type === "save") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.save(commandContext(command)) };
+    if (command.type === "request-publish") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.requestPublish(commandContext(command)) };
     return this.applyDocumentCommand(command, true);
   };
   HeadlessEditorController.prototype.dispatchBatch = function (commands) {
@@ -373,8 +373,9 @@
       if (command.type === "save" || command.type === "request-publish") { errors.push(editorError("command.batch.unsupported", "Save and publish commands cannot be batched.")); break; }
       if (this.readOnly && mutableCommands[command.type]) { errors.push(editorError("command.readOnly", "Command '" + command.type + "' is not allowed in read-only mode.")); break; }
       if (command.type === "set-selection") {
-        var normalized = normalizeSelection(nextDocument, (command.payload || {}).selection || null);
-        if ((command.payload || {}).selection !== null && normalized === null) { errors.push(editorError("selection.invalid", "Selection must reference valid document positions.")); break; }
+        var selection = commandSelection(command);
+        var normalized = normalizeSelection(nextDocument, selection);
+        if (!commandSelectionIsExplicitNull(command) && normalized === null) { errors.push(editorError("selection.invalid", "Selection must reference valid document positions.")); break; }
         hasSelectionChange = hasSelectionChange || !sameSelection(nextSelection, normalized);
         nextSelection = normalized;
         continue;
@@ -487,13 +488,13 @@
   };
 
   function applyCommand(document, command, registry) {
-    if (command.type === "insert-block") return insertBlock(document, command.payload || {}, registry);
-    if (command.type === "delete-block") return deleteBlock(document, command.payload || {});
-    if (command.type === "update-block") return updateBlock(document, command.payload || {}, registry);
-    if (command.type === "move-block") return moveBlock(document, command.payload || {}, registry);
-    if (command.type === "split-block") return splitBlock(document, command.payload || {}, registry);
-    if (command.type === "merge-block") return mergeBlock(document, command.payload || {}, registry);
-    if (command.type === "set-document-meta") return setDocumentMeta(document, command.payload || {});
+    if (command.type === "insert-block") return insertBlock(document, commandPayload(command), registry);
+    if (command.type === "delete-block") return deleteBlock(document, commandPayload(command));
+    if (command.type === "update-block") return updateBlock(document, commandPayload(command), registry);
+    if (command.type === "move-block") return moveBlock(document, commandPayload(command), registry);
+    if (command.type === "split-block") return splitBlock(document, commandPayload(command), registry);
+    if (command.type === "merge-block") return mergeBlock(document, commandPayload(command), registry);
+    if (command.type === "set-document-meta") return setDocumentMeta(document, commandPayload(command));
     return failed(document, "command.unknown", "Unknown command.");
   }
 
@@ -672,6 +673,23 @@
 
   function isEditorCommand(value) {
     return value && typeof value === "object" && !Array.isArray(value) && typeof value.type === "string" && "payload" in value;
+  }
+
+  function commandPayload(command) {
+    return asRecord(command && command.payload);
+  }
+
+  function commandSelection(command) {
+    var payload = commandPayload(command);
+    return payload.selection === undefined ? null : payload.selection;
+  }
+
+  function commandSelectionIsExplicitNull(command) {
+    return commandPayload(command).selection === null;
+  }
+
+  function commandContext(command) {
+    return commandPayload(command).context;
   }
 
   function isKnownCommand(type) {
