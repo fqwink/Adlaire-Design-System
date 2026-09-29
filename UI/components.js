@@ -240,6 +240,137 @@
     });
   }
 
+  function hookSelector(attribute) {
+    return "[" + attribute + "]";
+  }
+
+  function choiceBinding(attribute, rootSelector, selectedAttribute, itemAttribute) {
+    var item = itemAttribute || attribute;
+    return {
+      selector: hookSelector(attribute),
+      rootSelector: rootSelector,
+      itemSelector: hookSelector(item),
+      selectedAttribute: selectedAttribute
+    };
+  }
+
+  function booleanBinding(attribute, stateAttribute) {
+    return {
+      selector: hookSelector(attribute),
+      stateAttribute: stateAttribute
+    };
+  }
+
+  function stepBinding(attribute, rootSelector, itemAttribute) {
+    var item = itemAttribute || attribute;
+    return {
+      selector: hookSelector(attribute),
+      rootSelector: rootSelector,
+      itemSelector: hookSelector(item)
+    };
+  }
+
+  var interactiveChoiceBindings = [
+    choiceBinding("data-adlaire-time-slot", ".adlaire-time-slot-grid", "aria-selected"),
+    choiceBinding("data-adlaire-floor-select", ".adlaire-floor-selector", "aria-pressed"),
+    choiceBinding("data-adlaire-option-select", "[data-adlaire-option-group]", "aria-selected"),
+    choiceBinding("data-adlaire-shift-select", ".adlaire-shift-roster", "aria-selected"),
+    choiceBinding("data-adlaire-confidence-select", ".adlaire-confidence-indicator", "aria-pressed"),
+    choiceBinding("data-adlaire-route-select", ".adlaire-delivery-route-board", "aria-selected"),
+    choiceBinding("data-adlaire-evidence-select", ".adlaire-evidence-list", "aria-selected"),
+    choiceBinding("data-adlaire-ticket-priority-select", ".adlaire-ticket-priority-board", "aria-selected"),
+    choiceBinding("data-adlaire-report-parameter-select", ".adlaire-report-parameter-bar", "aria-pressed"),
+    choiceBinding("data-adlaire-channel-select", ".adlaire-channel-list", "aria-selected"),
+    choiceBinding("data-adlaire-editorial-gate-select", ".adlaire-review-gate-panel", "aria-selected"),
+    choiceBinding("data-adlaire-locale-select", ".adlaire-locale-switcher-panel", "aria-selected"),
+    choiceBinding("data-adlaire-moderation-decision", ".adlaire-moderation-queue", "aria-pressed"),
+    choiceBinding("data-adlaire-device-select", ".adlaire-device-registry-table", "aria-selected"),
+    choiceBinding("data-adlaire-deployment-ring-select", ".adlaire-deployment-ring-selector", "aria-selected"),
+    choiceBinding("data-adlaire-fare-option-select", ".adlaire-booking-summary-panel", "aria-selected"),
+    choiceBinding("data-adlaire-room-select", ".adlaire-room-inventory-board", "aria-selected"),
+    choiceBinding("data-adlaire-permit-step-select", ".adlaire-document-requirement-list", "aria-selected"),
+    choiceBinding("data-adlaire-volunteer-shift-select", ".adlaire-volunteer-shift-board", "aria-selected"),
+    choiceBinding("data-adlaire-demand-response-select", ".adlaire-demand-response-panel", "aria-selected"),
+    choiceBinding("data-adlaire-outage-report-select", ".adlaire-service-appointment-board", "aria-selected"),
+    choiceBinding("data-adlaire-density-select", ".adlaire-density-switcher", "aria-pressed"),
+    choiceBinding("data-adlaire-saved-view-select", ".adlaire-view-preset-switcher", "aria-pressed"),
+    choiceBinding("data-adlaire-checkpoint-select", ".adlaire-execution-timeline", "aria-selected"),
+    choiceBinding("data-adlaire-sdk-select", ".adlaire-sdk-selector", "aria-pressed"),
+    choiceBinding("data-adlaire-environment-select", ".adlaire-api-explorer-panel", "aria-selected"),
+    choiceBinding("data-adlaire-theme-select", ".adlaire-theme-workspace-panel", "aria-pressed")
+  ];
+
+  var booleanStateBindings = [
+    booleanBinding("data-adlaire-service-check", "aria-checked"),
+    booleanBinding("data-adlaire-policy-acknowledgement", "aria-pressed"),
+    booleanBinding("data-adlaire-attestation-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-care-plan-check", "aria-checked"),
+    booleanBinding("data-adlaire-success-playbook-check", "aria-checked"),
+    booleanBinding("data-adlaire-quiet-hours-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-topic-preference-toggle", "aria-checked"),
+    booleanBinding("data-adlaire-handoff-check", "aria-checked"),
+    booleanBinding("data-adlaire-recovery-task-check", "aria-checked"),
+    booleanBinding("data-adlaire-eligibility-check", "aria-checked"),
+    booleanBinding("data-adlaire-disclosure-check", "aria-checked"),
+    booleanBinding("data-adlaire-bulk-selection-toggle", "aria-selected"),
+    booleanBinding("data-adlaire-verification-check", "aria-checked"),
+    booleanBinding("data-adlaire-record-row-toggle", "aria-selected"),
+    booleanBinding("data-adlaire-inline-edit-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-bulk-confirm-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-tool-permission-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-approval-gate-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-notification-policy-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-connection-test-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-migration-step-toggle", "aria-checked"),
+    booleanBinding("data-adlaire-dark-mode-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-high-contrast-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-token-override-toggle", "aria-checked")
+  ];
+
+  var currentStepBindings = [
+    stepBinding("data-adlaire-pipeline-stage-select", ".adlaire-pipeline-stage-rail"),
+    stepBinding("data-adlaire-milestone-select", ".adlaire-milestone-tracker")
+  ];
+
+  function closestBoundTrigger(source, bindings) {
+    if (!source) {
+      return null;
+    }
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (trigger) {
+        return [trigger, binding];
+      }
+    }
+    return null;
+  }
+
+  function handleDeclarativeInteraction(event, source) {
+    var choice = closestBoundTrigger(source, interactiveChoiceBindings);
+    if (choice) {
+      event.preventDefault();
+      selectInteractiveChoice(choice[0], choice[1].rootSelector, choice[1].itemSelector, choice[1].selectedAttribute);
+      return true;
+    }
+
+    var toggle = closestBoundTrigger(source, booleanStateBindings);
+    if (toggle) {
+      event.preventDefault();
+      toggleBooleanState(toggle[0], toggle[1].stateAttribute);
+      return true;
+    }
+
+    var currentStep = closestBoundTrigger(source, currentStepBindings);
+    if (currentStep) {
+      event.preventDefault();
+      selectCurrentStep(currentStep[0], currentStep[1].rootSelector, currentStep[1].itemSelector);
+      return true;
+    }
+
+    return false;
+  }
+
   document.addEventListener("click", function (event) {
     var copy = event.target.closest("[data-adlaire-copy]");
     var remove = event.target.closest("[data-adlaire-remove]");
@@ -252,61 +383,8 @@
     var splitToggle = event.target.closest("[data-adlaire-split-button-toggle]");
     var overflowToggle = event.target.closest("[data-adlaire-overflow-toggle]");
     var dockToggle = event.target.closest("[data-adlaire-dock-toggle]");
-    var timeSlot = event.target.closest("[data-adlaire-time-slot]");
-    var floorSelect = event.target.closest("[data-adlaire-floor-select]");
-    var optionSelect = event.target.closest("[data-adlaire-option-select]");
     var folderToggle = event.target.closest("[data-adlaire-folder-toggle]");
     var policyExceptionToggle = event.target.closest("[data-adlaire-policy-exception-toggle]");
-    var shiftSelect = event.target.closest("[data-adlaire-shift-select]");
-    var pipelineStageSelect = event.target.closest("[data-adlaire-pipeline-stage-select]");
-    var serviceCheck = event.target.closest("[data-adlaire-service-check]");
-    var policyAcknowledgement = event.target.closest("[data-adlaire-policy-acknowledgement]");
-    var confidenceSelect = event.target.closest("[data-adlaire-confidence-select]");
-    var milestoneSelect = event.target.closest("[data-adlaire-milestone-select]");
-    var attestationToggle = event.target.closest("[data-adlaire-attestation-toggle]");
-    var routeSelect = event.target.closest("[data-adlaire-route-select]");
-    var carePlanCheck = event.target.closest("[data-adlaire-care-plan-check]");
-    var evidenceSelect = event.target.closest("[data-adlaire-evidence-select]");
-    var ticketPrioritySelect = event.target.closest("[data-adlaire-ticket-priority-select]");
-    var successPlaybookCheck = event.target.closest("[data-adlaire-success-playbook-check]");
-    var reportParameterSelect = event.target.closest("[data-adlaire-report-parameter-select]");
-    var channelSelect = event.target.closest("[data-adlaire-channel-select]");
-    var quietHoursToggle = event.target.closest("[data-adlaire-quiet-hours-toggle]");
-    var topicPreferenceToggle = event.target.closest("[data-adlaire-topic-preference-toggle]");
-    var editorialGateSelect = event.target.closest("[data-adlaire-editorial-gate-select]");
-    var localeSelect = event.target.closest("[data-adlaire-locale-select]");
-    var moderationDecision = event.target.closest("[data-adlaire-moderation-decision]");
-    var deviceSelect = event.target.closest("[data-adlaire-device-select]");
-    var deploymentRingSelect = event.target.closest("[data-adlaire-deployment-ring-select]");
-    var handoffCheck = event.target.closest("[data-adlaire-handoff-check]");
-    var fareOptionSelect = event.target.closest("[data-adlaire-fare-option-select]");
-    var roomSelect = event.target.closest("[data-adlaire-room-select]");
-    var recoveryTaskCheck = event.target.closest("[data-adlaire-recovery-task-check]");
-    var eligibilityCheck = event.target.closest("[data-adlaire-eligibility-check]");
-    var permitStepSelect = event.target.closest("[data-adlaire-permit-step-select]");
-    var volunteerShiftSelect = event.target.closest("[data-adlaire-volunteer-shift-select]");
-    var demandResponseSelect = event.target.closest("[data-adlaire-demand-response-select]");
-    var outageReportSelect = event.target.closest("[data-adlaire-outage-report-select]");
-    var disclosureCheck = event.target.closest("[data-adlaire-disclosure-check]");
-    var densitySelect = event.target.closest("[data-adlaire-density-select]");
-    var bulkSelectionToggle = event.target.closest("[data-adlaire-bulk-selection-toggle]");
-    var verificationCheck = event.target.closest("[data-adlaire-verification-check]");
-    var savedViewSelect = event.target.closest("[data-adlaire-saved-view-select]");
-    var recordRowToggle = event.target.closest("[data-adlaire-record-row-toggle]");
-    var inlineEditToggle = event.target.closest("[data-adlaire-inline-edit-toggle]");
-    var bulkConfirmToggle = event.target.closest("[data-adlaire-bulk-confirm-toggle]");
-    var toolPermissionToggle = event.target.closest("[data-adlaire-tool-permission-toggle]");
-    var approvalGateToggle = event.target.closest("[data-adlaire-approval-gate-toggle]");
-    var checkpointSelect = event.target.closest("[data-adlaire-checkpoint-select]");
-    var notificationPolicyToggle = event.target.closest("[data-adlaire-notification-policy-toggle]");
-    var sdkSelect = event.target.closest("[data-adlaire-sdk-select]");
-    var environmentSelect = event.target.closest("[data-adlaire-environment-select]");
-    var connectionTestToggle = event.target.closest("[data-adlaire-connection-test-toggle]");
-    var migrationStepToggle = event.target.closest("[data-adlaire-migration-step-toggle]");
-    var themeSelect = event.target.closest("[data-adlaire-theme-select]");
-    var darkModeToggle = event.target.closest("[data-adlaire-dark-mode-toggle]");
-    var highContrastToggle = event.target.closest("[data-adlaire-high-contrast-toggle]");
-    var tokenOverrideToggle = event.target.closest("[data-adlaire-token-override-toggle]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -375,19 +453,8 @@
       toggleDockPanel(dockToggle);
     }
 
-    if (timeSlot) {
-      event.preventDefault();
-      selectInteractiveChoice(timeSlot, ".adlaire-time-slot-grid", "[data-adlaire-time-slot]", "aria-selected");
-    }
-
-    if (floorSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(floorSelect, ".adlaire-floor-selector", "[data-adlaire-floor-select]", "aria-pressed");
-    }
-
-    if (optionSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(optionSelect, "[data-adlaire-option-group]", "[data-adlaire-option-select]", "aria-selected");
+    if (handleDeclarativeInteraction(event, event.target)) {
+      return;
     }
 
     if (folderToggle) {
@@ -398,256 +465,6 @@
     if (policyExceptionToggle) {
       event.preventDefault();
       toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
-    }
-
-    if (shiftSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(shiftSelect, ".adlaire-shift-roster", "[data-adlaire-shift-select]", "aria-selected");
-    }
-
-    if (pipelineStageSelect) {
-      event.preventDefault();
-      selectCurrentStep(pipelineStageSelect, ".adlaire-pipeline-stage-rail", "[data-adlaire-pipeline-stage-select]");
-    }
-
-    if (serviceCheck) {
-      event.preventDefault();
-      toggleBooleanState(serviceCheck, "aria-checked");
-    }
-
-    if (policyAcknowledgement) {
-      event.preventDefault();
-      toggleBooleanState(policyAcknowledgement, "aria-pressed");
-    }
-
-    if (confidenceSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(confidenceSelect, ".adlaire-confidence-indicator", "[data-adlaire-confidence-select]", "aria-pressed");
-    }
-
-    if (milestoneSelect) {
-      event.preventDefault();
-      selectCurrentStep(milestoneSelect, ".adlaire-milestone-tracker", "[data-adlaire-milestone-select]");
-    }
-
-    if (attestationToggle) {
-      event.preventDefault();
-      toggleBooleanState(attestationToggle, "aria-pressed");
-    }
-
-    if (routeSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(routeSelect, ".adlaire-delivery-route-board", "[data-adlaire-route-select]", "aria-selected");
-    }
-
-    if (carePlanCheck) {
-      event.preventDefault();
-      toggleBooleanState(carePlanCheck, "aria-checked");
-    }
-
-    if (evidenceSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(evidenceSelect, ".adlaire-evidence-list", "[data-adlaire-evidence-select]", "aria-selected");
-    }
-
-    if (ticketPrioritySelect) {
-      event.preventDefault();
-      selectInteractiveChoice(ticketPrioritySelect, ".adlaire-ticket-priority-board", "[data-adlaire-ticket-priority-select]", "aria-selected");
-    }
-
-    if (successPlaybookCheck) {
-      event.preventDefault();
-      toggleBooleanState(successPlaybookCheck, "aria-checked");
-    }
-
-    if (reportParameterSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(reportParameterSelect, ".adlaire-report-parameter-bar", "[data-adlaire-report-parameter-select]", "aria-pressed");
-    }
-
-    if (channelSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(channelSelect, ".adlaire-channel-list", "[data-adlaire-channel-select]", "aria-selected");
-    }
-
-    if (quietHoursToggle) {
-      event.preventDefault();
-      toggleBooleanState(quietHoursToggle, "aria-pressed");
-    }
-
-    if (topicPreferenceToggle) {
-      event.preventDefault();
-      toggleBooleanState(topicPreferenceToggle, "aria-checked");
-    }
-
-    if (editorialGateSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(editorialGateSelect, ".adlaire-review-gate-panel", "[data-adlaire-editorial-gate-select]", "aria-selected");
-    }
-
-    if (localeSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(localeSelect, ".adlaire-locale-switcher-panel", "[data-adlaire-locale-select]", "aria-selected");
-    }
-
-    if (moderationDecision) {
-      event.preventDefault();
-      selectInteractiveChoice(moderationDecision, ".adlaire-moderation-queue", "[data-adlaire-moderation-decision]", "aria-pressed");
-    }
-
-    if (deviceSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(deviceSelect, ".adlaire-device-registry-table", "[data-adlaire-device-select]", "aria-selected");
-    }
-
-    if (deploymentRingSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(deploymentRingSelect, ".adlaire-deployment-ring-selector", "[data-adlaire-deployment-ring-select]", "aria-selected");
-    }
-
-    if (handoffCheck) {
-      event.preventDefault();
-      toggleBooleanState(handoffCheck, "aria-checked");
-    }
-
-    if (fareOptionSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(fareOptionSelect, ".adlaire-booking-summary-panel", "[data-adlaire-fare-option-select]", "aria-selected");
-    }
-
-    if (roomSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(roomSelect, ".adlaire-room-inventory-board", "[data-adlaire-room-select]", "aria-selected");
-    }
-
-    if (recoveryTaskCheck) {
-      event.preventDefault();
-      toggleBooleanState(recoveryTaskCheck, "aria-checked");
-    }
-
-    if (eligibilityCheck) {
-      event.preventDefault();
-      toggleBooleanState(eligibilityCheck, "aria-checked");
-    }
-
-    if (permitStepSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(permitStepSelect, ".adlaire-document-requirement-list", "[data-adlaire-permit-step-select]", "aria-selected");
-    }
-
-    if (volunteerShiftSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(volunteerShiftSelect, ".adlaire-volunteer-shift-board", "[data-adlaire-volunteer-shift-select]", "aria-selected");
-    }
-
-    if (demandResponseSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(demandResponseSelect, ".adlaire-demand-response-panel", "[data-adlaire-demand-response-select]", "aria-selected");
-    }
-
-    if (outageReportSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(outageReportSelect, ".adlaire-service-appointment-board", "[data-adlaire-outage-report-select]", "aria-selected");
-    }
-
-    if (disclosureCheck) {
-      event.preventDefault();
-      toggleBooleanState(disclosureCheck, "aria-checked");
-    }
-
-    if (densitySelect) {
-      event.preventDefault();
-      selectInteractiveChoice(densitySelect, ".adlaire-density-switcher", "[data-adlaire-density-select]", "aria-pressed");
-    }
-
-    if (bulkSelectionToggle) {
-      event.preventDefault();
-      toggleBooleanState(bulkSelectionToggle, "aria-selected");
-    }
-
-    if (verificationCheck) {
-      event.preventDefault();
-      toggleBooleanState(verificationCheck, "aria-checked");
-    }
-
-    if (savedViewSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(savedViewSelect, ".adlaire-view-preset-switcher", "[data-adlaire-saved-view-select]", "aria-pressed");
-    }
-
-    if (recordRowToggle) {
-      event.preventDefault();
-      toggleBooleanState(recordRowToggle, "aria-selected");
-    }
-
-    if (inlineEditToggle) {
-      event.preventDefault();
-      toggleBooleanState(inlineEditToggle, "aria-pressed");
-    }
-
-    if (bulkConfirmToggle) {
-      event.preventDefault();
-      toggleBooleanState(bulkConfirmToggle, "aria-pressed");
-    }
-
-    if (toolPermissionToggle) {
-      event.preventDefault();
-      toggleBooleanState(toolPermissionToggle, "aria-pressed");
-    }
-
-    if (approvalGateToggle) {
-      event.preventDefault();
-      toggleBooleanState(approvalGateToggle, "aria-pressed");
-    }
-
-    if (checkpointSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(checkpointSelect, ".adlaire-execution-timeline", "[data-adlaire-checkpoint-select]", "aria-selected");
-    }
-
-    if (notificationPolicyToggle) {
-      event.preventDefault();
-      toggleBooleanState(notificationPolicyToggle, "aria-pressed");
-    }
-
-    if (sdkSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(sdkSelect, ".adlaire-sdk-selector", "[data-adlaire-sdk-select]", "aria-pressed");
-    }
-
-    if (environmentSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(environmentSelect, ".adlaire-api-explorer-panel", "[data-adlaire-environment-select]", "aria-selected");
-    }
-
-    if (connectionTestToggle) {
-      event.preventDefault();
-      toggleBooleanState(connectionTestToggle, "aria-pressed");
-    }
-
-    if (migrationStepToggle) {
-      event.preventDefault();
-      toggleBooleanState(migrationStepToggle, "aria-checked");
-    }
-
-    if (themeSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(themeSelect, ".adlaire-theme-workspace-panel", "[data-adlaire-theme-select]", "aria-pressed");
-    }
-
-    if (darkModeToggle) {
-      event.preventDefault();
-      toggleBooleanState(darkModeToggle, "aria-pressed");
-    }
-
-    if (highContrastToggle) {
-      event.preventDefault();
-      toggleBooleanState(highContrastToggle, "aria-pressed");
-    }
-
-    if (tokenOverrideToggle) {
-      event.preventDefault();
-      toggleBooleanState(tokenOverrideToggle, "aria-checked");
     }
   });
 
