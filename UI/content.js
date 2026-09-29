@@ -6,6 +6,18 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event) {
+    var fallbackTarget = event.target;
+    var path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (var index = 0; index < path.length; index += 1) {
+      var element = targetElement(path[index]);
+      if (element) {
+        return element;
+      }
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function safeDocumentQuery(selector) {
     if (!selector) {
       return null;
@@ -52,6 +64,23 @@
       selector: hookSelector(attribute),
       handle: handle
     };
+  }
+
+  function closestBoundTrigger(source, bindings, startIndex) {
+    if (startIndex === undefined) {
+      startIndex = 0;
+    }
+    if (!source) {
+      return null;
+    }
+    for (var index = startIndex; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (trigger) {
+        return [trigger, binding, index];
+      }
+    }
+    return null;
   }
 
   function cellText(row, index) {
@@ -112,19 +141,18 @@
   ];
 
   function handleEveryContentClick(source) {
-    if (!source) {
-      return;
+    var match = closestBoundTrigger(source, contentClickBindings);
+    while (match) {
+      var trigger = match[0];
+      var binding = match[1];
+      var index = match[2];
+      binding.handle(trigger);
+      match = closestBoundTrigger(source, contentClickBindings, index + 1);
     }
-    contentClickBindings.forEach(function (binding) {
-      var trigger = source.closest(binding.selector);
-      if (trigger) {
-        binding.handle(trigger);
-      }
-    });
   }
 
   document.addEventListener("click", function (event) {
-    handleEveryContentClick(targetElement(event.target));
+    handleEveryContentClick(eventSourceElement(event));
   });
 
   function sortTable(header) {

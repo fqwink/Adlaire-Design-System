@@ -320,6 +320,14 @@
     "set-document-meta": true
   };
 
+  function validateDispatchCommand(command, readOnly, mode) {
+    if (!isEditorCommand(command)) return { ok: false, error: editorError("command.invalid", "Command must be an object with a string type.") };
+    if (!isKnownCommand(command.type)) return { ok: false, error: editorError("command.unknown", "Command '" + command.type + "' is not registered.") };
+    if (mode === "batch" && (command.type === "save" || command.type === "request-publish")) return { ok: false, error: editorError("command.batch.unsupported", "Save and publish commands cannot be batched.") };
+    if (readOnly && mutableCommands[command.type]) return { ok: false, error: editorError("command.readOnly", "Command '" + command.type + "' is not allowed in read-only mode.") };
+    return { ok: true, command: command };
+  }
+
   function HeadlessEditorController(config) {
     config = config || {};
     var defaultBlock = config.defaultBlock || "paragraph";
@@ -346,16 +354,16 @@
     this.emitValidation();
   };
   HeadlessEditorController.prototype.canDispatch = function (command) {
-    return isEditorCommand(command) && isKnownCommand(command.type) && !(this.readOnly && mutableCommands[command.type]);
+    return validateDispatchCommand(command, this.readOnly, "single").ok;
   };
   HeadlessEditorController.prototype.dispatch = function (command) {
-    if (!isEditorCommand(command)) return this.fail("command.invalid", "Command must be an object with a string type.");
-    if (!isKnownCommand(command.type)) return this.fail("command.unknown", "Command '" + command.type + "' is not registered.");
-    if (!this.canDispatch(command)) return this.fail("command.readOnly", "Command '" + command.type + "' is not allowed in read-only mode.");
-    if (command.type === "set-selection") return this.setSelectionResult(commandSelection(command), true);
-    if (command.type === "save") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.save(commandContext(command)) };
-    if (command.type === "request-publish") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.requestPublish(commandContext(command)) };
-    return this.applyDocumentCommand(command, true);
+    var validation = validateDispatchCommand(command, this.readOnly, "single");
+    if (!validation.ok) return this.failValidation(validation.error);
+    var dispatchCommand = validation.command;
+    if (dispatchCommand.type === "set-selection") return this.setSelectionResult(commandSelection(dispatchCommand), true);
+    if (dispatchCommand.type === "save") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.save(commandContext(dispatchCommand)) };
+    if (dispatchCommand.type === "request-publish") return { document: this.getDocument(), selection: this.getSelection(), changed: false, request: this.requestPublish(commandContext(dispatchCommand)) };
+    return this.applyDocumentCommand(dispatchCommand, true);
   };
   HeadlessEditorController.prototype.dispatchBatch = function (commands) {
     if (!Array.isArray(commands)) return this.fail("command.batch.invalid", "Batch payload must be an array of commands.");
@@ -368,10 +376,8 @@
     var errors = [];
     for (var index = 0; index < commands.length; index += 1) {
       var command = commands[index];
-      if (!isEditorCommand(command)) { errors.push(editorError("command.invalid", "Command must be an object with a string type.")); break; }
-      if (!isKnownCommand(command.type)) { errors.push(editorError("command.unknown", "Command '" + command.type + "' is not registered.")); break; }
-      if (command.type === "save" || command.type === "request-publish") { errors.push(editorError("command.batch.unsupported", "Save and publish commands cannot be batched.")); break; }
-      if (this.readOnly && mutableCommands[command.type]) { errors.push(editorError("command.readOnly", "Command '" + command.type + "' is not allowed in read-only mode.")); break; }
+      var validation = validateDispatchCommand(command, this.readOnly, "batch");
+      if (!validation.ok) { errors.push(validation.error); break; }
       if (command.type === "set-selection") {
         var selection = commandSelection(command);
         var normalized = normalizeSelection(nextDocument, selection);
@@ -481,49 +487,56 @@
   HeadlessEditorController.prototype.emitError = function (failure) {
     this.events.emit({ type: "error", error: failure });
   };
-  HeadlessEditorController.prototype.fail = function (code, message) {
-    var failure = editorError(code, message);
+  HeadlessEditorController.prototype.failValidation = function (failure) {
     this.emitError(failure);
     return { document: this.getDocument(), selection: this.getSelection(), changed: false, errors: [failure] };
   };
+  HeadlessEditorController.prototype.fail = function (code, message) {
+    return this.failValidation(editorError(code, message));
+  };
+
+  var documentCommandHandlers = {
+    "insert-block": function (document, command, registry) { return insertBlock(document, commandPayload(command), registry); },
+    "delete-block": function (document, command) { return deleteBlock(document, commandPayload(command)); },
+    "update-block": function (document, command, registry) { return updateBlock(document, commandPayload(command), registry); },
+    "move-block": function (document, command, registry) { return moveBlock(document, commandPayload(command), registry); },
+    "split-block": function (document, command, registry) { return splitBlock(document, commandPayload(command), registry); },
+    "merge-block": function (document, command, registry) { return mergeBlock(document, commandPayload(command), registry); },
+    "set-document-meta": function (document, command) { return setDocumentMeta(document, commandPayload(command)); }
+  };
 
   function applyCommand(document, command, registry) {
-    if (command.type === "insert-block") return insertBlock(document, commandPayload(command), registry);
-    if (command.type === "delete-block") return deleteBlock(document, commandPayload(command));
-    if (command.type === "update-block") return updateBlock(document, commandPayload(command), registry);
-    if (command.type === "move-block") return moveBlock(document, commandPayload(command), registry);
-    if (command.type === "split-block") return splitBlock(document, commandPayload(command), registry);
-    if (command.type === "merge-block") return mergeBlock(document, commandPayload(command), registry);
-    if (command.type === "set-document-meta") return setDocumentMeta(document, commandPayload(command));
-    return failed(document, "command.unknown", "Unknown command.");
+    if (!command || typeof command.type !== "string") return failed(document, editorError("command.invalid", "Command must be valid."));
+    var handler = documentCommandHandlers[command.type];
+    return handler ? handler(document, command, registry) : failed(document, editorError("command.unknown", "Unknown command."));
   }
 
   function insertBlock(document, payload, registry) {
-    if (!payload.block || !payload.block.id || !payload.block.type) return failed(document, "command.payload.invalid", "insert-block requires a block.");
+    if (!payload.block || !payload.block.id || !payload.block.type) return failed(document, editorError("command.payload.invalid", "insert-block requires a block."));
     var block = registry ? normalizeBlock(payload.block, registry) : clone(payload.block);
-    if (collectBlockIds(document.blocks)[block.id]) return failed(document, "block.id.duplicate", "Block id '" + block.id + "' already exists.", block.id);
+    if (collectBlockIds(document.blocks)[block.id]) return failed(document, editorError("block.id.duplicate", "Block id '" + block.id + "' already exists.", block.id));
     if (payload.parentBlockId) {
       var parent = findBlock(document, payload.parentBlockId);
-      if (!parent) return failed(document, "block.parent.notFound", "Parent block was not found.", payload.parentBlockId);
-      var parentTool = registry && registry.get(parent.type);
-      if (parentTool && !parentTool.allowsChildren) return failed(document, "block.children.notAllowed", "Parent block does not allow nested blocks.", parent.id);
-      return changed(Object.assign({}, document, { blocks: updateBlockById(document.blocks, parent.id, function (target) { return Object.assign({}, target, { children: insertAt(target.children || [], block, payload.index) }); }) }));
+      if (!parent) return failed(document, editorError("block.parent.notFound", "Parent block was not found.", payload.parentBlockId));
+      var boundaryError = childBoundaryError(parent, registry);
+      if (boundaryError) return failed(document, boundaryError);
+      return changed(Object.assign({}, document, { blocks: updateBlockById(document.blocks, parent.id, function (target) { return insertChildBlock(target, block, payload.index); }) }));
     }
     return changed(Object.assign({}, document, { blocks: insertAt(document.blocks, block, payload.index) }));
   }
 
   function deleteBlock(document, payload) {
-    if (typeof payload.blockId !== "string") return failed(document, "command.payload.invalid", "delete-block requires blockId.");
+    if (typeof payload.blockId !== "string") return failed(document, editorError("command.payload.invalid", "delete-block requires blockId."));
     var removed = removeBlockById(document.blocks, payload.blockId);
-    if (!removed.block) return failed(document, "block.notFound", "Block was not found.", payload.blockId);
+    if (!removed.block) return failed(document, editorError("block.notFound", "Block was not found.", payload.blockId));
     return changed(Object.assign({}, document, { blocks: removed.blocks }));
   }
 
   function updateBlock(document, payload, registry) {
-    if (typeof payload.blockId !== "string") return failed(document, "command.payload.invalid", "update-block requires blockId.");
+    if (typeof payload.blockId !== "string") return failed(document, editorError("command.payload.invalid", "update-block requires blockId."));
     var target = findBlock(document, payload.blockId);
-    if (!target) return failed(document, "block.notFound", "Block was not found.", payload.blockId);
-    if (target.type === "unsupported" && payload.data !== undefined) return failed(document, "block.unsupported.readOnly", "Unsupported block data is read-only.", payload.blockId);
+    if (!target) return failed(document, editorError("block.notFound", "Block was not found.", payload.blockId));
+    if (target.type === "unsupported" && payload.data !== undefined) return failed(document, editorError("block.unsupported.readOnly", "Unsupported block data is read-only.", payload.blockId));
     return changed(Object.assign({}, document, { blocks: updateBlockById(document.blocks, payload.blockId, function (block) {
       var next = Object.assign({}, block, payload.data === undefined ? {} : { data: asRecord(payload.data) }, payload.meta === undefined ? {} : { meta: Object.assign({}, block.meta || {}, payload.meta) });
       return registry ? normalizeBlock(next, registry) : next;
@@ -531,43 +544,43 @@
   }
 
   function moveBlock(document, payload, registry) {
-    if (typeof payload.blockId !== "string" || typeof payload.toIndex !== "number") return failed(document, "command.payload.invalid", "move-block requires blockId and toIndex.", payload.blockId);
+    if (typeof payload.blockId !== "string" || typeof payload.toIndex !== "number") return failed(document, editorError("command.payload.invalid", "move-block requires blockId and toIndex.", payload.blockId));
     var source = findBlockLocation(document.blocks, payload.blockId);
-    if (!source) return failed(document, "block.notFound", "Block was not found.", payload.blockId);
-    if (payload.fromParentBlockId !== undefined && (!source.parent || source.parent.id !== payload.fromParentBlockId)) return failed(document, "block.parent.mismatch", "Source block parent does not match fromParentBlockId.", payload.blockId);
+    if (!source) return failed(document, editorError("block.notFound", "Block was not found.", payload.blockId));
+    if (payload.fromParentBlockId !== undefined && (!source.parent || source.parent.id !== payload.fromParentBlockId)) return failed(document, editorError("block.parent.mismatch", "Source block parent does not match fromParentBlockId.", payload.blockId));
     var removed = removeBlockById(document.blocks, payload.blockId);
     if (payload.toParentBlockId) {
       var parent = findBlock(Object.assign({}, document, { blocks: removed.blocks }), payload.toParentBlockId);
-      if (!parent) return failed(document, "block.parent.notFound", "Target parent block was not found.", payload.toParentBlockId);
-      var parentTool = registry && registry.get(parent.type);
-      if (parentTool && !parentTool.allowsChildren) return failed(document, "block.children.notAllowed", "Parent block does not allow nested blocks.", parent.id);
-      return changed(Object.assign({}, document, { blocks: updateBlockById(removed.blocks, parent.id, function (target) { return Object.assign({}, target, { children: insertAt(target.children || [], removed.block, payload.toIndex) }); }) }));
+      if (!parent) return failed(document, editorError("block.parent.notFound", "Target parent block was not found.", payload.toParentBlockId));
+      var boundaryError = childBoundaryError(parent, registry);
+      if (boundaryError) return failed(document, boundaryError);
+      return changed(Object.assign({}, document, { blocks: updateBlockById(removed.blocks, parent.id, function (target) { return insertChildBlock(target, removed.block, payload.toIndex); }) }));
     }
     return changed(Object.assign({}, document, { blocks: insertAt(removed.blocks, removed.block, payload.toIndex) }));
   }
 
   function splitBlock(document, payload, registry) {
-    if (typeof payload.blockId !== "string") return failed(document, "command.payload.invalid", "split-block requires blockId.", payload.blockId);
+    if (typeof payload.blockId !== "string") return failed(document, editorError("command.payload.invalid", "split-block requires blockId.", payload.blockId));
     var location = findBlockLocation(document.blocks, payload.blockId);
-    if (!location) return failed(document, "block.notFound", "Block was not found.", payload.blockId);
-    if (location.block.type === "unsupported") return failed(document, "block.unsupported.split", "Unsupported block cannot be split.", payload.blockId);
+    if (!location) return failed(document, editorError("block.notFound", "Block was not found.", payload.blockId));
+    if (location.block.type === "unsupported") return failed(document, editorError("block.unsupported.split", "Unsupported block cannot be split.", payload.blockId));
     var newId = location.block.id + "-split";
-    if (collectBlockIds(document.blocks)[newId]) return failed(document, "block.id.duplicate", "Split id already exists.", newId);
+    if (collectBlockIds(document.blocks)[newId]) return failed(document, editorError("block.id.duplicate", "Split id already exists.", newId));
     var split = splitBlockData(location.block, payload);
-    if (split.error) return { document: document, changed: false, errors: [split.error] };
+    if (split.error) return failed(document, split.error);
     var nextSiblings = location.siblings.slice(0, location.index).concat([registry ? normalizeBlock(split.blocks[0], registry) : split.blocks[0], registry ? normalizeBlock(split.blocks[1], registry) : split.blocks[1]], location.siblings.slice(location.index + 1));
     if (!location.parent) return changed(Object.assign({}, document, { blocks: nextSiblings }));
     return changed(Object.assign({}, document, { blocks: updateBlockById(document.blocks, location.parent.id, function (parent) { return Object.assign({}, parent, { children: nextSiblings }); }) }));
   }
 
   function mergeBlock(document, payload, registry) {
-    if (typeof payload.sourceBlockId !== "string" || typeof payload.targetBlockId !== "string") return failed(document, "command.payload.invalid", "merge-block requires sourceBlockId and targetBlockId.");
-    if (payload.sourceBlockId === payload.targetBlockId) return failed(document, "block.merge.sameBlock", "Cannot merge a block into itself.", payload.sourceBlockId);
+    if (typeof payload.sourceBlockId !== "string" || typeof payload.targetBlockId !== "string") return failed(document, editorError("command.payload.invalid", "merge-block requires sourceBlockId and targetBlockId."));
+    if (payload.sourceBlockId === payload.targetBlockId) return failed(document, editorError("block.merge.sameBlock", "Cannot merge a block into itself.", payload.sourceBlockId));
     var source = findBlock(document, payload.sourceBlockId);
     var target = findBlock(document, payload.targetBlockId);
-    if (!source || !target) return failed(document, "block.notFound", "Merge source or target was not found.");
-    if (source.type === "unsupported" || target.type === "unsupported") return failed(document, "block.unsupported.merge", "Unsupported block cannot be merged.");
-    if (source.type !== target.type) return failed(document, "block.merge.typeMismatch", "Only blocks of the same type can be merged.");
+    if (!source || !target) return failed(document, editorError("block.notFound", "Merge source or target was not found."));
+    if (source.type === "unsupported" || target.type === "unsupported") return failed(document, editorError("block.unsupported.merge", "Unsupported block cannot be merged."));
+    if (source.type !== target.type) return failed(document, editorError("block.merge.typeMismatch", "Only blocks of the same type can be merged."));
     var tool = registry && registry.get(target.type);
     var mergedData = tool && tool.merge ? asRecord(tool.merge(target.data, source.data)) : Object.assign({}, target.data, source.data);
     var withoutSource = removeBlockById(document.blocks, source.id).blocks;
@@ -575,7 +588,7 @@
   }
 
   function setDocumentMeta(document, payload) {
-    if (!payload || !payload.meta || typeof payload.meta !== "object") return failed(document, "command.payload.invalid", "set-document-meta requires meta.");
+    if (!payload || !payload.meta || typeof payload.meta !== "object") return failed(document, editorError("command.payload.invalid", "set-document-meta requires meta."));
     return changed(Object.assign({}, document, { meta: payload.merge === false ? clone(payload.meta) : Object.assign({}, document.meta || {}, payload.meta) }));
   }
 
@@ -583,6 +596,17 @@
     var next = (blocks || []).map(clone);
     next.splice(Math.max(0, Math.min(typeof index === "number" ? index : next.length, next.length)), 0, clone(block));
     return next;
+  }
+
+  function childBoundaryError(parent, registry) {
+    var parentTool = registry && registry.get(parent.type);
+    return parentTool && !parentTool.allowsChildren
+      ? editorError("block.children.notAllowed", "Parent block does not allow nested blocks.", parent.id)
+      : null;
+  }
+
+  function insertChildBlock(parent, block, index) {
+    return Object.assign({}, parent, { children: insertAt(parent.children || [], block, index) });
   }
 
   function removeBlockById(blocks, blockId) {
@@ -663,8 +687,8 @@
     return { document: clone(document), changed: true, errors: [] };
   }
 
-  function failed(document, code, message, blockId) {
-    return { document: document, changed: false, errors: [editorError(code, message, blockId)] };
+  function failed(document, error) {
+    return { document: document, changed: false, errors: [error] };
   }
 
   function editorError(code, message, blockId, path) {

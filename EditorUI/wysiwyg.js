@@ -6,6 +6,18 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event) {
+    var fallbackTarget = event.target;
+    var path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (var index = 0; index < path.length; index += 1) {
+      var element = targetElement(path[index]);
+      if (element) {
+        return element;
+      }
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function booleanState(active) {
     return active ? "true" : "false";
   }
@@ -52,6 +64,20 @@
     };
   }
 
+  function closestBoundTrigger(source, bindings) {
+    if (!source) {
+      return null;
+    }
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (trigger) {
+        return [trigger, binding];
+      }
+    }
+    return null;
+  }
+
   function editorRoot(element) {
     return element.closest(".adlaire-wysiwyg");
   }
@@ -78,23 +104,18 @@
   ];
 
   function handleFirstWysiwygClick(source, bindings) {
-    if (!source) {
+    var match = closestBoundTrigger(source, bindings);
+    if (!match) {
       return false;
     }
-    for (var index = 0; index < bindings.length; index += 1) {
-      var binding = bindings[index];
-      var trigger = source.closest(binding.selector);
-      if (!trigger) {
-        continue;
-      }
-      binding.handle(trigger);
-      return true;
-    }
-    return false;
+    var trigger = match[0];
+    var binding = match[1];
+    binding.handle(trigger);
+    return true;
   }
 
   document.addEventListener("click", function (event) {
-    var target = targetElement(event.target);
+    var target = eventSourceElement(event);
     handleFirstWysiwygClick(target, wysiwygPrimaryClickBindings);
     handleFirstWysiwygClick(target, wysiwygSelectionClickBindings);
   });

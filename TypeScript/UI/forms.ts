@@ -7,6 +7,16 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event: Event): Element | null {
+    const fallbackTarget = event.target;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (const target of path) {
+      const element = targetElement(target);
+      if (element) return element;
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function normalize(value: unknown): string {
     return String(value || "").trim().toLowerCase();
   }
@@ -79,6 +89,16 @@
     });
   }
 
+  function closestBoundTrigger<T extends { readonly selector: string }>(source: Element | null, bindings: readonly T[], startIndex = 0): [Element, T, number] | null {
+    if (!source) return null;
+    for (let index = startIndex; index < bindings.length; index += 1) {
+      const binding = bindings[index];
+      const trigger = source.closest(binding.selector);
+      if (trigger) return [trigger, binding, index];
+    }
+    return null;
+  }
+
   function isSupportedField(trigger: Element): trigger is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement {
     return trigger instanceof HTMLInputElement || trigger instanceof HTMLTextAreaElement || trigger instanceof HTMLSelectElement;
   }
@@ -127,34 +147,32 @@
   ] as const;
 
   function handleEveryFormInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): void {
-    if (!source) return;
-    bindings.forEach((binding) => {
-      const trigger = source.closest(binding.selector);
-      if (trigger) binding.handle(trigger);
-    });
+    let match = closestBoundTrigger(source, bindings);
+    while (match) {
+      const [trigger, binding, index] = match;
+      binding.handle(trigger);
+      match = closestBoundTrigger(source, bindings, index + 1);
+    }
   }
 
   function handleFirstFormInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): boolean {
-    if (!source) return false;
-    for (const binding of bindings) {
-      const trigger = source.closest(binding.selector);
-      if (!trigger) continue;
-      binding.handle(trigger);
-      return true;
-    }
-    return false;
+    const match = closestBoundTrigger(source, bindings);
+    if (!match) return false;
+    const [trigger, binding] = match;
+    binding.handle(trigger);
+    return true;
   }
 
   document.addEventListener("input", (event) => {
-    handleEveryFormInteraction(targetElement(event.target), formInputBindings);
+    handleEveryFormInteraction(eventSourceElement(event), formInputBindings);
   });
 
   document.addEventListener("click", (event) => {
-    handleFirstFormInteraction(targetElement(event.target), formClickBindings);
+    handleFirstFormInteraction(eventSourceElement(event), formClickBindings);
   });
 
   document.addEventListener("change", (event) => {
-    handleEveryFormInteraction(targetElement(event.target), formChangeBindings);
+    handleEveryFormInteraction(eventSourceElement(event), formChangeBindings);
   });
 
   function handleFilterInput(trigger: Element): void {

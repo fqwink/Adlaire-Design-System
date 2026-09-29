@@ -25,6 +25,11 @@ import type {
 const mutableCommands = new Set(["insert-block", "delete-block", "move-block", "update-block", "split-block", "merge-block", "set-document-meta"]);
 const knownCommands = new Set([...mutableCommands, "set-selection", "save", "request-publish"]);
 
+type DispatchValidationMode = "single" | "batch";
+type DispatchCommandValidation =
+  | { readonly ok: true; readonly command: EditorCommand }
+  | { readonly ok: false; readonly error: EditorError };
+
 export class HeadlessEditorController implements EditorController {
   #registry: ToolRegistry;
   #events = new EventBus();
@@ -60,23 +65,21 @@ export class HeadlessEditorController implements EditorController {
   }
 
   dispatch(command: EditorCommand): EditorCommandResult {
-    if (!isEditorCommand(command)) return this.#error("command.invalid", "Command must be an object with a string type.");
-    if (!knownCommands.has(command.type)) return this.#error("command.unknown", `Command '${command.type}' is not registered.`);
-    if (!this.canDispatch(command)) return this.#error("command.readOnly", `Command '${command.type}' is not allowed in read-only mode.`);
-    if (command.type === "set-selection") return this.#setSelection(commandSelection(command), true);
-    if (command.type === "save") return this.#requestSave(commandContext<SaveContext>(command));
-    if (command.type === "request-publish") return this.#requestPublish(commandContext<PublishContext>(command));
-    return this.#applyDocumentCommand(command, true);
+    const validation = validateDispatchCommand(command, this.#readOnly, "single");
+    if (!validation.ok) return this.#fail(validation.error);
+    const dispatchCommand = validation.command;
+    if (dispatchCommand.type === "set-selection") return this.#setSelection(commandSelection(dispatchCommand), true);
+    if (dispatchCommand.type === "save") return this.#requestSave(commandContext<SaveContext>(dispatchCommand));
+    if (dispatchCommand.type === "request-publish") return this.#requestPublish(commandContext<PublishContext>(dispatchCommand));
+    return this.#applyDocumentCommand(dispatchCommand, true);
   }
 
   dispatchBatch(commands: EditorCommand[]): EditorCommandResult {
     if (!Array.isArray(commands)) return this.#error("command.batch.invalid", "Batch payload must be an array of commands.");
     if (commands.length === 0) return { document: this.getDocument(), selection: this.getSelection(), changed: false };
     for (const command of commands) {
-      if (!isEditorCommand(command)) return this.#error("command.invalid", "Command must be an object with a string type.");
-      if (!knownCommands.has(command.type)) return this.#error("command.unknown", `Command '${command.type}' is not registered.`);
-      if (command.type === "save" || command.type === "request-publish") return this.#error("command.batch.unsupported", "Save and publish commands cannot be batched.");
-      if (!this.canDispatch(command)) return this.#error("command.readOnly", `Command '${command.type}' is not allowed in read-only mode.`);
+      const validation = validateDispatchCommand(command, this.#readOnly, "batch");
+      if (!validation.ok) return this.#fail(validation.error);
     }
 
     const before = { document: this.getDocument(), selection: this.getSelection() };
@@ -123,7 +126,7 @@ export class HeadlessEditorController implements EditorController {
   }
 
   canDispatch(command: EditorCommand): boolean {
-    return isEditorCommand(command) && knownCommands.has(command.type) && !(this.#readOnly && mutableCommands.has(command.type));
+    return validateDispatchCommand(command, this.#readOnly, "single").ok;
   }
 
   getSelection(): EditorSelection | null {
@@ -234,10 +237,13 @@ export class HeadlessEditorController implements EditorController {
     this.#events.emit({ type: "error", error });
   }
 
+  #fail(error: EditorError): EditorCommandResult {
+    this.#emitError(error);
+    return { document: this.getDocument(), selection: this.getSelection(), changed: false, errors: [error] };
+  }
+
   #error(code: string, message: string): EditorCommandResult {
-    const failure = editorError(code, message);
-    this.#emitError(failure);
-    return { document: this.getDocument(), selection: this.getSelection(), changed: false, errors: [failure] };
+    return this.#fail(editorError(code, message));
   }
 }
 
@@ -247,6 +253,14 @@ export function createEditor(config: EditorConfig = {}): EditorController {
 
 function isEditorCommand(value: unknown): value is EditorCommand {
   return typeof value === "object" && value !== null && !Array.isArray(value) && typeof (value as EditorCommand).type === "string" && "payload" in value;
+}
+
+function validateDispatchCommand(value: unknown, readOnly: boolean, mode: DispatchValidationMode): DispatchCommandValidation {
+  if (!isEditorCommand(value)) return { ok: false, error: editorError("command.invalid", "Command must be an object with a string type.") };
+  if (!knownCommands.has(value.type)) return { ok: false, error: editorError("command.unknown", `Command '${value.type}' is not registered.`) };
+  if (mode === "batch" && (value.type === "save" || value.type === "request-publish")) return { ok: false, error: editorError("command.batch.unsupported", "Save and publish commands cannot be batched.") };
+  if (readOnly && mutableCommands.has(value.type)) return { ok: false, error: editorError("command.readOnly", `Command '${value.type}' is not allowed in read-only mode.`) };
+  return { ok: true, command: value };
 }
 
 function commandPayload<TPayload extends object>(command: EditorCommand): Partial<TPayload> {
