@@ -126,6 +126,10 @@ for path in \
   TypeScript/CSS/rules-grid.ts \
   TypeScript/CSS/rules-layout.ts \
   TypeScript/CSS/rules-components.ts \
+  TypeScript/CSS/rules-components-foundation.ts \
+  TypeScript/CSS/rules-components-overlays.ts \
+  TypeScript/CSS/rules-components-operations.ts \
+  TypeScript/CSS/rules-components-platform.ts \
   TypeScript/CSS/rules-site.ts \
   TypeScript/CSS/rules-forms.ts \
   TypeScript/CSS/rules-content.ts \
@@ -1179,9 +1183,22 @@ done
 
 for ui_binding_term in \
   'hookSelector' \
+  'componentSelectorBinding' \
+  'componentBinding' \
+  'componentInputBinding' \
+  'componentKeyBinding' \
+  'overlayClickBindings' \
+  'componentClickBindings' \
+  'deferredComponentClickBindings' \
+  'componentInputBindings' \
+  'componentKeyBindings' \
   'choiceBinding' \
   'booleanBinding' \
   'stepBinding' \
+  'handleFirstComponentClick' \
+  'handleEveryComponentClick' \
+  'handleEveryComponentInput' \
+  'handleFirstComponentKey' \
   'interactiveChoiceBindings' \
   'booleanStateBindings' \
   'currentStepBindings' \
@@ -1201,16 +1218,28 @@ if ! cmp -s "$components_ts_hooks" "$components_js_hooks"; then
   fail "Declarative UI interaction bindings" "TypeScript/UI/components.ts and UI/components.js data-adlaire hook sets differ: $(tr '\n' ' ' < "$components_hook_diff")"
 fi
 
+if grep -n -E 'const (copy|remove|toastDismiss|select|sidebarToggle|treeToggle|workspaceTab|contextMenu|splitToggle|overflowToggle|dockToggle|folderToggle|policyExceptionToggle) = source\?\.closest' "$ROOT/TypeScript/UI/components.ts" >/dev/null 2>&1; then
+  fail "Declarative UI interaction bindings" "TypeScript/UI/components.ts must keep component click routing in componentClickBindings."
+fi
+
+if grep -n -E 'var (copy|remove|toastDismiss|select|sidebarToggle|treeToggle|workspaceTab|contextMenu|splitToggle|overflowToggle|dockToggle|folderToggle|policyExceptionToggle) = event\.target\.closest' "$ROOT/UI/components.js" >/dev/null 2>&1; then
+  fail "Declarative UI interaction bindings" "UI/components.js must keep component click routing in componentClickBindings."
+fi
+
+if grep -n -F 'event.target.closest("[data-adlaire-filter-input]")' "$ROOT/UI/components.js" >/dev/null 2>&1; then
+  fail "Declarative UI interaction bindings" "UI/components.js must keep component input routing in componentInputBindings."
+fi
+
 for form_binding_term in \
   'hookSelector' \
   'formBinding' \
   'inputBinding' \
   'fieldBinding' \
-  'inputBindings' \
-  'clickBindings' \
-  'changeBindings' \
-  'handleEveryBoundInteraction' \
-  'handleFirstBoundInteraction'; do
+  'formInputBindings' \
+  'formClickBindings' \
+  'formChangeBindings' \
+  'handleEveryFormInteraction' \
+  'handleFirstFormInteraction'; do
   require_text "TypeScript/UI/forms.ts" "$form_binding_term" "Declarative form interaction bindings"
   require_text "UI/forms.js" "$form_binding_term" "Declarative form interaction bindings"
 done
@@ -1227,9 +1256,9 @@ fi
 
 for content_binding_term in \
   'hookSelector' \
-  'contentBinding' \
+  'contentClickBinding' \
   'contentClickBindings' \
-  'handleContentClick'; do
+  'handleEveryContentClick'; do
   require_text "TypeScript/UI/content.ts" "$content_binding_term" "Declarative content interaction bindings"
   require_text "UI/content.js" "$content_binding_term" "Declarative content interaction bindings"
 done
@@ -1246,10 +1275,10 @@ fi
 
 for wysiwyg_binding_term in \
   'hookSelector' \
-  'wysiwygBinding' \
+  'wysiwygClickBinding' \
   'wysiwygPrimaryClickBindings' \
   'wysiwygSelectionClickBindings' \
-  'handleFirstWysiwygBinding'; do
+  'handleFirstWysiwygClick'; do
   require_text "TypeScript/EditorUI/wysiwyg.ts" "$wysiwyg_binding_term" "Declarative WYSIWYG interaction bindings"
   require_text "EditorUI/wysiwyg.js" "$wysiwyg_binding_term" "Declarative WYSIWYG interaction bindings"
 done
@@ -2240,12 +2269,14 @@ for a11y_contract in \
   'Samples/design/index.html|adlaire-wysiwyg-locked' \
   'Samples/design/index.html|adlaire-wysiwyg-a11y-panel' \
   'TypeScript/UI/components.ts|containFocus' \
-  'TypeScript/UI/components.ts|event.key !== "Escape"' \
+  'TypeScript/UI/components.ts|componentKeyBinding("Escape", closeOpenSurfaces)' \
+  'TypeScript/UI/components.ts|closeOpenSurfaces' \
   'TypeScript/UI/components.ts|data-adlaire-dismiss' \
   'TypeScript/UI/components.ts|aria-expanded' \
   'TypeScript/UI/components.ts|aria-pressed' \
   'UI/components.js|containFocus' \
-  'UI/components.js|event.key !== "Escape"' \
+  'UI/components.js|componentKeyBinding("Escape", closeOpenSurfaces)' \
+  'UI/components.js|closeOpenSurfaces' \
   'UI/components.js|data-adlaire-dismiss' \
   'UI/components.js|aria-expanded' \
   'UI/components.js|aria-pressed'; do
@@ -2361,7 +2392,6 @@ pairs = {
   "TypeScript/CSS/rules-base.ts" => "UI/base.css",
   "TypeScript/CSS/rules-grid.ts" => "UI/grid.css",
   "TypeScript/CSS/rules-layout.ts" => "UI/layout.css",
-  "TypeScript/CSS/rules-components.ts" => "UI/components.css",
   "TypeScript/CSS/rules-site.ts" => "UI/site.css",
   "TypeScript/CSS/rules-forms.ts" => "UI/forms.css",
   "TypeScript/CSS/rules-content.ts" => "UI/content.css",
@@ -2377,6 +2407,21 @@ pairs.each do |source, output|
   generated = File.read(File.join(root, output))
   abort("[Generated CSS] differs from source: #{source} -> #{output}") unless match[1] == generated
 end
+
+component_sources = [
+  "TypeScript/CSS/rules-components-foundation.ts",
+  "TypeScript/CSS/rules-components-overlays.ts",
+  "TypeScript/CSS/rules-components-operations.ts",
+  "TypeScript/CSS/rules-components-platform.ts",
+]
+component_css = component_sources.map do |source|
+  source_text = File.read(File.join(root, source))
+  match = source_text.match(/export const [A-Z_]+ = `(.*)`;/m)
+  abort("[Generated CSS source] missing exported css template in #{source}") unless match
+  match[1]
+end.join
+generated_components = File.read(File.join(root, "UI/components.css"))
+abort("[Generated CSS] differs from component source fragments: #{component_sources.join(", ")} -> UI/components.css") unless component_css == generated_components
 
 defined_vars = {}
 duplicate_vars = []

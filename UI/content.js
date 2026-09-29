@@ -10,7 +10,7 @@
     return "[" + attribute + "]";
   }
 
-  function contentBinding(attribute, handle) {
+  function contentClickBinding(attribute, handle) {
     return {
       selector: hookSelector(attribute),
       handle: handle
@@ -69,12 +69,12 @@
   }
 
   var contentClickBindings = [
-    contentBinding("data-adlaire-sort", sortTable),
-    contentBinding("data-adlaire-code-copy", copyCodeBlock),
-    contentBinding("data-adlaire-code-line", selectCodeLine)
+    contentClickBinding("data-adlaire-sort", sortTable),
+    contentClickBinding("data-adlaire-code-copy", copyCodeBlock),
+    contentClickBinding("data-adlaire-code-line", selectCodeLine)
   ];
 
-  function handleContentClick(source) {
+  function handleEveryContentClick(source) {
     if (!source) {
       return;
     }
@@ -87,7 +87,7 @@
   }
 
   document.addEventListener("click", function (event) {
-    handleContentClick(targetElement(event.target));
+    handleEveryContentClick(targetElement(event.target));
   });
 
   function sortTable(header) {

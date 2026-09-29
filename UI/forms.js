@@ -75,25 +75,25 @@
     }
   }
 
-  var inputBindings = [
+  var formInputBindings = [
     formBinding("data-adlaire-filter-input", handleFilterInput),
     inputBinding("data-adlaire-combobox-input", applyCombobox),
     fieldBinding("data-adlaire-validate", validateField)
   ];
 
-  var clickBindings = [
+  var formClickBindings = [
     formBinding("data-adlaire-combobox-option", selectComboboxOption),
     formBinding("data-adlaire-multi-select-option", toggleMultiSelectOption),
     formBinding("data-adlaire-date-preset", applyDatePreset),
     formBinding("data-adlaire-filter-chip", selectFilterChip)
   ];
 
-  var changeBindings = [
+  var formChangeBindings = [
     inputBinding("data-adlaire-file-input", updateFileInput),
     inputBinding("data-adlaire-toggle-input", syncToggleInput)
   ];
 
-  function handleEveryBoundInteraction(source, bindings) {
+  function handleEveryFormInteraction(source, bindings) {
     if (!source) {
       return;
     }
@@ -105,7 +105,7 @@
     });
   }
 
-  function handleFirstBoundInteraction(source, bindings) {
+  function handleFirstFormInteraction(source, bindings) {
     if (!source) {
       return false;
     }
@@ -122,15 +122,15 @@
   }
 
   document.addEventListener("input", function (event) {
-    handleEveryBoundInteraction(targetElement(event.target), inputBindings);
+    handleEveryFormInteraction(targetElement(event.target), formInputBindings);
   });
 
   document.addEventListener("click", function (event) {
-    handleFirstBoundInteraction(targetElement(event.target), clickBindings);
+    handleFirstFormInteraction(targetElement(event.target), formClickBindings);
   });
 
   document.addEventListener("change", function (event) {
-    handleEveryBoundInteraction(targetElement(event.target), changeBindings);
+    handleEveryFormInteraction(targetElement(event.target), formChangeBindings);
   });
 
   function handleFilterInput(trigger) {

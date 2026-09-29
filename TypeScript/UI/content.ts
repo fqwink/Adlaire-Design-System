@@ -7,7 +7,7 @@
     return target instanceof Element ? target : null;
   }
 
-  interface ContentInteractionBinding {
+  interface ContentClickBinding {
     readonly selector: string;
     readonly handle: (trigger: Element) => void;
   }
@@ -16,7 +16,7 @@
     return `[${attribute}]`;
   }
 
-  function contentBinding(attribute: string, handle: (trigger: Element) => void): ContentInteractionBinding {
+  function contentClickBinding(attribute: string, handle: (trigger: Element) => void): ContentClickBinding {
     return {
       selector: hookSelector(attribute),
       handle,
@@ -62,13 +62,13 @@
     };
   }
 
-  const contentClickBindings: readonly ContentInteractionBinding[] = [
-    contentBinding("data-adlaire-sort", sortTable),
-    contentBinding("data-adlaire-code-copy", copyCodeBlock),
-    contentBinding("data-adlaire-code-line", selectCodeLine),
+  const contentClickBindings: readonly ContentClickBinding[] = [
+    contentClickBinding("data-adlaire-sort", sortTable),
+    contentClickBinding("data-adlaire-code-copy", copyCodeBlock),
+    contentClickBinding("data-adlaire-code-line", selectCodeLine),
   ] as const;
 
-  function handleContentClick(source: Element | null): void {
+  function handleEveryContentClick(source: Element | null): void {
     if (!source) return;
     contentClickBindings.forEach((binding) => {
       const trigger = source.closest(binding.selector);
@@ -77,7 +77,7 @@
   }
 
   document.addEventListener("click", (event) => {
-    handleContentClick(targetElement(event.target));
+    handleEveryContentClick(targetElement(event.target));
   });
 
   function sortTable(header: Element): void {
