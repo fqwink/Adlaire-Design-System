@@ -132,10 +132,23 @@ for path in \
   TypeScript/CSS/rules-components-platform.ts \
   TypeScript/CSS/rules-site.ts \
   TypeScript/CSS/rules-forms.ts \
+  TypeScript/CSS/rules-forms-foundation.ts \
+  TypeScript/CSS/rules-forms-composite.ts \
+  TypeScript/CSS/rules-forms-upload.ts \
+  TypeScript/CSS/rules-forms-validation.ts \
   TypeScript/CSS/rules-content.ts \
+  TypeScript/CSS/rules-content-foundation.ts \
+  TypeScript/CSS/rules-content-extended.ts \
+  TypeScript/CSS/rules-content-catalog.ts \
+  TypeScript/CSS/rules-content-interactions.ts \
   TypeScript/CSS/rules-utilities.ts \
   TypeScript/CSS/rules-compat-agws.ts \
   TypeScript/CSS/rules-wysiwyg.ts \
+  TypeScript/CSS/rules-wysiwyg-shell.ts \
+  TypeScript/CSS/rules-wysiwyg-toolbar.ts \
+  TypeScript/CSS/rules-wysiwyg-blocks.ts \
+  TypeScript/CSS/rules-wysiwyg-support.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions.ts \
   TypeScript/CSS/targets.ts \
   TypeScript/CSS/emit.ts \
   TypeScript/CSS/manifest.ts \
@@ -1203,7 +1216,12 @@ for ui_binding_term in \
   'booleanStateBindings' \
   'currentStepBindings' \
   'closestBoundTrigger' \
-  'handleDeclarativeInteraction'; do
+  'handleDeclarativeInteraction' \
+  'safeDocumentQuery' \
+  'safeScopedQuery' \
+  'safeScopedQueryAll' \
+  'setBooleanAttribute' \
+  'setOpenState'; do
   require_text "TypeScript/UI/components.ts" "$ui_binding_term" "Declarative UI interaction bindings"
   require_text "UI/components.js" "$ui_binding_term" "Declarative UI interaction bindings"
 done
@@ -1230,6 +1248,18 @@ if grep -n -F 'event.target.closest("[data-adlaire-filter-input]")' "$ROOT/UI/co
   fail "Declarative UI interaction bindings" "UI/components.js must keep component input routing in componentInputBindings."
 fi
 
+if grep -n -F 'document.querySelector(input.getAttribute("data-adlaire-filter-root")' "$ROOT/UI/components.js" >/dev/null 2>&1; then
+  fail "Safe UI DOM references" "UI/components.js must resolve filter roots through safeDocumentQuery."
+fi
+
+if grep -n -F 'root?.querySelector<HTMLElement>(fallbackSelector ?? "")' "$ROOT/TypeScript/UI/components.ts" >/dev/null 2>&1; then
+  fail "Safe UI DOM references" "TypeScript/UI/components.ts must resolve optional fallback selectors through safeScopedQuery."
+fi
+
+if grep -n -F 'root && fallbackSelector ? root.querySelector(fallbackSelector)' "$ROOT/UI/components.js" >/dev/null 2>&1; then
+  fail "Safe UI DOM references" "UI/components.js must resolve optional fallback selectors through safeScopedQuery."
+fi
+
 for form_binding_term in \
   'hookSelector' \
   'formBinding' \
@@ -1239,10 +1269,22 @@ for form_binding_term in \
   'formClickBindings' \
   'formChangeBindings' \
   'handleEveryFormInteraction' \
-  'handleFirstFormInteraction'; do
+  'handleFirstFormInteraction' \
+  'safeDocumentQuery' \
+  'safeScopedQuery' \
+  'setBooleanAttribute' \
+  'setOpenState'; do
   require_text "TypeScript/UI/forms.ts" "$form_binding_term" "Declarative form interaction bindings"
   require_text "UI/forms.js" "$form_binding_term" "Declarative form interaction bindings"
 done
+
+if grep -n -F 'selector ? document.querySelector(selector)' "$ROOT/UI/forms.js" >/dev/null 2>&1; then
+  fail "Safe form DOM references" "UI/forms.js must resolve data-driven selectors through safeDocumentQuery."
+fi
+
+if grep -n -F 'root.querySelector<HTMLInputElement>(selector)' "$ROOT/TypeScript/UI/forms.ts" >/dev/null 2>&1; then
+  fail "Safe form DOM references" "TypeScript/UI/forms.ts must resolve scoped data-driven selectors through safeScopedQuery."
+fi
 
 forms_ts_hooks="$TMP_DIR/forms-ts-hooks.txt"
 forms_js_hooks="$TMP_DIR/forms-js-hooks.txt"
@@ -1258,10 +1300,19 @@ for content_binding_term in \
   'hookSelector' \
   'contentClickBinding' \
   'contentClickBindings' \
-  'handleEveryContentClick'; do
+  'handleEveryContentClick' \
+  'safeDocumentQuery'; do
   require_text "TypeScript/UI/content.ts" "$content_binding_term" "Declarative content interaction bindings"
   require_text "UI/content.js" "$content_binding_term" "Declarative content interaction bindings"
 done
+
+if grep -n -F 'selector ? document.querySelector(selector)' "$ROOT/UI/content.js" >/dev/null 2>&1; then
+  fail "Safe content DOM references" "UI/content.js must resolve code copy selectors through safeDocumentQuery."
+fi
+
+if grep -n -F 'statusSelector ? document.querySelector(statusSelector)' "$ROOT/UI/content.js" >/dev/null 2>&1; then
+  fail "Safe content DOM references" "UI/content.js must resolve code copy status selectors through safeDocumentQuery."
+fi
 
 content_ts_hooks="$TMP_DIR/content-ts-hooks.txt"
 content_js_hooks="$TMP_DIR/content-js-hooks.txt"
@@ -1278,10 +1329,17 @@ for wysiwyg_binding_term in \
   'wysiwygClickBinding' \
   'wysiwygPrimaryClickBindings' \
   'wysiwygSelectionClickBindings' \
-  'handleFirstWysiwygClick'; do
+  'handleFirstWysiwygClick' \
+  'safeDocumentQuery' \
+  'setBooleanAttribute' \
+  'setOpenState'; do
   require_text "TypeScript/EditorUI/wysiwyg.ts" "$wysiwyg_binding_term" "Declarative WYSIWYG interaction bindings"
   require_text "EditorUI/wysiwyg.js" "$wysiwyg_binding_term" "Declarative WYSIWYG interaction bindings"
 done
+
+if grep -n -F 'return selector ? document.querySelector(selector) : null' "$ROOT/EditorUI/wysiwyg.js" >/dev/null 2>&1; then
+  fail "Safe WYSIWYG DOM references" "EditorUI/wysiwyg.js must resolve editor target selectors through safeDocumentQuery."
+fi
 
 wysiwyg_ts_hooks="$TMP_DIR/wysiwyg-ts-hooks.txt"
 wysiwyg_js_hooks="$TMP_DIR/wysiwyg-js-hooks.txt"
@@ -2387,41 +2445,47 @@ token_outputs.each do |output, category, css|
   abort("[Generated token CSS] differs from source: TypeScript/CSS/tokens.ts -> #{output}") unless css == generated
 end
 
-pairs = {
-  "TypeScript/CSS/rules-adlaire.ts" => "UI/adlaire.css",
-  "TypeScript/CSS/rules-base.ts" => "UI/base.css",
-  "TypeScript/CSS/rules-grid.ts" => "UI/grid.css",
-  "TypeScript/CSS/rules-layout.ts" => "UI/layout.css",
-  "TypeScript/CSS/rules-site.ts" => "UI/site.css",
-  "TypeScript/CSS/rules-forms.ts" => "UI/forms.css",
-  "TypeScript/CSS/rules-content.ts" => "UI/content.css",
-  "TypeScript/CSS/rules-utilities.ts" => "UI/utilities.css",
-  "TypeScript/CSS/rules-compat-agws.ts" => "UI/compat-agws.css",
-  "TypeScript/CSS/rules-wysiwyg.ts" => "EditorUI/wysiwyg.css",
-}
+manifest = File.read(File.join(root, "TypeScript/CSS/manifest.ts"))
+required_block = manifest.match(/export const CSS_COMPILER_REQUIRED_FILES: readonly string\[\] = \[(.*?)\] as const;/m)
+abort("[CSS compiler registry] missing CSS_COMPILER_REQUIRED_FILES in TypeScript/CSS/manifest.ts") unless required_block
+required_files = required_block[1].scan(/"([^"]+)"/).flatten.sort
 
-pairs.each do |source, output|
+target_entries = manifest.scan(/\{ path: "([^"]+)", kind: "([^"]+)", firstLine: "([^"]+)", sourceModules: \[([^\]]*)\], migrated: (true|false) \}/)
+abort("[CSS compiler registry] missing CSS_TARGETS entries in TypeScript/CSS/manifest.ts") if target_entries.empty?
+
+compiler_source_modules = target_entries.flat_map do |_output, _kind, _first_line, modules_text, _migrated|
+  modules_text.scan(/"([^"]+)"/).flatten.map { |source| "TypeScript/CSS/#{source}" }
+end.uniq.sort
+missing_required_modules = compiler_source_modules - required_files
+abort("[CSS compiler registry] sourceModules missing from CSS_COMPILER_REQUIRED_FILES: #{missing_required_modules.join(", ")}") unless missing_required_modules.empty?
+
+actual_rule_sources = Dir.chdir(root) { Dir.glob("TypeScript/CSS/rules*.ts").sort }
+missing_required_rules = actual_rule_sources - required_files
+abort("[CSS compiler registry] rules source files missing from CSS_COMPILER_REQUIRED_FILES: #{missing_required_rules.join(", ")}") unless missing_required_rules.empty?
+
+allowed_registry_helpers = [
+  "TypeScript/CSS/rules-types.ts",
+]
+unregistered_rule_sources = actual_rule_sources - compiler_source_modules - allowed_registry_helpers
+abort("[CSS compiler registry] rules source files missing from CSS_TARGETS sourceModules: #{unregistered_rule_sources.join(", ")}") unless unregistered_rule_sources.empty?
+
+def source_css_parts(root, source)
   source_text = File.read(File.join(root, source))
-  match = source_text.match(/css: `(.*)` \} as const;/m)
-  abort("[Generated CSS source] missing css template in #{source}") unless match
-  generated = File.read(File.join(root, output))
-  abort("[Generated CSS] differs from source: #{source} -> #{output}") unless match[1] == generated
+  direct = source_text.match(/css: `(.*)` \} as const;/m)
+  return [direct[1]] if direct
+  source_text.scan(/export const [A-Z_]+ = `(.*?)`;/m).flatten
 end
 
-component_sources = [
-  "TypeScript/CSS/rules-components-foundation.ts",
-  "TypeScript/CSS/rules-components-overlays.ts",
-  "TypeScript/CSS/rules-components-operations.ts",
-  "TypeScript/CSS/rules-components-platform.ts",
-]
-component_css = component_sources.map do |source|
-  source_text = File.read(File.join(root, source))
-  match = source_text.match(/export const [A-Z_]+ = `(.*)`;/m)
-  abort("[Generated CSS source] missing exported css template in #{source}") unless match
-  match[1]
-end.join
-generated_components = File.read(File.join(root, "UI/components.css"))
-abort("[Generated CSS] differs from component source fragments: #{component_sources.join(", ")} -> UI/components.css") unless component_css == generated_components
+target_entries.each do |output, kind, _first_line, modules_text, _migrated|
+  next if kind == "token"
+
+  sources = modules_text.scan(/"([^"]+)"/).flatten.map { |source| "TypeScript/CSS/#{source}" }
+  css_parts = sources.reject { |source| source == "TypeScript/CSS/rules.ts" }.flat_map { |source| source_css_parts(root, source) }
+  abort("[Generated CSS source] missing css template fragments for #{output}: #{sources.join(", ")}") if css_parts.empty?
+
+  generated = File.read(File.join(root, output))
+  abort("[Generated CSS] differs from manifest sourceModules: #{sources.join(", ")} -> #{output}") unless css_parts.join == generated
+end
 
 defined_vars = {}
 duplicate_vars = []

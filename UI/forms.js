@@ -10,6 +10,41 @@
     return String(value || "").trim().toLowerCase();
   }
 
+  function booleanState(active) {
+    return active ? "true" : "false";
+  }
+
+  function setBooleanAttribute(target, attribute, active) {
+    target.setAttribute(attribute, booleanState(active));
+  }
+
+  function setOpenState(target, open) {
+    target.hidden = !open;
+    target.classList.toggle("is-open", open);
+  }
+
+  function safeDocumentQuery(selector) {
+    if (!selector) {
+      return null;
+    }
+    try {
+      return document.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function safeScopedQuery(root, selector) {
+    if (!root || !selector) {
+      return null;
+    }
+    try {
+      return root.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
   function hookSelector(attribute) {
     return "[" + attribute + "]";
   }
@@ -70,8 +105,7 @@
       count.textContent = String(visibleCount);
     }
     if (empty) {
-      empty.hidden = visibleCount !== 0;
-      empty.classList.toggle("is-open", visibleCount === 0);
+      setOpenState(empty, visibleCount === 0);
     }
   }
 
@@ -147,14 +181,14 @@
     }
 
     root.querySelectorAll("[data-adlaire-filter-chip]").forEach(function (item) {
-      item.setAttribute("aria-pressed", item === chip ? "true" : "false");
+      setBooleanAttribute(item, "aria-pressed", item === chip);
     });
     applyFilter(root);
   }
 
   function updateFileInput(fileInput) {
     var selector = fileInput.getAttribute("data-adlaire-file-output");
-    var output = selector ? document.querySelector(selector) : null;
+    var output = safeDocumentQuery(selector);
     var emptyText = fileInput.getAttribute("data-adlaire-file-empty") || "No file selected";
     var names = Array.prototype.map.call(fileInput.files || [], function (file) {
       return file.name;
@@ -166,9 +200,9 @@
 
   function syncToggleInput(toggleInput) {
     var selector = toggleInput.getAttribute("data-adlaire-toggle-input");
-    var toggle = selector ? document.querySelector(selector) : null;
+    var toggle = safeDocumentQuery(selector);
     if (toggle) {
-      toggle.setAttribute("aria-checked", toggleInput.checked ? "true" : "false");
+      setBooleanAttribute(toggle, "aria-checked", toggleInput.checked);
     }
   }
 
@@ -179,7 +213,7 @@
     }
 
     var invalid = field.hasAttribute("required") && normalize(field.value) === "";
-    field.setAttribute("aria-invalid", invalid ? "true" : "false");
+    setBooleanAttribute(field, "aria-invalid", invalid);
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
     updateValidationSummary(field);
@@ -195,8 +229,7 @@
     var invalidFields = Array.prototype.filter.call(form.querySelectorAll("[data-adlaire-validate]"), function (item) {
       return item.getAttribute("aria-invalid") === "true";
     });
-    summary.hidden = invalidFields.length === 0;
-    summary.classList.toggle("is-open", invalidFields.length > 0);
+    setOpenState(summary, invalidFields.length > 0);
     summary.textContent = invalidFields.length === 0 ? "" : invalidFields.map(fieldLabel).join(", ");
   }
 
@@ -223,7 +256,7 @@
       }
     });
     list.hidden = visibleCount === 0;
-    input.setAttribute("aria-expanded", visibleCount > 0 ? "true" : "false");
+    setBooleanAttribute(input, "aria-expanded", visibleCount > 0);
   }
 
   function selectComboboxOption(option) {
@@ -236,9 +269,9 @@
 
     var value = option.getAttribute("data-adlaire-combobox-option") || option.textContent.trim() || "";
     input.value = value;
-    input.setAttribute("aria-expanded", "false");
+    setBooleanAttribute(input, "aria-expanded", false);
     root.querySelectorAll("[data-adlaire-combobox-option]").forEach(function (item) {
-      item.setAttribute("aria-selected", item === option ? "true" : "false");
+      setBooleanAttribute(item, "aria-selected", item === option);
     });
     if (list) {
       list.hidden = true;
@@ -252,13 +285,13 @@
     }
 
     var selected = option.getAttribute("aria-selected") !== "true";
-    option.setAttribute("aria-selected", selected ? "true" : "false");
+    setBooleanAttribute(option, "aria-selected", selected);
     updateMultiSelectOutput(root);
   }
 
   function updateMultiSelectOutput(root) {
     var selector = root.getAttribute("data-adlaire-multi-select-output");
-    var output = selector ? document.querySelector(selector) : null;
+    var output = safeDocumentQuery(selector);
     if (!output) {
       return;
     }
@@ -278,7 +311,7 @@
     }
 
     root.querySelectorAll("[data-adlaire-date-preset]").forEach(function (item) {
-      item.setAttribute("aria-pressed", item === preset ? "true" : "false");
+      setBooleanAttribute(item, "aria-pressed", item === preset);
     });
     setInputValue(root, preset.getAttribute("data-adlaire-date-start"), preset.getAttribute("data-adlaire-date-start-value"));
     setInputValue(root, preset.getAttribute("data-adlaire-date-end"), preset.getAttribute("data-adlaire-date-end-value"));
@@ -288,13 +321,9 @@
     if (!selector || value === null) {
       return;
     }
-    try {
-      var input = root.querySelector(selector);
-      if (input) {
-        input.value = value;
-      }
-    } catch (error) {
-      return;
+    var input = safeScopedQuery(root, selector);
+    if (input) {
+      input.value = value;
     }
   }
 }());

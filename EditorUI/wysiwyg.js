@@ -6,6 +6,30 @@
     return target instanceof Element ? target : null;
   }
 
+  function booleanState(active) {
+    return active ? "true" : "false";
+  }
+
+  function setBooleanAttribute(target, attribute, active) {
+    target.setAttribute(attribute, booleanState(active));
+  }
+
+  function setOpenState(target, open) {
+    target.hidden = !open;
+    target.classList.toggle("is-open", open);
+  }
+
+  function safeDocumentQuery(selector) {
+    if (!selector) {
+      return null;
+    }
+    try {
+      return document.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
   function hookSelector(attribute) {
     return "[" + attribute + "]";
   }
@@ -24,13 +48,13 @@
   function setMode(root, mode) {
     root.setAttribute("data-adlaire-wysiwyg-mode", mode);
     root.querySelectorAll("[data-adlaire-wysiwyg-mode]").forEach(function (trigger) {
-      trigger.setAttribute("aria-pressed", trigger.getAttribute("data-adlaire-wysiwyg-mode") === mode ? "true" : "false");
+      setBooleanAttribute(trigger, "aria-pressed", trigger.getAttribute("data-adlaire-wysiwyg-mode") === mode);
     });
   }
 
   function targetFor(trigger) {
     var selector = trigger.getAttribute("data-adlaire-wysiwyg-target");
-    return selector ? document.querySelector(selector) : null;
+    return safeDocumentQuery(selector);
   }
 
   var wysiwygPrimaryClickBindings = [
@@ -79,9 +103,8 @@
     }
 
     var open = toggle.getAttribute("aria-expanded") !== "true";
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    panel.hidden = !open;
-    panel.classList.toggle("is-open", open);
+    setBooleanAttribute(toggle, "aria-expanded", open);
+    setOpenState(panel, open);
   }
 
   function selectBlock(selectable) {
@@ -92,9 +115,9 @@
 
     root.querySelectorAll(".adlaire-wysiwyg-block-selected, [data-adlaire-wysiwyg-select][aria-selected='true']").forEach(function (item) {
       item.classList.remove("adlaire-wysiwyg-block-selected");
-      item.setAttribute("aria-selected", "false");
+      setBooleanAttribute(item, "aria-selected", false);
     });
     selectable.classList.add("adlaire-wysiwyg-block-selected");
-    selectable.setAttribute("aria-selected", "true");
+    setBooleanAttribute(selectable, "aria-selected", true);
   }
 }());

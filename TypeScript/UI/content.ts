@@ -7,6 +7,15 @@
     return target instanceof Element ? target : null;
   }
 
+  function safeDocumentQuery(selector: string | null | undefined): HTMLElement | null {
+    if (!selector) return null;
+    try {
+      return document.querySelector<HTMLElement>(selector);
+    } catch {
+      return null;
+    }
+  }
+
   interface ContentClickBinding {
     readonly selector: string;
     readonly handle: (trigger: Element) => void;
@@ -99,11 +108,11 @@
   function copyCodeBlock(copy: Element): void {
     const selector = copy.getAttribute("data-adlaire-code-copy");
     const statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
-    const target = selector ? document.querySelector(selector) : copy.closest(".adlaire-code-block");
+    const target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
     if (target && navigator.clipboard) {
       navigator.clipboard.writeText(target.textContent ?? "");
       copy.setAttribute("data-adlaire-copied", "true");
-      const status = statusSelector ? document.querySelector(statusSelector) : null;
+      const status = safeDocumentQuery(statusSelector);
       if (status) {
         status.textContent = "Copied";
       }

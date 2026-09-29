@@ -11,6 +11,46 @@
     return target instanceof Element ? target : null;
   }
 
+  function booleanState(active: boolean): "true" | "false" {
+    return active ? "true" : "false";
+  }
+
+  function setBooleanAttribute(target: Element, attribute: string, active: boolean): void {
+    target.setAttribute(attribute, booleanState(active));
+  }
+
+  function setOpenState(target: HTMLElement, open: boolean): void {
+    target.hidden = !open;
+    target.classList.toggle("is-open", open);
+  }
+
+  function safeDocumentQuery(selector: string | null | undefined): HTMLElement | null {
+    if (!selector) return null;
+    try {
+      return document.querySelector<HTMLElement>(selector);
+    } catch {
+      return null;
+    }
+  }
+
+  function safeScopedQuery(root: ParentNode | null | undefined, selector: string | null | undefined): HTMLElement | null {
+    if (!root || !selector) return null;
+    try {
+      return root.querySelector(selector) as HTMLElement | null;
+    } catch {
+      return null;
+    }
+  }
+
+  function safeScopedQueryAll(root: ParentNode | null | undefined, selector: string | null | undefined): HTMLElement[] {
+    if (!root || !selector) return [];
+    try {
+      return Array.from(root.querySelectorAll<HTMLElement>(selector));
+    } catch {
+      return [];
+    }
+  }
+
   function getTarget(trigger: Element): HTMLElement | null {
     const selector = trigger.getAttribute("data-adlaire-target") ?? trigger.getAttribute("href");
     if (!selector || !selector.startsWith("#")) return null;
@@ -23,18 +63,13 @@
     if (selector.startsWith("#")) return document.getElementById(selector.slice(1));
     const byId = document.getElementById(selector);
     if (byId) return byId;
-    try {
-      return document.querySelector<HTMLElement>(selector);
-    } catch {
-      return null;
-    }
+    return safeDocumentQuery(selector);
   }
 
   function setExpanded(trigger: Element, target: HTMLElement | null, expanded: boolean): void {
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
     if (!target) return;
-    target.hidden = !expanded;
-    target.classList.toggle("is-open", expanded);
+    setOpenState(target, expanded);
     if (expanded && target.matches(overlaySelector)) {
       document.documentElement.classList.add("adlaire-overlay-open");
     }
@@ -119,9 +154,8 @@
   function dismissSurface(dismiss: Element): void {
     const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
     if (dismissTarget) {
-      dismissTarget.hidden = true;
-      dismissTarget.classList.remove("is-open");
-      triggersForTarget(dismissTarget).forEach((item) => item.setAttribute("aria-expanded", "false"));
+      setOpenState(dismissTarget, false);
+      triggersForTarget(dismissTarget).forEach((item) => setBooleanAttribute(item, "aria-expanded", false));
     }
     if (!document.querySelector(openOverlaySelector)) {
       document.documentElement.classList.remove("adlaire-overlay-open");
@@ -153,12 +187,11 @@
 
   function closeOpenSurfaces(): boolean {
     document.querySelectorAll<HTMLElement>(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open`).forEach((target) => {
-      target.hidden = true;
-      target.classList.remove("is-open");
-      triggersForTarget(target).forEach((trigger) => trigger.setAttribute("aria-expanded", "false"));
+      setOpenState(target, false);
+      triggersForTarget(target).forEach((trigger) => setBooleanAttribute(trigger, "aria-expanded", false));
     });
     document.querySelectorAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach((trigger) => {
-      trigger.setAttribute("aria-expanded", "false");
+      setBooleanAttribute(trigger, "aria-expanded", false);
     });
     document.documentElement.classList.remove("adlaire-overlay-open");
     lastFocus?.focus();
@@ -208,11 +241,11 @@
     slides.forEach((slide, index) => {
       const currentSlide = index === current;
       slide.classList.toggle("is-current", currentSlide);
-      slide.setAttribute("aria-hidden", currentSlide ? "false" : "true");
+      setBooleanAttribute(slide, "aria-hidden", !currentSlide);
     });
     Array.from(root.querySelectorAll("[data-adlaire-carousel-index]"))
       .filter((indicator) => !indicator.hasAttribute("data-adlaire-carousel"))
-      .forEach((indicator, index) => indicator.setAttribute("aria-current", index === current ? "true" : "false"));
+      .forEach((indicator, index) => setBooleanAttribute(indicator, "aria-current", index === current));
   }
 
   interface InteractiveChoiceBinding {
@@ -478,7 +511,7 @@
   function selectListItem(select: Element): void {
     const list = select.closest("[data-adlaire-select-list]");
     list?.querySelectorAll("[data-adlaire-select]").forEach((item) => {
-      item.setAttribute("aria-selected", item === select ? "true" : "false");
+      setBooleanAttribute(item, "aria-selected", item === select);
     });
   }
 
@@ -491,17 +524,12 @@
     const collapsed = !shell.classList.contains("adlaire-sidebar-collapsed");
     shell.classList.toggle("adlaire-sidebar-collapsed", collapsed);
     if (shell.id && !trigger.getAttribute("aria-controls")) trigger.setAttribute("aria-controls", shell.id);
-    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+    setBooleanAttribute(trigger, "aria-expanded", !collapsed);
+    setBooleanAttribute(trigger, "aria-pressed", collapsed);
   }
 
   function querySidebarShell(selector: string | null): HTMLElement | null {
-    if (!selector) return null;
-    try {
-      return document.querySelector<HTMLElement>(selector);
-    } catch {
-      return null;
-    }
+    return safeDocumentQuery(selector);
   }
 
   function toggleTree(trigger: Element): void {
@@ -510,9 +538,8 @@
     if (!branch) return;
 
     const expanded = trigger.getAttribute("aria-expanded") !== "true";
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
-    branch.hidden = !expanded;
-    branch.classList.toggle("is-open", expanded);
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
+    setOpenState(branch, expanded);
   }
 
   function queryTreeBranch(selector: string | null, trigger: Element): HTMLElement | null {
@@ -520,12 +547,7 @@
       const normalized = selector.startsWith("#") ? selector.slice(1) : selector;
       const byId = document.getElementById(normalized);
       if (byId) return byId;
-      try {
-        const queried = document.querySelector<HTMLElement>(selector);
-        if (queried) return queried;
-      } catch {
-        return null;
-      }
+      return safeDocumentQuery(selector);
     }
     return trigger.closest(".adlaire-tree-item")?.querySelector<HTMLElement>(".adlaire-tree-branch") ?? null;
   }
@@ -538,24 +560,22 @@
 
     tabs.forEach((tab) => {
       const selected = tab === trigger;
-      tab.setAttribute("aria-selected", selected ? "true" : "false");
+      setBooleanAttribute(tab, "aria-selected", selected);
       tab.setAttribute("tabindex", selected ? "0" : "-1");
       const panel = queryReferencedTarget(tab, "data-adlaire-workspace-tab");
       if (!panel) return;
-      panel.hidden = !selected;
-      panel.classList.toggle("is-open", selected);
+      setOpenState(panel, selected);
     });
   }
 
   function toggleDisclosureSurface(trigger: Element, attribute: string, rootSelector?: string, fallbackSelector?: string): void {
     const root = rootSelector ? trigger.closest(rootSelector) : null;
-    const target = queryReferencedTarget(trigger, attribute) ?? root?.querySelector<HTMLElement>(fallbackSelector ?? "");
+    const target = queryReferencedTarget(trigger, attribute) ?? safeScopedQuery(root, fallbackSelector);
     if (!target) return;
 
     const expanded = trigger.getAttribute("aria-expanded") !== "true";
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
-    target.hidden = !expanded;
-    target.classList.toggle("is-open", expanded);
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
+    setOpenState(target, expanded);
   }
 
   function toggleDockPanel(trigger: Element): void {
@@ -564,8 +584,8 @@
 
     const collapsed = !panel.classList.contains("is-collapsed");
     panel.classList.toggle("is-collapsed", collapsed);
-    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+    setBooleanAttribute(trigger, "aria-expanded", !collapsed);
+    setBooleanAttribute(trigger, "aria-pressed", collapsed);
   }
 
   function selectInteractiveChoice(trigger: Element, rootSelector: string, itemSelector: string, selectedAttribute: string): void {
@@ -574,7 +594,7 @@
 
     root.querySelectorAll<HTMLElement>(itemSelector).forEach((item) => {
       const selected = item === trigger;
-      item.setAttribute(selectedAttribute, selected ? "true" : "false");
+      setBooleanAttribute(item, selectedAttribute, selected);
       item.classList.toggle("is-selected", selected);
     });
   }
@@ -596,7 +616,7 @@
 
   function toggleBooleanState(trigger: Element, stateAttribute: string): void {
     const active = trigger.getAttribute(stateAttribute) !== "true";
-    trigger.setAttribute(stateAttribute, active ? "true" : "false");
+    setBooleanAttribute(trigger, stateAttribute, active);
     trigger.classList.toggle("is-selected", active);
   }
 
@@ -605,9 +625,8 @@
     if (!branch) return;
 
     const expanded = trigger.getAttribute("aria-expanded") !== "true";
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
-    branch.hidden = !expanded;
-    branch.classList.toggle("is-open", expanded);
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
+    setOpenState(branch, expanded);
   }
 
   const componentInputBindings: readonly ComponentInputBinding[] = [
@@ -622,12 +641,12 @@
 
   function applyTextFilter(input: HTMLInputElement): void {
     const selector = input.getAttribute("data-adlaire-filter-root") ?? input.getAttribute("data-adlaire-search-root");
-    const root = selector ? document.querySelector(selector) : null;
+    const root = safeDocumentQuery(selector);
     const itemSelector = input.getAttribute("data-adlaire-filter-item") ?? input.getAttribute("data-adlaire-search-item");
     if (!root || !itemSelector) return;
 
     const query = input.value.trim().toLowerCase();
-    root.querySelectorAll<HTMLElement>(itemSelector).forEach((item) => {
+    safeScopedQueryAll(root, itemSelector).forEach((item) => {
       const matched = (item.textContent ?? "").toLowerCase().includes(query);
       item.hidden = !matched;
     });
