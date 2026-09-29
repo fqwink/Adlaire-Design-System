@@ -32,18 +32,22 @@ export interface CommandResult {
 export function applyCommand(document: EditorDocument, command: EditorCommand, registry?: ToolRegistry): CommandResult {
   if (!command || typeof command.type !== "string") return failed(document, editorError("command.invalid", "Command must be valid."));
   switch (command.type) {
-    case "insert-block": return insertBlock(document, command.payload as InsertBlockPayload, registry);
-    case "delete-block": return deleteBlock(document, command.payload as DeleteBlockPayload);
-    case "update-block": return updateBlock(document, command.payload as UpdateBlockPayload, registry);
-    case "move-block": return moveBlock(document, command.payload as MoveBlockPayload, registry);
-    case "split-block": return splitBlock(document, command.payload as SplitBlockPayload, registry);
-    case "merge-block": return mergeBlock(document, command.payload as MergeBlockPayload, registry);
-    case "set-document-meta": return setDocumentMeta(document, command.payload as SetDocumentMetaPayload);
+    case "insert-block": return insertBlock(document, commandPayload<InsertBlockPayload>(command), registry);
+    case "delete-block": return deleteBlock(document, commandPayload<DeleteBlockPayload>(command));
+    case "update-block": return updateBlock(document, commandPayload<UpdateBlockPayload>(command), registry);
+    case "move-block": return moveBlock(document, commandPayload<MoveBlockPayload>(command), registry);
+    case "split-block": return splitBlock(document, commandPayload<SplitBlockPayload>(command), registry);
+    case "merge-block": return mergeBlock(document, commandPayload<MergeBlockPayload>(command), registry);
+    case "set-document-meta": return setDocumentMeta(document, commandPayload<SetDocumentMetaPayload>(command));
     default: return failed(document, editorError("command.unknown", `Unknown command '${command.type}'.`));
   }
 }
 
-export function insertBlock(document: EditorDocument, payload: InsertBlockPayload, registry?: ToolRegistry): CommandResult {
+function commandPayload<TPayload extends object>(command: EditorCommand): Partial<TPayload> {
+  return asRecord(command.payload) as Partial<TPayload>;
+}
+
+export function insertBlock(document: EditorDocument, payload: Partial<InsertBlockPayload>, registry?: ToolRegistry): CommandResult {
   if (!payload?.block?.id || !payload.block.type) return failed(document, editorError("command.payload.invalid", "insert-block requires a block."));
   const block = registry ? normalizeBlock(payload.block, registry) : cloneJson(payload.block);
   if (collectBlockIds(document.blocks).has(block.id)) return failed(document, editorError("block.id.duplicate", `Block id '${block.id}' already exists.`, block.id));
@@ -57,14 +61,14 @@ export function insertBlock(document: EditorDocument, payload: InsertBlockPayloa
   return changed({ ...document, blocks: insertAt(document.blocks, block, payload.index) });
 }
 
-export function deleteBlock(document: EditorDocument, payload: DeleteBlockPayload): CommandResult {
+export function deleteBlock(document: EditorDocument, payload: Partial<DeleteBlockPayload>): CommandResult {
   if (typeof payload?.blockId !== "string") return failed(document, editorError("command.payload.invalid", "delete-block requires blockId."));
   const removed = removeBlockById(document.blocks, payload.blockId);
   if (!removed.block) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
   return changed({ ...document, blocks: removed.blocks });
 }
 
-export function updateBlock(document: EditorDocument, payload: UpdateBlockPayload, registry?: ToolRegistry): CommandResult {
+export function updateBlock(document: EditorDocument, payload: Partial<UpdateBlockPayload>, registry?: ToolRegistry): CommandResult {
   if (typeof payload?.blockId !== "string") return failed(document, editorError("command.payload.invalid", "update-block requires blockId."));
   const target = findBlock(document, payload.blockId);
   if (!target) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
@@ -82,7 +86,7 @@ export function updateBlock(document: EditorDocument, payload: UpdateBlockPayloa
   });
 }
 
-export function moveBlock(document: EditorDocument, payload: MoveBlockPayload, registry?: ToolRegistry): CommandResult {
+export function moveBlock(document: EditorDocument, payload: Partial<MoveBlockPayload>, registry?: ToolRegistry): CommandResult {
   if (typeof payload?.blockId !== "string" || typeof payload.toIndex !== "number") return failed(document, editorError("command.payload.invalid", "move-block requires blockId and toIndex.", payload?.blockId));
   const source = findBlockLocation(document.blocks, payload.blockId);
   if (!source) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
@@ -99,7 +103,7 @@ export function moveBlock(document: EditorDocument, payload: MoveBlockPayload, r
   return changed({ ...document, blocks: insertAt(removed.blocks, removed.block, payload.toIndex) });
 }
 
-export function splitBlock(document: EditorDocument, payload: SplitBlockPayload, registry?: ToolRegistry): CommandResult {
+export function splitBlock(document: EditorDocument, payload: Partial<SplitBlockPayload>, registry?: ToolRegistry): CommandResult {
   if (typeof payload?.blockId !== "string") return failed(document, editorError("command.payload.invalid", "split-block requires blockId.", payload?.blockId));
   const location = findBlockLocation(document.blocks, payload.blockId);
   if (!location) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
@@ -119,7 +123,7 @@ export function splitBlock(document: EditorDocument, payload: SplitBlockPayload,
   return changed({ ...document, blocks: updateBlockById(document.blocks, location.parent.id, (parent) => ({ ...parent, children: nextSiblings })) });
 }
 
-export function mergeBlock(document: EditorDocument, payload: MergeBlockPayload, registry?: ToolRegistry): CommandResult {
+export function mergeBlock(document: EditorDocument, payload: Partial<MergeBlockPayload>, registry?: ToolRegistry): CommandResult {
   if (typeof payload?.sourceBlockId !== "string" || typeof payload.targetBlockId !== "string") return failed(document, editorError("command.payload.invalid", "merge-block requires sourceBlockId and targetBlockId."));
   if (payload.sourceBlockId === payload.targetBlockId) return failed(document, editorError("block.merge.sameBlock", "Cannot merge a block into itself.", payload.sourceBlockId));
   const source = findBlock(document, payload.sourceBlockId);
@@ -133,7 +137,7 @@ export function mergeBlock(document: EditorDocument, payload: MergeBlockPayload,
   return changed({ ...document, blocks: updateBlockById(withoutSource, target.id, (block) => registry ? normalizeBlock({ ...block, data: mergedData }, registry) : { ...block, data: mergedData }) });
 }
 
-export function setDocumentMeta(document: EditorDocument, payload: SetDocumentMetaPayload): CommandResult {
+export function setDocumentMeta(document: EditorDocument, payload: Partial<SetDocumentMetaPayload>): CommandResult {
   if (!asRecord(payload).meta) return failed(document, editorError("command.payload.invalid", "set-document-meta requires meta."));
   const meta = asRecord(payload.meta);
   return changed({ ...document, meta: payload.merge === false ? cloneJson(meta) : { ...document.meta, ...meta } });

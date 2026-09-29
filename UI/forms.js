@@ -2,8 +2,43 @@
 (function () {
   "use strict";
 
+  function targetElement(target) {
+    return target instanceof Element ? target : null;
+  }
+
   function normalize(value) {
     return String(value || "").trim().toLowerCase();
+  }
+
+  function hookSelector(attribute) {
+    return "[" + attribute + "]";
+  }
+
+  function formBinding(attribute, handle) {
+    return {
+      selector: hookSelector(attribute),
+      handle: handle
+    };
+  }
+
+  function inputBinding(attribute, handle) {
+    return formBinding(attribute, function (trigger) {
+      if (trigger instanceof HTMLInputElement) {
+        handle(trigger);
+      }
+    });
+  }
+
+  function fieldBinding(attribute, handle) {
+    return formBinding(attribute, function (trigger) {
+      if (isSupportedField(trigger)) {
+        handle(trigger);
+      }
+    });
+  }
+
+  function isSupportedField(trigger) {
+    return trigger instanceof HTMLInputElement || trigger instanceof HTMLTextAreaElement || trigger instanceof HTMLSelectElement;
   }
 
   function applyFilter(root) {
@@ -40,36 +75,73 @@
     }
   }
 
+  var inputBindings = [
+    formBinding("data-adlaire-filter-input", handleFilterInput),
+    inputBinding("data-adlaire-combobox-input", applyCombobox),
+    fieldBinding("data-adlaire-validate", validateField)
+  ];
+
+  var clickBindings = [
+    formBinding("data-adlaire-combobox-option", selectComboboxOption),
+    formBinding("data-adlaire-multi-select-option", toggleMultiSelectOption),
+    formBinding("data-adlaire-date-preset", applyDatePreset),
+    formBinding("data-adlaire-filter-chip", selectFilterChip)
+  ];
+
+  var changeBindings = [
+    inputBinding("data-adlaire-file-input", updateFileInput),
+    inputBinding("data-adlaire-toggle-input", syncToggleInput)
+  ];
+
+  function handleEveryBoundInteraction(source, bindings) {
+    if (!source) {
+      return;
+    }
+    bindings.forEach(function (binding) {
+      var trigger = source.closest(binding.selector);
+      if (trigger) {
+        binding.handle(trigger);
+      }
+    });
+  }
+
+  function handleFirstBoundInteraction(source, bindings) {
+    if (!source) {
+      return false;
+    }
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (!trigger) {
+        continue;
+      }
+      binding.handle(trigger);
+      return true;
+    }
+    return false;
+  }
+
   document.addEventListener("input", function (event) {
-    var input = event.target.closest("[data-adlaire-filter-input]");
-    var comboboxInput = event.target.closest("[data-adlaire-combobox-input]");
-    var root = input ? input.closest("[data-adlaire-filter]") : null;
-    if (root) {
-      applyFilter(root);
-    }
-    if (comboboxInput) {
-      applyCombobox(comboboxInput);
-    }
+    handleEveryBoundInteraction(targetElement(event.target), inputBindings);
   });
 
   document.addEventListener("click", function (event) {
-    var option = event.target.closest("[data-adlaire-combobox-option]");
-    var multiOption = event.target.closest("[data-adlaire-multi-select-option]");
-    var preset = event.target.closest("[data-adlaire-date-preset]");
-    var chip = event.target.closest("[data-adlaire-filter-chip]");
-    var root = chip ? chip.closest("[data-adlaire-filter]") : null;
-    if (option) {
-      selectComboboxOption(option);
-      return;
+    handleFirstBoundInteraction(targetElement(event.target), clickBindings);
+  });
+
+  document.addEventListener("change", function (event) {
+    handleEveryBoundInteraction(targetElement(event.target), changeBindings);
+  });
+
+  function handleFilterInput(trigger) {
+    var root = trigger.closest("[data-adlaire-filter]");
+    if (root) {
+      applyFilter(root);
     }
-    if (multiOption) {
-      toggleMultiSelectOption(multiOption);
-      return;
-    }
-    if (preset) {
-      applyDatePreset(preset);
-      return;
-    }
+  }
+
+  function selectFilterChip(chip) {
+    var root = chip.closest("[data-adlaire-filter]");
     if (!root) {
       return;
     }
@@ -78,37 +150,29 @@
       item.setAttribute("aria-pressed", item === chip ? "true" : "false");
     });
     applyFilter(root);
-  });
+  }
 
-  document.addEventListener("change", function (event) {
-    var fileInput = event.target.closest("[data-adlaire-file-input]");
-    var toggleInput = event.target.closest("[data-adlaire-toggle-input]");
-
-    if (fileInput) {
-      var output = document.querySelector(fileInput.getAttribute("data-adlaire-file-output"));
-      var emptyText = fileInput.getAttribute("data-adlaire-file-empty") || "No file selected";
-      var names = Array.prototype.map.call(fileInput.files || [], function (file) {
-        return file.name;
-      });
-      if (output) {
-        output.textContent = names.length > 0 ? names.join(", ") : emptyText;
-      }
+  function updateFileInput(fileInput) {
+    var selector = fileInput.getAttribute("data-adlaire-file-output");
+    var output = selector ? document.querySelector(selector) : null;
+    var emptyText = fileInput.getAttribute("data-adlaire-file-empty") || "No file selected";
+    var names = Array.prototype.map.call(fileInput.files || [], function (file) {
+      return file.name;
+    });
+    if (output) {
+      output.textContent = names.length > 0 ? names.join(", ") : emptyText;
     }
+  }
 
-    if (toggleInput) {
-      var toggle = document.querySelector(toggleInput.getAttribute("data-adlaire-toggle-input"));
-      if (toggle) {
-        toggle.setAttribute("aria-checked", toggleInput.checked ? "true" : "false");
-      }
+  function syncToggleInput(toggleInput) {
+    var selector = toggleInput.getAttribute("data-adlaire-toggle-input");
+    var toggle = selector ? document.querySelector(selector) : null;
+    if (toggle) {
+      toggle.setAttribute("aria-checked", toggleInput.checked ? "true" : "false");
     }
-  });
+  }
 
-  document.addEventListener("input", function (event) {
-    var field = event.target.closest("[data-adlaire-validate]");
-    if (!field) {
-      return;
-    }
-
+  function validateField(field) {
     var wrapper = field.closest(".adlaire-field");
     if (!wrapper) {
       return;
@@ -119,7 +183,7 @@
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
     updateValidationSummary(field);
-  });
+  }
 
   function updateValidationSummary(field) {
     var form = field.closest("form");

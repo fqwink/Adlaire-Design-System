@@ -7,6 +7,22 @@
     return target instanceof Element ? target : null;
   }
 
+  interface WysiwygInteractionBinding {
+    readonly selector: string;
+    readonly handle: (trigger: Element) => void;
+  }
+
+  function hookSelector(attribute: string): string {
+    return `[${attribute}]`;
+  }
+
+  function wysiwygBinding(attribute: string, handle: (trigger: Element) => void): WysiwygInteractionBinding {
+    return {
+      selector: hookSelector(attribute),
+      handle,
+    };
+  }
+
   function editorRoot(element: Element): Element | null {
     return element.closest(".adlaire-wysiwyg");
   }
@@ -23,19 +39,39 @@
     return selector ? document.querySelector(selector) : null;
   }
 
+  const wysiwygPrimaryClickBindings: readonly WysiwygInteractionBinding[] = [
+    wysiwygBinding("data-adlaire-wysiwyg-mode", selectMode),
+    wysiwygBinding("data-adlaire-wysiwyg-toggle", togglePanel),
+  ] as const;
+
+  const wysiwygSelectionClickBindings: readonly WysiwygInteractionBinding[] = [
+    wysiwygBinding("data-adlaire-wysiwyg-select", selectBlock),
+  ] as const;
+
+  function handleFirstWysiwygBinding(source: Element | null, bindings: readonly WysiwygInteractionBinding[]): boolean {
+    if (!source) return false;
+    for (const binding of bindings) {
+      const trigger = source.closest(binding.selector);
+      if (!trigger) continue;
+      binding.handle(trigger);
+      return true;
+    }
+    return false;
+  }
+
   document.addEventListener("click", (event) => {
     const target = targetElement(event.target);
-    const modeTrigger = target?.closest("[data-adlaire-wysiwyg-mode]");
-    if (modeTrigger) {
-      const root = editorRoot(modeTrigger);
-      const mode = modeTrigger.getAttribute("data-adlaire-wysiwyg-mode");
-      if (root && mode) setMode(root, mode);
-      return;
-    }
+    handleFirstWysiwygBinding(target, wysiwygPrimaryClickBindings);
+    handleFirstWysiwygBinding(target, wysiwygSelectionClickBindings);
+  });
 
-    const toggle = target?.closest("[data-adlaire-wysiwyg-toggle]");
-    if (!toggle) return;
+  function selectMode(modeTrigger: Element): void {
+    const root = editorRoot(modeTrigger);
+    const mode = modeTrigger.getAttribute("data-adlaire-wysiwyg-mode");
+    if (root && mode) setMode(root, mode);
+  }
 
+  function togglePanel(toggle: Element): void {
     const panel = targetFor(toggle);
     if (!panel) return;
 
@@ -43,12 +79,9 @@
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     (panel as HTMLElement).hidden = !open;
     panel.classList.toggle("is-open", open);
-  });
+  }
 
-  document.addEventListener("click", (event) => {
-    const selectable = targetElement(event.target)?.closest("[data-adlaire-wysiwyg-select]");
-    if (!selectable) return;
-
+  function selectBlock(selectable: Element): void {
     const root = editorRoot(selectable);
     if (!root) return;
 
@@ -58,5 +91,5 @@
     });
     selectable.classList.add("adlaire-wysiwyg-block-selected");
     selectable.setAttribute("aria-selected", "true");
-  });
+  }
 })();

@@ -7,6 +7,22 @@
     return target instanceof Element ? target : null;
   }
 
+  interface ContentInteractionBinding {
+    readonly selector: string;
+    readonly handle: (trigger: Element) => void;
+  }
+
+  function hookSelector(attribute: string): string {
+    return `[${attribute}]`;
+  }
+
+  function contentBinding(attribute: string, handle: (trigger: Element) => void): ContentInteractionBinding {
+    return {
+      selector: hookSelector(attribute),
+      handle,
+    };
+  }
+
   function cellText(row: HTMLTableRowElement, index: number): string {
     const cell = row.children[index];
     return cell?.textContent?.trim() ?? "";
@@ -46,10 +62,25 @@
     };
   }
 
-  document.addEventListener("click", (event) => {
-    const header = targetElement(event.target)?.closest("[data-adlaire-sort]");
-    if (!header) return;
+  const contentClickBindings: readonly ContentInteractionBinding[] = [
+    contentBinding("data-adlaire-sort", sortTable),
+    contentBinding("data-adlaire-code-copy", copyCodeBlock),
+    contentBinding("data-adlaire-code-line", selectCodeLine),
+  ] as const;
 
+  function handleContentClick(source: Element | null): void {
+    if (!source) return;
+    contentClickBindings.forEach((binding) => {
+      const trigger = source.closest(binding.selector);
+      if (trigger) binding.handle(trigger);
+    });
+  }
+
+  document.addEventListener("click", (event) => {
+    handleContentClick(targetElement(event.target));
+  });
+
+  function sortTable(header: Element): void {
     const columnHeader = header.closest("th") ?? header;
     const table = columnHeader.closest("table");
     const body = table?.tBodies[0] ?? null;
@@ -63,12 +94,9 @@
     headers.forEach((item) => item.removeAttribute("aria-sort"));
     columnHeader.setAttribute("aria-sort", direction === "asc" ? "ascending" : "descending");
     Array.from(body.rows).sort(compareRows(index, direction, type)).forEach((row) => body.appendChild(row));
-  });
+  }
 
-  document.addEventListener("click", (event) => {
-    const copy = targetElement(event.target)?.closest("[data-adlaire-code-copy]");
-    if (!copy) return;
-
+  function copyCodeBlock(copy: Element): void {
     const selector = copy.getAttribute("data-adlaire-code-copy");
     const statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     const target = selector ? document.querySelector(selector) : copy.closest(".adlaire-code-block");
@@ -80,14 +108,12 @@
         status.textContent = "Copied";
       }
     }
-  });
+  }
 
-  document.addEventListener("click", (event) => {
-    const line = targetElement(event.target)?.closest("[data-adlaire-code-line]");
-    const viewer = line?.closest(".adlaire-git-code-view");
-    if (!line || !viewer) return;
-
+  function selectCodeLine(line: Element): void {
+    const viewer = line.closest(".adlaire-git-code-view");
+    if (!viewer) return;
     viewer.querySelectorAll(".adlaire-git-line-highlight").forEach((item) => item.classList.remove("adlaire-git-line-highlight"));
     line.classList.add("adlaire-git-line-highlight");
-  });
+  }
 })();
