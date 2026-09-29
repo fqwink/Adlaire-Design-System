@@ -731,6 +731,156 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-sample-collection-row' \
   'Docs/Generic_Component_Catalog|.adlaire-incident-map-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-remediation-task-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-section-header' \
+  'Docs/Generic_Component_Catalog|.adlaire-section-action-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-content-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-summary-rail' \
+  'Docs/Generic_Component_Catalog|.adlaire-detail-header' \
+  'Docs/Generic_Component_Catalog|.adlaire-inline-toolbar' \
+  'Docs/Generic_Component_Catalog|.adlaire-status-badge-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-severity-marker' \
+  'Docs/Generic_Component_Catalog|.adlaire-validation-summary-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-stale-data-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-sync-indicator-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-retry-action-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-selection-counter-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-bulk-action-tray' \
+  'Docs/Generic_Component_Catalog|.adlaire-selectable-list-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-compare-selection-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-range-selection-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-batch-progress-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-source-citation-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-confidence-score-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-freshness-badge' \
+  'Docs/Generic_Component_Catalog|.adlaire-audit-trail-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-provenance-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-verification-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-density-switcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-responsive-stack-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-mobile-overflow-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-sticky-action-footer' \
+  'Docs/Generic_Component_Catalog|.adlaire-viewport-notice' \
+  'Docs/Generic_Component_Catalog|.adlaire-print-layout-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-query-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-saved-filter-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-active-filter-chips' \
+  'Docs/Generic_Component_Catalog|.adlaire-facet-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-sort-control' \
+  'Docs/Generic_Component_Catalog|.adlaire-column-visibility-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-column-pin-rail' \
+  'Docs/Generic_Component_Catalog|.adlaire-row-action-menu' \
+  'Docs/Generic_Component_Catalog|.adlaire-record-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-record-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-record-detail-preview' \
+  'Docs/Generic_Component_Catalog|.adlaire-record-expansion-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-inline-edit-field' \
+  'Docs/Generic_Component_Catalog|.adlaire-edit-conflict-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-change-summary-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-undo-action-banner' \
+  'Docs/Generic_Component_Catalog|.adlaire-import-job-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-export-job-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-sync-queue-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-data-quality-score' \
+  'Docs/Generic_Component_Catalog|.adlaire-duplicate-warning-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-merge-suggestion-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-bulk-confirmation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-bulk-result-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-selection-scope-notice' \
+  'Docs/Generic_Component_Catalog|.adlaire-table-footer-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-pagination-status' \
+  'Docs/Generic_Component_Catalog|.adlaire-view-preset-switcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-saved-view-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-record-audit-summary' \
+  'Docs/Generic_Component_Catalog|.adlaire-agent-run-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-agent-task-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-automation-trigger-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-run-status-rail' \
+  'Docs/Generic_Component_Catalog|.adlaire-tool-call-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-tool-permission-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-approval-gate-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-human-review-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-execution-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-checkpoint-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-retry-checkpoint-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-handoff-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-context-attachment-tray' \
+  'Docs/Generic_Component_Catalog|.adlaire-context-source-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-memory-note-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-instruction-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-prompt-composer-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-model-setting-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-reasoning-meter' \
+  'Docs/Generic_Component_Catalog|.adlaire-token-budget-meter' \
+  'Docs/Generic_Component_Catalog|.adlaire-artifact-preview-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-artifact-diff-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-output-validation-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-guardrail-result-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-failure-diagnosis-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-recovery-action-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-schedule-run-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-recurring-automation-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-notification-policy-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-run-summary-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-api-explorer-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-endpoint-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-request-builder' \
+  'Docs/Generic_Component_Catalog|.adlaire-response-preview' \
+  'Docs/Generic_Component_Catalog|.adlaire-schema-reference-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-sdk-selector' \
+  'Docs/Generic_Component_Catalog|.adlaire-code-sample-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-webhook-endpoint-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-webhook-event-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-webhook-delivery-log' \
+  'Docs/Generic_Component_Catalog|.adlaire-integration-setup-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-oauth-consent-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-api-key-rotation-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-secret-rotation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-rate-limit-meter' \
+  'Docs/Generic_Component_Catalog|.adlaire-quota-usage-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-sandbox-environment-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-production-readiness-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-integration-health-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-dependency-status-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-connection-test-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-payload-inspector' \
+  'Docs/Generic_Component_Catalog|.adlaire-event-replay-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-version-compatibility-badge' \
+  'Docs/Generic_Component_Catalog|.adlaire-breaking-change-notice' \
+  'Docs/Generic_Component_Catalog|.adlaire-deprecation-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-migration-step-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-developer-note-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-changelog-entry-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-support-escalation-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-theme-workspace-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-brand-kit-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-palette-editor' \
+  'Docs/Generic_Component_Catalog|.adlaire-color-ramp-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-semantic-color-mapping' \
+  'Docs/Generic_Component_Catalog|.adlaire-contrast-check-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-typography-scale-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-font-pairing-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-spacing-scale-preview' \
+  'Docs/Generic_Component_Catalog|.adlaire-radius-scale-preview' \
+  'Docs/Generic_Component_Catalog|.adlaire-shadow-elevation-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-motion-preset-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-density-preset-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-theme-preview-frame' \
+  'Docs/Generic_Component_Catalog|.adlaire-surface-preview-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-dark-mode-switcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-high-contrast-preview' \
+  'Docs/Generic_Component_Catalog|.adlaire-brand-asset-usage-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-logo-placement-guide' \
+  'Docs/Generic_Component_Catalog|.adlaire-icon-style-selector' \
+  'Docs/Generic_Component_Catalog|.adlaire-tone-of-voice-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-copy-pattern-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-accessibility-score-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-contrast-issue-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-token-override-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-token-diff-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-theme-export-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-theme-import-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-brand-compliance-checklist' \
+  'Docs/Generic_Component_Catalog|.adlaire-theme-publish-summary' \
   'Docs/Generic_Component_Catalog|.adlaire-product-card' \
   'Docs/Generic_Component_Catalog|.adlaire-plan-selector' \
   'Docs/Generic_Component_Catalog|.adlaire-billing-summary' \
@@ -1000,6 +1150,25 @@ for js_hook in \
   'data-adlaire-demand-response-select' \
   'data-adlaire-outage-report-select' \
   'data-adlaire-disclosure-check' \
+  'data-adlaire-density-select' \
+  'data-adlaire-bulk-selection-toggle' \
+  'data-adlaire-verification-check' \
+  'data-adlaire-saved-view-select' \
+  'data-adlaire-record-row-toggle' \
+  'data-adlaire-inline-edit-toggle' \
+  'data-adlaire-bulk-confirm-toggle' \
+  'data-adlaire-tool-permission-toggle' \
+  'data-adlaire-approval-gate-toggle' \
+  'data-adlaire-checkpoint-select' \
+  'data-adlaire-notification-policy-toggle' \
+  'data-adlaire-sdk-select' \
+  'data-adlaire-environment-select' \
+  'data-adlaire-connection-test-toggle' \
+  'data-adlaire-migration-step-toggle' \
+  'data-adlaire-theme-select' \
+  'data-adlaire-dark-mode-toggle' \
+  'data-adlaire-high-contrast-toggle' \
+  'data-adlaire-token-override-toggle' \
   'data-adlaire-toast-dismiss' \
   'adlaire-dialog.is-open' \
   'adlaire-bottom-sheet.is-open' \
@@ -1651,6 +1820,175 @@ for sample_class in \
   'adlaire-sample-collection-row' \
   'adlaire-incident-map-panel' \
   'adlaire-remediation-task-list' \
+  'adlaire-section-header' \
+  'adlaire-section-action-bar' \
+  'adlaire-content-group' \
+  'adlaire-summary-rail' \
+  'adlaire-detail-header' \
+  'adlaire-inline-toolbar' \
+  'adlaire-status-badge-group' \
+  'adlaire-severity-marker' \
+  'adlaire-validation-summary-card' \
+  'adlaire-stale-data-banner' \
+  'adlaire-sync-indicator-row' \
+  'adlaire-retry-action-panel' \
+  'adlaire-selection-counter-bar' \
+  'adlaire-bulk-action-tray' \
+  'adlaire-selectable-list-row' \
+  'data-adlaire-bulk-selection-toggle' \
+  'adlaire-compare-selection-card' \
+  'adlaire-range-selection-panel' \
+  'adlaire-batch-progress-list' \
+  'adlaire-source-citation-row' \
+  'adlaire-confidence-score-card' \
+  'adlaire-freshness-badge' \
+  'adlaire-audit-trail-card' \
+  'adlaire-provenance-panel' \
+  'adlaire-verification-checklist' \
+  'data-adlaire-verification-check' \
+  'adlaire-density-switcher' \
+  'data-adlaire-density-select' \
+  'adlaire-responsive-stack-panel' \
+  'adlaire-mobile-overflow-bar' \
+  'adlaire-sticky-action-footer' \
+  'adlaire-viewport-notice' \
+  'adlaire-print-layout-panel' \
+  'adlaire-query-bar' \
+  'adlaire-saved-filter-bar' \
+  'adlaire-active-filter-chips' \
+  'adlaire-facet-panel' \
+  'adlaire-sort-control' \
+  'adlaire-column-visibility-panel' \
+  'adlaire-column-pin-rail' \
+  'adlaire-row-action-menu' \
+  'adlaire-record-list' \
+  'adlaire-record-row' \
+  'data-adlaire-record-row-toggle' \
+  'adlaire-record-detail-preview' \
+  'adlaire-record-expansion-panel' \
+  'adlaire-inline-edit-field' \
+  'data-adlaire-inline-edit-toggle' \
+  'adlaire-edit-conflict-banner' \
+  'adlaire-change-summary-card' \
+  'adlaire-undo-action-banner' \
+  'adlaire-import-job-card' \
+  'adlaire-export-job-card' \
+  'adlaire-sync-queue-panel' \
+  'adlaire-data-quality-score' \
+  'adlaire-duplicate-warning-card' \
+  'adlaire-merge-suggestion-panel' \
+  'adlaire-bulk-confirmation-panel' \
+  'data-adlaire-bulk-confirm-toggle' \
+  'adlaire-bulk-result-summary' \
+  'adlaire-selection-scope-notice' \
+  'adlaire-table-footer-summary' \
+  'adlaire-pagination-status' \
+  'adlaire-view-preset-switcher' \
+  'data-adlaire-saved-view-select' \
+  'adlaire-saved-view-card' \
+  'adlaire-record-audit-summary' \
+  'adlaire-agent-run-card' \
+  'adlaire-agent-task-list' \
+  'adlaire-automation-trigger-card' \
+  'adlaire-run-status-rail' \
+  'adlaire-tool-call-row' \
+  'adlaire-tool-permission-card' \
+  'data-adlaire-tool-permission-toggle' \
+  'adlaire-approval-gate-panel' \
+  'data-adlaire-approval-gate-toggle' \
+  'adlaire-human-review-card' \
+  'adlaire-execution-timeline' \
+  'adlaire-checkpoint-card' \
+  'data-adlaire-checkpoint-select' \
+  'adlaire-retry-checkpoint-panel' \
+  'adlaire-handoff-card' \
+  'adlaire-context-attachment-tray' \
+  'adlaire-context-source-list' \
+  'adlaire-memory-note-card' \
+  'adlaire-instruction-stack' \
+  'adlaire-prompt-composer-panel' \
+  'adlaire-model-setting-row' \
+  'adlaire-reasoning-meter' \
+  'adlaire-token-budget-meter' \
+  'adlaire-artifact-preview-card' \
+  'adlaire-artifact-diff-panel' \
+  'adlaire-output-validation-card' \
+  'adlaire-guardrail-result-row' \
+  'adlaire-failure-diagnosis-panel' \
+  'adlaire-recovery-action-list' \
+  'adlaire-schedule-run-card' \
+  'adlaire-recurring-automation-row' \
+  'adlaire-notification-policy-card' \
+  'data-adlaire-notification-policy-toggle' \
+  'adlaire-run-summary-panel' \
+  'adlaire-api-explorer-panel' \
+  'adlaire-endpoint-card' \
+  'adlaire-request-builder' \
+  'adlaire-response-preview' \
+  'adlaire-schema-reference-panel' \
+  'adlaire-sdk-selector' \
+  'data-adlaire-sdk-select' \
+  'adlaire-code-sample-card' \
+  'adlaire-webhook-endpoint-card' \
+  'adlaire-webhook-event-row' \
+  'adlaire-webhook-delivery-log' \
+  'adlaire-integration-setup-checklist' \
+  'adlaire-oauth-consent-panel' \
+  'adlaire-api-key-rotation-card' \
+  'adlaire-secret-rotation-panel' \
+  'adlaire-rate-limit-meter' \
+  'adlaire-quota-usage-card' \
+  'adlaire-sandbox-environment-card' \
+  'data-adlaire-environment-select' \
+  'adlaire-production-readiness-checklist' \
+  'adlaire-integration-health-panel' \
+  'adlaire-dependency-status-row' \
+  'adlaire-connection-test-card' \
+  'data-adlaire-connection-test-toggle' \
+  'adlaire-payload-inspector' \
+  'adlaire-event-replay-panel' \
+  'adlaire-version-compatibility-badge' \
+  'adlaire-breaking-change-notice' \
+  'adlaire-deprecation-timeline' \
+  'adlaire-migration-step-list' \
+  'data-adlaire-migration-step-toggle' \
+  'adlaire-developer-note-card' \
+  'adlaire-changelog-entry-card' \
+  'adlaire-support-escalation-card' \
+  'adlaire-theme-workspace-panel' \
+  'data-adlaire-theme-select' \
+  'adlaire-brand-kit-card' \
+  'adlaire-palette-editor' \
+  'adlaire-color-ramp-row' \
+  'adlaire-semantic-color-mapping' \
+  'adlaire-contrast-check-card' \
+  'adlaire-typography-scale-panel' \
+  'adlaire-font-pairing-card' \
+  'adlaire-spacing-scale-preview' \
+  'adlaire-radius-scale-preview' \
+  'adlaire-shadow-elevation-panel' \
+  'adlaire-motion-preset-card' \
+  'adlaire-density-preset-card' \
+  'adlaire-theme-preview-frame' \
+  'adlaire-surface-preview-grid' \
+  'adlaire-dark-mode-switcher' \
+  'data-adlaire-dark-mode-toggle' \
+  'adlaire-high-contrast-preview' \
+  'data-adlaire-high-contrast-toggle' \
+  'adlaire-brand-asset-usage-card' \
+  'adlaire-logo-placement-guide' \
+  'adlaire-icon-style-selector' \
+  'adlaire-tone-of-voice-card' \
+  'adlaire-copy-pattern-panel' \
+  'adlaire-accessibility-score-card' \
+  'adlaire-contrast-issue-row' \
+  'adlaire-token-override-panel' \
+  'data-adlaire-token-override-toggle' \
+  'adlaire-token-diff-card' \
+  'adlaire-theme-export-panel' \
+  'adlaire-theme-import-card' \
+  'adlaire-brand-compliance-checklist' \
+  'adlaire-theme-publish-summary' \
   'adlaire-product-card' \
   'adlaire-plan-selector' \
   'adlaire-billing-summary' \
@@ -1843,6 +2181,11 @@ for matrix_term in \
   'Travel / Hospitality / Event Operations UI' \
   'Public / Civic / Nonprofit Operations UI' \
   'Energy / Utilities / Sustainability Operations UI' \
+  'Component Quality / Composition UI' \
+  'Data Workbench / Record Operations UI' \
+  'Agent / Automation Workbench UI' \
+  'Developer Platform / Integration Operations UI' \
+  'Theme / Brand Customization UI' \
   'WYSIWYG Editor UI' \
   'Editor runtime' \
   'Representative Subcontracts' \
@@ -1862,6 +2205,11 @@ for matrix_term in \
   'itinerary card, traveler profile row, fare option card' \
   'service application card, eligibility checklist, appointment slot row' \
   'energy usage card, demand response panel, load forecast card' \
+  'section header, section action bar, content group' \
+  'query bar, saved filter bar, active filter chips' \
+  'agent run card, agent task list, automation trigger card' \
+  'api explorer panel, endpoint card, request builder' \
+  'theme workspace panel, brand kit card, palette editor' \
   'slash menu, suggestion card, save banner' \
   'command, document, selection, history' \
   'color, typography, spacing, layout' \

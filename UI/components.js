@@ -288,6 +288,25 @@
     var demandResponseSelect = event.target.closest("[data-adlaire-demand-response-select]");
     var outageReportSelect = event.target.closest("[data-adlaire-outage-report-select]");
     var disclosureCheck = event.target.closest("[data-adlaire-disclosure-check]");
+    var densitySelect = event.target.closest("[data-adlaire-density-select]");
+    var bulkSelectionToggle = event.target.closest("[data-adlaire-bulk-selection-toggle]");
+    var verificationCheck = event.target.closest("[data-adlaire-verification-check]");
+    var savedViewSelect = event.target.closest("[data-adlaire-saved-view-select]");
+    var recordRowToggle = event.target.closest("[data-adlaire-record-row-toggle]");
+    var inlineEditToggle = event.target.closest("[data-adlaire-inline-edit-toggle]");
+    var bulkConfirmToggle = event.target.closest("[data-adlaire-bulk-confirm-toggle]");
+    var toolPermissionToggle = event.target.closest("[data-adlaire-tool-permission-toggle]");
+    var approvalGateToggle = event.target.closest("[data-adlaire-approval-gate-toggle]");
+    var checkpointSelect = event.target.closest("[data-adlaire-checkpoint-select]");
+    var notificationPolicyToggle = event.target.closest("[data-adlaire-notification-policy-toggle]");
+    var sdkSelect = event.target.closest("[data-adlaire-sdk-select]");
+    var environmentSelect = event.target.closest("[data-adlaire-environment-select]");
+    var connectionTestToggle = event.target.closest("[data-adlaire-connection-test-toggle]");
+    var migrationStepToggle = event.target.closest("[data-adlaire-migration-step-toggle]");
+    var themeSelect = event.target.closest("[data-adlaire-theme-select]");
+    var darkModeToggle = event.target.closest("[data-adlaire-dark-mode-toggle]");
+    var highContrastToggle = event.target.closest("[data-adlaire-high-contrast-toggle]");
+    var tokenOverrideToggle = event.target.closest("[data-adlaire-token-override-toggle]");
 
     if (copy) {
       var copyTarget = getTarget(copy);
@@ -534,6 +553,101 @@
     if (disclosureCheck) {
       event.preventDefault();
       toggleBooleanState(disclosureCheck, "aria-checked");
+    }
+
+    if (densitySelect) {
+      event.preventDefault();
+      selectInteractiveChoice(densitySelect, ".adlaire-density-switcher", "[data-adlaire-density-select]", "aria-pressed");
+    }
+
+    if (bulkSelectionToggle) {
+      event.preventDefault();
+      toggleBooleanState(bulkSelectionToggle, "aria-selected");
+    }
+
+    if (verificationCheck) {
+      event.preventDefault();
+      toggleBooleanState(verificationCheck, "aria-checked");
+    }
+
+    if (savedViewSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(savedViewSelect, ".adlaire-view-preset-switcher", "[data-adlaire-saved-view-select]", "aria-pressed");
+    }
+
+    if (recordRowToggle) {
+      event.preventDefault();
+      toggleBooleanState(recordRowToggle, "aria-selected");
+    }
+
+    if (inlineEditToggle) {
+      event.preventDefault();
+      toggleBooleanState(inlineEditToggle, "aria-pressed");
+    }
+
+    if (bulkConfirmToggle) {
+      event.preventDefault();
+      toggleBooleanState(bulkConfirmToggle, "aria-pressed");
+    }
+
+    if (toolPermissionToggle) {
+      event.preventDefault();
+      toggleBooleanState(toolPermissionToggle, "aria-pressed");
+    }
+
+    if (approvalGateToggle) {
+      event.preventDefault();
+      toggleBooleanState(approvalGateToggle, "aria-pressed");
+    }
+
+    if (checkpointSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(checkpointSelect, ".adlaire-execution-timeline", "[data-adlaire-checkpoint-select]", "aria-selected");
+    }
+
+    if (notificationPolicyToggle) {
+      event.preventDefault();
+      toggleBooleanState(notificationPolicyToggle, "aria-pressed");
+    }
+
+    if (sdkSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(sdkSelect, ".adlaire-sdk-selector", "[data-adlaire-sdk-select]", "aria-pressed");
+    }
+
+    if (environmentSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(environmentSelect, ".adlaire-api-explorer-panel", "[data-adlaire-environment-select]", "aria-selected");
+    }
+
+    if (connectionTestToggle) {
+      event.preventDefault();
+      toggleBooleanState(connectionTestToggle, "aria-pressed");
+    }
+
+    if (migrationStepToggle) {
+      event.preventDefault();
+      toggleBooleanState(migrationStepToggle, "aria-checked");
+    }
+
+    if (themeSelect) {
+      event.preventDefault();
+      selectInteractiveChoice(themeSelect, ".adlaire-theme-workspace-panel", "[data-adlaire-theme-select]", "aria-pressed");
+    }
+
+    if (darkModeToggle) {
+      event.preventDefault();
+      toggleBooleanState(darkModeToggle, "aria-pressed");
+    }
+
+    if (highContrastToggle) {
+      event.preventDefault();
+      toggleBooleanState(highContrastToggle, "aria-pressed");
+    }
+
+    if (tokenOverrideToggle) {
+      event.preventDefault();
+      toggleBooleanState(tokenOverrideToggle, "aria-checked");
     }
   });
 

@@ -1783,6 +1783,438 @@
       </div>
     </section>
 
+    <section class="sample-section" aria-labelledby="component-quality-composition-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Component Quality / Composition UI</p>
+        <h2 id="component-quality-composition-title">構成、状態、選択、証跡、適応表示の品質部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-component-preview" aria-label="Component composition sample">
+          <header class="adlaire-section-header">
+            <span><strong>Section header</strong><br>Operational overview</span>
+            <span class="adlaire-status-pill">ready</span>
+          </header>
+          <div class="adlaire-section-action-bar" aria-label="Section action bar">
+            <button class="adlaire-button adlaire-button-secondary" type="button">Refresh</button>
+            <button class="adlaire-button adlaire-button-secondary" type="button">Export</button>
+          </div>
+          <div class="adlaire-content-group" aria-label="Content group">
+            <article class="adlaire-card"><strong>Content A</strong><span>Grouped surface</span></article>
+            <article class="adlaire-card"><strong>Content B</strong><span>Aligned surface</span></article>
+          </div>
+          <aside class="adlaire-summary-rail" aria-label="Summary rail">
+            <span><strong>12</strong><span>open</span></span>
+            <span><strong>4</strong><span>blocked</span></span>
+          </aside>
+          <header class="adlaire-detail-header"><span><strong>Detail header</strong><br>Case AD-204</span><button class="adlaire-button adlaire-button-secondary" type="button">Open</button></header>
+          <div class="adlaire-inline-toolbar" aria-label="Inline toolbar">
+            <button class="adlaire-icon-button" type="button" aria-label="Edit">E</button>
+            <button class="adlaire-icon-button" type="button" aria-label="Archive">A</button>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Status feedback sample">
+          <h3>Status feedback</h3>
+          <div class="adlaire-status-badge-group" aria-label="Status badge group">
+            <span class="adlaire-status-badge-item"><span>Draft</span><strong>2</strong></span>
+            <span class="adlaire-status-badge-item"><span>Ready</span><strong>5</strong></span>
+          </div>
+          <span class="adlaire-severity-marker" data-severity="high">High severity</span>
+          <article class="adlaire-validation-summary-card" data-state="invalid"><strong>Validation summary</strong><span>3 fields need attention</span></article>
+          <article class="adlaire-stale-data-banner" data-state="stale"><strong>Stale data</strong><span>Last sync 2 hours ago</span></article>
+          <div class="adlaire-sync-indicator-row" data-state="synced"><span>Sync indicator</span><strong>synced</strong></div>
+          <article class="adlaire-retry-action-panel"><strong>Retry action</strong><span>Retry failed export</span><button class="adlaire-button adlaire-button-secondary" type="button">Retry</button></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Selection bulk sample">
+          <h3>Selection and bulk</h3>
+          <article class="adlaire-selection-counter-bar"><strong>Selection counter</strong><span>2 selected</span></article>
+          <div class="adlaire-bulk-action-tray" aria-label="Bulk action tray">
+            <button class="adlaire-bulk-action-item adlaire-button adlaire-button-secondary" type="button">Assign</button>
+            <button class="adlaire-bulk-action-item adlaire-button adlaire-button-secondary" type="button">Close</button>
+          </div>
+          <button class="adlaire-selectable-list-row" type="button" aria-selected="true" data-adlaire-bulk-selection-toggle><span>Selectable row A</span><strong>selected</strong></button>
+          <button class="adlaire-selectable-list-row" type="button" aria-selected="false" data-adlaire-bulk-selection-toggle><span>Selectable row B</span><strong>available</strong></button>
+          <article class="adlaire-compare-selection-card"><strong>Compare selection</strong><span>Before and after ready</span></article>
+          <div class="adlaire-range-selection-panel" aria-label="Range selection panel">
+            <span>Range</span><strong>Q1 - Q3</strong>
+          </div>
+          <div class="adlaire-batch-progress-list" aria-label="Batch progress list">
+            <div class="adlaire-batch-progress-item"><span>Batch 1</span><strong>done</strong></div>
+            <div class="adlaire-batch-progress-item"><span>Batch 2</span><strong>running</strong></div>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Evidence trust sample">
+          <h3>Evidence trust</h3>
+          <div class="adlaire-source-citation-row"><span>Source citation</span><strong>Docs/Master_Spec</strong></div>
+          <article class="adlaire-confidence-score-card" data-state="high"><strong>Confidence score</strong><span>92% verified</span></article>
+          <span class="adlaire-freshness-badge" data-state="fresh">Fresh data</span>
+          <article class="adlaire-audit-trail-card"><strong>Audit trail</strong><span>3 recorded events</span></article>
+          <div class="adlaire-provenance-panel" aria-label="Provenance panel">
+            <div class="adlaire-audit-trail-item"><span>Created</span><strong>system</strong></div>
+            <div class="adlaire-audit-trail-item"><span>Reviewed</span><strong>owner</strong></div>
+          </div>
+          <div class="adlaire-verification-checklist" aria-label="Verification checklist">
+            <button class="adlaire-verification-check-item" type="button" role="checkbox" aria-checked="true" data-adlaire-verification-check><span>Evidence linked</span><strong>done</strong></button>
+            <button class="adlaire-verification-check-item" type="button" role="checkbox" aria-checked="false" data-adlaire-verification-check><span>Reviewer confirmed</span><strong>open</strong></button>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Adaptive surface sample">
+          <h3>Adaptive surfaces</h3>
+          <div class="adlaire-density-switcher" role="group" aria-label="Density switcher">
+            <button class="adlaire-density-option" type="button" aria-pressed="true" data-adlaire-density-select><span>Comfortable</span><strong>on</strong></button>
+            <button class="adlaire-density-option" type="button" aria-pressed="false" data-adlaire-density-select><span>Compact</span><strong>off</strong></button>
+          </div>
+          <div class="adlaire-responsive-stack-panel" aria-label="Responsive stack panel">
+            <article class="adlaire-card"><strong>Primary</strong><span>Desktop column</span></article>
+            <article class="adlaire-card"><strong>Secondary</strong><span>Mobile stack</span></article>
+          </div>
+          <div class="adlaire-mobile-overflow-bar" aria-label="Mobile overflow bar">
+            <button class="adlaire-icon-button" type="button" aria-label="Search">S</button>
+            <button class="adlaire-icon-button" type="button" aria-label="More">M</button>
+          </div>
+          <footer class="adlaire-sticky-action-footer"><span>Sticky action footer</span><button class="adlaire-button" type="button">Apply</button></footer>
+          <article class="adlaire-viewport-notice" data-state="narrow"><strong>Viewport notice</strong><span>Layout switches below tablet width</span></article>
+          <article class="adlaire-print-layout-panel" data-state="ready"><strong>Print layout</strong><span>Printable summary ready</span></article>
+        </article>
+      </div>
+    </section>
+
+    <section class="sample-section" aria-labelledby="data-workbench-record-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Data Workbench / Record Operations UI</p>
+        <h2 id="data-workbench-record-title">検索、一覧、編集、品質、保存ビューのレコード操作部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-component-preview" aria-label="Query filter workbench sample">
+          <h3>Query and filters</h3>
+          <div class="adlaire-query-bar" role="search">
+            <span><strong>Query bar</strong><br>status:open owner:design</span>
+            <button class="adlaire-button adlaire-button-secondary" type="button">Run</button>
+          </div>
+          <div class="adlaire-saved-filter-bar" aria-label="Saved filter bar">
+            <button class="adlaire-button adlaire-button-secondary" type="button">Critical</button>
+            <button class="adlaire-button adlaire-button-secondary" type="button">Recently changed</button>
+          </div>
+          <div class="adlaire-active-filter-chips" aria-label="Active filter chips">
+            <span class="adlaire-active-filter-chip">Status: open</span>
+            <span class="adlaire-active-filter-chip">Owner: design</span>
+          </div>
+          <div class="adlaire-facet-panel" aria-label="Facet panel">
+            <button class="adlaire-facet-option" type="button">Type <strong>12</strong></button>
+            <button class="adlaire-facet-option" type="button">State <strong>5</strong></button>
+          </div>
+          <div class="adlaire-sort-control" aria-label="Sort control">
+            <button class="adlaire-sort-option" type="button" aria-pressed="true">Updated</button>
+            <button class="adlaire-sort-option" type="button" aria-pressed="false">Priority</button>
+          </div>
+          <div class="adlaire-column-visibility-panel" aria-label="Column visibility panel">
+            <span class="adlaire-column-option">Owner visible</span>
+            <span class="adlaire-column-option">Risk hidden</span>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Record table operations sample">
+          <h3>Record table operations</h3>
+          <div class="adlaire-column-pin-rail" aria-label="Column pin rail">
+            <span class="adlaire-column-pin-item">Pinned: name</span>
+            <span class="adlaire-column-pin-item">Pinned: status</span>
+          </div>
+          <div class="adlaire-row-action-menu" aria-label="Row action menu">
+            <button class="adlaire-icon-button" type="button" aria-label="Open row">O</button>
+            <button class="adlaire-icon-button" type="button" aria-label="More actions">M</button>
+          </div>
+          <div class="adlaire-record-list" role="listbox" aria-label="Record list">
+            <button class="adlaire-record-row" type="button" role="option" aria-selected="true" data-adlaire-record-row-toggle><span>REC-104</span><strong>selected</strong></button>
+            <button class="adlaire-record-row" type="button" role="option" aria-selected="false" data-adlaire-record-row-toggle><span>REC-108</span><strong>ready</strong></button>
+          </div>
+          <article class="adlaire-record-detail-preview"><strong>Record detail preview</strong><span>Owner, state, and latest change</span></article>
+          <article class="adlaire-record-expansion-panel"><strong>Record expansion</strong><span>Expanded table row content</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Inline edit change sample">
+          <h3>Inline edit and change</h3>
+          <button class="adlaire-inline-edit-field" type="button" aria-pressed="false" data-adlaire-inline-edit-toggle><span>Inline edit field</span><strong>click to edit</strong></button>
+          <article class="adlaire-edit-conflict-banner" data-state="conflict"><strong>Edit conflict</strong><span>Remote version changed while editing</span></article>
+          <article class="adlaire-change-summary-card"><strong>Change summary</strong><span>4 fields updated</span></article>
+          <article class="adlaire-undo-action-banner"><strong>Undo available</strong><button class="adlaire-button adlaire-button-secondary" type="button">Undo</button></article>
+          <article class="adlaire-import-job-card" data-state="running"><strong>Import job</strong><span>420 rows queued</span></article>
+          <article class="adlaire-export-job-card" data-state="ready"><strong>Export job</strong><span>CSV ready</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Data quality merge sample">
+          <h3>Data quality and merge</h3>
+          <div class="adlaire-sync-queue-panel" aria-label="Sync queue panel">
+            <div class="adlaire-sync-queue-item"><span>Sync queue</span><strong>3 pending</strong></div>
+            <div class="adlaire-sync-queue-item"><span>Retry queue</span><strong>1 blocked</strong></div>
+          </div>
+          <article class="adlaire-data-quality-score" data-state="good"><strong>Data quality score</strong><span>94% complete</span></article>
+          <article class="adlaire-duplicate-warning-card" data-state="warning"><strong>Duplicate warning</strong><span>2 likely matches</span></article>
+          <div class="adlaire-merge-suggestion-panel" aria-label="Merge suggestion panel">
+            <article class="adlaire-card"><strong>Primary</strong><span>REC-104</span></article>
+            <article class="adlaire-card"><strong>Candidate</strong><span>REC-108</span></article>
+          </div>
+          <button class="adlaire-bulk-confirmation-panel" type="button" aria-pressed="false" data-adlaire-bulk-confirm-toggle><strong>Bulk confirmation</strong><span>Apply to 24 rows</span></button>
+          <article class="adlaire-bulk-result-summary" data-state="complete"><strong>Bulk result summary</strong><span>24 rows updated</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Saved view audit sample">
+          <h3>Saved views and audit</h3>
+          <article class="adlaire-selection-scope-notice" data-state="partial"><strong>Selection scope</strong><span>Current page only</span></article>
+          <footer class="adlaire-table-footer-summary"><span>Table footer summary</span><strong>120 records</strong></footer>
+          <div class="adlaire-pagination-status"><span>Pagination status</span><strong>Page 2 of 8</strong></div>
+          <div class="adlaire-view-preset-switcher" role="group" aria-label="View preset switcher">
+            <button class="adlaire-view-preset-option" type="button" aria-pressed="true" data-adlaire-saved-view-select><span>Operations</span><strong>on</strong></button>
+            <button class="adlaire-view-preset-option" type="button" aria-pressed="false" data-adlaire-saved-view-select><span>Audit</span><strong>off</strong></button>
+          </div>
+          <article class="adlaire-saved-view-card"><strong>Saved view</strong><span>Operations backlog</span></article>
+          <article class="adlaire-record-audit-summary"><span>Record audit summary</span><strong>5 events</strong></article>
+        </article>
+      </div>
+    </section>
+
+    <section class="sample-section" aria-labelledby="agent-automation-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Agent / Automation Workbench UI</p>
+        <h2 id="agent-automation-title">実行、承認、文脈、成果物、復旧の自動化部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-component-preview" aria-label="Agent run sample">
+          <h3>Agent run</h3>
+          <article class="adlaire-agent-run-card"><strong>Agent run card</strong><span>Catalog sync running</span></article>
+          <div class="adlaire-agent-task-list" aria-label="Agent task list">
+            <span class="adlaire-run-status-item">Read specs <strong>done</strong></span>
+            <span class="adlaire-run-status-item">Patch source <strong>active</strong></span>
+          </div>
+          <article class="adlaire-automation-trigger-card"><strong>Automation trigger</strong><span>Manual approval</span></article>
+          <div class="adlaire-run-status-rail" aria-label="Run status rail">
+            <span class="adlaire-run-status-item">Queued</span>
+            <span class="adlaire-run-status-item">Running</span>
+          </div>
+          <div class="adlaire-tool-call-row"><span>Tool call row</span><strong>check script</strong></div>
+          <button class="adlaire-tool-permission-card" type="button" aria-pressed="true" data-adlaire-tool-permission-toggle><strong>Tool permission</strong><span>granted</span></button>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Review checkpoint sample">
+          <h3>Review and checkpoints</h3>
+          <button class="adlaire-approval-gate-panel" type="button" aria-pressed="false" data-adlaire-approval-gate-toggle><strong>Approval gate</strong><span>waiting for owner</span></button>
+          <article class="adlaire-human-review-card"><strong>Human review</strong><span>2 findings pending</span></article>
+          <div class="adlaire-execution-timeline" aria-label="Execution timeline">
+            <button class="adlaire-checkpoint-card" type="button" aria-selected="true" data-adlaire-checkpoint-select><span>Checkpoint A</span><strong>current</strong></button>
+            <button class="adlaire-checkpoint-card" type="button" aria-selected="false" data-adlaire-checkpoint-select><span>Checkpoint B</span><strong>ready</strong></button>
+          </div>
+          <article class="adlaire-retry-checkpoint-panel"><strong>Retry checkpoint</strong><span>Retry from validation</span></article>
+          <article class="adlaire-handoff-card"><strong>Handoff card</strong><span>Continue in review task</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Context instruction sample">
+          <h3>Context and instruction</h3>
+          <div class="adlaire-context-attachment-tray" aria-label="Context attachment tray">
+            <span class="adlaire-context-attachment-item">Spec.md</span>
+            <span class="adlaire-context-attachment-item">Sample.html</span>
+          </div>
+          <div class="adlaire-context-source-list" aria-label="Context source list">
+            <span class="adlaire-context-source-item">Docs/Master_Spec</span>
+            <span class="adlaire-context-source-item">AGENTS.md</span>
+          </div>
+          <article class="adlaire-memory-note-card"><strong>Memory note</strong><span>Component sync rule</span></article>
+          <div class="adlaire-instruction-stack" aria-label="Instruction stack">
+            <span class="adlaire-instruction-step">Read rules</span>
+            <span class="adlaire-instruction-step">Patch paired files</span>
+          </div>
+          <article class="adlaire-prompt-composer-panel"><strong>Prompt composer</strong><span>Scoped implementation request</span></article>
+          <article class="adlaire-model-setting-row"><span>Model setting</span><strong>high precision</strong></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Artifact validation sample">
+          <h3>Artifacts and validation</h3>
+          <article class="adlaire-reasoning-meter"><strong>Reasoning meter</strong><span>medium</span></article>
+          <article class="adlaire-token-budget-meter" data-state="high"><strong>Token budget</strong><span>high usage</span></article>
+          <article class="adlaire-artifact-preview-card" data-state="ready"><strong>Artifact preview</strong><span>Sample section ready</span></article>
+          <div class="adlaire-artifact-diff-panel" aria-label="Artifact diff panel">
+            <span>+ Agent section</span>
+            <span>+ Automation hooks</span>
+          </div>
+          <article class="adlaire-output-validation-card" data-state="valid"><strong>Output validation</strong><span>Checks passed</span></article>
+          <article class="adlaire-guardrail-result-row" data-state="blocked"><span>Guardrail result</span><strong>review required</strong></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Recovery schedule sample">
+          <h3>Recovery and schedule</h3>
+          <article class="adlaire-failure-diagnosis-panel" data-state="failed"><strong>Failure diagnosis</strong><span>Missing generated output</span></article>
+          <div class="adlaire-recovery-action-list" aria-label="Recovery action list">
+            <span class="adlaire-recovery-action-item">Regenerate CSS</span>
+            <span class="adlaire-recovery-action-item">Rerun checks</span>
+          </div>
+          <article class="adlaire-schedule-run-card" data-state="scheduled"><strong>Schedule run</strong><span>Tomorrow 09:00</span></article>
+          <article class="adlaire-recurring-automation-row"><span>Recurring automation</span><strong>weekly</strong></article>
+          <button class="adlaire-notification-policy-card" type="button" aria-pressed="false" data-adlaire-notification-policy-toggle><strong>Notification policy</strong><span>failed runs only</span></button>
+          <article class="adlaire-run-summary-panel" data-state="complete"><strong>Run summary</strong><span>30 components synced</span></article>
+        </article>
+      </div>
+    </section>
+
+    <section class="sample-section" aria-labelledby="developer-platform-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Developer Platform / Integration Operations UI</p>
+        <h2 id="developer-platform-title">API、Webhook、SDK、連携運用の開発者向け部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-component-preview" aria-label="API explorer sample">
+          <h3>API explorer</h3>
+          <div class="adlaire-api-explorer-panel" aria-label="API explorer panel">
+            <button class="adlaire-sandbox-environment-card" type="button" aria-selected="true" data-adlaire-environment-select><strong>Sandbox environment</strong><span>selected</span></button>
+            <button class="adlaire-sandbox-environment-card" type="button" aria-selected="false" data-adlaire-environment-select><strong>Production environment</strong><span>locked</span></button>
+          </div>
+          <article class="adlaire-endpoint-card"><strong>Endpoint card</strong><span>POST /v1/runs</span></article>
+          <div class="adlaire-request-builder" aria-label="Request builder"><span>Request builder</span><strong>JSON body</strong></div>
+          <article class="adlaire-response-preview"><strong>Response preview</strong><span>200 OK</span></article>
+          <div class="adlaire-schema-reference-panel" aria-label="Schema reference panel"><span>Schema reference</span><strong>Run object</strong></div>
+          <div class="adlaire-sdk-selector" role="group" aria-label="SDK selector">
+            <button class="adlaire-sdk-option" type="button" aria-pressed="true" data-adlaire-sdk-select><span>TypeScript</span><strong>on</strong></button>
+            <button class="adlaire-sdk-option" type="button" aria-pressed="false" data-adlaire-sdk-select><span>Go</span><strong>off</strong></button>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Webhook integration sample">
+          <h3>Webhook and setup</h3>
+          <article class="adlaire-code-sample-card"><strong>Code sample</strong><span>curl request</span></article>
+          <article class="adlaire-webhook-endpoint-card"><strong>Webhook endpoint</strong><span>https://example.test/hook</span></article>
+          <div class="adlaire-webhook-event-row"><span>Webhook event row</span><strong>run.completed</strong></div>
+          <div class="adlaire-webhook-delivery-log" aria-label="Webhook delivery log">
+            <span class="adlaire-webhook-delivery-item">Delivery #42 <strong>200</strong></span>
+            <span class="adlaire-webhook-delivery-item">Delivery #41 <strong>retry</strong></span>
+          </div>
+          <div class="adlaire-integration-setup-checklist" aria-label="Integration setup checklist">
+            <span class="adlaire-integration-setup-item">Configure URL <strong>done</strong></span>
+            <span class="adlaire-integration-setup-item">Verify signature <strong>open</strong></span>
+          </div>
+          <article class="adlaire-oauth-consent-panel"><strong>OAuth consent</strong><span>Read repository metadata</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Credential quota sample">
+          <h3>Credential and quota</h3>
+          <article class="adlaire-api-key-rotation-card"><strong>API key rotation</strong><span>Next rotation in 12 days</span></article>
+          <article class="adlaire-secret-rotation-panel"><strong>Secret rotation</strong><span>Webhook secret ready</span></article>
+          <article class="adlaire-rate-limit-meter" data-state="limited"><strong>Rate limit meter</strong><span>80% used</span></article>
+          <article class="adlaire-quota-usage-card" data-state="near-limit"><strong>Quota usage</strong><span>950 / 1000</span></article>
+          <div class="adlaire-production-readiness-checklist" data-state="ready" aria-label="Production readiness checklist">
+            <span class="adlaire-production-readiness-item">Retry policy <strong>ready</strong></span>
+            <span class="adlaire-production-readiness-item">Audit logging <strong>ready</strong></span>
+          </div>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Integration health payload sample">
+          <h3>Health and payload</h3>
+          <article class="adlaire-integration-health-panel" data-state="healthy"><strong>Integration health</strong><span>All checks green</span></article>
+          <div class="adlaire-dependency-status-row"><span>Dependency status</span><strong>API reachable</strong></div>
+          <button class="adlaire-connection-test-card" type="button" aria-pressed="false" data-state="passed" data-adlaire-connection-test-toggle><strong>Connection test</strong><span>passed</span></button>
+          <article class="adlaire-payload-inspector"><strong>Payload inspector</strong><span>3 top-level fields</span></article>
+          <article class="adlaire-event-replay-panel"><strong>Event replay</strong><span>Replay selected delivery</span></article>
+          <article class="adlaire-version-compatibility-badge" data-state="compatible"><span>Compatibility</span><strong>v2 ready</strong></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Developer change management sample">
+          <h3>Change management</h3>
+          <article class="adlaire-breaking-change-notice" data-state="breaking"><strong>Breaking change</strong><span>v1 sunset scheduled</span></article>
+          <div class="adlaire-deprecation-timeline" aria-label="Deprecation timeline">
+            <span class="adlaire-deprecation-timeline-item">Notice <strong>sent</strong></span>
+            <span class="adlaire-deprecation-timeline-item">Shutdown <strong>90 days</strong></span>
+          </div>
+          <div class="adlaire-migration-step-list" aria-label="Migration step list">
+            <button class="adlaire-migration-step-item" type="button" role="checkbox" aria-checked="true" data-adlaire-migration-step-toggle><span>Update endpoint</span><strong>done</strong></button>
+            <button class="adlaire-migration-step-item" type="button" role="checkbox" aria-checked="false" data-adlaire-migration-step-toggle><span>Regenerate SDK</span><strong>open</strong></button>
+          </div>
+          <article class="adlaire-developer-note-card"><strong>Developer note</strong><span>Use idempotency keys</span></article>
+          <article class="adlaire-changelog-entry-card"><span>Changelog entry</span><strong>2026.09</strong></article>
+          <article class="adlaire-support-escalation-card"><span>Support escalation</span><strong>partner queue</strong></article>
+        </article>
+      </div>
+    </section>
+
+    <section class="sample-section" aria-labelledby="theme-brand-customization-title">
+      <div class="sample-section-heading">
+        <p class="sample-kicker">Theme / Brand Customization UI</p>
+        <h2 id="theme-brand-customization-title">テーマ、ブランド、トークン、アクセシビリティのカスタマイズ部品</h2>
+      </div>
+      <div class="sample-grid-three">
+        <article class="adlaire-component-preview" aria-label="Theme workspace sample">
+          <h3>Theme workspace</h3>
+          <div class="adlaire-theme-workspace-panel" aria-label="Theme workspace panel">
+            <button class="adlaire-theme-option" type="button" aria-pressed="true" data-adlaire-theme-select><span>Brand theme</span><strong>active</strong></button>
+            <button class="adlaire-theme-option" type="button" aria-pressed="false" data-adlaire-theme-select><span>Campaign theme</span><strong>draft</strong></button>
+          </div>
+          <article class="adlaire-brand-kit-card"><strong>Brand kit</strong><span>Logo, palette, voice</span></article>
+          <div class="adlaire-palette-editor" aria-label="Palette editor">
+            <div class="adlaire-color-ramp-row"><span class="adlaire-color-swatch" aria-hidden="true"></span><span>Primary ramp</span><strong>10 steps</strong></div>
+            <div class="adlaire-color-ramp-row"><span class="adlaire-color-swatch" aria-hidden="true"></span><span>Accent ramp</span><strong>8 steps</strong></div>
+          </div>
+          <div class="adlaire-semantic-color-mapping" aria-label="Semantic color mapping">
+            <span>Success</span><strong>green.700</strong>
+            <span>Warning</span><strong>amber.700</strong>
+          </div>
+          <article class="adlaire-contrast-check-card" data-state="warning"><strong>Contrast check</strong><span>1 warning</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Typography spacing theme sample">
+          <h3>Typography and spacing</h3>
+          <div class="adlaire-typography-scale-panel" aria-label="Typography scale panel">
+            <span>Display</span><strong>40 / 48</strong>
+            <span>Body</span><strong>16 / 24</strong>
+          </div>
+          <article class="adlaire-font-pairing-card"><span>Font pairing</span><strong>Sans / Mono</strong></article>
+          <article class="adlaire-spacing-scale-preview"><strong>Spacing scale</strong><span>4, 8, 12, 16, 24</span></article>
+          <article class="adlaire-radius-scale-preview"><strong>Radius scale</strong><span>sm, md, lg</span></article>
+          <article class="adlaire-shadow-elevation-panel"><strong>Shadow elevation</strong><span>card to overlay</span></article>
+          <article class="adlaire-motion-preset-card"><strong>Motion preset</strong><span>standard easing</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Preview mode theme sample">
+          <h3>Preview and mode</h3>
+          <button class="adlaire-density-preset-card" type="button" aria-pressed="true" data-adlaire-density-select><span>Density preset</span><strong>comfortable</strong></button>
+          <article class="adlaire-theme-preview-frame"><strong>Theme preview</strong><span>Dashboard surface</span></article>
+          <div class="adlaire-surface-preview-grid" aria-label="Surface preview grid">
+            <span class="adlaire-surface-preview-item">Card <strong>surface</strong></span>
+            <span class="adlaire-surface-preview-item">Panel <strong>soft</strong></span>
+          </div>
+          <button class="adlaire-dark-mode-switcher" type="button" aria-pressed="false" data-adlaire-dark-mode-toggle><span>Dark mode</span><strong>off</strong></button>
+          <button class="adlaire-high-contrast-preview" type="button" aria-pressed="false" data-adlaire-high-contrast-toggle><strong>High contrast</strong><span>preview</span></button>
+          <article class="adlaire-brand-asset-usage-card"><strong>Brand asset usage</strong><span>Hero lockup approved</span></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Brand guidance sample">
+          <h3>Brand guidance</h3>
+          <div class="adlaire-logo-placement-guide" aria-label="Logo placement guide">
+            <span class="adlaire-brand-check-item">Clearspace <strong>ok</strong></span>
+            <span class="adlaire-brand-check-item">Minimum size <strong>ok</strong></span>
+          </div>
+          <button class="adlaire-icon-style-selector" type="button"><span>Icon style</span><strong>outline</strong></button>
+          <article class="adlaire-tone-of-voice-card"><strong>Tone of voice</strong><span>Direct, calm, precise</span></article>
+          <article class="adlaire-copy-pattern-panel"><strong>Copy pattern</strong><span>Action label and helper copy</span></article>
+          <article class="adlaire-accessibility-score-card" data-state="pass"><strong>Accessibility score</strong><span>AA pass</span></article>
+          <article class="adlaire-contrast-issue-row" data-state="issue"><span>Contrast issue</span><strong>secondary badge</strong></article>
+        </article>
+
+        <article class="adlaire-component-preview" aria-label="Token publish sample">
+          <h3>Token and publish</h3>
+          <div class="adlaire-token-override-panel" aria-label="Token override panel">
+            <button class="adlaire-token-override-item" type="button" role="checkbox" aria-checked="true" data-adlaire-token-override-toggle><span>surface.accent</span><strong>override</strong></button>
+            <button class="adlaire-token-override-item" type="button" role="checkbox" aria-checked="false" data-adlaire-token-override-toggle><span>radius.md</span><strong>default</strong></button>
+          </div>
+          <article class="adlaire-token-diff-card" data-state="changed"><span>Token diff</span><strong>3 changes</strong></article>
+          <article class="adlaire-theme-export-panel"><strong>Theme export</strong><span>CSS token bundle</span></article>
+          <article class="adlaire-theme-import-card"><strong>Theme import</strong><span>Draft loaded</span></article>
+          <div class="adlaire-brand-compliance-checklist" data-state="ready" aria-label="Brand compliance checklist">
+            <span class="adlaire-brand-check-item">Logo usage <strong>ready</strong></span>
+            <span class="adlaire-brand-check-item">Contrast <strong>ready</strong></span>
+          </div>
+          <article class="adlaire-theme-publish-summary" data-state="ready"><span>Theme publish</span><strong>ready</strong></article>
+        </article>
+      </div>
+    </section>
+
     <section class="sample-section" aria-labelledby="icon-title">
       <div class="sample-section-heading">
         <p class="sample-kicker">Icons</p>
