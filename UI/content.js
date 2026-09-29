@@ -40,6 +40,26 @@
     }
   }
 
+  function safeDocumentQueryAll(selector) {
+    return safeScopedQueryAll(document, selector);
+  }
+
+  function setBooleanAttribute(target, attribute, active) {
+    target.setAttribute(attribute, active ? "true" : "false");
+  }
+
+  function isDisabledInteraction(target) {
+    return target.hasAttribute("disabled") || target.getAttribute("aria-disabled") === "true";
+  }
+
+  function isNativeInteractive(target) {
+    return target instanceof HTMLButtonElement ||
+      target instanceof HTMLAnchorElement ||
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLSelectElement ||
+      target instanceof HTMLTextAreaElement;
+  }
+
   function writeClipboardText(text) {
     var clipboard = navigator.clipboard;
     if (!clipboard || !clipboard.writeText) {
@@ -76,7 +96,7 @@
     for (var index = startIndex; index < bindings.length; index += 1) {
       var binding = bindings[index];
       var trigger = source.closest(binding.selector);
-      if (trigger) {
+      if (trigger && !isDisabledInteraction(trigger)) {
         return [trigger, binding, index];
       }
     }
@@ -137,7 +157,8 @@
   var contentClickBindings = [
     contentClickBinding("data-adlaire-sort", sortTable),
     contentClickBinding("data-adlaire-code-copy", copyCodeBlock),
-    contentClickBinding("data-adlaire-code-line", selectCodeLine)
+    contentClickBinding("data-adlaire-code-line", selectCodeLine),
+    contentClickBinding("data-adlaire-toc-link", selectTocLink)
   ];
 
   function handleEveryContentClick(source) {
@@ -155,6 +176,22 @@
     handleEveryContentClick(eventSourceElement(event));
   });
 
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+    var source = eventSourceElement(event);
+    if (source && isNativeInteractive(source)) {
+      return;
+    }
+    var trigger = source && source.closest("[data-adlaire-code-line], [data-adlaire-toc-link]");
+    if (!(trigger instanceof HTMLElement) || isDisabledInteraction(trigger)) {
+      return;
+    }
+    event.preventDefault();
+    trigger.click();
+  });
+
   function sortTable(header) {
     var columnHeader = header.closest("th") || header;
     var table = columnHeader.closest("table");
@@ -167,27 +204,60 @@
     var index = headers.indexOf(columnHeader);
     var direction = columnHeader.getAttribute("aria-sort") === "ascending" ? "desc" : "asc";
     var type = header.getAttribute("data-adlaire-sort") || columnHeader.getAttribute("data-adlaire-sort") || "text";
+    var multiSort = table.getAttribute("data-adlaire-sort-multi") === "true";
 
-    headers.forEach(function (item) {
-      item.removeAttribute("aria-sort");
-    });
+    if (!multiSort) {
+      headers.forEach(function (item) {
+        item.removeAttribute("aria-sort");
+        item.removeAttribute("data-adlaire-sort-order");
+      });
+    }
 
     columnHeader.setAttribute("aria-sort", direction === "asc" ? "ascending" : "descending");
+    columnHeader.setAttribute("data-adlaire-sort-order", String(sortOrder(headers, columnHeader, multiSort)));
     Array.prototype.slice.call(body.rows).sort(compareRows(index, direction, type)).forEach(function (row) {
       body.appendChild(row);
     });
+    table.setAttribute("data-adlaire-sort-state", index + ":" + direction + ":" + type);
+
+    var status = safeDocumentQuery(header.getAttribute("data-adlaire-sort-status") || table.getAttribute("data-adlaire-sort-status"));
+    if (status) {
+      if (!status.hasAttribute("aria-live")) {
+        status.setAttribute("aria-live", "polite");
+      }
+      var order = columnHeader.getAttribute("data-adlaire-sort-order");
+      status.textContent = (columnHeader.textContent ? columnHeader.textContent.trim() : "Column") + " sorted " + (direction === "asc" ? "ascending" : "descending") + (multiSort && order ? ", priority " + order : "");
+    }
+  }
+
+  function sortOrder(headers, columnHeader, multiSort) {
+    if (!multiSort) {
+      return 1;
+    }
+    var current = Number(columnHeader.getAttribute("data-adlaire-sort-order") || "0");
+    if (Number.isFinite(current) && current > 0) {
+      return current;
+    }
+    return headers.filter(function (item) {
+      return item.hasAttribute("data-adlaire-sort-order");
+    }).length + 1;
   }
 
   function copyCodeBlock(copy) {
     var selector = copy.getAttribute("data-adlaire-code-copy");
     var statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     var target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
+    var status = safeDocumentQuery(statusSelector);
     if (target && writeClipboardText(target.textContent || "")) {
       copy.setAttribute("data-adlaire-copied", "true");
-      var status = safeDocumentQuery(statusSelector);
       if (status) {
         status.textContent = "Copied";
       }
+      window.setTimeout(function () {
+        copy.removeAttribute("data-adlaire-copied");
+      }, 2000);
+    } else if (status) {
+      status.textContent = "Copy unavailable";
     }
   }
 
@@ -204,4 +274,27 @@
     line.classList.add("adlaire-git-line-highlight");
     line.setAttribute("aria-selected", "true");
   }
+
+  function selectTocLink(link) {
+    var root = link.closest("[data-adlaire-toc], .adlaire-toc, .legal-toc") || document;
+    safeScopedQueryAll(root, "[data-adlaire-toc-link], .legal-toc-link").forEach(function (item) {
+      if (item === link) {
+        item.setAttribute("aria-current", "true");
+      } else {
+        item.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  safeDocumentQueryAll("[data-adlaire-code-line]").forEach(function (line) {
+    if (!line.hasAttribute("tabindex")) {
+      line.setAttribute("tabindex", "0");
+    }
+    if (!line.hasAttribute("role")) {
+      line.setAttribute("role", "option");
+    }
+    if (!line.hasAttribute("aria-selected")) {
+      setBooleanAttribute(line, "aria-selected", false);
+    }
+  });
 }());

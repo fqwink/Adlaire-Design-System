@@ -18,7 +18,7 @@
   }
 
   function normalize(value: unknown): string {
-    return String(value || "").trim().toLowerCase();
+    return String(value ?? "").trim().toLowerCase();
   }
 
   function booleanState(active: boolean): "true" | "false" {
@@ -32,6 +32,27 @@
   function setOpenState(target: HTMLElement, open: boolean): void {
     target.hidden = !open;
     target.classList.toggle("is-open", open);
+  }
+
+  function isDisabledInteraction(target: Element): boolean {
+    return target.hasAttribute("disabled") || target.getAttribute("aria-disabled") === "true";
+  }
+
+  function isNativeInteractive(target: Element): boolean {
+    return target instanceof HTMLButtonElement ||
+      target instanceof HTMLAnchorElement ||
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLSelectElement ||
+      target instanceof HTMLTextAreaElement;
+  }
+
+  function setOptionalText(target: HTMLElement | null, value: string): void {
+    if (target) target.textContent = value;
+  }
+
+  function finiteNumber(value: string | number | null | undefined, fallback: number): number {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
   }
 
   function safeDocumentQuery(selector: string | null | undefined): HTMLElement | null {
@@ -94,13 +115,17 @@
     for (let index = startIndex; index < bindings.length; index += 1) {
       const binding = bindings[index];
       const trigger = source.closest(binding.selector);
-      if (trigger) return [trigger, binding, index];
+      if (trigger && !isDisabledInteraction(trigger)) return [trigger, binding, index];
     }
     return null;
   }
 
   function isSupportedField(trigger: Element): trigger is HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement {
     return trigger instanceof HTMLInputElement || trigger instanceof HTMLTextAreaElement || trigger instanceof HTMLSelectElement;
+  }
+
+  function isReadOnlyField(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): boolean {
+    return (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) && field.readOnly;
   }
 
   function applyFilter(root: Element): void {
@@ -131,12 +156,20 @@
   const formInputBindings: readonly FormInteractionBinding[] = [
     formBinding("data-adlaire-filter-input", handleFilterInput),
     inputBinding("data-adlaire-combobox-input", applyCombobox),
+    inputBinding("data-adlaire-range-input", syncRangeInput),
+    fieldBinding("data-adlaire-character-count", updateCharacterCount),
     fieldBinding("data-adlaire-validate", validateField),
   ] as const;
 
   const formClickBindings: readonly FormInteractionBinding[] = [
     formBinding("data-adlaire-combobox-option", selectComboboxOption),
     formBinding("data-adlaire-multi-select-option", toggleMultiSelectOption),
+    formBinding("data-adlaire-segmented-option", selectSegmentedOption),
+    formBinding("data-adlaire-radio-card", selectRadioCard),
+    formBinding("data-adlaire-switch-item", toggleSwitchItem),
+    formBinding("data-adlaire-stepper-action", applyStepperAction),
+    formBinding("data-adlaire-token-add", addTokenFromTrigger),
+    formBinding("data-adlaire-token-remove", removeToken),
     formBinding("data-adlaire-date-preset", applyDatePreset),
     formBinding("data-adlaire-filter-chip", selectFilterChip),
   ] as const;
@@ -175,6 +208,21 @@
     handleEveryFormInteraction(eventSourceElement(event), formChangeBindings);
   });
 
+  document.addEventListener("keydown", (event) => {
+    activateFormKeyboardTrigger(event);
+  });
+
+  function activateFormKeyboardTrigger(event: KeyboardEvent): boolean {
+    if (event.key !== "Enter" && event.key !== " ") return false;
+    const source = eventSourceElement(event);
+    if (source && isNativeInteractive(source)) return false;
+    const trigger = source?.closest(formClickBindings.map((binding) => binding.selector).join(", "));
+    if (!(trigger instanceof HTMLElement) || isDisabledInteraction(trigger) || isNativeInteractive(trigger)) return false;
+    event.preventDefault();
+    trigger.click();
+    return true;
+  }
+
   function handleFilterInput(trigger: Element): void {
     const root = trigger.closest("[data-adlaire-filter]");
     if (root) applyFilter(root);
@@ -208,11 +256,28 @@
     const wrapper = field?.closest(".adlaire-field");
     if (!field || !wrapper) return;
 
-    const invalid = field.hasAttribute("required") && normalize(field.value) === "";
+    markFieldInteraction(field);
+    const invalid = !field.disabled && !isReadOnlyField(field) && !field.validity.valid;
     setBooleanAttribute(field, "aria-invalid", invalid);
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
+    const message = field.validity.valueMissing ? `${fieldLabel(field)} is required` : field.validationMessage || `${fieldLabel(field)} is invalid`;
+    setOptionalText(safeDocumentQuery(field.getAttribute("data-adlaire-validation-message")), invalid ? message : "");
     updateValidationSummary(field);
+  }
+
+  function markFieldInteraction(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): void {
+    const wrapper = field.closest(".adlaire-field");
+    if (!wrapper) return;
+    wrapper.setAttribute("data-adlaire-field-touched", "true");
+    wrapper.setAttribute("data-adlaire-field-dirty", normalize(field.value) !== normalize(defaultFieldValue(field)));
+  }
+
+  function defaultFieldValue(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): string {
+    if (field instanceof HTMLSelectElement) {
+      return Array.from(field.options).find((option) => option.defaultSelected)?.value ?? "";
+    }
+    return field.defaultValue;
   }
 
   function updateValidationSummary(field: Element): void {
@@ -220,6 +285,8 @@
     const summary = safeScopedQuery(form, "[data-adlaire-validate-summary]");
     if (!form || !summary) return;
 
+    if (!summary.hasAttribute("aria-live")) summary.setAttribute("aria-live", "polite");
+    if (!summary.hasAttribute("role")) summary.setAttribute("role", "alert");
     const invalidFields = safeScopedQueryAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(form, "[data-adlaire-validate]")
       .filter((item) => item.getAttribute("aria-invalid") === "true");
     setOpenState(summary, invalidFields.length > 0);
@@ -293,6 +360,142 @@
       : root.getAttribute("data-adlaire-multi-select-empty") ?? "No options selected";
   }
 
+  function selectSegmentedOption(option: Element): void {
+    const root = option.closest("[data-adlaire-segmented-control]");
+    if (!root) return;
+
+    const value = option.getAttribute("data-adlaire-segmented-option") ?? option.textContent?.trim() ?? "";
+    safeScopedQueryAll(root, "[data-adlaire-segmented-option]").forEach((item) => {
+      const selected = item === option;
+      setBooleanAttribute(item, "aria-pressed", selected);
+      item.setAttribute("aria-selected", booleanState(selected));
+      item.setAttribute("tabindex", selected ? "0" : "-1");
+    });
+
+    const output = safeDocumentQuery(root.getAttribute("data-adlaire-segmented-output"));
+    if (output && value) output.textContent = value;
+  }
+
+  function selectRadioCard(card: Element): void {
+    const root = card.closest("[data-adlaire-radio-card-group]");
+    if (!root) return;
+
+    const value = card.getAttribute("data-adlaire-radio-card") ?? card.textContent?.trim() ?? "";
+    safeScopedQueryAll(root, "[data-adlaire-radio-card]").forEach((item) => {
+      const selected = item === card;
+      setBooleanAttribute(item, "aria-checked", selected);
+      item.setAttribute("tabindex", selected ? "0" : "-1");
+    });
+
+    const output = safeDocumentQuery(root.getAttribute("data-adlaire-radio-card-output"));
+    if (output && value) output.textContent = value;
+  }
+
+  function toggleSwitchItem(item: Element): void {
+    const root = item.closest("[data-adlaire-switch-group]");
+    const active = item.getAttribute("aria-checked") !== "true";
+    setBooleanAttribute(item, "aria-checked", active);
+    setBooleanAttribute(item, "aria-pressed", active);
+    updateSwitchGroupOutput(root);
+  }
+
+  function updateSwitchGroupOutput(root: Element | null): void {
+    if (!root) return;
+
+    const output = safeDocumentQuery(root.getAttribute("data-adlaire-switch-output"));
+    if (!output) return;
+
+    const activeItems = safeScopedQueryAll(root, "[data-adlaire-switch-item][aria-checked='true']")
+      .map((item) => item.getAttribute("data-adlaire-switch-item") ?? item.textContent?.trim() ?? "")
+      .filter((value) => value !== "");
+    output.textContent = activeItems.length > 0 ? activeItems.join(", ") : root.getAttribute("data-adlaire-switch-empty") ?? "None";
+  }
+
+  function syncRangeInput(input: HTMLInputElement): void {
+    const min = finiteNumber(input.min, 0);
+    const max = finiteNumber(input.max, 100);
+    const value = finiteNumber(input.value, min);
+    const denominator = max > min ? max - min : 1;
+    const percent = Math.max(0, Math.min(100, ((value - min) / denominator) * 100));
+    const root = input.closest<HTMLElement>("[data-adlaire-range], .adlaire-range-field");
+    input.setAttribute("data-adlaire-range-value", String(value));
+    if (root) root.style.setProperty("--adlaire-range-value", `${percent}%`);
+    setOptionalText(safeDocumentQuery(input.getAttribute("data-adlaire-range-output")), formatRangeValue(input, value));
+  }
+
+  function formatRangeValue(input: HTMLInputElement, value: number): string {
+    const prefix = input.getAttribute("data-adlaire-range-prefix") ?? "";
+    const suffix = input.getAttribute("data-adlaire-range-suffix") ?? "";
+    return `${prefix}${Number.isFinite(value) ? value : input.value}${suffix}`;
+  }
+
+  function applyStepperAction(trigger: Element): void {
+    const root = trigger.closest("[data-adlaire-stepper], .adlaire-stepper-control, .adlaire-stepper");
+    const input = safeScopedQuery<HTMLInputElement>(root, trigger.getAttribute("data-adlaire-stepper-input") ?? "input[type='number']");
+    if (!input || input.disabled || input.readOnly) return;
+
+    const min = input.min === "" ? Number.NEGATIVE_INFINITY : finiteNumber(input.min, Number.NEGATIVE_INFINITY);
+    const max = input.max === "" ? Number.POSITIVE_INFINITY : finiteNumber(input.max, Number.POSITIVE_INFINITY);
+    const parsedStep = finiteNumber(input.step, 1);
+    const step = parsedStep > 0 ? parsedStep : 1;
+    const direction = trigger.getAttribute("data-adlaire-stepper-action");
+    const current = finiteNumber(input.value, Number.isFinite(min) ? min : 0);
+    const delta = direction === "decrement" ? -step : step;
+    const next = Math.min(max, Math.max(min, current + delta));
+    input.value = String(Number.isFinite(next) ? next : current);
+    syncStepperOutput(input, root);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  function syncStepperOutput(input: HTMLInputElement, root: Element | null): void {
+    const output = safeDocumentQuery(input.getAttribute("data-adlaire-stepper-output")) ?? safeScopedQuery(root, "[data-adlaire-stepper-output]");
+    setOptionalText(output, input.value);
+  }
+
+  function addTokenFromTrigger(trigger: Element): void {
+    const root = trigger.closest("[data-adlaire-token-input], .adlaire-token-input");
+    const input = safeScopedQuery<HTMLInputElement>(root, trigger.getAttribute("data-adlaire-token-input") ?? "input");
+    const list = safeScopedQuery(root, trigger.getAttribute("data-adlaire-token-list") ?? ".adlaire-token-list");
+    const value = input?.value.trim() ?? "";
+    if (!root || !input || !list || input.disabled || input.readOnly || value === "") return;
+
+    const token = document.createElement("button");
+    token.type = "button";
+    token.className = "adlaire-token";
+    token.setAttribute("data-adlaire-token-remove", value);
+    token.setAttribute("aria-label", `Remove ${value}`);
+    token.textContent = value;
+    list.appendChild(token);
+    input.value = "";
+    updateTokenCount(root);
+  }
+
+  function removeToken(trigger: Element): void {
+    const root = trigger.closest("[data-adlaire-token-input], .adlaire-token-input");
+    const removable = trigger.matches(".adlaire-token") ? trigger : trigger.closest(".adlaire-token") ?? trigger;
+    removable.remove();
+    updateTokenCount(root);
+  }
+
+  function updateTokenCount(root: Element | null): void {
+    if (!root) return;
+    const count = safeScopedQueryAll(root, "[data-adlaire-token-remove], .adlaire-token").length;
+    setOptionalText(safeDocumentQuery(root.getAttribute("data-adlaire-token-count")), String(count));
+  }
+
+  function syncCharacterCount(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement, markInteraction: boolean): void {
+    if (markInteraction) markFieldInteraction(field);
+    const output = safeDocumentQuery(field.getAttribute("data-adlaire-character-count"));
+    const limit = field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement ? field.maxLength : -1;
+    const length = field.value.length;
+    const value = limit > 0 ? `${length}/${limit}` : String(length);
+    setOptionalText(output, value);
+  }
+
+  function updateCharacterCount(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): void {
+    syncCharacterCount(field, true);
+  }
+
   function applyDatePreset(preset: Element): void {
     const root = preset.closest("[data-adlaire-date-picker]");
     if (!root) return;
@@ -307,6 +510,15 @@
   function setInputValue(root: Element, selector: string | null, value: string | null): void {
     if (!selector || value === null) return;
     const input = safeScopedQuery<HTMLInputElement>(root, selector);
-    if (input) input.value = value;
+    if (input && !input.disabled && !input.readOnly) input.value = value;
   }
+
+  safeScopedQueryAll<HTMLInputElement>(document, "[data-adlaire-range-input]").forEach(syncRangeInput);
+  safeScopedQueryAll<HTMLInputElement>(document, "[data-adlaire-stepper] input[type='number'], .adlaire-stepper-control input[type='number'], .adlaire-stepper input[type='number']").forEach((input) => {
+    syncStepperOutput(input, input.closest("[data-adlaire-stepper], .adlaire-stepper-control, .adlaire-stepper"));
+  });
+  safeScopedQueryAll(document, "[data-adlaire-token-input], .adlaire-token-input").forEach(updateTokenCount);
+  safeScopedQueryAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(document, "[data-adlaire-character-count]").forEach((field) => {
+    syncCharacterCount(field, false);
+  });
 })();

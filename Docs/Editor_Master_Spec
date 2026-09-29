@@ -46,14 +46,14 @@ The runtime keeps invalid commands from mutating document state. Duplicate block
 
 | Module | Checkpoint |
 | --- | --- |
-| `core.ts` | `HeadlessEditorController`, `dispatch`, `dispatchBatch`, read-only enforcement, save request, publish request, and save state snapshot access stay in runtime coordination. |
+| `core.ts` | `HeadlessEditorController`, `dispatch`, `dispatchBatch`, read-only enforcement, save request, save completion, save failure, publish request, publish completion, publish failure, validation summary, readOnly transition, checkpoint labels, and state snapshot access stay in runtime coordination. |
 | `commands.ts` | `applyCommand`, block mutation commands, and non-mutating failure results stay in the command boundary. |
 | `document.ts` | `ToolRegistry`, `BlockRegistry`, document cloning, block lookup, normalization, and paste handling stay in the document boundary. |
 | `selection.ts` | selection validation, normalization, first/last/next/previous position helpers, and selection equality stay in the selection boundary. |
 | `history.ts` | `History`, undo, redo, clear, snapshot cloning, history reset, and history limit enforcement stay in the history boundary. |
 | `validation.ts` | `sanitizeDocument`, `validateDocument`, `validateDocumentAsync`, and block validation stay in the validation boundary. |
 | `events.ts` | `EventBus`, event subscription, event emission, and editorError construction stay in the event boundary. |
-| `types.ts` | `EditorDocument`, `EditorBlock`, `EditorCommand`, `EditorSelection`, `EditorError`, save state snapshot, and public controller types stay in the type boundary. |
+| `types.ts` | `EditorDocument`, `EditorBlock`, `EditorCommand`, `EditorSelection`, `EditorError`, save state snapshot, publish state snapshot, validation summary, checkpoint, completeSave controller contract, failSave controller contract, completePublish controller contract, failPublish controller contract, and public controller types stay in the type boundary. |
 
 ## UI Surface
 
@@ -81,4 +81,4 @@ Concrete class coverage is maintained in `Docs/WYSIWYG_Editor_UI_Catalog`.
 
 ## Checks
 
-The repository check verifies required files, generated outputs, catalog governance terms, editor runtime exports, structural runtime file/API markers, module boundaries, and forbidden dependency patterns.
+The repository check verifies required files, generated outputs, catalog governance terms, editor runtime exports, structural runtime file/API markers, controller state APIs, module boundaries, and forbidden dependency patterns.

@@ -156,8 +156,20 @@
               </div>
               <pre><code>adlaire.content.copy()</code></pre>
             </div>
+            <div class="adlaire-git-code-view" role="listbox" aria-label="Code line sample">
+              <button class="adlaire-git-code-line" type="button" role="option" aria-selected="true" data-adlaire-code-line><span class="adlaire-git-line-number">1</span><code>const ready = true;</code></button>
+              <button class="adlaire-git-code-line" type="button" role="option" aria-selected="false" data-adlaire-code-line><span class="adlaire-git-line-number">2</span><code>render(ready);</code></button>
+            </div>
+            <div class="adlaire-tabs">
+              <div class="adlaire-tab-list" role="tablist" aria-label="Generic tab sample">
+                <button id="sample-tab-overview" class="adlaire-tab-button" type="button" role="tab" aria-selected="true" aria-controls="sample-tab-panel-overview" tabindex="0" data-adlaire-tab="#sample-tab-panel-overview" data-adlaire-group="generic-tabs">Overview</button>
+                <button id="sample-tab-audit" class="adlaire-tab-button" type="button" role="tab" aria-selected="false" aria-controls="sample-tab-panel-audit" tabindex="-1" data-adlaire-tab="#sample-tab-panel-audit" data-adlaire-group="generic-tabs">Audit</button>
+              </div>
+              <div id="sample-tab-panel-overview" class="adlaire-tab-panel" role="tabpanel" aria-labelledby="sample-tab-overview" data-adlaire-group="generic-tabs">Reusable tab state is synchronized from TypeScript.</div>
+              <div id="sample-tab-panel-audit" class="adlaire-tab-panel" role="tabpanel" aria-labelledby="sample-tab-audit" data-adlaire-group="generic-tabs" hidden>Keyboard and click selection share one contract.</div>
+            </div>
             <div class="adlaire-table-scroll">
-              <table class="adlaire-content-table">
+              <table class="adlaire-content-table" data-adlaire-sort-status="[data-sample-sort-status]">
                 <thead>
                   <tr>
                     <th><button type="button" data-adlaire-sort="text">Item</button></th>
@@ -169,6 +181,7 @@
                   <tr><td>Sample</td><td>2</td></tr>
                 </tbody>
               </table>
+              <span data-sample-sort-status aria-live="polite"></span>
             </div>
             <ul class="adlaire-faq-list">
               <li class="adlaire-faq-item">
@@ -187,11 +200,12 @@
             <strong>Empty state</strong>
             <span>データがない状態も部品として揃える。</span>
           </div>
-          <div class="adlaire-pagination" aria-label="サンプルページネーション">
+          <div class="adlaire-pagination" aria-label="サンプルページネーション" data-adlaire-pagination data-adlaire-pagination-status="[data-sample-pagination-status]">
             <span class="adlaire-pagination-count">1-10 / 42</span>
-            <a class="adlaire-page-link adlaire-page-link-current" href="#generic-title">1</a>
-            <a class="adlaire-page-link" href="#generic-title">2</a>
-            <a class="adlaire-page-next" href="#generic-title">Next</a>
+            <button class="adlaire-page-link adlaire-page-link-current" type="button" aria-current="true" data-adlaire-page-select="1">1</button>
+            <button class="adlaire-page-link" type="button" aria-current="false" data-adlaire-page-select="2">2</button>
+            <button class="adlaire-page-next" type="button" data-adlaire-page-select="next">Next</button>
+            <span class="adlaire-pagination-status" data-sample-pagination-status aria-live="polite">Page 1 selected</span>
           </div>
         </div>
       </article>
@@ -411,7 +425,7 @@
           <form class="adlaire-filter-builder" data-adlaire-filter aria-label="Data form sample">
             <div class="adlaire-error-summary" data-adlaire-validate-summary hidden aria-live="polite"></div>
             <div class="adlaire-filter-rule adlaire-form-grid">
-              <label class="adlaire-field">Field <span class="adlaire-required-marker">*</span><input class="adlaire-form-control" value="State" data-adlaire-validate required><span class="adlaire-field-hint">Column name</span></label>
+              <label class="adlaire-field">Field <span class="adlaire-required-marker">*</span><input class="adlaire-form-control" value="State" maxlength="24" data-adlaire-validate data-adlaire-validation-message="[data-sample-field-validation]" data-adlaire-character-count="[data-sample-field-count]" required><span class="adlaire-field-hint">Column name</span><span class="adlaire-character-count" data-sample-field-count>5/24</span><span class="adlaire-validation-message" data-sample-field-validation></span></label>
               <label class="adlaire-field">Operator<input class="adlaire-form-control" value="is" data-adlaire-validate required><span class="adlaire-field-hint">Comparison</span></label>
               <label class="adlaire-field">Value<span class="adlaire-input-group"><span class="adlaire-input-addon">=</span><input class="adlaire-form-control" value="Ready" data-adlaire-validate required></span></label>
               <button class="adlaire-button adlaire-button-secondary" type="button">Apply</button>
@@ -432,6 +446,27 @@
             <div class="adlaire-settings-row">
               <span>Only show checked states</span>
               <label><input type="checkbox" data-adlaire-toggle-input="[data-sample-form-toggle]" checked><span class="adlaire-toggle" role="switch" aria-checked="true" data-sample-form-toggle></span></label>
+            </div>
+            <div class="adlaire-range-field" data-adlaire-range style="--adlaire-range-value: 48%">
+              <label class="adlaire-field">Threshold<input class="adlaire-form-control" type="range" min="0" max="100" value="48" data-adlaire-range-input data-adlaire-range-output="[data-sample-range-output]" data-adlaire-range-suffix="%"></label>
+              <div class="adlaire-range-meter" aria-hidden="true"></div>
+              <span class="adlaire-input-hint">Value: <span data-sample-range-output>48%</span></span>
+            </div>
+            <div class="adlaire-stepper-control" data-adlaire-stepper>
+              <button class="adlaire-stepper-action" type="button" data-adlaire-stepper-action="decrement" aria-label="Decrease reviewers">-</button>
+              <input class="adlaire-form-control" type="number" min="1" max="9" step="1" value="3" data-adlaire-stepper-output="[data-sample-stepper-output]" aria-label="Reviewer count">
+              <button class="adlaire-stepper-action" type="button" data-adlaire-stepper-action="increment" aria-label="Increase reviewers">+</button>
+              <span class="adlaire-input-hint">Reviewers: <span data-sample-stepper-output>3</span></span>
+            </div>
+            <div class="adlaire-token-input" data-adlaire-token-input data-adlaire-token-count="[data-sample-token-count]">
+              <div class="adlaire-input-group">
+                <input class="adlaire-form-control" value="a11y" aria-label="Token value">
+                <button class="adlaire-button adlaire-button-secondary" type="button" data-adlaire-token-add>Add</button>
+              </div>
+              <div class="adlaire-token-list" aria-live="polite">
+                <button class="adlaire-token" type="button" data-adlaire-token-remove="keyboard">keyboard</button>
+              </div>
+              <span class="adlaire-token-count">Tokens: <span data-sample-token-count>1</span></span>
             </div>
           </form>
           <div class="adlaire-mobile-action-bar" aria-label="Responsive action sample">
@@ -486,6 +521,22 @@
               </div>
             </div>
           </div>
+          <div class="adlaire-segmented-control" role="group" aria-label="Density" data-adlaire-segmented-control data-adlaire-segmented-output="[data-sample-segmented-output]">
+            <button class="adlaire-segmented-option" type="button" aria-pressed="true" aria-selected="true" data-adlaire-segmented-option="Comfortable">Comfortable</button>
+            <button class="adlaire-segmented-option" type="button" aria-pressed="false" aria-selected="false" data-adlaire-segmented-option="Compact">Compact</button>
+            <button class="adlaire-segmented-option" type="button" aria-pressed="false" aria-selected="false" data-adlaire-segmented-option="Dense">Dense</button>
+          </div>
+          <p class="adlaire-input-hint">Density: <span data-sample-segmented-output>Comfortable</span></p>
+          <div class="adlaire-radio-card-group" role="radiogroup" aria-label="Target platform" data-adlaire-radio-card-group data-adlaire-radio-card-output="[data-sample-radio-card-output]">
+            <button class="adlaire-radio-card" type="button" role="radio" aria-checked="true" tabindex="0" data-adlaire-radio-card="Web UI"><strong>Web UI</strong><span>Browser shell</span></button>
+            <button class="adlaire-radio-card" type="button" role="radio" aria-checked="false" tabindex="-1" data-adlaire-radio-card="Mobile UI"><strong>Mobile UI</strong><span>Touch shell</span></button>
+          </div>
+          <p class="adlaire-input-hint">Platform: <span data-sample-radio-card-output>Web UI</span></p>
+          <div class="adlaire-switch-group" role="group" aria-label="Surface toggles" data-adlaire-switch-group data-adlaire-switch-output="[data-sample-switch-output]" data-adlaire-switch-empty="No surfaces">
+            <button class="adlaire-switch-item" type="button" aria-checked="true" aria-pressed="true" data-adlaire-switch-item="Desktop">Desktop</button>
+            <button class="adlaire-switch-item" type="button" aria-checked="false" aria-pressed="false" data-adlaire-switch-item="Editor">Editor</button>
+          </div>
+          <p class="adlaire-input-hint">Enabled: <span data-sample-switch-output>Desktop</span></p>
           <div class="adlaire-date-preset-list" aria-label="Date presets">
             <button class="adlaire-date-preset" type="button" aria-pressed="true" data-adlaire-date-preset data-adlaire-date-start="[data-sample-date-start]" data-adlaire-date-start-value="2026-09-28" data-adlaire-date-end="[data-sample-date-end]" data-adlaire-date-end-value="2026-10-05">This week</button>
             <button class="adlaire-date-preset" type="button" aria-pressed="false" data-adlaire-date-preset data-adlaire-date-start="[data-sample-date-start]" data-adlaire-date-start-value="2026-10-01" data-adlaire-date-end="[data-sample-date-end]" data-adlaire-date-end-value="2026-10-31">Next month</button>
@@ -533,7 +584,7 @@
               </li>
             </ul>
           </div>
-          <div class="adlaire-data-grid" role="region" aria-label="Data grid sample">
+          <div id="sample-component-grid" class="adlaire-data-grid" role="region" aria-label="Data grid sample" data-adlaire-selection-root>
             <div class="adlaire-data-grid-toolbar">
               <strong>Components</strong>
               <span class="adlaire-status-pill">3 rows</span>
@@ -544,25 +595,28 @@
             </div>
             <div class="adlaire-data-grid-scroll">
               <table class="adlaire-data-grid-table">
-                <thead><tr><th class="adlaire-row-selection-cell">Select</th><th>Name <span class="adlaire-column-resize-handle" role="separator" aria-orientation="vertical" tabindex="0"></span></th><th>Family</th><th>State</th></tr></thead>
+                <thead><tr><th class="adlaire-row-selection-cell">Select</th><th data-adlaire-column="name">Name <span class="adlaire-column-resize-handle" role="separator" aria-orientation="vertical" tabindex="0"></span></th><th data-adlaire-column="family">Family</th><th>State</th></tr></thead>
                 <tbody>
-                  <tr class="adlaire-data-grid-row-selected" aria-selected="true"><td class="adlaire-row-selection-cell"><input type="checkbox" checked aria-label="Select Combobox"></td><td>Combobox</td><td>Forms</td><td><span class="adlaire-cell-status" data-state="valid">Ready</span></td></tr>
-                  <tr><td class="adlaire-row-selection-cell"><input type="checkbox" aria-label="Select Tree view"></td><td>Tree view</td><td>Structure</td><td><span class="adlaire-cell-status" data-state="changed">Changed</span></td></tr>
+                  <tr class="adlaire-data-grid-row-selected" aria-selected="true"><td class="adlaire-row-selection-cell"><button class="adlaire-icon-button" type="button" aria-selected="true" data-adlaire-record-row-toggle data-adlaire-selection-item aria-label="Select Combobox">✓</button></td><td data-adlaire-column="name">Combobox</td><td data-adlaire-column="family">Forms</td><td><span class="adlaire-cell-status" data-state="valid">Ready</span></td></tr>
+                  <tr><td class="adlaire-row-selection-cell"><button class="adlaire-icon-button" type="button" aria-selected="false" data-adlaire-record-row-toggle data-adlaire-selection-item aria-label="Select Tree view">✓</button></td><td data-adlaire-column="name">Tree view</td><td data-adlaire-column="family">Structure</td><td><span class="adlaire-cell-status" data-state="changed">Changed</span></td></tr>
                   <tr class="adlaire-data-grid-detail-row"><td></td><td colspan="3">Tree view requires keyboard and aria-current coverage.</td></tr>
-                  <tr><td class="adlaire-row-selection-cell"><input type="checkbox" aria-label="Select Bottom sheet"></td><td>Bottom sheet</td><td>Overlay</td><td>Ready</td></tr>
+                  <tr><td class="adlaire-row-selection-cell"><button class="adlaire-icon-button" type="button" aria-selected="false" data-adlaire-record-row-toggle data-adlaire-selection-item aria-label="Select Bottom sheet">✓</button></td><td data-adlaire-column="name">Bottom sheet</td><td data-adlaire-column="family">Overlay</td><td>Ready</td></tr>
                 </tbody>
                 <tfoot><tr class="adlaire-data-grid-summary-row"><td></td><td>Summary</td><td>3 families</td><td>2 verified</td></tr></tfoot>
               </table>
             </div>
+            <div class="adlaire-selection-counter-bar"><strong><span data-adlaire-selection-counter>1</span> selected</strong><span class="adlaire-bulk-action-tray" data-adlaire-bulk-action-tray data-adlaire-selected-count="1">Bulk actions ready</span></div>
             <div class="adlaire-data-grid-footer">Saved view: Release review</div>
           </div>
-          <div class="adlaire-saved-view-bar">
-            <span class="adlaire-saved-view">Release review</span>
-            <span class="adlaire-saved-view">Accessibility pass</span>
+          <div class="adlaire-saved-view-bar" data-adlaire-saved-view-root>
+            <button class="adlaire-saved-view" type="button" aria-pressed="true" data-adlaire-saved-view-apply="Release review" data-adlaire-saved-view-status="[data-sample-saved-view-status]">Release review</button>
+            <button class="adlaire-saved-view" type="button" aria-pressed="false" data-adlaire-saved-view-apply="Accessibility pass" data-adlaire-saved-view-status="[data-sample-saved-view-status]">Accessibility pass</button>
+            <span data-sample-saved-view-status aria-live="polite">Release review view applied</span>
           </div>
-          <div class="adlaire-column-manager">
-            <div class="adlaire-column-manager-item"><span>Name</span><span>visible</span></div>
-            <div class="adlaire-column-manager-item"><span>Owner</span><span>hidden</span></div>
+          <div class="adlaire-column-manager" data-adlaire-column-manager>
+            <button class="adlaire-column-manager-item" type="button" aria-checked="true" data-adlaire-column-toggle="name" data-adlaire-column-root="#sample-component-grid" data-adlaire-column-status="[data-sample-column-status]"><span>Name</span><span>visible</span></button>
+            <button class="adlaire-column-manager-item" type="button" aria-checked="true" data-adlaire-column-toggle="family" data-adlaire-column-root="#sample-component-grid" data-adlaire-column-status="[data-sample-column-status]"><span>Family</span><span>visible</span></button>
+            <span data-sample-column-status aria-live="polite">columns ready</span>
           </div>
           <div class="adlaire-property-inspector">
             <strong>Property inspector</strong>
@@ -787,9 +841,9 @@
 
         <article class="adlaire-component-preview">
           <h3>Productivity surfaces</h3>
-          <nav class="adlaire-document-outline" aria-label="Document outline">
-            <a class="adlaire-outline-item" href="#workspace-command-title" aria-current="true"><span>Workspace</span><span>1</span></a>
-            <a class="adlaire-outline-item" href="#icon-title"><span>Icons</span><span>2</span></a>
+          <nav class="adlaire-document-outline" aria-label="Document outline" data-adlaire-toc>
+            <a class="adlaire-outline-item" href="#workspace-command-title" aria-current="location" data-adlaire-toc-link><span>Workspace</span><span>1</span></a>
+            <a class="adlaire-outline-item" href="#icon-title" data-adlaire-toc-link><span>Icons</span><span>2</span></a>
           </nav>
           <div class="adlaire-mini-map" aria-label="Mini map">
             <span class="adlaire-mini-map-marker"></span>
@@ -2850,6 +2904,8 @@
           <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="true" data-adlaire-wysiwyg-mode="edit">B</button>
           <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="false" data-adlaire-wysiwyg-mode="review">I</button>
           <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="false" data-adlaire-wysiwyg-mode="outline">H</button>
+          <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="true" data-adlaire-wysiwyg-toolbar-group="inline">Inline</button>
+          <button class="adlaire-wysiwyg-tool" type="button" aria-pressed="false" data-adlaire-wysiwyg-toolbar-group="insert">Insert</button>
         </div>
         <div class="adlaire-wysiwyg-canvas">
           <div class="adlaire-wysiwyg-inline-toolbar">
@@ -2872,10 +2928,12 @@
             <button class="adlaire-wysiwyg-transform" type="button">Transform</button>
           </div>
           <div class="adlaire-wysiwyg-slash-menu">
-            <button class="adlaire-wysiwyg-command-item" type="button">/ callout</button>
-            <button class="adlaire-wysiwyg-command-item" type="button">/ table</button>
+            <button class="adlaire-wysiwyg-command-item adlaire-wysiwyg-slash-item" type="button" aria-selected="true" data-adlaire-wysiwyg-slash-item="callout">/ callout</button>
+            <button class="adlaire-wysiwyg-command-item adlaire-wysiwyg-slash-item" type="button" aria-selected="false" data-adlaire-wysiwyg-slash-item="table">/ table</button>
           </div>
-          <div class="adlaire-wysiwyg-suggestion-card">Suggestion: tighten heading hierarchy.</div>
+          <div class="adlaire-wysiwyg-suggestion-card">
+            <button class="adlaire-wysiwyg-suggestion" type="button" aria-selected="true" data-adlaire-wysiwyg-suggestion="heading">Suggestion: tighten heading hierarchy.</button>
+          </div>
         </div>
       </article>
 
@@ -2890,9 +2948,9 @@
           <button class="adlaire-wysiwyg-mobile-action" type="button">...</button>
         </div>
         <div class="adlaire-wysiwyg-mobile-sheet">
-          <button class="adlaire-wysiwyg-command-item adlaire-wysiwyg-command-active" type="button">見出し</button>
-          <button class="adlaire-wysiwyg-command-item" type="button">画像</button>
-          <button class="adlaire-wysiwyg-command-item" type="button">コード</button>
+          <button class="adlaire-wysiwyg-command-item adlaire-wysiwyg-command-active adlaire-wysiwyg-slash-item" type="button" aria-selected="true" data-adlaire-wysiwyg-slash-item="heading">見出し</button>
+          <button class="adlaire-wysiwyg-command-item adlaire-wysiwyg-slash-item" type="button" aria-selected="false" data-adlaire-wysiwyg-slash-item="image">画像</button>
+          <button class="adlaire-wysiwyg-command-item adlaire-wysiwyg-slash-item" type="button" aria-selected="false" data-adlaire-wysiwyg-slash-item="code">コード</button>
         </div>
         <div class="adlaire-wysiwyg-alert">Readonly content cannot be edited.</div>
         <div class="adlaire-wysiwyg-disabled">Editor controls are disabled during sync.</div>

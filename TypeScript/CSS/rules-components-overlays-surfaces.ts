@@ -12,6 +12,14 @@ export const COMPONENTS_OVERLAY_SURFACES_CSS = `
   overflow: hidden;
 }
 
+[data-adlaire-inert-background="true"] {
+  overflow: hidden;
+}
+
+[data-adlaire-overlay-depth] {
+  scroll-behavior: auto;
+}
+
 .adlaire-modal.is-open,
 .adlaire-drawer.is-open {
   display: grid;

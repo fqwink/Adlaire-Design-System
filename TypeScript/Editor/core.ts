@@ -12,7 +12,9 @@ import type {
   EditorDocument,
   EditorError,
   EditorEventListener,
+  HistoryCheckpoint,
   EditorSelection,
+  PublishState,
   PublishContext,
   PublishRequest,
   SaveContext,
@@ -20,6 +22,7 @@ import type {
   SaveState,
   SetSelectionPayload,
   Unsubscribe,
+  ValidationSummary,
 } from "./types.ts";
 
 const mutableCommands = new Set(["insert-block", "delete-block", "move-block", "update-block", "split-block", "merge-block", "set-document-meta"]);
@@ -38,6 +41,7 @@ export class HeadlessEditorController implements EditorController {
   #selection: EditorSelection | null = null;
   #readOnly: boolean;
   #saveState: SaveState = { dirty: false, saving: false };
+  #publishState: PublishState = { publishing: false };
 
   constructor(config: EditorConfig = {}) {
     const defaultBlock = config.defaultBlock ?? "paragraph";
@@ -59,6 +63,7 @@ export class HeadlessEditorController implements EditorController {
     this.#document = sanitizeDocument(normalizeDocument(document, this.#registry), this.#registry);
     this.#selection = normalizeSelection(this.#document, this.#selection);
     this.#saveState = { dirty: false, saving: false };
+    this.#publishState = { publishing: false };
     this.#history.clear();
     this.#events.emit({ type: "document:changed", document: this.getDocument() });
     this.#events.emit({ type: "selection:changed", selection: this.getSelection() });
@@ -143,6 +148,38 @@ export class HeadlessEditorController implements EditorController {
     return { ...this.#saveState };
   }
 
+  getPublishState(): PublishState {
+    return { ...this.#publishState };
+  }
+
+  getValidationSummary(): ValidationSummary {
+    const validation = validateDocument(this.#document, this.#registry);
+    return {
+      valid: validation.valid,
+      errorCount: validation.errors.length,
+      warningCount: validation.warnings.length,
+      firstError: validation.errors[0],
+    };
+  }
+
+  setReadOnly(readOnly: boolean): void {
+    const next = Boolean(readOnly);
+    if (this.#readOnly === next) return;
+    this.#readOnly = next;
+    this.#events.emit({ type: "readOnly:changed", readOnly: next });
+  }
+
+  checkpoint(label: string): HistoryCheckpoint {
+    const checkpoint = {
+      label: String(label || "checkpoint"),
+      createdAt: new Date().toISOString(),
+      canUndo: this.#history.canUndo,
+      canRedo: this.#history.canRedo,
+    };
+    this.#events.emit({ type: "history:checkpoint", checkpoint });
+    return checkpoint;
+  }
+
   undo(): EditorCommandResult {
     const snapshot = this.#history.undo({ document: this.getDocument(), selection: this.getSelection() });
     if (!snapshot) return { document: this.getDocument(), selection: this.getSelection(), changed: false };
@@ -173,15 +210,44 @@ export class HeadlessEditorController implements EditorController {
       state: { ...this.#saveState, saving: true, lastRequestedAt: new Date().toISOString() },
     };
     this.#saveState = request.state;
+    delete this.#saveState.error;
+    request.state = this.getSaveState();
     this.#events.emit({ type: "save:requested", request });
     return request;
   }
 
+  completeSave(state: Partial<SaveState> = {}): SaveState {
+    this.#saveState = { ...this.#saveState, ...state, dirty: false, saving: false };
+    if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.#saveState.error;
+    return this.getSaveState();
+  }
+
+  failSave(error: string): SaveState {
+    this.#saveState = { ...this.#saveState, dirty: true, saving: false, error };
+    return this.getSaveState();
+  }
+
   requestPublish(context: PublishContext = { reason: "manual" }): PublishRequest {
     const document = sanitizeDocument(this.#document, this.#registry);
-    const request = { document, context, validation: validateDocument(document, this.#registry) };
+    this.#publishState = { ...this.#publishState, publishing: true, lastRequestedAt: new Date().toISOString() };
+    delete this.#publishState.error;
+    const request = { document, context, validation: validateDocument(document, this.#registry), state: this.getPublishState() };
     this.#events.emit({ type: "publish:requested", request });
     return request;
+  }
+
+  completePublish(state: Partial<PublishState> = {}): PublishState {
+    this.#publishState = { ...this.#publishState, ...state, publishing: false, lastCompletedAt: new Date().toISOString() };
+    if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.#publishState.error;
+    this.#events.emit({ type: "publish:completed", state: this.getPublishState() });
+    return this.getPublishState();
+  }
+
+  failPublish(error: string): PublishState {
+    this.#publishState = { ...this.#publishState, publishing: false, error };
+    delete this.#publishState.lastCompletedAt;
+    this.#events.emit({ type: "publish:failed", state: this.getPublishState() });
+    return this.getPublishState();
   }
 
   subscribe(listener: EditorEventListener): Unsubscribe {

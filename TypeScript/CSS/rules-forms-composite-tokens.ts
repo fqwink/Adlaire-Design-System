@@ -41,4 +41,32 @@ export const FORMS_COMPOSITE_TOKENS_CSS = `.adlaire-multi-select-list {
   cursor: pointer;
 }
 
+.adlaire-token-count,
+.adlaire-character-count {
+  color: var(--adlaire-surface-text-subtle);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.adlaire-range-field {
+  --adlaire-range-value: 0%;
+  display: grid;
+  gap: 8px;
+}
+
+.adlaire-range-meter {
+  overflow: hidden;
+  height: 6px;
+  background-color: var(--adlaire-surface-soft);
+  border-radius: var(--adlaire-radius-round);
+}
+
+.adlaire-range-meter::before {
+  display: block;
+  width: var(--adlaire-range-value, 0%);
+  height: 100%;
+  background-color: var(--adlaire-surface-accent);
+  content: "";
+}
+
 `;

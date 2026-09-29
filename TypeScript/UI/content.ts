@@ -35,6 +35,26 @@
     }
   }
 
+  function safeDocumentQueryAll(selector: string | null | undefined): HTMLElement[] {
+    return safeScopedQueryAll(document, selector);
+  }
+
+  function setBooleanAttribute(target: Element, attribute: string, active: boolean): void {
+    target.setAttribute(attribute, active ? "true" : "false");
+  }
+
+  function isDisabledInteraction(target: Element): boolean {
+    return target.hasAttribute("disabled") || target.getAttribute("aria-disabled") === "true";
+  }
+
+  function isNativeInteractive(target: Element): boolean {
+    return target instanceof HTMLButtonElement ||
+      target instanceof HTMLAnchorElement ||
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLSelectElement ||
+      target instanceof HTMLTextAreaElement;
+  }
+
   function writeClipboardText(text: string): boolean {
     const clipboard = navigator.clipboard;
     if (!clipboard?.writeText) return false;
@@ -67,7 +87,7 @@
     for (let index = startIndex; index < bindings.length; index += 1) {
       const binding = bindings[index];
       const trigger = source.closest(binding.selector);
-      if (trigger) return [trigger, binding, index];
+      if (trigger && !isDisabledInteraction(trigger)) return [trigger, binding, index];
     }
     return null;
   }
@@ -115,6 +135,7 @@
     contentClickBinding("data-adlaire-sort", sortTable),
     contentClickBinding("data-adlaire-code-copy", copyCodeBlock),
     contentClickBinding("data-adlaire-code-line", selectCodeLine),
+    contentClickBinding("data-adlaire-toc-link", selectTocLink),
   ] as const;
 
   function handleEveryContentClick(source: Element | null): void {
@@ -130,6 +151,16 @@
     handleEveryContentClick(eventSourceElement(event));
   });
 
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const source = eventSourceElement(event);
+    if (source && isNativeInteractive(source)) return;
+    const trigger = source?.closest("[data-adlaire-code-line], [data-adlaire-toc-link]");
+    if (!(trigger instanceof HTMLElement) || isDisabledInteraction(trigger)) return;
+    event.preventDefault();
+    trigger.click();
+  });
+
   function sortTable(header: Element): void {
     const columnHeader = header.closest("th") ?? header;
     const table = columnHeader.closest("table");
@@ -140,22 +171,45 @@
     const index = headers.indexOf(columnHeader);
     const direction = columnHeader.getAttribute("aria-sort") === "ascending" ? "desc" : "asc";
     const type = header.getAttribute("data-adlaire-sort") ?? columnHeader.getAttribute("data-adlaire-sort") ?? "text";
+    const multiSort = table.getAttribute("data-adlaire-sort-multi") === "true";
 
-    headers.forEach((item) => item.removeAttribute("aria-sort"));
+    if (!multiSort) headers.forEach((item) => {
+      item.removeAttribute("aria-sort");
+      item.removeAttribute("data-adlaire-sort-order");
+    });
     columnHeader.setAttribute("aria-sort", direction === "asc" ? "ascending" : "descending");
+    columnHeader.setAttribute("data-adlaire-sort-order", String(sortOrder(headers, columnHeader, multiSort)));
     Array.from(body.rows).sort(compareRows(index, direction, type)).forEach((row) => body.appendChild(row));
+    table.setAttribute("data-adlaire-sort-state", `${index}:${direction}:${type}`);
+
+    const status = safeDocumentQuery(header.getAttribute("data-adlaire-sort-status") ?? table.getAttribute("data-adlaire-sort-status"));
+    if (status) {
+      if (!status.hasAttribute("aria-live")) status.setAttribute("aria-live", "polite");
+      const order = columnHeader.getAttribute("data-adlaire-sort-order");
+      status.textContent = `${columnHeader.textContent?.trim() ?? "Column"} sorted ${direction === "asc" ? "ascending" : "descending"}${multiSort && order ? `, priority ${order}` : ""}`;
+    }
+  }
+
+  function sortOrder(headers: Element[], columnHeader: Element, multiSort: boolean): number {
+    if (!multiSort) return 1;
+    const current = Number(columnHeader.getAttribute("data-adlaire-sort-order") ?? "0");
+    if (Number.isFinite(current) && current > 0) return current;
+    return headers.filter((item) => item.hasAttribute("data-adlaire-sort-order")).length + 1;
   }
 
   function copyCodeBlock(copy: Element): void {
     const selector = copy.getAttribute("data-adlaire-code-copy");
     const statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     const target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
+    const status = safeDocumentQuery(statusSelector);
     if (target && writeClipboardText(target.textContent ?? "")) {
       copy.setAttribute("data-adlaire-copied", "true");
-      const status = safeDocumentQuery(statusSelector);
       if (status) {
         status.textContent = "Copied";
       }
+      window.setTimeout(() => copy.removeAttribute("data-adlaire-copied"), 2000);
+    } else if (status) {
+      status.textContent = "Copy unavailable";
     }
   }
 
@@ -169,4 +223,21 @@
     line.classList.add("adlaire-git-line-highlight");
     line.setAttribute("aria-selected", "true");
   }
+
+  function selectTocLink(link: Element): void {
+    const root = link.closest("[data-adlaire-toc], .adlaire-toc, .legal-toc") ?? document;
+    safeScopedQueryAll(root, "[data-adlaire-toc-link], .legal-toc-link").forEach((item) => {
+      if (item === link) {
+        item.setAttribute("aria-current", "true");
+      } else {
+        item.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  safeDocumentQueryAll("[data-adlaire-code-line]").forEach((line) => {
+    if (!line.hasAttribute("tabindex")) line.setAttribute("tabindex", "0");
+    if (!line.hasAttribute("role")) line.setAttribute("role", "option");
+    if (!line.hasAttribute("aria-selected")) setBooleanAttribute(line, "aria-selected", false);
+  });
 })();
