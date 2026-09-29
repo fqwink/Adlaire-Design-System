@@ -1177,6 +1177,30 @@ for js_hook in \
   require_text "UI/components.js" "$js_hook" "Interaction readiness"
 done
 
+for ui_binding_term in \
+  'hookSelector' \
+  'choiceBinding' \
+  'booleanBinding' \
+  'stepBinding' \
+  'interactiveChoiceBindings' \
+  'booleanStateBindings' \
+  'currentStepBindings' \
+  'closestBoundTrigger' \
+  'handleDeclarativeInteraction'; do
+  require_text "TypeScript/UI/components.ts" "$ui_binding_term" "Declarative UI interaction bindings"
+  require_text "UI/components.js" "$ui_binding_term" "Declarative UI interaction bindings"
+done
+
+components_ts_hooks="$TMP_DIR/components-ts-hooks.txt"
+components_js_hooks="$TMP_DIR/components-js-hooks.txt"
+components_hook_diff="$TMP_DIR/components-hook-diff.txt"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/TypeScript/UI/components.ts" | sort -u > "$components_ts_hooks"
+grep -E -o 'data-adlaire-[A-Za-z0-9-]+' "$ROOT/UI/components.js" | sort -u > "$components_js_hooks"
+if ! cmp -s "$components_ts_hooks" "$components_js_hooks"; then
+  comm -3 "$components_ts_hooks" "$components_js_hooks" > "$components_hook_diff"
+  fail "Declarative UI interaction bindings" "TypeScript/UI/components.ts and UI/components.js data-adlaire hook sets differ: $(tr '\n' ' ' < "$components_hook_diff")"
+fi
+
 for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-chip' \

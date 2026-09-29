@@ -190,6 +190,151 @@
       .forEach((indicator, index) => indicator.setAttribute("aria-current", index === current ? "true" : "false"));
   }
 
+  interface InteractiveChoiceBinding {
+    readonly selector: string;
+    readonly rootSelector: string;
+    readonly itemSelector: string;
+    readonly selectedAttribute: string;
+  }
+
+  interface BooleanStateBinding {
+    readonly selector: string;
+    readonly stateAttribute: string;
+  }
+
+  interface CurrentStepBinding {
+    readonly selector: string;
+    readonly rootSelector: string;
+    readonly itemSelector: string;
+  }
+
+  function hookSelector(attribute: string): string {
+    return `[${attribute}]`;
+  }
+
+  function choiceBinding(attribute: string, rootSelector: string, selectedAttribute: string, itemAttribute = attribute): InteractiveChoiceBinding {
+    return {
+      selector: hookSelector(attribute),
+      rootSelector,
+      itemSelector: hookSelector(itemAttribute),
+      selectedAttribute,
+    };
+  }
+
+  function booleanBinding(attribute: string, stateAttribute: string): BooleanStateBinding {
+    return {
+      selector: hookSelector(attribute),
+      stateAttribute,
+    };
+  }
+
+  function stepBinding(attribute: string, rootSelector: string, itemAttribute = attribute): CurrentStepBinding {
+    return {
+      selector: hookSelector(attribute),
+      rootSelector,
+      itemSelector: hookSelector(itemAttribute),
+    };
+  }
+
+  const interactiveChoiceBindings: readonly InteractiveChoiceBinding[] = [
+    choiceBinding("data-adlaire-time-slot", ".adlaire-time-slot-grid", "aria-selected"),
+    choiceBinding("data-adlaire-floor-select", ".adlaire-floor-selector", "aria-pressed"),
+    choiceBinding("data-adlaire-option-select", "[data-adlaire-option-group]", "aria-selected"),
+    choiceBinding("data-adlaire-shift-select", ".adlaire-shift-roster", "aria-selected"),
+    choiceBinding("data-adlaire-confidence-select", ".adlaire-confidence-indicator", "aria-pressed"),
+    choiceBinding("data-adlaire-route-select", ".adlaire-delivery-route-board", "aria-selected"),
+    choiceBinding("data-adlaire-evidence-select", ".adlaire-evidence-list", "aria-selected"),
+    choiceBinding("data-adlaire-ticket-priority-select", ".adlaire-ticket-priority-board", "aria-selected"),
+    choiceBinding("data-adlaire-report-parameter-select", ".adlaire-report-parameter-bar", "aria-pressed"),
+    choiceBinding("data-adlaire-channel-select", ".adlaire-channel-list", "aria-selected"),
+    choiceBinding("data-adlaire-editorial-gate-select", ".adlaire-review-gate-panel", "aria-selected"),
+    choiceBinding("data-adlaire-locale-select", ".adlaire-locale-switcher-panel", "aria-selected"),
+    choiceBinding("data-adlaire-moderation-decision", ".adlaire-moderation-queue", "aria-pressed"),
+    choiceBinding("data-adlaire-device-select", ".adlaire-device-registry-table", "aria-selected"),
+    choiceBinding("data-adlaire-deployment-ring-select", ".adlaire-deployment-ring-selector", "aria-selected"),
+    choiceBinding("data-adlaire-fare-option-select", ".adlaire-booking-summary-panel", "aria-selected"),
+    choiceBinding("data-adlaire-room-select", ".adlaire-room-inventory-board", "aria-selected"),
+    choiceBinding("data-adlaire-permit-step-select", ".adlaire-document-requirement-list", "aria-selected"),
+    choiceBinding("data-adlaire-volunteer-shift-select", ".adlaire-volunteer-shift-board", "aria-selected"),
+    choiceBinding("data-adlaire-demand-response-select", ".adlaire-demand-response-panel", "aria-selected"),
+    choiceBinding("data-adlaire-outage-report-select", ".adlaire-service-appointment-board", "aria-selected"),
+    choiceBinding("data-adlaire-density-select", ".adlaire-density-switcher", "aria-pressed"),
+    choiceBinding("data-adlaire-saved-view-select", ".adlaire-view-preset-switcher", "aria-pressed"),
+    choiceBinding("data-adlaire-checkpoint-select", ".adlaire-execution-timeline", "aria-selected"),
+    choiceBinding("data-adlaire-sdk-select", ".adlaire-sdk-selector", "aria-pressed"),
+    choiceBinding("data-adlaire-environment-select", ".adlaire-api-explorer-panel", "aria-selected"),
+    choiceBinding("data-adlaire-theme-select", ".adlaire-theme-workspace-panel", "aria-pressed"),
+  ] as const;
+
+  const booleanStateBindings: readonly BooleanStateBinding[] = [
+    booleanBinding("data-adlaire-service-check", "aria-checked"),
+    booleanBinding("data-adlaire-policy-acknowledgement", "aria-pressed"),
+    booleanBinding("data-adlaire-attestation-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-care-plan-check", "aria-checked"),
+    booleanBinding("data-adlaire-success-playbook-check", "aria-checked"),
+    booleanBinding("data-adlaire-quiet-hours-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-topic-preference-toggle", "aria-checked"),
+    booleanBinding("data-adlaire-handoff-check", "aria-checked"),
+    booleanBinding("data-adlaire-recovery-task-check", "aria-checked"),
+    booleanBinding("data-adlaire-eligibility-check", "aria-checked"),
+    booleanBinding("data-adlaire-disclosure-check", "aria-checked"),
+    booleanBinding("data-adlaire-bulk-selection-toggle", "aria-selected"),
+    booleanBinding("data-adlaire-verification-check", "aria-checked"),
+    booleanBinding("data-adlaire-record-row-toggle", "aria-selected"),
+    booleanBinding("data-adlaire-inline-edit-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-bulk-confirm-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-tool-permission-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-approval-gate-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-notification-policy-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-connection-test-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-migration-step-toggle", "aria-checked"),
+    booleanBinding("data-adlaire-dark-mode-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-high-contrast-toggle", "aria-pressed"),
+    booleanBinding("data-adlaire-token-override-toggle", "aria-checked"),
+  ] as const;
+
+  const currentStepBindings: readonly CurrentStepBinding[] = [
+    stepBinding("data-adlaire-pipeline-stage-select", ".adlaire-pipeline-stage-rail"),
+    stepBinding("data-adlaire-milestone-select", ".adlaire-milestone-tracker"),
+  ] as const;
+
+  function closestBoundTrigger<T extends { readonly selector: string }>(source: Element | null, bindings: readonly T[]): [Element, T] | null {
+    if (!source) return null;
+    for (const binding of bindings) {
+      const trigger = source.closest(binding.selector);
+      if (trigger) return [trigger, binding];
+    }
+    return null;
+  }
+
+  function handleDeclarativeInteraction(event: MouseEvent, source: Element | null): boolean {
+    const choice = closestBoundTrigger(source, interactiveChoiceBindings);
+    if (choice) {
+      const [trigger, binding] = choice;
+      event.preventDefault();
+      selectInteractiveChoice(trigger, binding.rootSelector, binding.itemSelector, binding.selectedAttribute);
+      return true;
+    }
+
+    const toggle = closestBoundTrigger(source, booleanStateBindings);
+    if (toggle) {
+      const [trigger, binding] = toggle;
+      event.preventDefault();
+      toggleBooleanState(trigger, binding.stateAttribute);
+      return true;
+    }
+
+    const currentStep = closestBoundTrigger(source, currentStepBindings);
+    if (currentStep) {
+      const [trigger, binding] = currentStep;
+      event.preventDefault();
+      selectCurrentStep(trigger, binding.rootSelector, binding.itemSelector);
+      return true;
+    }
+
+    return false;
+  }
+
   document.addEventListener("click", (event) => {
     const source = targetElement(event.target);
     const copy = source?.closest("[data-adlaire-copy]");
@@ -203,61 +348,8 @@
     const splitToggle = source?.closest("[data-adlaire-split-button-toggle]");
     const overflowToggle = source?.closest("[data-adlaire-overflow-toggle]");
     const dockToggle = source?.closest("[data-adlaire-dock-toggle]");
-    const timeSlot = source?.closest("[data-adlaire-time-slot]");
-    const floorSelect = source?.closest("[data-adlaire-floor-select]");
-    const optionSelect = source?.closest("[data-adlaire-option-select]");
     const folderToggle = source?.closest("[data-adlaire-folder-toggle]");
     const policyExceptionToggle = source?.closest("[data-adlaire-policy-exception-toggle]");
-    const shiftSelect = source?.closest("[data-adlaire-shift-select]");
-    const pipelineStageSelect = source?.closest("[data-adlaire-pipeline-stage-select]");
-    const serviceCheck = source?.closest("[data-adlaire-service-check]");
-    const policyAcknowledgement = source?.closest("[data-adlaire-policy-acknowledgement]");
-    const confidenceSelect = source?.closest("[data-adlaire-confidence-select]");
-    const milestoneSelect = source?.closest("[data-adlaire-milestone-select]");
-    const attestationToggle = source?.closest("[data-adlaire-attestation-toggle]");
-    const routeSelect = source?.closest("[data-adlaire-route-select]");
-    const carePlanCheck = source?.closest("[data-adlaire-care-plan-check]");
-    const evidenceSelect = source?.closest("[data-adlaire-evidence-select]");
-    const ticketPrioritySelect = source?.closest("[data-adlaire-ticket-priority-select]");
-    const successPlaybookCheck = source?.closest("[data-adlaire-success-playbook-check]");
-    const reportParameterSelect = source?.closest("[data-adlaire-report-parameter-select]");
-    const channelSelect = source?.closest("[data-adlaire-channel-select]");
-    const quietHoursToggle = source?.closest("[data-adlaire-quiet-hours-toggle]");
-    const topicPreferenceToggle = source?.closest("[data-adlaire-topic-preference-toggle]");
-    const editorialGateSelect = source?.closest("[data-adlaire-editorial-gate-select]");
-    const localeSelect = source?.closest("[data-adlaire-locale-select]");
-    const moderationDecision = source?.closest("[data-adlaire-moderation-decision]");
-    const deviceSelect = source?.closest("[data-adlaire-device-select]");
-    const deploymentRingSelect = source?.closest("[data-adlaire-deployment-ring-select]");
-    const handoffCheck = source?.closest("[data-adlaire-handoff-check]");
-    const fareOptionSelect = source?.closest("[data-adlaire-fare-option-select]");
-    const roomSelect = source?.closest("[data-adlaire-room-select]");
-    const recoveryTaskCheck = source?.closest("[data-adlaire-recovery-task-check]");
-    const eligibilityCheck = source?.closest("[data-adlaire-eligibility-check]");
-    const permitStepSelect = source?.closest("[data-adlaire-permit-step-select]");
-    const volunteerShiftSelect = source?.closest("[data-adlaire-volunteer-shift-select]");
-    const demandResponseSelect = source?.closest("[data-adlaire-demand-response-select]");
-    const outageReportSelect = source?.closest("[data-adlaire-outage-report-select]");
-    const disclosureCheck = source?.closest("[data-adlaire-disclosure-check]");
-    const densitySelect = source?.closest("[data-adlaire-density-select]");
-    const bulkSelectionToggle = source?.closest("[data-adlaire-bulk-selection-toggle]");
-    const verificationCheck = source?.closest("[data-adlaire-verification-check]");
-    const savedViewSelect = source?.closest("[data-adlaire-saved-view-select]");
-    const recordRowToggle = source?.closest("[data-adlaire-record-row-toggle]");
-    const inlineEditToggle = source?.closest("[data-adlaire-inline-edit-toggle]");
-    const bulkConfirmToggle = source?.closest("[data-adlaire-bulk-confirm-toggle]");
-    const toolPermissionToggle = source?.closest("[data-adlaire-tool-permission-toggle]");
-    const approvalGateToggle = source?.closest("[data-adlaire-approval-gate-toggle]");
-    const checkpointSelect = source?.closest("[data-adlaire-checkpoint-select]");
-    const notificationPolicyToggle = source?.closest("[data-adlaire-notification-policy-toggle]");
-    const sdkSelect = source?.closest("[data-adlaire-sdk-select]");
-    const environmentSelect = source?.closest("[data-adlaire-environment-select]");
-    const connectionTestToggle = source?.closest("[data-adlaire-connection-test-toggle]");
-    const migrationStepToggle = source?.closest("[data-adlaire-migration-step-toggle]");
-    const themeSelect = source?.closest("[data-adlaire-theme-select]");
-    const darkModeToggle = source?.closest("[data-adlaire-dark-mode-toggle]");
-    const highContrastToggle = source?.closest("[data-adlaire-high-contrast-toggle]");
-    const tokenOverrideToggle = source?.closest("[data-adlaire-token-override-toggle]");
 
     if (copy) {
       const copyTarget = getTarget(copy);
@@ -319,20 +411,7 @@
       toggleDockPanel(dockToggle);
     }
 
-    if (timeSlot) {
-      event.preventDefault();
-      selectInteractiveChoice(timeSlot, ".adlaire-time-slot-grid", "[data-adlaire-time-slot]", "aria-selected");
-    }
-
-    if (floorSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(floorSelect, ".adlaire-floor-selector", "[data-adlaire-floor-select]", "aria-pressed");
-    }
-
-    if (optionSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(optionSelect, "[data-adlaire-option-group]", "[data-adlaire-option-select]", "aria-selected");
-    }
+    if (handleDeclarativeInteraction(event, source)) return;
 
     if (folderToggle) {
       event.preventDefault();
@@ -342,256 +421,6 @@
     if (policyExceptionToggle) {
       event.preventDefault();
       toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
-    }
-
-    if (shiftSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(shiftSelect, ".adlaire-shift-roster", "[data-adlaire-shift-select]", "aria-selected");
-    }
-
-    if (pipelineStageSelect) {
-      event.preventDefault();
-      selectCurrentStep(pipelineStageSelect, ".adlaire-pipeline-stage-rail", "[data-adlaire-pipeline-stage-select]");
-    }
-
-    if (serviceCheck) {
-      event.preventDefault();
-      toggleBooleanState(serviceCheck, "aria-checked");
-    }
-
-    if (policyAcknowledgement) {
-      event.preventDefault();
-      toggleBooleanState(policyAcknowledgement, "aria-pressed");
-    }
-
-    if (confidenceSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(confidenceSelect, ".adlaire-confidence-indicator", "[data-adlaire-confidence-select]", "aria-pressed");
-    }
-
-    if (milestoneSelect) {
-      event.preventDefault();
-      selectCurrentStep(milestoneSelect, ".adlaire-milestone-tracker", "[data-adlaire-milestone-select]");
-    }
-
-    if (attestationToggle) {
-      event.preventDefault();
-      toggleBooleanState(attestationToggle, "aria-pressed");
-    }
-
-    if (routeSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(routeSelect, ".adlaire-delivery-route-board", "[data-adlaire-route-select]", "aria-selected");
-    }
-
-    if (carePlanCheck) {
-      event.preventDefault();
-      toggleBooleanState(carePlanCheck, "aria-checked");
-    }
-
-    if (evidenceSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(evidenceSelect, ".adlaire-evidence-list", "[data-adlaire-evidence-select]", "aria-selected");
-    }
-
-    if (ticketPrioritySelect) {
-      event.preventDefault();
-      selectInteractiveChoice(ticketPrioritySelect, ".adlaire-ticket-priority-board", "[data-adlaire-ticket-priority-select]", "aria-selected");
-    }
-
-    if (successPlaybookCheck) {
-      event.preventDefault();
-      toggleBooleanState(successPlaybookCheck, "aria-checked");
-    }
-
-    if (reportParameterSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(reportParameterSelect, ".adlaire-report-parameter-bar", "[data-adlaire-report-parameter-select]", "aria-pressed");
-    }
-
-    if (channelSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(channelSelect, ".adlaire-channel-list", "[data-adlaire-channel-select]", "aria-selected");
-    }
-
-    if (quietHoursToggle) {
-      event.preventDefault();
-      toggleBooleanState(quietHoursToggle, "aria-pressed");
-    }
-
-    if (topicPreferenceToggle) {
-      event.preventDefault();
-      toggleBooleanState(topicPreferenceToggle, "aria-checked");
-    }
-
-    if (editorialGateSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(editorialGateSelect, ".adlaire-review-gate-panel", "[data-adlaire-editorial-gate-select]", "aria-selected");
-    }
-
-    if (localeSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(localeSelect, ".adlaire-locale-switcher-panel", "[data-adlaire-locale-select]", "aria-selected");
-    }
-
-    if (moderationDecision) {
-      event.preventDefault();
-      selectInteractiveChoice(moderationDecision, ".adlaire-moderation-queue", "[data-adlaire-moderation-decision]", "aria-pressed");
-    }
-
-    if (deviceSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(deviceSelect, ".adlaire-device-registry-table", "[data-adlaire-device-select]", "aria-selected");
-    }
-
-    if (deploymentRingSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(deploymentRingSelect, ".adlaire-deployment-ring-selector", "[data-adlaire-deployment-ring-select]", "aria-selected");
-    }
-
-    if (handoffCheck) {
-      event.preventDefault();
-      toggleBooleanState(handoffCheck, "aria-checked");
-    }
-
-    if (fareOptionSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(fareOptionSelect, ".adlaire-booking-summary-panel", "[data-adlaire-fare-option-select]", "aria-selected");
-    }
-
-    if (roomSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(roomSelect, ".adlaire-room-inventory-board", "[data-adlaire-room-select]", "aria-selected");
-    }
-
-    if (recoveryTaskCheck) {
-      event.preventDefault();
-      toggleBooleanState(recoveryTaskCheck, "aria-checked");
-    }
-
-    if (eligibilityCheck) {
-      event.preventDefault();
-      toggleBooleanState(eligibilityCheck, "aria-checked");
-    }
-
-    if (permitStepSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(permitStepSelect, ".adlaire-document-requirement-list", "[data-adlaire-permit-step-select]", "aria-selected");
-    }
-
-    if (volunteerShiftSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(volunteerShiftSelect, ".adlaire-volunteer-shift-board", "[data-adlaire-volunteer-shift-select]", "aria-selected");
-    }
-
-    if (demandResponseSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(demandResponseSelect, ".adlaire-demand-response-panel", "[data-adlaire-demand-response-select]", "aria-selected");
-    }
-
-    if (outageReportSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(outageReportSelect, ".adlaire-service-appointment-board", "[data-adlaire-outage-report-select]", "aria-selected");
-    }
-
-    if (disclosureCheck) {
-      event.preventDefault();
-      toggleBooleanState(disclosureCheck, "aria-checked");
-    }
-
-    if (densitySelect) {
-      event.preventDefault();
-      selectInteractiveChoice(densitySelect, ".adlaire-density-switcher", "[data-adlaire-density-select]", "aria-pressed");
-    }
-
-    if (bulkSelectionToggle) {
-      event.preventDefault();
-      toggleBooleanState(bulkSelectionToggle, "aria-selected");
-    }
-
-    if (verificationCheck) {
-      event.preventDefault();
-      toggleBooleanState(verificationCheck, "aria-checked");
-    }
-
-    if (savedViewSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(savedViewSelect, ".adlaire-view-preset-switcher", "[data-adlaire-saved-view-select]", "aria-pressed");
-    }
-
-    if (recordRowToggle) {
-      event.preventDefault();
-      toggleBooleanState(recordRowToggle, "aria-selected");
-    }
-
-    if (inlineEditToggle) {
-      event.preventDefault();
-      toggleBooleanState(inlineEditToggle, "aria-pressed");
-    }
-
-    if (bulkConfirmToggle) {
-      event.preventDefault();
-      toggleBooleanState(bulkConfirmToggle, "aria-pressed");
-    }
-
-    if (toolPermissionToggle) {
-      event.preventDefault();
-      toggleBooleanState(toolPermissionToggle, "aria-pressed");
-    }
-
-    if (approvalGateToggle) {
-      event.preventDefault();
-      toggleBooleanState(approvalGateToggle, "aria-pressed");
-    }
-
-    if (checkpointSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(checkpointSelect, ".adlaire-execution-timeline", "[data-adlaire-checkpoint-select]", "aria-selected");
-    }
-
-    if (notificationPolicyToggle) {
-      event.preventDefault();
-      toggleBooleanState(notificationPolicyToggle, "aria-pressed");
-    }
-
-    if (sdkSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(sdkSelect, ".adlaire-sdk-selector", "[data-adlaire-sdk-select]", "aria-pressed");
-    }
-
-    if (environmentSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(environmentSelect, ".adlaire-api-explorer-panel", "[data-adlaire-environment-select]", "aria-selected");
-    }
-
-    if (connectionTestToggle) {
-      event.preventDefault();
-      toggleBooleanState(connectionTestToggle, "aria-pressed");
-    }
-
-    if (migrationStepToggle) {
-      event.preventDefault();
-      toggleBooleanState(migrationStepToggle, "aria-checked");
-    }
-
-    if (themeSelect) {
-      event.preventDefault();
-      selectInteractiveChoice(themeSelect, ".adlaire-theme-workspace-panel", "[data-adlaire-theme-select]", "aria-pressed");
-    }
-
-    if (darkModeToggle) {
-      event.preventDefault();
-      toggleBooleanState(darkModeToggle, "aria-pressed");
-    }
-
-    if (highContrastToggle) {
-      event.preventDefault();
-      toggleBooleanState(highContrastToggle, "aria-pressed");
-    }
-
-    if (tokenOverrideToggle) {
-      event.preventDefault();
-      toggleBooleanState(tokenOverrideToggle, "aria-checked");
     }
   });
 
