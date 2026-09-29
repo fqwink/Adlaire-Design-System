@@ -56,6 +56,29 @@
     }
   }
 
+  function safeDocumentQueryAll(selector) {
+    return safeScopedQueryAll(document, selector);
+  }
+
+  function syncOverlayRootState() {
+    document.documentElement.classList.toggle("adlaire-overlay-open", Boolean(safeDocumentQuery(openOverlaySelector)));
+  }
+
+  function writeClipboardText(text) {
+    var clipboard = navigator.clipboard;
+    if (!clipboard || !clipboard.writeText) {
+      return false;
+    }
+    try {
+      void clipboard.writeText(text).catch(function () {
+        return undefined;
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   function getTarget(trigger) {
     var selector = trigger.getAttribute("data-adlaire-target") || trigger.getAttribute("href");
     if (!selector || selector.charAt(0) !== "#") {
@@ -86,8 +109,8 @@
       if (expanded && target.matches(overlaySelector)) {
         document.documentElement.classList.add("adlaire-overlay-open");
       }
-      if (!expanded && !document.querySelector(openOverlaySelector)) {
-        document.documentElement.classList.remove("adlaire-overlay-open");
+      if (!expanded) {
+        syncOverlayRootState();
       }
     }
   }
@@ -97,15 +120,15 @@
       return [];
     }
 
-    return Array.prototype.filter.call(document.querySelectorAll("[data-adlaire-toggle][data-adlaire-target]"), function (trigger) {
+    return safeDocumentQueryAll("[data-adlaire-toggle][data-adlaire-target]").filter(function (trigger) {
       return trigger.getAttribute("data-adlaire-target") === "#" + target.id;
-    }).concat(Array.prototype.filter.call(document.querySelectorAll("[data-adlaire-toggle][href]"), function (trigger) {
+    }).concat(safeDocumentQueryAll("[data-adlaire-toggle][href]").filter(function (trigger) {
       return trigger.getAttribute("href") === "#" + target.id;
     }));
   }
 
   function getFocusable(target) {
-    return Array.prototype.filter.call(target.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"), function (item) {
+    return safeScopedQueryAll(target, "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])").filter(function (item) {
       return !item.hidden && !item.disabled && item.getAttribute("aria-hidden") !== "true";
     });
   }
@@ -123,7 +146,7 @@
       return;
     }
 
-    document.querySelectorAll("[data-adlaire-toggle][data-adlaire-group]").forEach(function (item) {
+    safeDocumentQueryAll("[data-adlaire-toggle][data-adlaire-group]").forEach(function (item) {
       if (item.getAttribute("data-adlaire-group") !== group) {
         return;
       }
@@ -134,7 +157,7 @@
     });
 
     if (target && target.getAttribute("role") === "tabpanel") {
-      document.querySelectorAll('[role="tabpanel"][data-adlaire-group]').forEach(function (panel) {
+      safeDocumentQueryAll('[role="tabpanel"][data-adlaire-group]').forEach(function (panel) {
         if (panel.getAttribute("data-adlaire-group") !== group) {
           return;
         }
@@ -173,9 +196,7 @@
         setBooleanAttribute(item, "aria-expanded", false);
       });
     }
-    if (!document.querySelector(openOverlaySelector)) {
-      document.documentElement.classList.remove("adlaire-overlay-open");
-    }
+    syncOverlayRootState();
     if (lastFocus && typeof lastFocus.focus === "function") {
       lastFocus.focus();
     }
@@ -201,7 +222,7 @@
   }
 
   function containActiveOverlayFocus(event) {
-    var activeOverlay = document.querySelector(openOverlaySelector);
+    var activeOverlay = safeDocumentQuery(openOverlaySelector);
     if (!activeOverlay) {
       return false;
     }
@@ -210,13 +231,13 @@
   }
 
   function closeOpenSurfaces() {
-    document.querySelectorAll(openOverlaySelector + ", .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open").forEach(function (target) {
+    safeDocumentQueryAll(openOverlaySelector + ", .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open").forEach(function (target) {
       setOpenState(target, false);
       triggersForTarget(target).forEach(function (trigger) {
         setBooleanAttribute(trigger, "aria-expanded", false);
       });
     });
-    document.querySelectorAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach(function (trigger) {
+    safeDocumentQueryAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach(function (trigger) {
       setBooleanAttribute(trigger, "aria-expanded", false);
     });
     document.documentElement.classList.remove("adlaire-overlay-open");
@@ -253,8 +274,8 @@
       return;
     }
 
-    var track = root.querySelector(".adlaire-carousel-track");
-    var slides = Array.prototype.slice.call(root.querySelectorAll(".adlaire-carousel-slide"));
+    var track = safeScopedQuery(root, ".adlaire-carousel-track");
+    var slides = safeScopedQueryAll(root, ".adlaire-carousel-slide");
     if (!track || slides.length === 0) {
       return;
     }
@@ -281,7 +302,7 @@
       slide.classList.toggle("is-current", currentSlide);
       setBooleanAttribute(slide, "aria-hidden", !currentSlide);
     });
-    Array.prototype.filter.call(root.querySelectorAll("[data-adlaire-carousel-index]"), function (indicator) {
+    safeScopedQueryAll(root, "[data-adlaire-carousel-index]").filter(function (indicator) {
       return !indicator.hasAttribute("data-adlaire-carousel");
     }).forEach(function (indicator, index) {
       setBooleanAttribute(indicator, "aria-current", index === next);
@@ -545,8 +566,7 @@
   function copyText(copy) {
     var copyTarget = getTarget(copy);
     var text = copyTarget ? copyTarget.textContent : copy.getAttribute("data-adlaire-copy");
-    if (text && navigator.clipboard) {
-      navigator.clipboard.writeText(text);
+    if (text && writeClipboardText(text)) {
       copy.setAttribute("data-adlaire-copied", "true");
     }
   }
@@ -570,7 +590,7 @@
     if (!list) {
       return;
     }
-    list.querySelectorAll("[data-adlaire-select]").forEach(function (item) {
+    safeScopedQueryAll(list, "[data-adlaire-select]").forEach(function (item) {
       setBooleanAttribute(item, "aria-selected", item === select);
     });
   }
@@ -617,14 +637,13 @@
       }
       return safeDocumentQuery(selector);
     }
-    var item = trigger.closest(".adlaire-tree-item");
-    return item ? item.querySelector(".adlaire-tree-branch") : null;
+    return safeScopedQuery(trigger.closest(".adlaire-tree-item"), ".adlaire-tree-branch");
   }
 
   function selectWorkspaceTab(trigger) {
     var root = trigger.closest(".adlaire-tab-workspace") || document;
     var group = trigger.getAttribute("data-adlaire-group");
-    var tabs = Array.prototype.filter.call(root.querySelectorAll("[data-adlaire-workspace-tab]"), function (tab) {
+    var tabs = safeScopedQueryAll(root, "[data-adlaire-workspace-tab]").filter(function (tab) {
       return !group || tab.getAttribute("data-adlaire-group") === group;
     });
 
@@ -669,7 +688,7 @@
       return;
     }
 
-    root.querySelectorAll(itemSelector).forEach(function (item) {
+    safeScopedQueryAll(root, itemSelector).forEach(function (item) {
       var selected = item === trigger;
       setBooleanAttribute(item, selectedAttribute, selected);
       item.classList.toggle("is-selected", selected);
@@ -682,7 +701,7 @@
       return;
     }
 
-    root.querySelectorAll(itemSelector).forEach(function (item) {
+    safeScopedQueryAll(root, itemSelector).forEach(function (item) {
       var selected = item === trigger;
       if (selected) {
         item.setAttribute("aria-current", "step");
@@ -700,8 +719,7 @@
   }
 
   function toggleFolderBranch(trigger) {
-    var item = trigger.closest(".adlaire-folder-item");
-    var branch = queryReferencedTarget(trigger, "data-adlaire-folder-toggle") || (item ? item.querySelector(".adlaire-folder-branch") : null);
+    var branch = queryReferencedTarget(trigger, "data-adlaire-folder-toggle") || safeScopedQuery(trigger.closest(".adlaire-folder-item"), ".adlaire-folder-branch");
     if (!branch) {
       return;
     }
@@ -748,9 +766,9 @@
     compare.style.setProperty("--adlaire-preview-compare-position", Math.max(0, Math.min(100, value)) + "%");
   }
 
-  document.querySelectorAll("[data-adlaire-split-pane]").forEach(function (root) {
-    var handle = root.querySelector(".adlaire-pane-resize-handle");
-    var panes = root.querySelectorAll(".adlaire-pane");
+  safeDocumentQueryAll("[data-adlaire-split-pane]").forEach(function (root) {
+    var handle = safeScopedQuery(root, ".adlaire-pane-resize-handle");
+    var panes = safeScopedQueryAll(root, ".adlaire-pane");
     if (!handle || panes.length < 2) {
       return;
     }

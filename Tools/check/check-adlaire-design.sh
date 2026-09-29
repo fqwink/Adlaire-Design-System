@@ -127,8 +127,18 @@ for path in \
   TypeScript/CSS/rules-layout.ts \
   TypeScript/CSS/rules-components.ts \
   TypeScript/CSS/rules-components-foundation.ts \
+  TypeScript/CSS/rules-components-foundation-core.ts \
+  TypeScript/CSS/rules-components-foundation-media.ts \
+  TypeScript/CSS/rules-components-foundation-domains.ts \
+  TypeScript/CSS/rules-components-foundation-support.ts \
   TypeScript/CSS/rules-components-overlays.ts \
   TypeScript/CSS/rules-components-operations.ts \
+  TypeScript/CSS/rules-components-operations-admin.ts \
+  TypeScript/CSS/rules-components-operations-data.ts \
+  TypeScript/CSS/rules-components-operations-workspace.ts \
+  TypeScript/CSS/rules-components-operations-business.ts \
+  TypeScript/CSS/rules-components-operations-industry.ts \
+  TypeScript/CSS/rules-components-operations-workflow.ts \
   TypeScript/CSS/rules-components-platform.ts \
   TypeScript/CSS/rules-site.ts \
   TypeScript/CSS/rules-forms.ts \
@@ -1218,8 +1228,11 @@ for ui_binding_term in \
   'closestBoundTrigger' \
   'handleDeclarativeInteraction' \
   'safeDocumentQuery' \
+  'safeDocumentQueryAll' \
   'safeScopedQuery' \
   'safeScopedQueryAll' \
+  'syncOverlayRootState' \
+  'writeClipboardText' \
   'setBooleanAttribute' \
   'setOpenState'; do
   require_text "TypeScript/UI/components.ts" "$ui_binding_term" "Declarative UI interaction bindings"
@@ -1260,6 +1273,14 @@ if grep -n -F 'root && fallbackSelector ? root.querySelector(fallbackSelector)' 
   fail "Safe UI DOM references" "UI/components.js must resolve optional fallback selectors through safeScopedQuery."
 fi
 
+if grep -n -F 'document.querySelectorAll(' "$ROOT/UI/components.js" >/dev/null 2>&1; then
+  fail "Safe UI DOM references" "UI/components.js must resolve document-wide query-all operations through safeDocumentQueryAll."
+fi
+
+if grep -n -F 'navigator.clipboard.writeText' "$ROOT/TypeScript/UI/components.ts" "$ROOT/UI/components.js" >/dev/null 2>&1; then
+  fail "Safe UI DOM references" "UI component clipboard writes must go through writeClipboardText."
+fi
+
 for form_binding_term in \
   'hookSelector' \
   'formBinding' \
@@ -1272,6 +1293,7 @@ for form_binding_term in \
   'handleFirstFormInteraction' \
   'safeDocumentQuery' \
   'safeScopedQuery' \
+  'safeScopedQueryAll' \
   'setBooleanAttribute' \
   'setOpenState'; do
   require_text "TypeScript/UI/forms.ts" "$form_binding_term" "Declarative form interaction bindings"
@@ -1284,6 +1306,10 @@ fi
 
 if grep -n -F 'root.querySelector<HTMLInputElement>(selector)' "$ROOT/TypeScript/UI/forms.ts" >/dev/null 2>&1; then
   fail "Safe form DOM references" "TypeScript/UI/forms.ts must resolve scoped data-driven selectors through safeScopedQuery."
+fi
+
+if grep -n -E '(root|form)\.querySelectorAll\("\[data-adlaire-' "$ROOT/UI/forms.js" >/dev/null 2>&1; then
+  fail "Safe form DOM references" "UI/forms.js must resolve scoped query-all operations through safeScopedQueryAll."
 fi
 
 forms_ts_hooks="$TMP_DIR/forms-ts-hooks.txt"
@@ -1301,7 +1327,9 @@ for content_binding_term in \
   'contentClickBinding' \
   'contentClickBindings' \
   'handleEveryContentClick' \
-  'safeDocumentQuery'; do
+  'safeDocumentQuery' \
+  'safeScopedQueryAll' \
+  'writeClipboardText'; do
   require_text "TypeScript/UI/content.ts" "$content_binding_term" "Declarative content interaction bindings"
   require_text "UI/content.js" "$content_binding_term" "Declarative content interaction bindings"
 done
@@ -1312,6 +1340,14 @@ fi
 
 if grep -n -F 'statusSelector ? document.querySelector(statusSelector)' "$ROOT/UI/content.js" >/dev/null 2>&1; then
   fail "Safe content DOM references" "UI/content.js must resolve code copy status selectors through safeDocumentQuery."
+fi
+
+if grep -n -F 'navigator.clipboard.writeText' "$ROOT/TypeScript/UI/content.ts" "$ROOT/UI/content.js" >/dev/null 2>&1; then
+  fail "Safe content DOM references" "Content clipboard writes must go through writeClipboardText."
+fi
+
+if grep -n -F 'viewer.querySelectorAll(' "$ROOT/UI/content.js" >/dev/null 2>&1; then
+  fail "Safe content DOM references" "UI/content.js must resolve scoped query-all operations through safeScopedQueryAll."
 fi
 
 content_ts_hooks="$TMP_DIR/content-ts-hooks.txt"
@@ -1331,6 +1367,7 @@ for wysiwyg_binding_term in \
   'wysiwygSelectionClickBindings' \
   'handleFirstWysiwygClick' \
   'safeDocumentQuery' \
+  'safeScopedQueryAll' \
   'setBooleanAttribute' \
   'setOpenState'; do
   require_text "TypeScript/EditorUI/wysiwyg.ts" "$wysiwyg_binding_term" "Declarative WYSIWYG interaction bindings"
@@ -1339,6 +1376,10 @@ done
 
 if grep -n -F 'return selector ? document.querySelector(selector) : null' "$ROOT/EditorUI/wysiwyg.js" >/dev/null 2>&1; then
   fail "Safe WYSIWYG DOM references" "EditorUI/wysiwyg.js must resolve editor target selectors through safeDocumentQuery."
+fi
+
+if grep -n -E 'root\.querySelectorAll\("(\\.adlaire-wysiwyg|\[data-adlaire-wysiwyg)' "$ROOT/EditorUI/wysiwyg.js" >/dev/null 2>&1; then
+  fail "Safe WYSIWYG DOM references" "EditorUI/wysiwyg.js must resolve scoped query-all operations through safeScopedQueryAll."
 fi
 
 wysiwyg_ts_hooks="$TMP_DIR/wysiwyg-ts-hooks.txt"
@@ -1415,9 +1456,12 @@ for editor_contract in \
   'TypeScript/Editor/core.ts|function commandContext' \
   'TypeScript/Editor/commands.ts|applyCommand' \
   'TypeScript/Editor/commands.ts|function commandPayload' \
+  'TypeScript/Editor/commands.ts|function childBoundaryError' \
+  'TypeScript/Editor/commands.ts|function insertChildBlock' \
   'TypeScript/Editor/commands.ts|function failed' \
   'TypeScript/Editor/document.ts|ToolRegistry' \
   'TypeScript/Editor/document.ts|handlePaste' \
+  'TypeScript/Editor/document.ts|export function isSafeHref' \
   'TypeScript/Editor/selection.ts|normalizeSelection' \
   'TypeScript/Editor/selection.ts|sameSelection' \
   'TypeScript/Editor/history.ts|class History' \
@@ -1470,7 +1514,7 @@ end
 exports = {
   "TypeScript/Editor/commands.ts" => ["export function applyCommand"],
   "TypeScript/Editor/core.ts" => ["export class HeadlessEditorController", "export function createEditor"],
-  "TypeScript/Editor/document.ts" => ["export class ToolRegistry", "export class BlockRegistry", "function handlePaste", "export function normalizeDocument"],
+  "TypeScript/Editor/document.ts" => ["export class ToolRegistry", "export class BlockRegistry", "function handlePaste", "export function normalizeDocument", "export function isSafeHref"],
   "TypeScript/Editor/events.ts" => ["export class EventBus", "export function editorError"],
   "TypeScript/Editor/history.ts" => ["export class History"],
   "TypeScript/Editor/selection.ts" => ["export function normalizeSelection", "export function sameSelection"],
@@ -2412,6 +2456,17 @@ done
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
   fail "WYSIWYG Editor UI" "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-."
 fi
+
+for css_compiler_term in \
+  'TypeScript/CSS/manifest.ts|export function cssTargetPaths' \
+  'TypeScript/CSS/manifest.ts|export function cssCompilerSourceModules' \
+  'TypeScript/CSS/index.ts|sourceModules: cssCompilerSourceModules()' \
+  'TypeScript/CSS/index.ts|targets: cssTargetPaths()' \
+  'TypeScript/CSS/emit.ts|function assertCssFirstLine'; do
+  file=${css_compiler_term%%|*}
+  text=${css_compiler_term#*|}
+  require_text "$file" "$text" "CSS compiler registry"
+done
 
 if command -v ruby >/dev/null 2>&1; then
   ROOT="$ROOT" ruby - <<'RUBY'

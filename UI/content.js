@@ -17,6 +17,32 @@
     }
   }
 
+  function safeScopedQueryAll(root, selector) {
+    if (!root || !selector) {
+      return [];
+    }
+    try {
+      return Array.prototype.slice.call(root.querySelectorAll(selector));
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function writeClipboardText(text) {
+    var clipboard = navigator.clipboard;
+    if (!clipboard || !clipboard.writeText) {
+      return false;
+    }
+    try {
+      void clipboard.writeText(text).catch(function () {
+        return undefined;
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   function hookSelector(attribute) {
     return "[" + attribute + "]";
   }
@@ -128,8 +154,7 @@
     var selector = copy.getAttribute("data-adlaire-code-copy");
     var statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     var target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
-    if (target && navigator.clipboard) {
-      navigator.clipboard.writeText(target.textContent || "");
+    if (target && writeClipboardText(target.textContent || "")) {
       copy.setAttribute("data-adlaire-copied", "true");
       var status = safeDocumentQuery(statusSelector);
       if (status) {
@@ -144,7 +169,7 @@
       return;
     }
 
-    viewer.querySelectorAll(".adlaire-git-line-highlight").forEach(function (item) {
+    safeScopedQueryAll(viewer, ".adlaire-git-line-highlight").forEach(function (item) {
       item.classList.remove("adlaire-git-line-highlight");
     });
     line.classList.add("adlaire-git-line-highlight");

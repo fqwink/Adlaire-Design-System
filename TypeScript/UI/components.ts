@@ -51,6 +51,25 @@
     }
   }
 
+  function safeDocumentQueryAll(selector: string | null | undefined): HTMLElement[] {
+    return safeScopedQueryAll(document, selector);
+  }
+
+  function syncOverlayRootState(): void {
+    document.documentElement.classList.toggle("adlaire-overlay-open", Boolean(safeDocumentQuery(openOverlaySelector)));
+  }
+
+  function writeClipboardText(text: string): boolean {
+    const clipboard = navigator.clipboard;
+    if (!clipboard?.writeText) return false;
+    try {
+      void clipboard.writeText(text).catch(() => undefined);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   function getTarget(trigger: Element): HTMLElement | null {
     const selector = trigger.getAttribute("data-adlaire-target") ?? trigger.getAttribute("href");
     if (!selector || !selector.startsWith("#")) return null;
@@ -73,23 +92,21 @@
     if (expanded && target.matches(overlaySelector)) {
       document.documentElement.classList.add("adlaire-overlay-open");
     }
-    if (!expanded && !document.querySelector(openOverlaySelector)) {
-      document.documentElement.classList.remove("adlaire-overlay-open");
-    }
+    if (!expanded) syncOverlayRootState();
   }
 
   function triggersForTarget(target: Element | null): Element[] {
     if (!target?.id) return [];
     const targetSelector = `#${target.id}`;
-    const dataTriggers = Array.from(document.querySelectorAll("[data-adlaire-toggle][data-adlaire-target]"))
+    const dataTriggers = safeDocumentQueryAll("[data-adlaire-toggle][data-adlaire-target]")
       .filter((trigger) => trigger.getAttribute("data-adlaire-target") === targetSelector);
-    const hrefTriggers = Array.from(document.querySelectorAll("[data-adlaire-toggle][href]"))
+    const hrefTriggers = safeDocumentQueryAll("[data-adlaire-toggle][href]")
       .filter((trigger) => trigger.getAttribute("href") === targetSelector);
     return dataTriggers.concat(hrefTriggers);
   }
 
   function getFocusable(target: Element): HTMLElement[] {
-    return Array.from(target.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"))
+    return safeScopedQueryAll(target, "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])")
       .filter((item) => !item.hidden && !item.hasAttribute("disabled") && item.getAttribute("aria-hidden") !== "true");
   }
 
@@ -101,13 +118,13 @@
     const group = trigger.getAttribute("data-adlaire-group");
     if (!group) return;
 
-    document.querySelectorAll("[data-adlaire-toggle][data-adlaire-group]").forEach((item) => {
+    safeDocumentQueryAll("[data-adlaire-toggle][data-adlaire-group]").forEach((item) => {
       if (item.getAttribute("data-adlaire-group") !== group || item === trigger) return;
       setExpanded(item, getTarget(item), false);
     });
 
     if (target?.getAttribute("role") === "tabpanel") {
-      document.querySelectorAll<HTMLElement>('[role="tabpanel"][data-adlaire-group]').forEach((panel) => {
+      safeDocumentQueryAll('[role="tabpanel"][data-adlaire-group]').forEach((panel) => {
         if (panel.getAttribute("data-adlaire-group") !== group || panel === target) return;
         panel.hidden = true;
         panel.classList.remove("is-open");
@@ -157,9 +174,7 @@
       setOpenState(dismissTarget, false);
       triggersForTarget(dismissTarget).forEach((item) => setBooleanAttribute(item, "aria-expanded", false));
     }
-    if (!document.querySelector(openOverlaySelector)) {
-      document.documentElement.classList.remove("adlaire-overlay-open");
-    }
+    syncOverlayRootState();
     lastFocus?.focus();
   }
 
@@ -179,18 +194,18 @@
   }
 
   function containActiveOverlayFocus(event: KeyboardEvent): boolean {
-    const activeOverlay = document.querySelector<HTMLElement>(openOverlaySelector);
+    const activeOverlay = safeDocumentQuery(openOverlaySelector);
     if (!activeOverlay) return false;
     containFocus(event, activeOverlay);
     return true;
   }
 
   function closeOpenSurfaces(): boolean {
-    document.querySelectorAll<HTMLElement>(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open`).forEach((target) => {
+    safeDocumentQueryAll(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open`).forEach((target) => {
       setOpenState(target, false);
       triggersForTarget(target).forEach((trigger) => setBooleanAttribute(trigger, "aria-expanded", false));
     });
-    document.querySelectorAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach((trigger) => {
+    safeDocumentQueryAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach((trigger) => {
       setBooleanAttribute(trigger, "aria-expanded", false);
     });
     document.documentElement.classList.remove("adlaire-overlay-open");
@@ -223,8 +238,8 @@
     const root = control?.closest<HTMLElement>("[data-adlaire-carousel]");
     if (!root) return;
 
-    const track = root.querySelector<HTMLElement>(".adlaire-carousel-track");
-    const slides = Array.from(root.querySelectorAll<HTMLElement>(".adlaire-carousel-slide"));
+    const track = safeScopedQuery(root, ".adlaire-carousel-track");
+    const slides = safeScopedQueryAll(root, ".adlaire-carousel-slide");
     if (!track || slides.length === 0) return;
 
     let current = Number(root.getAttribute("data-adlaire-carousel-index") || "0");
@@ -243,7 +258,7 @@
       slide.classList.toggle("is-current", currentSlide);
       setBooleanAttribute(slide, "aria-hidden", !currentSlide);
     });
-    Array.from(root.querySelectorAll("[data-adlaire-carousel-index]"))
+    safeScopedQueryAll(root, "[data-adlaire-carousel-index]")
       .filter((indicator) => !indicator.hasAttribute("data-adlaire-carousel"))
       .forEach((indicator, index) => setBooleanAttribute(indicator, "aria-current", index === current));
   }
@@ -493,8 +508,7 @@
   function copyText(copy: Element): void {
     const copyTarget = getTarget(copy);
     const text = copyTarget?.textContent ?? copy.getAttribute("data-adlaire-copy");
-    if (text && navigator.clipboard) {
-      navigator.clipboard.writeText(text);
+    if (text && writeClipboardText(text)) {
       copy.setAttribute("data-adlaire-copied", "true");
     }
   }
@@ -510,7 +524,7 @@
 
   function selectListItem(select: Element): void {
     const list = select.closest("[data-adlaire-select-list]");
-    list?.querySelectorAll("[data-adlaire-select]").forEach((item) => {
+    safeScopedQueryAll(list, "[data-adlaire-select]").forEach((item) => {
       setBooleanAttribute(item, "aria-selected", item === select);
     });
   }
@@ -549,13 +563,13 @@
       if (byId) return byId;
       return safeDocumentQuery(selector);
     }
-    return trigger.closest(".adlaire-tree-item")?.querySelector<HTMLElement>(".adlaire-tree-branch") ?? null;
+    return safeScopedQuery(trigger.closest(".adlaire-tree-item"), ".adlaire-tree-branch");
   }
 
   function selectWorkspaceTab(trigger: Element): void {
     const root = trigger.closest(".adlaire-tab-workspace") ?? document;
     const group = trigger.getAttribute("data-adlaire-group");
-    const tabs = Array.from(root.querySelectorAll<HTMLElement>("[data-adlaire-workspace-tab]"))
+    const tabs = safeScopedQueryAll(root, "[data-adlaire-workspace-tab]")
       .filter((tab) => !group || tab.getAttribute("data-adlaire-group") === group);
 
     tabs.forEach((tab) => {
@@ -592,7 +606,7 @@
     const root = trigger.closest(rootSelector);
     if (!root) return;
 
-    root.querySelectorAll<HTMLElement>(itemSelector).forEach((item) => {
+    safeScopedQueryAll(root, itemSelector).forEach((item) => {
       const selected = item === trigger;
       setBooleanAttribute(item, selectedAttribute, selected);
       item.classList.toggle("is-selected", selected);
@@ -603,7 +617,7 @@
     const root = trigger.closest(rootSelector);
     if (!root) return;
 
-    root.querySelectorAll<HTMLElement>(itemSelector).forEach((item) => {
+    safeScopedQueryAll(root, itemSelector).forEach((item) => {
       const selected = item === trigger;
       if (selected) {
         item.setAttribute("aria-current", "step");
@@ -621,7 +635,7 @@
   }
 
   function toggleFolderBranch(trigger: Element): void {
-    const branch = queryReferencedTarget(trigger, "data-adlaire-folder-toggle") ?? trigger.closest(".adlaire-folder-item")?.querySelector<HTMLElement>(".adlaire-folder-branch");
+    const branch = queryReferencedTarget(trigger, "data-adlaire-folder-toggle") ?? safeScopedQuery(trigger.closest(".adlaire-folder-item"), ".adlaire-folder-branch");
     if (!branch) return;
 
     const expanded = trigger.getAttribute("aria-expanded") !== "true";
@@ -661,9 +675,9 @@
     compare.style.setProperty("--adlaire-preview-compare-position", `${Math.max(0, Math.min(100, value))}%`);
   }
 
-  document.querySelectorAll<HTMLElement>("[data-adlaire-split-pane]").forEach((root) => {
-    const handle = root.querySelector<HTMLElement>(".adlaire-pane-resize-handle");
-    const panes = root.querySelectorAll(".adlaire-pane");
+  safeDocumentQueryAll("[data-adlaire-split-pane]").forEach((root) => {
+    const handle = safeScopedQuery(root, ".adlaire-pane-resize-handle");
+    const panes = safeScopedQueryAll(root, ".adlaire-pane");
     if (!handle || panes.length < 2) return;
     handle.addEventListener("keydown", (event) => {
       let current = Number(root.getAttribute("data-adlaire-pane-ratio") || "50");

@@ -45,6 +45,17 @@
     }
   }
 
+  function safeScopedQueryAll(root, selector) {
+    if (!root || !selector) {
+      return [];
+    }
+    try {
+      return Array.prototype.slice.call(root.querySelectorAll(selector));
+    } catch (error) {
+      return [];
+    }
+  }
+
   function hookSelector(attribute) {
     return "[" + attribute + "]";
   }
@@ -77,10 +88,10 @@
   }
 
   function applyFilter(root) {
-    var queryInput = root.querySelector("[data-adlaire-filter-input]");
-    var activeChip = root.querySelector("[data-adlaire-filter-chip][aria-pressed='true']");
-    var count = root.querySelector("[data-adlaire-filter-count]");
-    var empty = root.querySelector("[data-adlaire-filter-empty]");
+    var queryInput = safeScopedQuery(root, "[data-adlaire-filter-input]");
+    var activeChip = safeScopedQuery(root, "[data-adlaire-filter-chip][aria-pressed='true']");
+    var count = safeScopedQuery(root, "[data-adlaire-filter-count]");
+    var empty = safeScopedQuery(root, "[data-adlaire-filter-empty]");
     var query = normalize(queryInput ? queryInput.value : "");
     var filter = normalize(activeChip ? activeChip.getAttribute("data-adlaire-filter-chip") : "");
     if (filter === "all") {
@@ -88,7 +99,7 @@
     }
     var visibleCount = 0;
 
-    root.querySelectorAll("[data-adlaire-filter-item]").forEach(function (item) {
+    safeScopedQueryAll(root, "[data-adlaire-filter-item]").forEach(function (item) {
       var text = normalize(item.textContent);
       var group = normalize(item.getAttribute("data-adlaire-filter-item"));
       var groups = group ? group.split(/\s+/) : [];
@@ -180,7 +191,7 @@
       return;
     }
 
-    root.querySelectorAll("[data-adlaire-filter-chip]").forEach(function (item) {
+    safeScopedQueryAll(root, "[data-adlaire-filter-chip]").forEach(function (item) {
       setBooleanAttribute(item, "aria-pressed", item === chip);
     });
     applyFilter(root);
@@ -221,12 +232,12 @@
 
   function updateValidationSummary(field) {
     var form = field.closest("form");
-    var summary = form ? form.querySelector("[data-adlaire-validate-summary]") : null;
+    var summary = safeScopedQuery(form, "[data-adlaire-validate-summary]");
     if (!form || !summary) {
       return;
     }
 
-    var invalidFields = Array.prototype.filter.call(form.querySelectorAll("[data-adlaire-validate]"), function (item) {
+    var invalidFields = safeScopedQueryAll(form, "[data-adlaire-validate]").filter(function (item) {
       return item.getAttribute("aria-invalid") === "true";
     });
     setOpenState(summary, invalidFields.length > 0);
@@ -241,14 +252,14 @@
 
   function applyCombobox(input) {
     var root = input.closest("[data-adlaire-combobox]");
-    var list = root ? root.querySelector("[role='listbox'], .adlaire-combobox-listbox") : null;
+    var list = safeScopedQuery(root, "[role='listbox'], .adlaire-combobox-listbox");
     if (!root || !list) {
       return;
     }
 
     var query = normalize(input.value);
     var visibleCount = 0;
-    root.querySelectorAll("[data-adlaire-combobox-option]").forEach(function (option) {
+    safeScopedQueryAll(root, "[data-adlaire-combobox-option]").forEach(function (option) {
       var visible = !query || normalize(option.textContent).indexOf(query) !== -1;
       option.hidden = !visible;
       if (visible) {
@@ -261,8 +272,8 @@
 
   function selectComboboxOption(option) {
     var root = option.closest("[data-adlaire-combobox]");
-    var input = root ? root.querySelector("[data-adlaire-combobox-input]") : null;
-    var list = root ? root.querySelector("[role='listbox'], .adlaire-combobox-listbox") : null;
+    var input = safeScopedQuery(root, "[data-adlaire-combobox-input]");
+    var list = safeScopedQuery(root, "[role='listbox'], .adlaire-combobox-listbox");
     if (!root || !input) {
       return;
     }
@@ -270,7 +281,7 @@
     var value = option.getAttribute("data-adlaire-combobox-option") || option.textContent.trim() || "";
     input.value = value;
     setBooleanAttribute(input, "aria-expanded", false);
-    root.querySelectorAll("[data-adlaire-combobox-option]").forEach(function (item) {
+    safeScopedQueryAll(root, "[data-adlaire-combobox-option]").forEach(function (item) {
       setBooleanAttribute(item, "aria-selected", item === option);
     });
     if (list) {
@@ -296,7 +307,7 @@
       return;
     }
 
-    var selected = Array.prototype.map.call(root.querySelectorAll("[data-adlaire-multi-select-option][aria-selected='true']"), function (item) {
+    var selected = safeScopedQueryAll(root, "[data-adlaire-multi-select-option][aria-selected='true']").map(function (item) {
       return item.getAttribute("data-adlaire-multi-select-option") || item.textContent.trim() || "";
     }).filter(function (value) {
       return value !== "";
@@ -310,7 +321,7 @@
       return;
     }
 
-    root.querySelectorAll("[data-adlaire-date-preset]").forEach(function (item) {
+    safeScopedQueryAll(root, "[data-adlaire-date-preset]").forEach(function (item) {
       setBooleanAttribute(item, "aria-pressed", item === preset);
     });
     setInputValue(root, preset.getAttribute("data-adlaire-date-start"), preset.getAttribute("data-adlaire-date-start-value"));

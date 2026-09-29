@@ -23,7 +23,7 @@ export const CSS_TARGETS: readonly CssTarget[] = [
   { path: "UI/base.css", kind: "ui", firstLine: "/* Adlaire-Design base styles */", sourceModules: ["rules.ts", "rules-base.ts"], migrated: true },
   { path: "UI/grid.css", kind: "ui", firstLine: "/* Adlaire-Design grid utilities */", sourceModules: ["rules.ts", "rules-grid.ts"], migrated: true },
   { path: "UI/layout.css", kind: "ui", firstLine: "/* Adlaire-Design public layout */", sourceModules: ["rules.ts", "rules-layout.ts"], migrated: true },
-  { path: "UI/components.css", kind: "ui", firstLine: "/* Adlaire-Design public components */", sourceModules: ["rules.ts", "rules-components.ts", "rules-components-foundation.ts", "rules-components-overlays.ts", "rules-components-operations.ts", "rules-components-platform.ts"], migrated: true },
+  { path: "UI/components.css", kind: "ui", firstLine: "/* Adlaire-Design public components */", sourceModules: ["rules.ts", "rules-components.ts", "rules-components-foundation.ts", "rules-components-foundation-core.ts", "rules-components-foundation-media.ts", "rules-components-foundation-domains.ts", "rules-components-foundation-support.ts", "rules-components-overlays.ts", "rules-components-operations.ts", "rules-components-operations-admin.ts", "rules-components-operations-data.ts", "rules-components-operations-workspace.ts", "rules-components-operations-business.ts", "rules-components-operations-industry.ts", "rules-components-operations-workflow.ts", "rules-components-platform.ts"], migrated: true },
   { path: "UI/site.css", kind: "ui", firstLine: "/* Adlaire-Design site chrome */", sourceModules: ["rules.ts", "rules-site.ts"], migrated: true },
   { path: "UI/forms.css", kind: "ui", firstLine: "/* Adlaire-Design form components */", sourceModules: ["rules.ts", "rules-forms.ts", "rules-forms-foundation.ts", "rules-forms-composite.ts", "rules-forms-upload.ts", "rules-forms-validation.ts"], migrated: true },
   { path: "UI/content.css", kind: "ui", firstLine: "/* Adlaire-Design content components */", sourceModules: ["rules.ts", "rules-content.ts", "rules-content-foundation.ts", "rules-content-extended.ts", "rules-content-catalog.ts", "rules-content-interactions.ts"], migrated: true },
@@ -50,8 +50,18 @@ export const CSS_COMPILER_REQUIRED_FILES: readonly string[] = [
   "TypeScript/CSS/rules-layout.ts",
   "TypeScript/CSS/rules-components.ts",
   "TypeScript/CSS/rules-components-foundation.ts",
+  "TypeScript/CSS/rules-components-foundation-core.ts",
+  "TypeScript/CSS/rules-components-foundation-media.ts",
+  "TypeScript/CSS/rules-components-foundation-domains.ts",
+  "TypeScript/CSS/rules-components-foundation-support.ts",
   "TypeScript/CSS/rules-components-overlays.ts",
   "TypeScript/CSS/rules-components-operations.ts",
+  "TypeScript/CSS/rules-components-operations-admin.ts",
+  "TypeScript/CSS/rules-components-operations-data.ts",
+  "TypeScript/CSS/rules-components-operations-workspace.ts",
+  "TypeScript/CSS/rules-components-operations-business.ts",
+  "TypeScript/CSS/rules-components-operations-industry.ts",
+  "TypeScript/CSS/rules-components-operations-workflow.ts",
   "TypeScript/CSS/rules-components-platform.ts",
   "TypeScript/CSS/rules-site.ts",
   "TypeScript/CSS/rules-forms.ts",
@@ -77,3 +87,13 @@ export const CSS_COMPILER_REQUIRED_FILES: readonly string[] = [
   "TypeScript/CSS/manifest.ts",
   "TypeScript/CSS/index.ts",
 ] as const;
+
+export function cssTargetPaths(kind?: CssTargetKind): readonly string[] {
+  return CSS_TARGETS
+    .filter((target) => kind === undefined || target.kind === kind)
+    .map((target) => target.path);
+}
+
+export function cssCompilerSourceModules(): readonly string[] {
+  return Array.from(new Set(CSS_TARGETS.flatMap((target) => target.sourceModules.map((source) => `TypeScript/CSS/${source}`))));
+}
