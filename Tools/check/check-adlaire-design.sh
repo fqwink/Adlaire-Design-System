@@ -470,6 +470,9 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-action-row' \
   'Docs/Generic_Component_Catalog|.adlaire-toolbar' \
   'Docs/Generic_Component_Catalog|.adlaire-empty-state' \
+  'Docs/Generic_Component_Catalog|.adlaire-tabs' \
+  'Docs/Generic_Component_Catalog|.adlaire-tab-button' \
+  'Docs/Generic_Component_Catalog|.adlaire-tab-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-badge' \
   'Docs/Generic_Component_Catalog|.adlaire-note' \
   'Docs/Generic_Component_Catalog|.adlaire-alert' \
@@ -507,7 +510,18 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-date-range' \
   'Docs/Generic_Component_Catalog|.adlaire-combobox' \
   'Docs/Generic_Component_Catalog|.adlaire-multi-select' \
+  'Docs/Generic_Component_Catalog|.adlaire-segmented-control' \
+  'Docs/Generic_Component_Catalog|.adlaire-segmented-option' \
+  'Docs/Generic_Component_Catalog|.adlaire-radio-card-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-radio-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-switch-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-switch-item' \
   'Docs/Generic_Component_Catalog|.adlaire-token-input' \
+  'Docs/Generic_Component_Catalog|.adlaire-token-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-token-count' \
+  'Docs/Generic_Component_Catalog|.adlaire-character-count' \
+  'Docs/Generic_Component_Catalog|.adlaire-range-field' \
+  'Docs/Generic_Component_Catalog|.adlaire-range-meter' \
   'Docs/Generic_Component_Catalog|.adlaire-date-picker' \
   'Docs/Generic_Component_Catalog|.adlaire-calendar' \
   'Docs/Generic_Component_Catalog|.adlaire-file-picker' \
@@ -516,6 +530,8 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-error-summary' \
   'Docs/Generic_Component_Catalog|.adlaire-validation-message' \
   'Docs/Generic_Component_Catalog|.adlaire-validation-list' \
+  'Docs/Generic_Component_Catalog|.adlaire-stepper-control' \
+  'Docs/Generic_Component_Catalog|.adlaire-stepper-action' \
   'Docs/Generic_Component_Catalog|.adlaire-pagination' \
   'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
   'Docs/Generic_Component_Catalog|.adlaire-tree-view' \
@@ -1312,6 +1328,8 @@ for catalog_class in \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-publish-check' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-a11y-panel' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-slash-menu' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-slash-item' \
+  'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-suggestion' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-suggestion-card' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-save-banner' \
   'Docs/WYSIWYG_Editor_UI_Catalog|.adlaire-wysiwyg-lock-banner'; do
@@ -1496,9 +1514,13 @@ for form_binding_term in \
   'closestBoundTrigger' \
   'handleEveryFormInteraction' \
   'handleFirstFormInteraction' \
+  'activateFormKeyboardTrigger' \
+  'isDisabledInteraction' \
+  'isNativeInteractive' \
   'safeDocumentQuery' \
   'safeScopedQuery' \
   'safeScopedQueryAll' \
+  'setOptionalText' \
   'setBooleanAttribute' \
   'setOpenState'; do
   require_text "TypeScript/UI/forms.ts" "$form_binding_term" "Declarative form interaction bindings"
@@ -1539,7 +1561,9 @@ for content_binding_term in \
   'closestBoundTrigger' \
   'handleEveryContentClick' \
   'safeDocumentQuery' \
+  'safeDocumentQueryAll' \
   'safeScopedQueryAll' \
+  'setBooleanAttribute' \
   'writeClipboardText'; do
   require_text "TypeScript/UI/content.ts" "$content_binding_term" "Declarative content interaction bindings"
   require_text "UI/content.js" "$content_binding_term" "Declarative content interaction bindings"
@@ -1583,6 +1607,8 @@ for wysiwyg_binding_term in \
   'eventSourceElement' \
   'closestBoundTrigger' \
   'handleFirstWysiwygClick' \
+  'moveCompositeSelection' \
+  'selectCompositeItem' \
   'safeDocumentQuery' \
   'safeScopedQueryAll' \
   'setBooleanAttribute' \
@@ -1614,11 +1640,28 @@ if ! cmp -s "$wysiwyg_ts_hooks" "$wysiwyg_js_hooks"; then
 fi
 
 for js_pair in \
+  'TypeScript/UI/components.ts|UI/components.js|data-adlaire-tab' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-filter-chip' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-combobox-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-combobox-option' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-multi-select-option' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-segmented-option' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-segmented-output' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-radio-card' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-radio-card-output' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-switch-item' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-switch-output' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-range-input' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-range-output' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-range-value' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-stepper-action' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-stepper-output' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-token-add' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-token-remove' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-token-count' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-character-count' \
+  'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validation-message' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-date-preset' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-input' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-file-empty' \
@@ -1626,13 +1669,25 @@ for js_pair in \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate' \
   'TypeScript/UI/forms.ts|UI/forms.js|data-adlaire-validate-summary' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort-status' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort-state' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-sort-order' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-copy-status' \
   'TypeScript/UI/content.ts|UI/content.js|data-adlaire-code-line' \
+  'TypeScript/UI/content.ts|UI/content.js|data-adlaire-toc-link' \
+  'TypeScript/UI/components.ts|UI/components.js|data-adlaire-column-toggle' \
+  'TypeScript/UI/components.ts|UI/components.js|data-adlaire-page-select' \
+  'TypeScript/UI/components.ts|UI/components.js|data-adlaire-saved-view-apply' \
+  'TypeScript/UI/components.ts|UI/components.js|data-adlaire-selection-counter' \
+  'TypeScript/UI/components.ts|UI/components.js|data-adlaire-bulk-action-tray' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-mode' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-toggle' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-target' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-select' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-toolbar-group' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-slash-item' \
+  'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|data-adlaire-wysiwyg-suggestion' \
   'TypeScript/EditorUI/wysiwyg.ts|EditorUI/wysiwyg.js|adlaire-wysiwyg-block-selected'; do
   source_file=${js_pair%%|*}
   rest=${js_pair#*|}
@@ -1649,6 +1704,18 @@ for editor_contract in \
   'Docs/Editor_Master_Spec|Selection boundary' \
   'Docs/Editor_Master_Spec|History boundary' \
   'Docs/Editor_Master_Spec|save state snapshot' \
+  'Docs/Editor_Master_Spec|publish state snapshot' \
+  'Docs/Editor_Master_Spec|validation summary' \
+  'Docs/Editor_Master_Spec|readOnly transition' \
+  'Docs/Editor_Master_Spec|checkpoint labels' \
+  'Docs/Editor_Master_Spec|save completion' \
+  'Docs/Editor_Master_Spec|save failure' \
+  'Docs/Editor_Master_Spec|publish completion' \
+  'Docs/Editor_Master_Spec|publish failure' \
+  'Docs/Editor_Master_Spec|completeSave controller contract' \
+  'Docs/Editor_Master_Spec|failSave controller contract' \
+  'Docs/Editor_Master_Spec|completePublish controller contract' \
+  'Docs/Editor_Master_Spec|failPublish controller contract' \
   'Docs/Editor_Master_Spec|history reset' \
   'Docs/Editor_Master_Spec|Validation boundary' \
   'Docs/Editor_Master_Spec|Event boundary' \
@@ -1675,6 +1742,14 @@ for editor_contract in \
   'TypeScript/Editor/core.ts|HeadlessEditorController' \
   'TypeScript/Editor/core.ts|dispatchBatch' \
   'TypeScript/Editor/core.ts|getSaveState' \
+  'TypeScript/Editor/core.ts|getPublishState' \
+  'TypeScript/Editor/core.ts|getValidationSummary' \
+  'TypeScript/Editor/core.ts|setReadOnly' \
+  'TypeScript/Editor/core.ts|checkpoint' \
+  'TypeScript/Editor/core.ts|completeSave' \
+  'TypeScript/Editor/core.ts|failSave' \
+  'TypeScript/Editor/core.ts|completePublish' \
+  'TypeScript/Editor/core.ts|failPublish' \
   'TypeScript/Editor/core.ts|this.#history.clear()' \
   'TypeScript/Editor/core.ts|type DispatchValidationMode' \
   'TypeScript/Editor/core.ts|function validateDispatchCommand' \
@@ -1705,11 +1780,27 @@ for editor_contract in \
   'TypeScript/Editor/types.ts|EditorDocument' \
   'TypeScript/Editor/types.ts|EditorController' \
   'TypeScript/Editor/types.ts|getSaveState(): SaveState' \
+  'TypeScript/Editor/types.ts|getPublishState(): PublishState' \
+  'TypeScript/Editor/types.ts|getValidationSummary(): ValidationSummary' \
+  'TypeScript/Editor/types.ts|setReadOnly(readOnly: boolean): void' \
+  'TypeScript/Editor/types.ts|checkpoint(label: string): HistoryCheckpoint' \
+  'TypeScript/Editor/types.ts|completeSave(state?: Partial<SaveState>): SaveState' \
+  'TypeScript/Editor/types.ts|failSave(error: string): SaveState' \
+  'TypeScript/Editor/types.ts|completePublish(state?: Partial<PublishState>): PublishState' \
+  'TypeScript/Editor/types.ts|failPublish(error: string): PublishState' \
   'EditorUI/editor.js|window.AdlaireEditor' \
   'EditorUI/editor.js|function validateDispatchCommand' \
   'EditorUI/editor.js|validateDispatchCommand(command, this.readOnly, "single")' \
   'EditorUI/editor.js|validateDispatchCommand(command, this.readOnly, "batch")' \
   'EditorUI/editor.js|HeadlessEditorController.prototype.getSaveState' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.getPublishState' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.getValidationSummary' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.setReadOnly' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.checkpoint' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.completeSave' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.failSave' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.completePublish' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.failPublish' \
   'EditorUI/editor.js|History.prototype.clear' \
   'EditorUI/editor.js|failValidation' \
   'EditorUI/editor.js|documentCommandHandlers' \
@@ -1791,7 +1882,7 @@ exports = {
   "TypeScript/Editor/events.ts" => ["export class EventBus", "export function editorError"],
   "TypeScript/Editor/history.ts" => ["export class History", "clear(): void"],
   "TypeScript/Editor/selection.ts" => ["export function normalizeSelection", "export function sameSelection"],
-  "TypeScript/Editor/types.ts" => ["export interface EditorDocument", "export interface EditorController", "getSaveState(): SaveState"],
+  "TypeScript/Editor/types.ts" => ["export interface EditorDocument", "export interface EditorController", "getSaveState(): SaveState", "getPublishState(): PublishState", "getValidationSummary(): ValidationSummary", "setReadOnly(readOnly: boolean): void", "checkpoint(label: string): HistoryCheckpoint", "completeSave(state?: Partial<SaveState>): SaveState", "failSave(error: string): SaveState", "completePublish(state?: Partial<PublishState>): PublishState", "failPublish(error: string): PublishState"],
   "TypeScript/Editor/validation.ts" => ["export function validateDocument", "export async function validateDocumentAsync"],
 }
 
@@ -1816,6 +1907,9 @@ for sample_class in \
   'adlaire-content-card' \
   'adlaire-code-block' \
   'adlaire-code-copy' \
+  'data-adlaire-sort-status' \
+  'adlaire-tabs' \
+  'data-adlaire-tab' \
   'adlaire-content-table' \
   'adlaire-faq-list' \
   'adlaire-timeline' \
@@ -1830,6 +1924,12 @@ for sample_class in \
   'data-adlaire-combobox-option' \
   'adlaire-multi-select' \
   'data-adlaire-multi-select-option' \
+  'adlaire-segmented-control' \
+  'data-adlaire-segmented-option' \
+  'adlaire-radio-card-group' \
+  'data-adlaire-radio-card' \
+  'adlaire-switch-group' \
+  'data-adlaire-switch-item' \
   'adlaire-token-input' \
   'adlaire-date-picker' \
   'data-adlaire-date-preset' \
@@ -2727,7 +2827,7 @@ for matrix_term in \
   'layout frame, public layout, master-detail layout' \
   'dialog, drawer, popover, toast' \
   'filter input, filter chip, file input' \
-  'combobox, multi-select, token input' \
+  'combobox, multi-select, segmented control, radio card group, switch group, token input' \
   'tab workspace, dock panel, status bar' \
   'agenda view, time slot grid, resource calendar' \
   'budget panel, expense card, purchase request' \
@@ -2800,11 +2900,25 @@ for component_contract_term in \
   'observability-diagnostics-core' \
   'workflow-governance-core' \
   'wysiwyg-editor-ui-core' \
+  'export type ComponentContractOwner' \
+  'export type ComponentContractDepth' \
+  'export type ComponentContractRisk' \
+  'export type ComponentContractLifecycle' \
+  'export interface ComponentContractGovernanceRecord' \
+  'export interface ComponentContractAccessibilityRecord' \
   'componentContractIds' \
   'componentContractsByArea' \
   'componentContractReviewSurface' \
   'componentContractReviewTier' \
+  'componentContractOwner' \
+  'componentContractDepth' \
+  'componentContractRisk' \
+  'componentContractLifecycle' \
   'componentContractCoverageGaps' \
+  'componentContractsRequiringBehavior' \
+  'componentContractGovernanceRecords' \
+  'componentContractPlatformSupport' \
+  'componentContractAccessibilityRecords' \
   'componentContractRequiredClasses' \
   'componentContractHooks' \
   'componentContractAriaRequirements' \
@@ -2853,9 +2967,19 @@ for component_contract_matrix_term in \
   'UI interaction contract metadata' \
   'review surface' \
   'review tier' \
+  'contract owner' \
+  'contract depth' \
+  'contract risk' \
+  'contract lifecycle' \
+  'platform support' \
+  'accessibility records' \
+  'behavior-required contracts' \
   'required coverage gaps' \
   'generated parity' \
+  'input modality' \
   'audit records' \
+  'fallback policies' \
+  'state scopes' \
   'queryInteractionRoot'; do
   require_text "Docs/Component_Contract_Matrix" "$component_contract_matrix_term" "UI component contract metadata"
 done
@@ -2865,6 +2989,9 @@ require_text "Docs/Document_Index" "TypeScript/UI/interaction-contracts.ts" "UI 
 
 for interaction_contract_term in \
   'export type UIInteractionSamplePolicy' \
+  'export type UIInteractionFallbackPolicy' \
+  'export type UIInteractionStateScope' \
+  'export type UIInteractionInputModality' \
   'export interface UIInteractionContract' \
   'export interface UIInteractionAuditRecord' \
   'export const UI_INTERACTION_PRIMITIVES' \
@@ -2875,21 +3002,46 @@ for interaction_contract_term in \
   'uiInteractionSampleRequiredHooks' \
   'uiInteractionGeneratedTargets' \
   'uiInteractionStateAttributes' \
+  'uiInteractionFallbackPolicy' \
+  'uiInteractionStateScope' \
+  'uiInteractionInputModality' \
+  'uiInteractionFallbackPolicies' \
+  'uiInteractionStateScopes' \
+  'uiInteractionInputModalities' \
   'uiInteractionAuditRecords' \
   'data-adlaire-toggle' \
   'data-adlaire-dismiss' \
+  'data-adlaire-tab' \
   'data-adlaire-sidebar-toggle' \
   'data-adlaire-pipeline-stage-select' \
   'data-adlaire-filter-input' \
+  'data-adlaire-segmented-option' \
+  'data-adlaire-radio-card' \
+  'data-adlaire-switch-item' \
+  'data-adlaire-range-input' \
+  'data-adlaire-stepper-action' \
+  'data-adlaire-token-add' \
+  'data-adlaire-token-remove' \
+  'data-adlaire-column-toggle' \
+  'data-adlaire-page-select' \
+  'data-adlaire-saved-view-apply' \
   'data-adlaire-code-copy' \
+  'data-adlaire-toc-link' \
   'data-adlaire-wysiwyg-mode' \
+  'data-adlaire-wysiwyg-toolbar-group' \
+  'data-adlaire-wysiwyg-slash-item' \
+  'data-adlaire-wysiwyg-suggestion' \
   'eventSourceElement' \
   'hookSelector' \
   'closestBoundTrigger' \
   'queryInteractionRoot' \
+  'isDisabledInteraction' \
+  'isNativeInteractive' \
   'setBooleanAttribute' \
   'setOpenState' \
+  'setOptionalText' \
   'safeDocumentQuery' \
+  'safeDocumentQueryAll' \
   'safeScopedQuery' \
   'safeScopedQueryAll' \
   'writeClipboardText'; do
@@ -3226,6 +3378,7 @@ end
 abort("[Token inventory] duplicate CSS token definitions: #{duplicate_vars.uniq.sort.join(", ")}") unless duplicate_vars.empty?
 allowed_component_vars = {
   "--adlaire-progress-value" => true,
+  "--adlaire-range-value" => true,
   "--adlaire-upload-progress" => true,
   "--adlaire-token-swatch-color" => true,
   "--adlaire-preview-compare-position" => true,

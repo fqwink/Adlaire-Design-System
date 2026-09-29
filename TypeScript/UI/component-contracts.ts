@@ -35,6 +35,10 @@ export type ComponentContractArea =
 
 export type ComponentContractReviewSurface = "public-ui" | "admin-ui" | "editor-ui";
 export type ComponentContractReviewTier = "foundation" | "domain" | "integration";
+export type ComponentContractOwner = "public-system" | "admin-system" | "editor-system";
+export type ComponentContractDepth = "catalog" | "source" | "generated" | "behavior" | "sample";
+export type ComponentContractRisk = "low" | "medium" | "high";
+export type ComponentContractLifecycle = "stable" | "expanding" | "requires-review";
 
 export interface ComponentContract {
   readonly id: string;
@@ -58,6 +62,24 @@ export interface ComponentContract {
 export interface ComponentContractCoverageGap {
   readonly id: string;
   readonly missingCoverage: readonly string[];
+}
+
+export interface ComponentContractGovernanceRecord {
+  readonly id: string;
+  readonly owner: ComponentContractOwner;
+  readonly reviewSurface: ComponentContractReviewSurface;
+  readonly reviewTier: ComponentContractReviewTier;
+  readonly risk: ComponentContractRisk;
+  readonly lifecycle: ComponentContractLifecycle;
+  readonly depth: readonly ComponentContractDepth[];
+  readonly coverageGaps: readonly string[];
+}
+
+export interface ComponentContractAccessibilityRecord {
+  readonly id: string;
+  readonly ariaRequirements: readonly string[];
+  readonly stateAttributes: readonly string[];
+  readonly risk: ComponentContractRisk;
 }
 
 const FOUNDATION_AREAS: readonly ComponentContractArea[] = [
@@ -118,22 +140,26 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
     area: "content",
     catalog: "Docs/Generic_Component_Catalog",
     cssSources: [
+      "TypeScript/CSS/rules-components-foundation-core-base.ts",
       "TypeScript/CSS/rules-content-foundation-timeline.ts",
       "TypeScript/CSS/rules-content-extended-markdown.ts",
       "TypeScript/CSS/rules-content-extended-repository.ts",
     ],
-    generatedCss: ["UI/content.css"],
-    behaviorSources: ["TypeScript/UI/content.ts"],
-    generatedBehavior: ["UI/content.js"],
+    generatedCss: ["UI/components.css", "UI/content.css"],
+    behaviorSources: ["TypeScript/UI/components.ts", "TypeScript/UI/content.ts"],
+    generatedBehavior: ["UI/components.js", "UI/content.js"],
     sample: "Samples/design/index.html",
     requiredClasses: [
       ".adlaire-markdown-body",
       ".adlaire-code-block",
+      ".adlaire-tabs",
+      ".adlaire-tab-button",
+      ".adlaire-tab-panel",
       ".adlaire-timeline",
     ],
-    hooks: ["data-adlaire-code-copy"],
+    hooks: ["data-adlaire-code-copy", "data-adlaire-sort", "data-adlaire-tab", "data-adlaire-code-line", "data-adlaire-toc-link"],
     ariaRequirements: ["aria-labelledby=\"generic-title\"", "aria-live=\"polite\""],
-    stateAttributes: ["data-adlaire-copied"],
+    stateAttributes: ["data-adlaire-copied", "aria-sort", "data-adlaire-sort-state", "data-adlaire-sort-order", "aria-selected", "aria-current"],
     requiredIcons: [],
     sampleSection: "generic-title",
     responsiveModes: ["desktop", "mobile"],
@@ -201,6 +227,12 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-column-resize-handle",
       ".adlaire-cell-status",
       ".adlaire-import-preview-table",
+      ".adlaire-column-manager",
+      ".adlaire-column-visibility-panel",
+      ".adlaire-saved-view-bar",
+      ".adlaire-pagination-status",
+      ".adlaire-selection-counter-bar",
+      ".adlaire-bulk-action-tray",
       ".adlaire-status-inspector",
       ".adlaire-empty-recovery-panel",
     ],
@@ -208,9 +240,12 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-record-row-toggle",
       "data-adlaire-inline-edit-toggle",
       "data-adlaire-bulk-confirm-toggle",
+      "data-adlaire-column-toggle",
+      "data-adlaire-page-select",
+      "data-adlaire-saved-view-apply",
     ],
     ariaRequirements: ["role=\"region\"", "aria-orientation=\"vertical\""],
-    stateAttributes: ["aria-selected=\"true\"", "data-state=\"valid\""],
+    stateAttributes: ["aria-selected=\"true\"", "aria-checked=\"true\"", "aria-current", "data-state=\"valid\"", "data-adlaire-selected-count"],
     requiredIcons: [],
     sampleSection: "advanced-ui-title",
     responsiveModes: ["desktop", "mobile"],
@@ -671,6 +706,20 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-validation-list",
       ".adlaire-combobox",
       ".adlaire-multi-select",
+      ".adlaire-segmented-control",
+      ".adlaire-segmented-option",
+      ".adlaire-radio-card-group",
+      ".adlaire-radio-card",
+      ".adlaire-switch-group",
+      ".adlaire-switch-item",
+      ".adlaire-token-list",
+      ".adlaire-token",
+      ".adlaire-token-count",
+      ".adlaire-character-count",
+      ".adlaire-range-field",
+      ".adlaire-range-meter",
+      ".adlaire-stepper-control",
+      ".adlaire-stepper-action",
       ".adlaire-date-picker",
     ],
     hooks: [
@@ -681,10 +730,18 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-combobox-input",
       "data-adlaire-combobox-option",
       "data-adlaire-multi-select-option",
+      "data-adlaire-segmented-option",
+      "data-adlaire-radio-card",
+      "data-adlaire-switch-item",
+      "data-adlaire-range-input",
+      "data-adlaire-stepper-action",
+      "data-adlaire-token-add",
+      "data-adlaire-token-remove",
+      "data-adlaire-character-count",
       "data-adlaire-date-preset",
     ],
-    ariaRequirements: ["aria-live=\"polite\"", "role=\"switch\""],
-    stateAttributes: ["hidden", "aria-checked=\"true\""],
+    ariaRequirements: ["aria-live=\"polite\"", "role=\"switch\"", "role=\"radiogroup\"", "aria-label=\"Density\""],
+    stateAttributes: ["hidden", "aria-checked=\"true\"", "aria-pressed=\"true\"", "data-adlaire-field-dirty", "data-adlaire-field-touched", "data-adlaire-range-value"],
     requiredIcons: [],
     sampleSection: "quality-title",
     responsiveModes: ["desktop", "mobile"],
@@ -713,7 +770,7 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
     ],
     hooks: ["data-adlaire-dismiss", "data-adlaire-toast-dismiss"],
     ariaRequirements: ["role=\"dialog\"", "aria-modal=\"true\""],
-    stateAttributes: ["hidden", "is-open"],
+    stateAttributes: ["hidden", "is-open", "data-adlaire-overlay-depth", "data-adlaire-overlay-inert", "data-adlaire-dismiss-reason"],
     requiredIcons: [],
     sampleSection: "overlay-title",
     responsiveModes: ["desktop", "mobile"],
@@ -1010,9 +1067,12 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-wysiwyg-mode",
       "data-adlaire-wysiwyg-toggle",
       "data-adlaire-wysiwyg-select",
+      "data-adlaire-wysiwyg-toolbar-group",
+      "data-adlaire-wysiwyg-slash-item",
+      "data-adlaire-wysiwyg-suggestion",
     ],
     ariaRequirements: ["aria-labelledby=\"editor-title\"", "aria-expanded=\"true\""],
-    stateAttributes: ["data-adlaire-wysiwyg-mode", "aria-selected=\"true\""],
+    stateAttributes: ["data-adlaire-wysiwyg-mode", "data-adlaire-toolbar-group", "data-adlaire-disclosure-state", "aria-selected=\"true\""],
     requiredIcons: [],
     sampleSection: "editor-title",
     responsiveModes: ["desktop", "tablet", "mobile", "reduced-motion"],
@@ -1040,11 +1100,69 @@ export function componentContractReviewTier(contract: ComponentContract): Compon
   return "domain";
 }
 
+export function componentContractOwner(contract: ComponentContract): ComponentContractOwner {
+  if (contract.catalog === "Docs/Admin_UI_Catalog") return "admin-system";
+  if (contract.catalog === "Docs/WYSIWYG_Editor_UI_Catalog" || contract.area === "editor") return "editor-system";
+  return "public-system";
+}
+
+export function componentContractDepth(contract: ComponentContract): readonly ComponentContractDepth[] {
+  const depth: ComponentContractDepth[] = ["catalog"];
+  if (contract.cssSources.length > 0 || contract.behaviorSources.length > 0) depth.push("source");
+  if (contract.generatedCss.length > 0 || contract.generatedBehavior.length > 0) depth.push("generated");
+  if (contract.hooks.length > 0) depth.push("behavior");
+  if (contract.sample !== "" && contract.sampleSection !== "") depth.push("sample");
+  return depth;
+}
+
+export function componentContractRisk(contract: ComponentContract): ComponentContractRisk {
+  if (contract.hooks.length > 0 && (contract.area === "forms" || contract.area === "overlay" || contract.area === "editor" || contract.area === "data")) return "high";
+  if (contract.hooks.length > 0 || contract.requiredIcons.length > 0 || contract.responsiveModes.includes("reduced-motion")) return "medium";
+  return "low";
+}
+
+export function componentContractLifecycle(contract: ComponentContract): ComponentContractLifecycle {
+  const coverageGaps = COMPONENT_CONTRACT_REQUIRED_COVERAGE.filter((coverage) => !contract.checkCoverage.includes(coverage));
+  if (coverageGaps.length > 0) return "requires-review";
+  if (contract.checkCoverage.includes("generated-css") && (contract.generatedBehavior.length === 0 || contract.checkCoverage.includes("generated-javascript"))) return "stable";
+  return "expanding";
+}
+
 export function componentContractCoverageGaps(requiredCoverage: readonly string[] = COMPONENT_CONTRACT_REQUIRED_COVERAGE): readonly ComponentContractCoverageGap[] {
   return COMPONENT_CONTRACTS.map((contract) => ({
     id: contract.id,
     missingCoverage: requiredCoverage.filter((coverage) => !contract.checkCoverage.includes(coverage)),
   })).filter((gap) => gap.missingCoverage.length > 0);
+}
+
+export function componentContractsRequiringBehavior(): readonly ComponentContract[] {
+  return COMPONENT_CONTRACTS.filter((contract) => contract.hooks.length > 0);
+}
+
+export function componentContractGovernanceRecords(requiredCoverage: readonly string[] = COMPONENT_CONTRACT_REQUIRED_COVERAGE): readonly ComponentContractGovernanceRecord[] {
+  return COMPONENT_CONTRACTS.map((contract) => ({
+    id: contract.id,
+    owner: componentContractOwner(contract),
+    reviewSurface: componentContractReviewSurface(contract),
+    reviewTier: componentContractReviewTier(contract),
+    risk: componentContractRisk(contract),
+    lifecycle: componentContractLifecycle(contract),
+    depth: componentContractDepth(contract),
+    coverageGaps: requiredCoverage.filter((coverage) => !contract.checkCoverage.includes(coverage)),
+  }));
+}
+
+export function componentContractPlatformSupport(): readonly string[] {
+  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.responsiveModes)));
+}
+
+export function componentContractAccessibilityRecords(): readonly ComponentContractAccessibilityRecord[] {
+  return COMPONENT_CONTRACTS.map((contract) => ({
+    id: contract.id,
+    ariaRequirements: contract.ariaRequirements,
+    stateAttributes: contract.stateAttributes,
+    risk: componentContractRisk(contract),
+  }));
 }
 
 export function componentContractRequiredClasses(): readonly string[] {

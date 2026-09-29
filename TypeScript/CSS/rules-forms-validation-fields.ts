@@ -18,6 +18,11 @@ export const FORMS_VALIDATION_FIELDS_CSS = `
   border-color: var(--adlaire-semantic-success-color);
 }
 
+.adlaire-field[data-adlaire-field-dirty="true"] .adlaire-input-hint,
+.adlaire-field[data-adlaire-field-touched="true"] .adlaire-character-count {
+  color: var(--adlaire-surface-accent-strong);
+}
+
 .adlaire-error-summary {
   padding: 14px 16px;
   background-color: var(--adlaire-semantic-danger-bg);

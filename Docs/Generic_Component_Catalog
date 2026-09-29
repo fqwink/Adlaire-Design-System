@@ -38,9 +38,9 @@ This catalog governs reusable public UI, content UI, form UI, layout UI, utility
 | State UI | badge, chip, status pill, status dot, empty/error/loading states | 実装済み |
 | Content UI | notes, alerts, tables, FAQ, code, markdown-like surfaces | 実装済み |
 | Form UI | input groups, composite inputs, date/time/period inputs, validation UI | 実装済み |
-| Advanced Input UI | combobox, multi-select, token input, date picker, calendar, date presets | 実装済み |
+| Advanced Input UI | combobox, multi-select, segmented control, radio card group, switch group, token input, date picker, calendar, date presets | 実装済み |
 | Layout UI | core layout, meaningful grid, app shell, split pane, responsive policy | 実装済み |
-| Navigation UI | tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
+| Navigation UI | tabs, keyboard tabs, breadcrumbs, pagination, command palette, global search | 実装済み |
 | Icon UI | icon button, icon button group, icon tile, icon list, icon picker, avatar group | 実装済み |
 | Overlay / Feedback UI | dialog, drawer, popover, tooltip, toast, toast queue, backdrop, focus sentry, touch target | 実装済み |
 | Mobile Overlay UI | bottom sheet | 実装済み |
@@ -156,6 +156,9 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-action-row`
 - `.adlaire-toolbar`
 - `.adlaire-empty-state`
+- `.adlaire-tabs`
+- `.adlaire-tab-button`
+- `.adlaire-tab-panel`
 - `.adlaire-badge`
 - `.adlaire-note`
 - `.adlaire-alert`
@@ -193,7 +196,19 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-date-range`
 - `.adlaire-combobox`
 - `.adlaire-multi-select`
+- `.adlaire-segmented-control`
+- `.adlaire-segmented-option`
+- `.adlaire-radio-card-group`
+- `.adlaire-radio-card`
+- `.adlaire-switch-group`
+- `.adlaire-switch-item`
 - `.adlaire-token-input`
+- `.adlaire-token-list`
+- `.adlaire-token`
+- `.adlaire-token-count`
+- `.adlaire-character-count`
+- `.adlaire-range-field`
+- `.adlaire-range-meter`
 - `.adlaire-date-picker`
 - `.adlaire-calendar`
 - `.adlaire-file-picker`
@@ -202,6 +217,8 @@ This catalog expects the following class families to remain implemented:
 - `.adlaire-error-summary`
 - `.adlaire-validation-message`
 - `.adlaire-validation-list`
+- `.adlaire-stepper-control`
+- `.adlaire-stepper-action`
 - `.adlaire-pagination`
 - `.adlaire-command-palette`
 - `.adlaire-tree-view`

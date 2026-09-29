@@ -51,6 +51,8 @@ This catalog governs WYSIWYG Editor UI components and states.
 - `.adlaire-wysiwyg-publish-check`
 - `.adlaire-wysiwyg-a11y-panel`
 - `.adlaire-wysiwyg-slash-menu`
+- `.adlaire-wysiwyg-slash-item`
+- `.adlaire-wysiwyg-suggestion`
 - `.adlaire-wysiwyg-suggestion-card`
 - `.adlaire-wysiwyg-save-banner`
 - `.adlaire-wysiwyg-lock-banner`
@@ -61,6 +63,7 @@ This catalog governs WYSIWYG Editor UI components and states.
 | --- | --- |
 | Implementation state | Use `実装済み`, `策定済み`, or `対象外`. |
 | Required class families | Treat listed classes as a check-covered contract between this catalog and generated CSS. |
+| Required hooks | `data-adlaire-wysiwyg-mode`, `data-adlaire-wysiwyg-toggle`, `data-adlaire-wysiwyg-select`, `data-adlaire-wysiwyg-toolbar-group`, `data-adlaire-wysiwyg-slash-item`, and `data-adlaire-wysiwyg-suggestion` move with `TypeScript/EditorUI/wysiwyg.ts` and `EditorUI/wysiwyg.js`. |
 | Out of scope | Generic UI, Admin UI, official SVG icon files, editor runtime internals, brand assets. |
 | Synchronization | Update `Docs/Master_Spec`, `Docs/Editor_Master_Spec`, generated EditorUI files, TypeScript source, and checks when needed. |
 | Change unit | Specification, catalog, implementation, and check updates are reviewed together. |

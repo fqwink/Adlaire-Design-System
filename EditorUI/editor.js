@@ -343,6 +343,7 @@
     this.document = normalizeDocument(config.document || createEmptyDocument(), this.registry);
     this.selection = null;
     this.saveState = { dirty: false, saving: false };
+    this.publishState = { publishing: false };
     this.emitValidation();
   }
 
@@ -353,6 +354,7 @@
     this.document = sanitizeDocument(normalizeDocument(document, this.registry), this.registry);
     this.selection = normalizeSelection(this.document, this.selection);
     this.saveState = { dirty: false, saving: false };
+    this.publishState = { publishing: false };
     this.history.clear();
     this.events.emit({ type: "document:changed", document: this.getDocument() });
     this.events.emit({ type: "selection:changed", selection: this.getSelection() });
@@ -419,6 +421,34 @@
   HeadlessEditorController.prototype.getSaveState = function () {
     return Object.assign({}, this.saveState);
   };
+  HeadlessEditorController.prototype.getPublishState = function () {
+    return Object.assign({}, this.publishState);
+  };
+  HeadlessEditorController.prototype.getValidationSummary = function () {
+    var validation = validateDocument(this.document, this.registry);
+    return {
+      valid: validation.valid,
+      errorCount: validation.errors.length,
+      warningCount: validation.warnings.length,
+      firstError: validation.errors[0]
+    };
+  };
+  HeadlessEditorController.prototype.setReadOnly = function (readOnly) {
+    var next = Boolean(readOnly);
+    if (this.readOnly === next) return;
+    this.readOnly = next;
+    this.events.emit({ type: "readOnly:changed", readOnly: next });
+  };
+  HeadlessEditorController.prototype.checkpoint = function (label) {
+    var checkpoint = {
+      label: String(label || "checkpoint"),
+      createdAt: new Date().toISOString(),
+      canUndo: this.history.canUndo,
+      canRedo: this.history.canRedo
+    };
+    this.events.emit({ type: "history:checkpoint", checkpoint: checkpoint });
+    return checkpoint;
+  };
   HeadlessEditorController.prototype.setSelectionResult = function (selection, pushHistory) {
     var normalized = normalizeSelection(this.document, selection || null);
     if (selection !== null && normalized === null) return this.fail("selection.invalid", "Selection must reference valid document positions.");
@@ -453,14 +483,41 @@
     validation.errors.forEach(this.emitError.bind(this));
     var request = { document: document, context: context || { reason: "manual" }, state: Object.assign({}, this.saveState, { saving: true, lastRequestedAt: new Date().toISOString() }) };
     this.saveState = request.state;
+    delete this.saveState.error;
+    request.state = this.getSaveState();
     this.events.emit({ type: "save:requested", request: request });
     return request;
   };
+  HeadlessEditorController.prototype.completeSave = function (state) {
+    state = state || {};
+    this.saveState = Object.assign({}, this.saveState, state, { dirty: false, saving: false });
+    if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.saveState.error;
+    return this.getSaveState();
+  };
+  HeadlessEditorController.prototype.failSave = function (error) {
+    this.saveState = Object.assign({}, this.saveState, { dirty: true, saving: false, error: error });
+    return this.getSaveState();
+  };
   HeadlessEditorController.prototype.requestPublish = function (context) {
     var document = sanitizeDocument(this.document, this.registry);
-    var request = { document: document, context: context || { reason: "manual" }, validation: validateDocument(document, this.registry) };
+    this.publishState = Object.assign({}, this.publishState, { publishing: true, lastRequestedAt: new Date().toISOString() });
+    delete this.publishState.error;
+    var request = { document: document, context: context || { reason: "manual" }, validation: validateDocument(document, this.registry), state: this.getPublishState() };
     this.events.emit({ type: "publish:requested", request: request });
     return request;
+  };
+  HeadlessEditorController.prototype.completePublish = function (state) {
+    state = state || {};
+    this.publishState = Object.assign({}, this.publishState, state, { publishing: false, lastCompletedAt: new Date().toISOString() });
+    if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.publishState.error;
+    this.events.emit({ type: "publish:completed", state: this.getPublishState() });
+    return this.getPublishState();
+  };
+  HeadlessEditorController.prototype.failPublish = function (error) {
+    this.publishState = Object.assign({}, this.publishState, { publishing: false, error: error });
+    delete this.publishState.lastCompletedAt;
+    this.events.emit({ type: "publish:failed", state: this.getPublishState() });
+    return this.getPublishState();
   };
   HeadlessEditorController.prototype.subscribe = function (listener) {
     return this.events.subscribe(listener);

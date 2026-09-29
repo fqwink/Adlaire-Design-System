@@ -69,6 +69,28 @@ export const COMPONENTS_FOUNDATION_CORE_BASE_CSS = `/* Adlaire-Design public com
   border-bottom: 1px solid var(--adlaire-surface-border);
 }
 
+.adlaire-tab-button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  color: var(--adlaire-surface-text-muted);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.adlaire-tab-button:hover,
+.adlaire-tab-button:focus-visible,
+.adlaire-tab-button[aria-selected="true"] {
+  border-bottom-color: var(--adlaire-surface-accent);
+  color: var(--adlaire-surface-accent-strong);
+  outline: 0;
+}
+
 .adlaire-tab-panel {
   padding: 20px;
   background-color: var(--adlaire-surface-card);

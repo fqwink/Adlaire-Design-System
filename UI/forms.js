@@ -19,7 +19,7 @@
   }
 
   function normalize(value) {
-    return String(value || "").trim().toLowerCase();
+    return String(value === null || value === undefined ? "" : value).trim().toLowerCase();
   }
 
   function booleanState(active) {
@@ -33,6 +33,29 @@
   function setOpenState(target, open) {
     target.hidden = !open;
     target.classList.toggle("is-open", open);
+  }
+
+  function isDisabledInteraction(target) {
+    return target.hasAttribute("disabled") || target.getAttribute("aria-disabled") === "true";
+  }
+
+  function isNativeInteractive(target) {
+    return target instanceof HTMLButtonElement ||
+      target instanceof HTMLAnchorElement ||
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLSelectElement ||
+      target instanceof HTMLTextAreaElement;
+  }
+
+  function setOptionalText(target, value) {
+    if (target) {
+      target.textContent = value;
+    }
+  }
+
+  function finiteNumber(value, fallback) {
+    var parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : fallback;
   }
 
   function safeDocumentQuery(selector) {
@@ -105,7 +128,7 @@
     for (var index = startIndex; index < bindings.length; index += 1) {
       var binding = bindings[index];
       var trigger = source.closest(binding.selector);
-      if (trigger) {
+      if (trigger && !isDisabledInteraction(trigger)) {
         return [trigger, binding, index];
       }
     }
@@ -114,6 +137,10 @@
 
   function isSupportedField(trigger) {
     return trigger instanceof HTMLInputElement || trigger instanceof HTMLTextAreaElement || trigger instanceof HTMLSelectElement;
+  }
+
+  function isReadOnlyField(field) {
+    return (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) && field.readOnly;
   }
 
   function applyFilter(root) {
@@ -152,12 +179,20 @@
   var formInputBindings = [
     formBinding("data-adlaire-filter-input", handleFilterInput),
     inputBinding("data-adlaire-combobox-input", applyCombobox),
+    inputBinding("data-adlaire-range-input", syncRangeInput),
+    fieldBinding("data-adlaire-character-count", updateCharacterCount),
     fieldBinding("data-adlaire-validate", validateField)
   ];
 
   var formClickBindings = [
     formBinding("data-adlaire-combobox-option", selectComboboxOption),
     formBinding("data-adlaire-multi-select-option", toggleMultiSelectOption),
+    formBinding("data-adlaire-segmented-option", selectSegmentedOption),
+    formBinding("data-adlaire-radio-card", selectRadioCard),
+    formBinding("data-adlaire-switch-item", toggleSwitchItem),
+    formBinding("data-adlaire-stepper-action", applyStepperAction),
+    formBinding("data-adlaire-token-add", addTokenFromTrigger),
+    formBinding("data-adlaire-token-remove", removeToken),
     formBinding("data-adlaire-date-preset", applyDatePreset),
     formBinding("data-adlaire-filter-chip", selectFilterChip)
   ];
@@ -200,6 +235,29 @@
   document.addEventListener("change", function (event) {
     handleEveryFormInteraction(eventSourceElement(event), formChangeBindings);
   });
+
+  document.addEventListener("keydown", function (event) {
+    activateFormKeyboardTrigger(event);
+  });
+
+  function activateFormKeyboardTrigger(event) {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return false;
+    }
+    var source = eventSourceElement(event);
+    if (source && isNativeInteractive(source)) {
+      return false;
+    }
+    var trigger = source && source.closest(formClickBindings.map(function (binding) {
+      return binding.selector;
+    }).join(", "));
+    if (!(trigger instanceof HTMLElement) || isDisabledInteraction(trigger) || isNativeInteractive(trigger)) {
+      return false;
+    }
+    event.preventDefault();
+    trigger.click();
+    return true;
+  }
 
   function handleFilterInput(trigger) {
     var root = trigger.closest("[data-adlaire-filter]");
@@ -246,11 +304,33 @@
       return;
     }
 
-    var invalid = field.hasAttribute("required") && normalize(field.value) === "";
+    markFieldInteraction(field);
+    var invalid = !field.disabled && !isReadOnlyField(field) && !field.validity.valid;
     setBooleanAttribute(field, "aria-invalid", invalid);
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
+    var message = field.validity.valueMissing ? fieldLabel(field) + " is required" : field.validationMessage || fieldLabel(field) + " is invalid";
+    setOptionalText(safeDocumentQuery(field.getAttribute("data-adlaire-validation-message")), invalid ? message : "");
     updateValidationSummary(field);
+  }
+
+  function markFieldInteraction(field) {
+    var wrapper = field.closest(".adlaire-field");
+    if (!wrapper) {
+      return;
+    }
+    wrapper.setAttribute("data-adlaire-field-touched", "true");
+    wrapper.setAttribute("data-adlaire-field-dirty", normalize(field.value) !== normalize(defaultFieldValue(field)));
+  }
+
+  function defaultFieldValue(field) {
+    if (field instanceof HTMLSelectElement) {
+      var selected = Array.prototype.filter.call(field.options, function (option) {
+        return option.defaultSelected;
+      })[0];
+      return selected ? selected.value : "";
+    }
+    return field.defaultValue;
   }
 
   function updateValidationSummary(field) {
@@ -260,6 +340,12 @@
       return;
     }
 
+    if (!summary.hasAttribute("aria-live")) {
+      summary.setAttribute("aria-live", "polite");
+    }
+    if (!summary.hasAttribute("role")) {
+      summary.setAttribute("role", "alert");
+    }
     var invalidFields = safeScopedQueryAll(form, "[data-adlaire-validate]").filter(function (item) {
       return item.getAttribute("aria-invalid") === "true";
     });
@@ -344,6 +430,163 @@
     output.textContent = selected.length > 0 ? selected.join(", ") : root.getAttribute("data-adlaire-multi-select-empty") || "No options selected";
   }
 
+  function selectSegmentedOption(option) {
+    var root = option.closest("[data-adlaire-segmented-control]");
+    if (!root) {
+      return;
+    }
+
+    var value = option.getAttribute("data-adlaire-segmented-option") || option.textContent.trim() || "";
+    safeScopedQueryAll(root, "[data-adlaire-segmented-option]").forEach(function (item) {
+      var selected = item === option;
+      setBooleanAttribute(item, "aria-pressed", selected);
+      item.setAttribute("aria-selected", booleanState(selected));
+      item.setAttribute("tabindex", selected ? "0" : "-1");
+    });
+
+    var output = safeDocumentQuery(root.getAttribute("data-adlaire-segmented-output"));
+    if (output && value) {
+      output.textContent = value;
+    }
+  }
+
+  function selectRadioCard(card) {
+    var root = card.closest("[data-adlaire-radio-card-group]");
+    if (!root) {
+      return;
+    }
+
+    var value = card.getAttribute("data-adlaire-radio-card") || card.textContent.trim() || "";
+    safeScopedQueryAll(root, "[data-adlaire-radio-card]").forEach(function (item) {
+      var selected = item === card;
+      setBooleanAttribute(item, "aria-checked", selected);
+      item.setAttribute("tabindex", selected ? "0" : "-1");
+    });
+
+    var output = safeDocumentQuery(root.getAttribute("data-adlaire-radio-card-output"));
+    if (output && value) {
+      output.textContent = value;
+    }
+  }
+
+  function toggleSwitchItem(item) {
+    var root = item.closest("[data-adlaire-switch-group]");
+    var active = item.getAttribute("aria-checked") !== "true";
+    setBooleanAttribute(item, "aria-checked", active);
+    setBooleanAttribute(item, "aria-pressed", active);
+    updateSwitchGroupOutput(root);
+  }
+
+  function updateSwitchGroupOutput(root) {
+    if (!root) {
+      return;
+    }
+
+    var output = safeDocumentQuery(root.getAttribute("data-adlaire-switch-output"));
+    if (!output) {
+      return;
+    }
+
+    var activeItems = safeScopedQueryAll(root, "[data-adlaire-switch-item][aria-checked='true']").map(function (item) {
+      return item.getAttribute("data-adlaire-switch-item") || item.textContent.trim() || "";
+    }).filter(function (value) {
+      return value !== "";
+    });
+    output.textContent = activeItems.length > 0 ? activeItems.join(", ") : root.getAttribute("data-adlaire-switch-empty") || "None";
+  }
+
+  function syncRangeInput(input) {
+    var min = finiteNumber(input.min, 0);
+    var max = finiteNumber(input.max, 100);
+    var value = finiteNumber(input.value, min);
+    var denominator = max > min ? max - min : 1;
+    var percent = Math.max(0, Math.min(100, ((value - min) / denominator) * 100));
+    var root = input.closest("[data-adlaire-range], .adlaire-range-field");
+    input.setAttribute("data-adlaire-range-value", String(value));
+    if (root) {
+      root.style.setProperty("--adlaire-range-value", percent + "%");
+    }
+    setOptionalText(safeDocumentQuery(input.getAttribute("data-adlaire-range-output")), formatRangeValue(input, value));
+  }
+
+  function formatRangeValue(input, value) {
+    var prefix = input.getAttribute("data-adlaire-range-prefix") || "";
+    var suffix = input.getAttribute("data-adlaire-range-suffix") || "";
+    return prefix + (Number.isFinite(value) ? value : input.value) + suffix;
+  }
+
+  function applyStepperAction(trigger) {
+    var root = trigger.closest("[data-adlaire-stepper], .adlaire-stepper-control, .adlaire-stepper");
+    var input = safeScopedQuery(root, trigger.getAttribute("data-adlaire-stepper-input") || "input[type='number']");
+    if (!input || input.disabled || input.readOnly) {
+      return;
+    }
+    var min = input.min === "" ? Number.NEGATIVE_INFINITY : finiteNumber(input.min, Number.NEGATIVE_INFINITY);
+    var max = input.max === "" ? Number.POSITIVE_INFINITY : finiteNumber(input.max, Number.POSITIVE_INFINITY);
+    var parsedStep = finiteNumber(input.step, 1);
+    var step = parsedStep > 0 ? parsedStep : 1;
+    var direction = trigger.getAttribute("data-adlaire-stepper-action");
+    var current = finiteNumber(input.value, Number.isFinite(min) ? min : 0);
+    var delta = direction === "decrement" ? -step : step;
+    var next = Math.min(max, Math.max(min, current + delta));
+    input.value = String(Number.isFinite(next) ? next : current);
+    syncStepperOutput(input, root);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  function syncStepperOutput(input, root) {
+    var output = safeDocumentQuery(input.getAttribute("data-adlaire-stepper-output")) || safeScopedQuery(root, "[data-adlaire-stepper-output]");
+    setOptionalText(output, input.value);
+  }
+
+  function addTokenFromTrigger(trigger) {
+    var root = trigger.closest("[data-adlaire-token-input], .adlaire-token-input");
+    var input = safeScopedQuery(root, trigger.getAttribute("data-adlaire-token-input") || "input");
+    var list = safeScopedQuery(root, trigger.getAttribute("data-adlaire-token-list") || ".adlaire-token-list");
+    var value = input && input.value ? input.value.trim() : "";
+    if (!root || !input || !list || input.disabled || input.readOnly || value === "") {
+      return;
+    }
+    var token = document.createElement("button");
+    token.type = "button";
+    token.className = "adlaire-token";
+    token.setAttribute("data-adlaire-token-remove", value);
+    token.setAttribute("aria-label", "Remove " + value);
+    token.textContent = value;
+    list.appendChild(token);
+    input.value = "";
+    updateTokenCount(root);
+  }
+
+  function removeToken(trigger) {
+    var root = trigger.closest("[data-adlaire-token-input], .adlaire-token-input");
+    var removable = trigger.matches(".adlaire-token") ? trigger : trigger.closest(".adlaire-token") || trigger;
+    removable.remove();
+    updateTokenCount(root);
+  }
+
+  function updateTokenCount(root) {
+    if (!root) {
+      return;
+    }
+    var count = safeScopedQueryAll(root, "[data-adlaire-token-remove], .adlaire-token").length;
+    setOptionalText(safeDocumentQuery(root.getAttribute("data-adlaire-token-count")), String(count));
+  }
+
+  function syncCharacterCount(field, markInteraction) {
+    if (markInteraction) {
+      markFieldInteraction(field);
+    }
+    var output = safeDocumentQuery(field.getAttribute("data-adlaire-character-count"));
+    var limit = field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement ? field.maxLength : -1;
+    var length = field.value.length;
+    setOptionalText(output, limit > 0 ? length + "/" + limit : String(length));
+  }
+
+  function updateCharacterCount(field) {
+    syncCharacterCount(field, true);
+  }
+
   function applyDatePreset(preset) {
     var root = preset.closest("[data-adlaire-date-picker]");
     if (!root) {
@@ -362,8 +605,17 @@
       return;
     }
     var input = safeScopedQuery(root, selector);
-    if (input) {
+    if (input && !input.disabled && !input.readOnly) {
       input.value = value;
     }
   }
+
+  safeScopedQueryAll(document, "[data-adlaire-range-input]").forEach(syncRangeInput);
+  safeScopedQueryAll(document, "[data-adlaire-stepper] input[type='number'], .adlaire-stepper-control input[type='number'], .adlaire-stepper input[type='number']").forEach(function (input) {
+    syncStepperOutput(input, input.closest("[data-adlaire-stepper], .adlaire-stepper-control, .adlaire-stepper"));
+  });
+  safeScopedQueryAll(document, "[data-adlaire-token-input], .adlaire-token-input").forEach(updateTokenCount);
+  safeScopedQueryAll(document, "[data-adlaire-character-count]").forEach(function (field) {
+    syncCharacterCount(field, false);
+  });
 }());

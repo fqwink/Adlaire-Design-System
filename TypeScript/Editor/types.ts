@@ -102,6 +102,27 @@ export interface SaveState {
   error?: string;
 }
 
+export interface PublishState {
+  publishing: boolean;
+  lastRequestedAt?: string;
+  lastCompletedAt?: string;
+  error?: string;
+}
+
+export interface ValidationSummary {
+  valid: boolean;
+  errorCount: number;
+  warningCount: number;
+  firstError?: EditorError;
+}
+
+export interface HistoryCheckpoint {
+  label: string;
+  createdAt: string;
+  canUndo: boolean;
+  canRedo: boolean;
+}
+
 export interface SaveRequest {
   document: EditorDocument;
   context: SaveContext;
@@ -112,6 +133,7 @@ export interface PublishRequest {
   document: EditorDocument;
   context: PublishContext;
   validation: EditorValidationResult;
+  state: PublishState;
 }
 
 export interface EditorCommand<TPayload = unknown> {
@@ -217,6 +239,10 @@ export type EditorEvent =
   | { type: "validation:changed"; validation: EditorValidationResult }
   | { type: "save:requested"; request: SaveRequest }
   | { type: "publish:requested"; request: PublishRequest }
+  | { type: "publish:completed"; state: PublishState }
+  | { type: "publish:failed"; state: PublishState }
+  | { type: "readOnly:changed"; readOnly: boolean }
+  | { type: "history:checkpoint"; checkpoint: HistoryCheckpoint }
   | { type: "error"; error: EditorError };
 
 export type EditorEventListener = (event: EditorEvent) => void;
@@ -231,10 +257,18 @@ export interface EditorController {
   getSelection(): EditorSelection | null;
   setSelection(selection: EditorSelection | null): void;
   getSaveState(): SaveState;
+  getPublishState(): PublishState;
+  getValidationSummary(): ValidationSummary;
+  setReadOnly(readOnly: boolean): void;
+  checkpoint(label: string): HistoryCheckpoint;
   undo(): EditorCommandResult;
   redo(): EditorCommandResult;
   save(context?: SaveContext): SaveRequest;
+  completeSave(state?: Partial<SaveState>): SaveState;
+  failSave(error: string): SaveState;
   requestPublish(context?: PublishContext): PublishRequest;
+  completePublish(state?: Partial<PublishState>): PublishState;
+  failPublish(error: string): PublishState;
   subscribe(listener: EditorEventListener): Unsubscribe;
   destroy(): void;
 }

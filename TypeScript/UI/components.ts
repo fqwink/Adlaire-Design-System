@@ -65,8 +65,34 @@
     return safeScopedQueryAll(document, selector);
   }
 
+  function isDisabledInteraction(target: Element): boolean {
+    return target.hasAttribute("disabled") || target.getAttribute("aria-disabled") === "true";
+  }
+
+  function isNativeInteractive(target: Element): boolean {
+    return target instanceof HTMLButtonElement ||
+      target instanceof HTMLAnchorElement ||
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLSelectElement ||
+      target instanceof HTMLTextAreaElement;
+  }
+
+  function setOptionalText(target: HTMLElement | null, value: string): void {
+    if (target) target.textContent = value;
+  }
+
   function syncOverlayRootState(): void {
-    document.documentElement.classList.toggle("adlaire-overlay-open", Boolean(safeDocumentQuery(openOverlaySelector)));
+    const openOverlays = safeDocumentQueryAll(openOverlaySelector);
+    const open = openOverlays.length > 0;
+    document.documentElement.classList.toggle("adlaire-overlay-open", open);
+    document.documentElement.toggleAttribute("data-adlaire-overlay-inert", open);
+    if (open) {
+      document.documentElement.setAttribute("data-adlaire-overlay-depth", String(openOverlays.length));
+      document.body?.setAttribute("data-adlaire-inert-background", "true");
+    } else {
+      document.documentElement.removeAttribute("data-adlaire-overlay-depth");
+      document.body?.removeAttribute("data-adlaire-inert-background");
+    }
   }
 
   function writeClipboardText(text: string): boolean {
@@ -99,10 +125,11 @@
     setBooleanAttribute(trigger, "aria-expanded", expanded);
     if (!target) return;
     setOpenState(target, expanded);
-    if (expanded && target.matches(overlaySelector)) {
-      document.documentElement.classList.add("adlaire-overlay-open");
-    }
-    if (!expanded) syncOverlayRootState();
+    if (target.matches(overlaySelector)) syncOverlayRootState();
+  }
+
+  function markDismissReason(target: Element | null, reason: string): void {
+    if (target) target.setAttribute("data-adlaire-dismiss-reason", reason);
   }
 
   function triggersForTarget(target: Element | null): Element[] {
@@ -117,7 +144,7 @@
 
   function getFocusable(target: Element): HTMLElement[] {
     return safeScopedQueryAll(target, "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])")
-      .filter((item) => !item.hidden && !item.hasAttribute("disabled") && item.getAttribute("aria-hidden") !== "true");
+      .filter((item) => !item.hidden && !isDisabledInteraction(item) && item.getAttribute("aria-hidden") !== "true");
   }
 
   function focusFirst(target: Element): void {
@@ -172,6 +199,12 @@
   const componentKeyBindings: readonly ComponentKeyBinding[] = [
     componentKeyBinding("Tab", containActiveOverlayFocus),
     componentKeyBinding("Escape", closeOpenSurfaces),
+    componentKeyBinding("Enter", activateKeyboardTrigger),
+    componentKeyBinding(" ", activateKeyboardTrigger),
+    componentKeyBinding("ArrowLeft", moveTabWithKeyboard),
+    componentKeyBinding("ArrowRight", moveTabWithKeyboard),
+    componentKeyBinding("Home", moveTabWithKeyboard),
+    componentKeyBinding("End", moveTabWithKeyboard),
   ] as const;
 
   document.addEventListener("keydown", (event) => {
@@ -181,6 +214,7 @@
   function dismissSurface(dismiss: Element): void {
     const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
     if (dismissTarget) {
+      markDismissReason(dismissTarget, dismiss.getAttribute("data-adlaire-dismiss-reason") ?? "dismiss-control");
       setOpenState(dismissTarget, false);
       triggersForTarget(dismissTarget).forEach((item) => setBooleanAttribute(item, "aria-expanded", false));
     }
@@ -212,14 +246,73 @@
 
   function closeOpenSurfaces(): boolean {
     safeDocumentQueryAll(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open`).forEach((target) => {
+      markDismissReason(target, "escape");
       setOpenState(target, false);
       triggersForTarget(target).forEach((trigger) => setBooleanAttribute(trigger, "aria-expanded", false));
     });
     safeDocumentQueryAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach((trigger) => {
       setBooleanAttribute(trigger, "aria-expanded", false);
     });
-    document.documentElement.classList.remove("adlaire-overlay-open");
+    syncOverlayRootState();
     lastFocus?.focus();
+    return true;
+  }
+
+  function activateKeyboardTrigger(event: KeyboardEvent): boolean {
+    const source = eventSourceElement(event);
+    if (source && isNativeInteractive(source)) return false;
+    const trigger = source?.closest([
+      "[data-adlaire-select]",
+      "[data-adlaire-tab]",
+      "[data-adlaire-workspace-tab]",
+      "[data-adlaire-sidebar-toggle]",
+      "[data-adlaire-tree-toggle]",
+      "[data-adlaire-context-menu]",
+      "[data-adlaire-split-button-toggle]",
+      "[data-adlaire-overflow-toggle]",
+      "[data-adlaire-dock-toggle]",
+      "[data-adlaire-folder-toggle]",
+      "[data-adlaire-policy-exception-toggle]",
+      "[data-adlaire-column-toggle]",
+      "[data-adlaire-page-select]",
+      "[data-adlaire-saved-view-apply]",
+      ...interactiveChoiceBindings.map((binding) => binding.selector),
+      ...booleanStateBindings.map((binding) => binding.selector),
+      ...currentStepBindings.map((binding) => binding.selector),
+    ].join(", "));
+    if (!(trigger instanceof HTMLElement) || isDisabledInteraction(trigger) || isNativeInteractive(trigger)) return false;
+    event.preventDefault();
+    trigger.click();
+    return true;
+  }
+
+  function moveTabWithKeyboard(event: KeyboardEvent): boolean {
+    const source = eventSourceElement(event);
+    const tab = source?.closest("[data-adlaire-tab], [data-adlaire-workspace-tab]");
+    if (!(tab instanceof HTMLElement)) return false;
+
+    const attribute = tab.hasAttribute("data-adlaire-tab") ? "data-adlaire-tab" : "data-adlaire-workspace-tab";
+    const root = tab.closest(".adlaire-tabs, .adlaire-tab-workspace") ?? document;
+    const group = tab.getAttribute("data-adlaire-group");
+    const tabs = safeScopedQueryAll(root, hookSelector(attribute))
+      .filter((item) => !item.hidden && !isDisabledInteraction(item) && (!group || item.getAttribute("data-adlaire-group") === group));
+    const currentIndex = tabs.indexOf(tab);
+    if (currentIndex < 0) return false;
+
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowLeft") nextIndex = currentIndex <= 0 ? tabs.length - 1 : currentIndex - 1;
+    if (event.key === "ArrowRight") nextIndex = currentIndex >= tabs.length - 1 ? 0 : currentIndex + 1;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = tabs.length - 1;
+
+    const next = tabs[nextIndex];
+    event.preventDefault();
+    next.focus();
+    if (attribute === "data-adlaire-tab") {
+      selectGenericTab(next);
+    } else {
+      selectWorkspaceTab(next);
+    }
     return true;
   }
 
@@ -270,7 +363,13 @@
     });
     safeScopedQueryAll(root, "[data-adlaire-carousel-index]")
       .filter((indicator) => !indicator.hasAttribute("data-adlaire-carousel"))
-      .forEach((indicator, index) => setBooleanAttribute(indicator, "aria-current", index === current));
+      .forEach((indicator, index) => {
+        if (index === current) {
+          indicator.setAttribute("aria-current", "true");
+        } else {
+          indicator.removeAttribute("aria-current");
+        }
+      });
   }
 
   interface InteractiveChoiceBinding {
@@ -416,7 +515,7 @@
     for (let index = startIndex; index < bindings.length; index += 1) {
       const binding = bindings[index];
       const trigger = source.closest(binding.selector);
-      if (trigger) return [trigger, binding, index];
+      if (trigger && !isDisabledInteraction(trigger)) return [trigger, binding, index];
     }
     return null;
   }
@@ -498,6 +597,7 @@
     componentBinding("data-adlaire-remove", removeTarget),
     componentBinding("data-adlaire-toast-dismiss", dismissToast),
     componentBinding("data-adlaire-select", selectListItem),
+    componentBinding("data-adlaire-tab", selectGenericTab, true),
     componentBinding("data-adlaire-sidebar-toggle", toggleSidebar, true),
     componentBinding("data-adlaire-tree-toggle", toggleTree, true),
     componentBinding("data-adlaire-workspace-tab", selectWorkspaceTab, true),
@@ -505,6 +605,9 @@
     componentBinding("data-adlaire-split-button-toggle", (trigger) => toggleDisclosureSurface(trigger, "data-adlaire-split-button-toggle", ".adlaire-split-button", ".adlaire-context-menu, .adlaire-overflow-toolbar-menu"), true),
     componentBinding("data-adlaire-overflow-toggle", (trigger) => toggleDisclosureSurface(trigger, "data-adlaire-overflow-toggle", ".adlaire-overflow-toolbar", ".adlaire-overflow-toolbar-menu"), true),
     componentBinding("data-adlaire-dock-toggle", toggleDockPanel, true),
+    componentBinding("data-adlaire-column-toggle", toggleColumnVisibility, true),
+    componentBinding("data-adlaire-page-select", selectPaginationPage, true),
+    componentBinding("data-adlaire-saved-view-apply", applySavedView, true),
   ] as const;
 
   const deferredComponentClickBindings: readonly ComponentClickBinding[] = [
@@ -540,6 +643,21 @@
     const list = select.closest("[data-adlaire-select-list]");
     safeScopedQueryAll(list, "[data-adlaire-select]").forEach((item) => {
       setBooleanAttribute(item, "aria-selected", item === select);
+    });
+  }
+
+  function selectGenericTab(trigger: Element): void {
+    const root = trigger.closest(".adlaire-tabs") ?? document;
+    const group = trigger.getAttribute("data-adlaire-group");
+    const tabs = safeScopedQueryAll(root, "[data-adlaire-tab]")
+      .filter((tab) => !group || tab.getAttribute("data-adlaire-group") === group);
+
+    tabs.forEach((tab) => {
+      const selected = tab === trigger;
+      setBooleanAttribute(tab, "aria-selected", selected);
+      tab.setAttribute("tabindex", selected ? "0" : "-1");
+      const panel = queryReferencedTarget(tab, "data-adlaire-tab");
+      if (panel) setOpenState(panel, selected);
     });
   }
 
@@ -625,6 +743,7 @@
       setBooleanAttribute(item, selectedAttribute, selected);
       item.classList.toggle("is-selected", selected);
     });
+    syncSelectionCounter(root);
   }
 
   function selectCurrentStep(trigger: Element, rootSelector: string, itemSelector: string): void {
@@ -646,6 +765,85 @@
     const active = trigger.getAttribute(stateAttribute) !== "true";
     setBooleanAttribute(trigger, stateAttribute, active);
     trigger.classList.toggle("is-selected", active);
+    syncSelectionCounter(trigger.closest("[data-adlaire-selection-root]") ?? trigger.parentElement);
+  }
+
+  function toggleColumnVisibility(trigger: Element): void {
+    const column = trigger.getAttribute("data-adlaire-column-toggle");
+    const root = safeDocumentQuery(trigger.getAttribute("data-adlaire-column-root")) ?? trigger.closest("[data-adlaire-column-manager]") ?? document;
+    if (!column) return;
+    const visible = trigger.getAttribute("aria-checked") !== "true";
+    setBooleanAttribute(trigger, "aria-checked", visible);
+    safeScopedQueryAll(root, `[data-adlaire-column="${column}"]`).forEach((cell) => {
+      cell.hidden = !visible;
+    });
+    setOptionalText(safeDocumentQuery(trigger.getAttribute("data-adlaire-column-status")), `${column} column ${visible ? "shown" : "hidden"}`);
+  }
+
+  function selectPaginationPage(trigger: Element): void {
+    const root = trigger.closest("[data-adlaire-pagination]");
+    if (!root) return;
+    const page = trigger.getAttribute("data-adlaire-page-select") ?? trigger.textContent?.trim() ?? "";
+    safeScopedQueryAll(root, "[data-adlaire-page-select]").forEach((item) => {
+      const selected = item === trigger;
+      if (selected) {
+        item.setAttribute("aria-current", "page");
+      } else {
+        item.removeAttribute("aria-current");
+      }
+      item.classList.toggle("adlaire-page-link-current", selected);
+    });
+    setOptionalText(safeDocumentQuery(root.getAttribute("data-adlaire-pagination-status")), page ? `Page ${page} selected` : "Page selected");
+  }
+
+  function applySavedView(trigger: Element): void {
+    const root = trigger.closest("[data-adlaire-saved-view-root]") ?? trigger.closest(".adlaire-view-preset-switcher, .adlaire-saved-view-bar") ?? trigger.parentElement;
+    const view = trigger.getAttribute("data-adlaire-saved-view-apply") ?? trigger.getAttribute("data-adlaire-saved-view-select") ?? trigger.textContent?.trim() ?? "";
+    if (root) {
+      safeScopedQueryAll(root, "[data-adlaire-saved-view-apply], [data-adlaire-saved-view-select]").forEach((item) => {
+        const selected = item === trigger;
+        setBooleanAttribute(item, "aria-pressed", selected);
+        item.setAttribute("tabindex", selected ? "0" : "-1");
+        item.classList.toggle("is-selected", selected);
+      });
+    }
+    setOptionalText(safeDocumentQuery(trigger.getAttribute("data-adlaire-saved-view-status")), view ? `${view} view applied` : "View applied");
+  }
+
+  function syncSelectionCounter(root: Element | null): void {
+    if (!root) return;
+    const selected = safeScopedQueryAll(root, "[data-adlaire-selection-item][aria-selected='true'], [data-adlaire-record-row-toggle][aria-selected='true'], [data-adlaire-bulk-selection-toggle][aria-selected='true']").length;
+    safeScopedQueryAll(root, "[data-adlaire-selection-counter]").forEach((counter) => {
+      counter.textContent = String(selected);
+    });
+    safeScopedQueryAll(root, "[data-adlaire-bulk-action-tray]").forEach((tray) => {
+      setOpenState(tray, selected > 0);
+      tray.setAttribute("data-adlaire-selected-count", String(selected));
+    });
+  }
+
+  function initializeTabState(attribute: string): void {
+    safeDocumentQueryAll(hookSelector(attribute)).forEach((tab) => {
+      const selected = tab.getAttribute("aria-selected") === "true";
+      if (!tab.hasAttribute("tabindex")) tab.setAttribute("tabindex", selected ? "0" : "-1");
+      const panel = queryReferencedTarget(tab, attribute);
+      if (panel && selected) setOpenState(panel, true);
+    });
+  }
+
+  function initializeSelectedComponentState(): void {
+    initializeTabState("data-adlaire-tab");
+    initializeTabState("data-adlaire-workspace-tab");
+    safeDocumentQueryAll("[data-adlaire-pagination]").forEach((root) => {
+      const current = safeScopedQuery(root, "[data-adlaire-page-select][aria-current='page'], [data-adlaire-page-select][aria-current='true'], .adlaire-page-link-current");
+      if (current) selectPaginationPage(current);
+    });
+    safeDocumentQueryAll("[data-adlaire-saved-view-root], .adlaire-view-preset-switcher, .adlaire-saved-view-bar").forEach((root) => {
+      const selected = safeScopedQuery(root, "[data-adlaire-saved-view-apply][aria-pressed='true'], [data-adlaire-saved-view-select][aria-pressed='true'], .is-selected");
+      if (selected) applySavedView(selected);
+    });
+    safeDocumentQueryAll("[data-adlaire-selection-root]").forEach(syncSelectionCounter);
+    syncOverlayRootState();
   }
 
   function toggleFolderBranch(trigger: Element): void {
@@ -667,6 +865,8 @@
     handleEveryComponentInput(eventSourceElement(event), componentInputBindings);
   });
 
+  initializeSelectedComponentState();
+
   function applyTextFilter(input: HTMLInputElement): void {
     const selector = input.getAttribute("data-adlaire-filter-root") ?? input.getAttribute("data-adlaire-search-root");
     const root = safeDocumentQuery(selector);
@@ -674,10 +874,17 @@
     if (!root || !itemSelector) return;
 
     const query = input.value.trim().toLowerCase();
+    let visibleCount = 0;
     safeScopedQueryAll(root, itemSelector).forEach((item) => {
       const matched = (item.textContent ?? "").toLowerCase().includes(query);
       item.hidden = !matched;
+      if (matched) visibleCount += 1;
     });
+
+    const count = safeScopedQuery(root, "[data-adlaire-filter-count], [data-adlaire-search-count]");
+    const empty = safeScopedQuery(root, "[data-adlaire-filter-empty], [data-adlaire-search-empty]");
+    if (count) count.textContent = String(visibleCount);
+    if (empty) setOpenState(empty, visibleCount === 0);
   }
 
   function updatePreviewCompare(input: HTMLInputElement): void {
