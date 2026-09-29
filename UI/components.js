@@ -6,6 +6,10 @@
   var overlaySelector = ".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet";
   var openOverlaySelector = ".adlaire-modal.is-open, .adlaire-dialog.is-open, .adlaire-drawer.is-open, .adlaire-bottom-sheet.is-open";
 
+  function targetElement(target) {
+    return target instanceof Element ? target : null;
+  }
+
   function getTarget(trigger) {
     var selector = trigger.getAttribute("data-adlaire-target") || trigger.getAttribute("href");
     if (!selector || selector.charAt(0) !== "#") {
@@ -101,67 +105,71 @@
     }
   }
 
+  var overlayClickBindings = [
+    componentSelectorBinding("[data-adlaire-dismiss]", dismissSurface),
+    componentSelectorBinding("[data-adlaire-carousel-action], [data-adlaire-carousel-index]:not([data-adlaire-carousel])", moveCarouselFromTrigger, true),
+    componentBinding("data-adlaire-toggle", toggleTargetSurface, true)
+  ];
+
   document.addEventListener("click", function (event) {
-    var trigger = event.target.closest("[data-adlaire-toggle]");
-    var dismiss = event.target.closest("[data-adlaire-dismiss]");
-    var carouselControl = event.target.closest("[data-adlaire-carousel-action]");
-    var carouselIndicator = event.target.closest("[data-adlaire-carousel-index]");
-    if (carouselIndicator && carouselIndicator.hasAttribute("data-adlaire-carousel")) {
-      carouselIndicator = null;
-    }
-
-    if (dismiss) {
-      var dismissTarget = getTarget(dismiss) || dismiss.closest(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
-      if (dismissTarget) {
-        dismissTarget.hidden = true;
-        dismissTarget.classList.remove("is-open");
-        triggersForTarget(dismissTarget).forEach(function (item) {
-          item.setAttribute("aria-expanded", "false");
-        });
-      }
-      if (!document.querySelector(openOverlaySelector)) {
-        document.documentElement.classList.remove("adlaire-overlay-open");
-      }
-      if (lastFocus && typeof lastFocus.focus === "function") {
-        lastFocus.focus();
-      }
-      return;
-    }
-
-    if (carouselControl || carouselIndicator) {
-      event.preventDefault();
-      moveCarousel(carouselControl || carouselIndicator);
-      return;
-    }
-
-    if (trigger) {
-      var target = getTarget(trigger);
-      if (!target) {
-        return;
-      }
-
-      event.preventDefault();
-      var isExpanded = trigger.getAttribute("aria-expanded") === "true";
-      lastFocus = trigger;
-      closeSiblings(trigger, target);
-      setExpanded(trigger, target, !isExpanded);
-      if (!isExpanded && target.matches(overlaySelector)) {
-        focusFirst(target);
-      }
-    }
+    handleFirstComponentClick(event, targetElement(event.target), overlayClickBindings);
   });
 
+  var componentKeyBindings = [
+    componentKeyBinding("Tab", containActiveOverlayFocus),
+    componentKeyBinding("Escape", closeOpenSurfaces)
+  ];
+
   document.addEventListener("keydown", function (event) {
+    handleFirstComponentKey(event, componentKeyBindings);
+  });
+
+  function dismissSurface(dismiss) {
+    var dismissTarget = getTarget(dismiss) || dismiss.closest(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
+    if (dismissTarget) {
+      dismissTarget.hidden = true;
+      dismissTarget.classList.remove("is-open");
+      triggersForTarget(dismissTarget).forEach(function (item) {
+        item.setAttribute("aria-expanded", "false");
+      });
+    }
+    if (!document.querySelector(openOverlaySelector)) {
+      document.documentElement.classList.remove("adlaire-overlay-open");
+    }
+    if (lastFocus && typeof lastFocus.focus === "function") {
+      lastFocus.focus();
+    }
+  }
+
+  function moveCarouselFromTrigger(trigger) {
+    moveCarousel(trigger);
+  }
+
+  function toggleTargetSurface(trigger) {
+    var target = getTarget(trigger);
+    if (!target) {
+      return;
+    }
+
+    var isExpanded = trigger.getAttribute("aria-expanded") === "true";
+    lastFocus = trigger;
+    closeSiblings(trigger, target);
+    setExpanded(trigger, target, !isExpanded);
+    if (!isExpanded && target.matches(overlaySelector)) {
+      focusFirst(target);
+    }
+  }
+
+  function containActiveOverlayFocus(event) {
     var activeOverlay = document.querySelector(openOverlaySelector);
-    if (event.key === "Tab" && activeOverlay) {
-      containFocus(event, activeOverlay);
-      return;
+    if (!activeOverlay) {
+      return false;
     }
+    containFocus(event, activeOverlay);
+    return true;
+  }
 
-    if (event.key !== "Escape") {
-      return;
-    }
-
+  function closeOpenSurfaces() {
     document.querySelectorAll(openOverlaySelector + ", .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open").forEach(function (target) {
       target.hidden = true;
       target.classList.remove("is-open");
@@ -176,7 +184,8 @@
     if (lastFocus && typeof lastFocus.focus === "function") {
       lastFocus.focus();
     }
-  });
+    return true;
+  }
 
   function containFocus(event, target) {
     var focusable = getFocusable(target);
@@ -242,6 +251,32 @@
 
   function hookSelector(attribute) {
     return "[" + attribute + "]";
+  }
+
+  function componentSelectorBinding(selector, handle, preventDefault) {
+    return {
+      selector: selector,
+      preventDefault: Boolean(preventDefault),
+      handle: handle
+    };
+  }
+
+  function componentBinding(attribute, handle, preventDefault) {
+    return componentSelectorBinding(hookSelector(attribute), handle, preventDefault);
+  }
+
+  function componentInputBinding(attribute, handle) {
+    return {
+      selector: hookSelector(attribute),
+      handle: handle
+    };
+  }
+
+  function componentKeyBinding(key, handle) {
+    return {
+      key: key,
+      handle: handle
+    };
   }
 
   function choiceBinding(attribute, rootSelector, selectedAttribute, itemAttribute) {
@@ -371,102 +406,135 @@
     return false;
   }
 
+  function handleFirstComponentClick(event, source, bindings) {
+    if (!source) {
+      return false;
+    }
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (!trigger) {
+        continue;
+      }
+      if (binding.preventDefault) {
+        event.preventDefault();
+      }
+      binding.handle(trigger, event);
+      return true;
+    }
+    return false;
+  }
+
+  function handleEveryComponentClick(event, source, bindings) {
+    if (!source) {
+      return false;
+    }
+    var handled = false;
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (!trigger) {
+        continue;
+      }
+      if (binding.preventDefault) {
+        event.preventDefault();
+      }
+      binding.handle(trigger, event);
+      handled = true;
+    }
+    return handled;
+  }
+
+  function handleEveryComponentInput(source, bindings) {
+    if (!source) {
+      return false;
+    }
+    var handled = false;
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (!trigger) {
+        continue;
+      }
+      binding.handle(trigger);
+      handled = true;
+    }
+    return handled;
+  }
+
+  function handleFirstComponentKey(event, bindings) {
+    for (var index = 0; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      if (event.key !== binding.key) {
+        continue;
+      }
+      if (binding.handle(event)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  var componentClickBindings = [
+    componentBinding("data-adlaire-copy", copyText),
+    componentBinding("data-adlaire-remove", removeTarget),
+    componentBinding("data-adlaire-toast-dismiss", dismissToast),
+    componentBinding("data-adlaire-select", selectListItem),
+    componentBinding("data-adlaire-sidebar-toggle", toggleSidebar, true),
+    componentBinding("data-adlaire-tree-toggle", toggleTree, true),
+    componentBinding("data-adlaire-workspace-tab", selectWorkspaceTab, true),
+    componentBinding("data-adlaire-context-menu", function (trigger) { toggleDisclosureSurface(trigger, "data-adlaire-context-menu"); }, true),
+    componentBinding("data-adlaire-split-button-toggle", function (trigger) { toggleDisclosureSurface(trigger, "data-adlaire-split-button-toggle", ".adlaire-split-button", ".adlaire-context-menu, .adlaire-overflow-toolbar-menu"); }, true),
+    componentBinding("data-adlaire-overflow-toggle", function (trigger) { toggleDisclosureSurface(trigger, "data-adlaire-overflow-toggle", ".adlaire-overflow-toolbar", ".adlaire-overflow-toolbar-menu"); }, true),
+    componentBinding("data-adlaire-dock-toggle", toggleDockPanel, true)
+  ];
+
+  var deferredComponentClickBindings = [
+    componentBinding("data-adlaire-folder-toggle", toggleFolderBranch, true),
+    componentBinding("data-adlaire-policy-exception-toggle", function (trigger) { toggleDisclosureSurface(trigger, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body"); }, true)
+  ];
+
   document.addEventListener("click", function (event) {
-    var copy = event.target.closest("[data-adlaire-copy]");
-    var remove = event.target.closest("[data-adlaire-remove]");
-    var toastDismiss = event.target.closest("[data-adlaire-toast-dismiss]");
-    var select = event.target.closest("[data-adlaire-select]");
-    var sidebarToggle = event.target.closest("[data-adlaire-sidebar-toggle]");
-    var treeToggle = event.target.closest("[data-adlaire-tree-toggle]");
-    var workspaceTab = event.target.closest("[data-adlaire-workspace-tab]");
-    var contextMenu = event.target.closest("[data-adlaire-context-menu]");
-    var splitToggle = event.target.closest("[data-adlaire-split-button-toggle]");
-    var overflowToggle = event.target.closest("[data-adlaire-overflow-toggle]");
-    var dockToggle = event.target.closest("[data-adlaire-dock-toggle]");
-    var folderToggle = event.target.closest("[data-adlaire-folder-toggle]");
-    var policyExceptionToggle = event.target.closest("[data-adlaire-policy-exception-toggle]");
-
-    if (copy) {
-      var copyTarget = getTarget(copy);
-      var text = copyTarget ? copyTarget.textContent : copy.getAttribute("data-adlaire-copy");
-      if (text && navigator.clipboard) {
-        navigator.clipboard.writeText(text);
-        copy.setAttribute("data-adlaire-copied", "true");
-      }
-    }
-
-    if (remove) {
-      var removable = getTarget(remove) || remove.closest(".adlaire-toast, .adlaire-snackbar, .adlaire-upload-item, .adlaire-attachment-item");
-      if (removable) {
-        removable.remove();
-      }
-    }
-
-    if (toastDismiss) {
-      var toast = toastDismiss.closest(".adlaire-toast");
-      if (toast) {
-        toast.remove();
-      }
-    }
-
-    if (select) {
-      var list = select.closest("[data-adlaire-select-list]");
-      if (list) {
-        list.querySelectorAll("[data-adlaire-select]").forEach(function (item) {
-          item.setAttribute("aria-selected", item === select ? "true" : "false");
-        });
-      }
-    }
-
-    if (sidebarToggle) {
-      event.preventDefault();
-      toggleSidebar(sidebarToggle);
-    }
-
-    if (treeToggle) {
-      event.preventDefault();
-      toggleTree(treeToggle);
-    }
-
-    if (workspaceTab) {
-      event.preventDefault();
-      selectWorkspaceTab(workspaceTab);
-    }
-
-    if (contextMenu) {
-      event.preventDefault();
-      toggleDisclosureSurface(contextMenu, "data-adlaire-context-menu");
-    }
-
-    if (splitToggle) {
-      event.preventDefault();
-      toggleDisclosureSurface(splitToggle, "data-adlaire-split-button-toggle", ".adlaire-split-button", ".adlaire-context-menu, .adlaire-overflow-toolbar-menu");
-    }
-
-    if (overflowToggle) {
-      event.preventDefault();
-      toggleDisclosureSurface(overflowToggle, "data-adlaire-overflow-toggle", ".adlaire-overflow-toolbar", ".adlaire-overflow-toolbar-menu");
-    }
-
-    if (dockToggle) {
-      event.preventDefault();
-      toggleDockPanel(dockToggle);
-    }
-
-    if (handleDeclarativeInteraction(event, event.target)) {
+    var source = targetElement(event.target);
+    handleEveryComponentClick(event, source, componentClickBindings);
+    if (handleDeclarativeInteraction(event, source)) {
       return;
     }
-
-    if (folderToggle) {
-      event.preventDefault();
-      toggleFolderBranch(folderToggle);
-    }
-
-    if (policyExceptionToggle) {
-      event.preventDefault();
-      toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
-    }
+    handleEveryComponentClick(event, source, deferredComponentClickBindings);
   });
+
+  function copyText(copy) {
+    var copyTarget = getTarget(copy);
+    var text = copyTarget ? copyTarget.textContent : copy.getAttribute("data-adlaire-copy");
+    if (text && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      copy.setAttribute("data-adlaire-copied", "true");
+    }
+  }
+
+  function removeTarget(remove) {
+    var removable = getTarget(remove) || remove.closest(".adlaire-toast, .adlaire-snackbar, .adlaire-upload-item, .adlaire-attachment-item");
+    if (removable) {
+      removable.remove();
+    }
+  }
+
+  function dismissToast(toastDismiss) {
+    var toast = toastDismiss.closest(".adlaire-toast");
+    if (toast) {
+      toast.remove();
+    }
+  }
+
+  function selectListItem(select) {
+    var list = select.closest("[data-adlaire-select-list]");
+    if (!list) {
+      return;
+    }
+    list.querySelectorAll("[data-adlaire-select]").forEach(function (item) {
+      item.setAttribute("aria-selected", item === select ? "true" : "false");
+    });
+  }
 
   function toggleSidebar(trigger) {
     var selector = trigger.getAttribute("data-adlaire-sidebar-toggle") || trigger.getAttribute("data-adlaire-target");
@@ -622,19 +690,14 @@
     branch.classList.toggle("is-open", expanded);
   }
 
+  var componentInputBindings = [
+    componentInputBinding("data-adlaire-filter-input", applyTextFilter),
+    componentInputBinding("data-adlaire-search-input", applyTextFilter),
+    componentInputBinding("data-adlaire-preview-compare", updatePreviewCompare)
+  ];
+
   document.addEventListener("input", function (event) {
-    var filter = event.target.closest("[data-adlaire-filter-input]");
-    var search = event.target.closest("[data-adlaire-search-input]");
-    var previewCompare = event.target.closest("[data-adlaire-preview-compare]");
-    if (filter) {
-      applyTextFilter(filter);
-    }
-    if (search) {
-      applyTextFilter(search);
-    }
-    if (previewCompare) {
-      updatePreviewCompare(previewCompare);
-    }
+    handleEveryComponentInput(targetElement(event.target), componentInputBindings);
   });
 
   function applyTextFilter(input) {

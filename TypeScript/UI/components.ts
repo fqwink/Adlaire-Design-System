@@ -80,54 +80,78 @@
     }
   }
 
+  interface ComponentClickBinding {
+    readonly selector: string;
+    readonly preventDefault?: boolean;
+    readonly handle: (trigger: Element, event: MouseEvent) => void;
+  }
+
+  interface ComponentInputBinding {
+    readonly selector: string;
+    readonly handle: (trigger: HTMLInputElement) => void;
+  }
+
+  interface ComponentKeyBinding {
+    readonly key: string;
+    readonly handle: (event: KeyboardEvent) => boolean;
+  }
+
+  const overlayClickBindings: readonly ComponentClickBinding[] = [
+    componentSelectorBinding("[data-adlaire-dismiss]", dismissSurface),
+    componentSelectorBinding("[data-adlaire-carousel-action], [data-adlaire-carousel-index]:not([data-adlaire-carousel])", moveCarouselFromTrigger, true),
+    componentBinding("data-adlaire-toggle", toggleTargetSurface, true),
+  ] as const;
+
   document.addEventListener("click", (event) => {
     const source = targetElement(event.target);
-    const trigger = source?.closest("[data-adlaire-toggle]");
-    const dismiss = source?.closest("[data-adlaire-dismiss]");
-    const carouselControl = source?.closest("[data-adlaire-carousel-action]");
-    let carouselIndicator = source?.closest("[data-adlaire-carousel-index]");
-    if (carouselIndicator?.hasAttribute("data-adlaire-carousel")) carouselIndicator = null;
+    handleFirstComponentClick(event, source, overlayClickBindings);
+  });
 
-    if (dismiss) {
-      const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
-      if (dismissTarget) {
-        dismissTarget.hidden = true;
-        dismissTarget.classList.remove("is-open");
-        triggersForTarget(dismissTarget).forEach((item) => item.setAttribute("aria-expanded", "false"));
-      }
-      if (!document.querySelector(openOverlaySelector)) {
-        document.documentElement.classList.remove("adlaire-overlay-open");
-      }
-      lastFocus?.focus();
-      return;
+  const componentKeyBindings: readonly ComponentKeyBinding[] = [
+    componentKeyBinding("Tab", containActiveOverlayFocus),
+    componentKeyBinding("Escape", closeOpenSurfaces),
+  ] as const;
+
+  document.addEventListener("keydown", (event) => {
+    handleFirstComponentKey(event, componentKeyBindings);
+  });
+
+  function dismissSurface(dismiss: Element): void {
+    const dismissTarget = getTarget(dismiss) ?? dismiss.closest<HTMLElement>(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
+    if (dismissTarget) {
+      dismissTarget.hidden = true;
+      dismissTarget.classList.remove("is-open");
+      triggersForTarget(dismissTarget).forEach((item) => item.setAttribute("aria-expanded", "false"));
     }
-
-    if (carouselControl || carouselIndicator) {
-      event.preventDefault();
-      moveCarousel(carouselControl ?? carouselIndicator ?? null);
-      return;
+    if (!document.querySelector(openOverlaySelector)) {
+      document.documentElement.classList.remove("adlaire-overlay-open");
     }
+    lastFocus?.focus();
+  }
 
-    if (!trigger) return;
+  function moveCarouselFromTrigger(trigger: Element): void {
+    moveCarousel(trigger);
+  }
+
+  function toggleTargetSurface(trigger: Element): void {
     const target = getTarget(trigger);
     if (!target) return;
 
-    event.preventDefault();
     const isExpanded = trigger.getAttribute("aria-expanded") === "true";
     lastFocus = trigger instanceof HTMLElement ? trigger : null;
     closeSiblings(trigger, target);
     setExpanded(trigger, target, !isExpanded);
     if (!isExpanded && target.matches(overlaySelector)) focusFirst(target);
-  });
+  }
 
-  document.addEventListener("keydown", (event) => {
+  function containActiveOverlayFocus(event: KeyboardEvent): boolean {
     const activeOverlay = document.querySelector<HTMLElement>(openOverlaySelector);
-    if (event.key === "Tab" && activeOverlay) {
-      containFocus(event, activeOverlay);
-      return;
-    }
-    if (event.key !== "Escape") return;
+    if (!activeOverlay) return false;
+    containFocus(event, activeOverlay);
+    return true;
+  }
 
+  function closeOpenSurfaces(): boolean {
     document.querySelectorAll<HTMLElement>(`${openOverlaySelector}, .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open`).forEach((target) => {
       target.hidden = true;
       target.classList.remove("is-open");
@@ -138,7 +162,8 @@
     });
     document.documentElement.classList.remove("adlaire-overlay-open");
     lastFocus?.focus();
-  });
+    return true;
+  }
 
   function containFocus(event: KeyboardEvent, target: Element): void {
     const focusable = getFocusable(target);
@@ -210,6 +235,32 @@
 
   function hookSelector(attribute: string): string {
     return `[${attribute}]`;
+  }
+
+  function componentSelectorBinding(selector: string, handle: (trigger: Element, event: MouseEvent) => void, preventDefault = false): ComponentClickBinding {
+    return {
+      selector,
+      preventDefault,
+      handle,
+    };
+  }
+
+  function componentBinding(attribute: string, handle: (trigger: Element, event: MouseEvent) => void, preventDefault = false): ComponentClickBinding {
+    return componentSelectorBinding(hookSelector(attribute), handle, preventDefault);
+  }
+
+  function componentInputBinding(attribute: string, handle: (trigger: HTMLInputElement) => void): ComponentInputBinding {
+    return {
+      selector: hookSelector(attribute),
+      handle,
+    };
+  }
+
+  function componentKeyBinding(key: string, handle: (event: KeyboardEvent) => boolean): ComponentKeyBinding {
+    return {
+      key,
+      handle,
+    };
   }
 
   function choiceBinding(attribute: string, rootSelector: string, selectedAttribute: string, itemAttribute = attribute): InteractiveChoiceBinding {
@@ -335,94 +386,101 @@
     return false;
   }
 
+  function handleFirstComponentClick(event: MouseEvent, source: Element | null, bindings: readonly ComponentClickBinding[]): boolean {
+    if (!source) return false;
+    for (const binding of bindings) {
+      const trigger = source.closest(binding.selector);
+      if (!trigger) continue;
+      if (binding.preventDefault) event.preventDefault();
+      binding.handle(trigger, event);
+      return true;
+    }
+    return false;
+  }
+
+  function handleEveryComponentClick(event: MouseEvent, source: Element | null, bindings: readonly ComponentClickBinding[]): boolean {
+    if (!source) return false;
+    let handled = false;
+    for (const binding of bindings) {
+      const trigger = source.closest(binding.selector);
+      if (!trigger) continue;
+      if (binding.preventDefault) event.preventDefault();
+      binding.handle(trigger, event);
+      handled = true;
+    }
+    return handled;
+  }
+
+  function handleEveryComponentInput(source: Element | null, bindings: readonly ComponentInputBinding[]): boolean {
+    if (!source) return false;
+    let handled = false;
+    for (const binding of bindings) {
+      const trigger = source.closest<HTMLInputElement>(binding.selector);
+      if (!trigger) continue;
+      binding.handle(trigger);
+      handled = true;
+    }
+    return handled;
+  }
+
+  function handleFirstComponentKey(event: KeyboardEvent, bindings: readonly ComponentKeyBinding[]): boolean {
+    for (const binding of bindings) {
+      if (event.key !== binding.key) continue;
+      if (binding.handle(event)) return true;
+    }
+    return false;
+  }
+
+  const componentClickBindings: readonly ComponentClickBinding[] = [
+    componentBinding("data-adlaire-copy", copyText),
+    componentBinding("data-adlaire-remove", removeTarget),
+    componentBinding("data-adlaire-toast-dismiss", dismissToast),
+    componentBinding("data-adlaire-select", selectListItem),
+    componentBinding("data-adlaire-sidebar-toggle", toggleSidebar, true),
+    componentBinding("data-adlaire-tree-toggle", toggleTree, true),
+    componentBinding("data-adlaire-workspace-tab", selectWorkspaceTab, true),
+    componentBinding("data-adlaire-context-menu", (trigger) => toggleDisclosureSurface(trigger, "data-adlaire-context-menu"), true),
+    componentBinding("data-adlaire-split-button-toggle", (trigger) => toggleDisclosureSurface(trigger, "data-adlaire-split-button-toggle", ".adlaire-split-button", ".adlaire-context-menu, .adlaire-overflow-toolbar-menu"), true),
+    componentBinding("data-adlaire-overflow-toggle", (trigger) => toggleDisclosureSurface(trigger, "data-adlaire-overflow-toggle", ".adlaire-overflow-toolbar", ".adlaire-overflow-toolbar-menu"), true),
+    componentBinding("data-adlaire-dock-toggle", toggleDockPanel, true),
+  ] as const;
+
+  const deferredComponentClickBindings: readonly ComponentClickBinding[] = [
+    componentBinding("data-adlaire-folder-toggle", toggleFolderBranch, true),
+    componentBinding("data-adlaire-policy-exception-toggle", (trigger) => toggleDisclosureSurface(trigger, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body"), true),
+  ] as const;
+
   document.addEventListener("click", (event) => {
     const source = targetElement(event.target);
-    const copy = source?.closest("[data-adlaire-copy]");
-    const remove = source?.closest("[data-adlaire-remove]");
-    const toastDismiss = source?.closest("[data-adlaire-toast-dismiss]");
-    const select = source?.closest("[data-adlaire-select]");
-    const sidebarToggle = source?.closest("[data-adlaire-sidebar-toggle]");
-    const treeToggle = source?.closest("[data-adlaire-tree-toggle]");
-    const workspaceTab = source?.closest("[data-adlaire-workspace-tab]");
-    const contextMenu = source?.closest("[data-adlaire-context-menu]");
-    const splitToggle = source?.closest("[data-adlaire-split-button-toggle]");
-    const overflowToggle = source?.closest("[data-adlaire-overflow-toggle]");
-    const dockToggle = source?.closest("[data-adlaire-dock-toggle]");
-    const folderToggle = source?.closest("[data-adlaire-folder-toggle]");
-    const policyExceptionToggle = source?.closest("[data-adlaire-policy-exception-toggle]");
-
-    if (copy) {
-      const copyTarget = getTarget(copy);
-      const text = copyTarget?.textContent ?? copy.getAttribute("data-adlaire-copy");
-      if (text && navigator.clipboard) {
-        navigator.clipboard.writeText(text);
-        copy.setAttribute("data-adlaire-copied", "true");
-      }
-    }
-
-    if (remove) {
-      const removable = getTarget(remove) ?? remove.closest(".adlaire-toast, .adlaire-snackbar, .adlaire-upload-item, .adlaire-attachment-item");
-      removable?.remove();
-    }
-
-    if (toastDismiss) {
-      toastDismiss.closest(".adlaire-toast")?.remove();
-    }
-
-    if (select) {
-      const list = select.closest("[data-adlaire-select-list]");
-      list?.querySelectorAll("[data-adlaire-select]").forEach((item) => {
-        item.setAttribute("aria-selected", item === select ? "true" : "false");
-      });
-    }
-
-    if (sidebarToggle) {
-      event.preventDefault();
-      toggleSidebar(sidebarToggle);
-    }
-
-    if (treeToggle) {
-      event.preventDefault();
-      toggleTree(treeToggle);
-    }
-
-    if (workspaceTab) {
-      event.preventDefault();
-      selectWorkspaceTab(workspaceTab);
-    }
-
-    if (contextMenu) {
-      event.preventDefault();
-      toggleDisclosureSurface(contextMenu, "data-adlaire-context-menu");
-    }
-
-    if (splitToggle) {
-      event.preventDefault();
-      toggleDisclosureSurface(splitToggle, "data-adlaire-split-button-toggle", ".adlaire-split-button", ".adlaire-context-menu, .adlaire-overflow-toolbar-menu");
-    }
-
-    if (overflowToggle) {
-      event.preventDefault();
-      toggleDisclosureSurface(overflowToggle, "data-adlaire-overflow-toggle", ".adlaire-overflow-toolbar", ".adlaire-overflow-toolbar-menu");
-    }
-
-    if (dockToggle) {
-      event.preventDefault();
-      toggleDockPanel(dockToggle);
-    }
-
+    handleEveryComponentClick(event, source, componentClickBindings);
     if (handleDeclarativeInteraction(event, source)) return;
-
-    if (folderToggle) {
-      event.preventDefault();
-      toggleFolderBranch(folderToggle);
-    }
-
-    if (policyExceptionToggle) {
-      event.preventDefault();
-      toggleDisclosureSurface(policyExceptionToggle, "data-adlaire-policy-exception-toggle", ".adlaire-policy-exception-panel", ".adlaire-policy-exception-body");
-    }
+    handleEveryComponentClick(event, source, deferredComponentClickBindings);
   });
+
+  function copyText(copy: Element): void {
+    const copyTarget = getTarget(copy);
+    const text = copyTarget?.textContent ?? copy.getAttribute("data-adlaire-copy");
+    if (text && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      copy.setAttribute("data-adlaire-copied", "true");
+    }
+  }
+
+  function removeTarget(remove: Element): void {
+    const removable = getTarget(remove) ?? remove.closest(".adlaire-toast, .adlaire-snackbar, .adlaire-upload-item, .adlaire-attachment-item");
+    removable?.remove();
+  }
+
+  function dismissToast(toastDismiss: Element): void {
+    toastDismiss.closest(".adlaire-toast")?.remove();
+  }
+
+  function selectListItem(select: Element): void {
+    const list = select.closest("[data-adlaire-select-list]");
+    list?.querySelectorAll("[data-adlaire-select]").forEach((item) => {
+      item.setAttribute("aria-selected", item === select ? "true" : "false");
+    });
+  }
 
   function toggleSidebar(trigger: Element): void {
     const selector = trigger.getAttribute("data-adlaire-sidebar-toggle") || trigger.getAttribute("data-adlaire-target");
@@ -552,14 +610,14 @@
     branch.classList.toggle("is-open", expanded);
   }
 
+  const componentInputBindings: readonly ComponentInputBinding[] = [
+    componentInputBinding("data-adlaire-filter-input", applyTextFilter),
+    componentInputBinding("data-adlaire-search-input", applyTextFilter),
+    componentInputBinding("data-adlaire-preview-compare", updatePreviewCompare),
+  ] as const;
+
   document.addEventListener("input", (event) => {
-    const source = targetElement(event.target);
-    const filter = source?.closest<HTMLInputElement>("[data-adlaire-filter-input]");
-    const search = source?.closest<HTMLInputElement>("[data-adlaire-search-input]");
-    const previewCompare = source?.closest<HTMLInputElement>("[data-adlaire-preview-compare]");
-    if (filter) applyTextFilter(filter);
-    if (search) applyTextFilter(search);
-    if (previewCompare) updatePreviewCompare(previewCompare);
+    handleEveryComponentInput(targetElement(event.target), componentInputBindings);
   });
 
   function applyTextFilter(input: HTMLInputElement): void {

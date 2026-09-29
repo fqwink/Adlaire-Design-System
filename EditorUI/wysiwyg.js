@@ -10,7 +10,7 @@
     return "[" + attribute + "]";
   }
 
-  function wysiwygBinding(attribute, handle) {
+  function wysiwygClickBinding(attribute, handle) {
     return {
       selector: hookSelector(attribute),
       handle: handle
@@ -34,15 +34,15 @@
   }
 
   var wysiwygPrimaryClickBindings = [
-    wysiwygBinding("data-adlaire-wysiwyg-mode", selectMode),
-    wysiwygBinding("data-adlaire-wysiwyg-toggle", togglePanel)
+    wysiwygClickBinding("data-adlaire-wysiwyg-mode", selectMode),
+    wysiwygClickBinding("data-adlaire-wysiwyg-toggle", togglePanel)
   ];
 
   var wysiwygSelectionClickBindings = [
-    wysiwygBinding("data-adlaire-wysiwyg-select", selectBlock)
+    wysiwygClickBinding("data-adlaire-wysiwyg-select", selectBlock)
   ];
 
-  function handleFirstWysiwygBinding(source, bindings) {
+  function handleFirstWysiwygClick(source, bindings) {
     if (!source) {
       return false;
     }
@@ -60,8 +60,8 @@
 
   document.addEventListener("click", function (event) {
     var target = targetElement(event.target);
-    handleFirstWysiwygBinding(target, wysiwygPrimaryClickBindings);
-    handleFirstWysiwygBinding(target, wysiwygSelectionClickBindings);
+    handleFirstWysiwygClick(target, wysiwygPrimaryClickBindings);
+    handleFirstWysiwygClick(target, wysiwygSelectionClickBindings);
   });
 
   function selectMode(modeTrigger) {

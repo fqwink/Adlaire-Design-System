@@ -69,25 +69,25 @@
     }
   }
 
-  const inputBindings: readonly FormInteractionBinding[] = [
+  const formInputBindings: readonly FormInteractionBinding[] = [
     formBinding("data-adlaire-filter-input", handleFilterInput),
     inputBinding("data-adlaire-combobox-input", applyCombobox),
     fieldBinding("data-adlaire-validate", validateField),
   ] as const;
 
-  const clickBindings: readonly FormInteractionBinding[] = [
+  const formClickBindings: readonly FormInteractionBinding[] = [
     formBinding("data-adlaire-combobox-option", selectComboboxOption),
     formBinding("data-adlaire-multi-select-option", toggleMultiSelectOption),
     formBinding("data-adlaire-date-preset", applyDatePreset),
     formBinding("data-adlaire-filter-chip", selectFilterChip),
   ] as const;
 
-  const changeBindings: readonly FormInteractionBinding[] = [
+  const formChangeBindings: readonly FormInteractionBinding[] = [
     inputBinding("data-adlaire-file-input", updateFileInput),
     inputBinding("data-adlaire-toggle-input", syncToggleInput),
   ] as const;
 
-  function handleEveryBoundInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): void {
+  function handleEveryFormInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): void {
     if (!source) return;
     bindings.forEach((binding) => {
       const trigger = source.closest(binding.selector);
@@ -95,7 +95,7 @@
     });
   }
 
-  function handleFirstBoundInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): boolean {
+  function handleFirstFormInteraction(source: Element | null, bindings: readonly FormInteractionBinding[]): boolean {
     if (!source) return false;
     for (const binding of bindings) {
       const trigger = source.closest(binding.selector);
@@ -107,15 +107,15 @@
   }
 
   document.addEventListener("input", (event) => {
-    handleEveryBoundInteraction(targetElement(event.target), inputBindings);
+    handleEveryFormInteraction(targetElement(event.target), formInputBindings);
   });
 
   document.addEventListener("click", (event) => {
-    handleFirstBoundInteraction(targetElement(event.target), clickBindings);
+    handleFirstFormInteraction(targetElement(event.target), formClickBindings);
   });
 
   document.addEventListener("change", (event) => {
-    handleEveryBoundInteraction(targetElement(event.target), changeBindings);
+    handleEveryFormInteraction(targetElement(event.target), formChangeBindings);
   });
 
   function handleFilterInput(trigger: Element): void {

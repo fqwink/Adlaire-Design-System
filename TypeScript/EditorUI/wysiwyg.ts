@@ -7,7 +7,7 @@
     return target instanceof Element ? target : null;
   }
 
-  interface WysiwygInteractionBinding {
+  interface WysiwygClickBinding {
     readonly selector: string;
     readonly handle: (trigger: Element) => void;
   }
@@ -16,7 +16,7 @@
     return `[${attribute}]`;
   }
 
-  function wysiwygBinding(attribute: string, handle: (trigger: Element) => void): WysiwygInteractionBinding {
+  function wysiwygClickBinding(attribute: string, handle: (trigger: Element) => void): WysiwygClickBinding {
     return {
       selector: hookSelector(attribute),
       handle,
@@ -39,16 +39,16 @@
     return selector ? document.querySelector(selector) : null;
   }
 
-  const wysiwygPrimaryClickBindings: readonly WysiwygInteractionBinding[] = [
-    wysiwygBinding("data-adlaire-wysiwyg-mode", selectMode),
-    wysiwygBinding("data-adlaire-wysiwyg-toggle", togglePanel),
+  const wysiwygPrimaryClickBindings: readonly WysiwygClickBinding[] = [
+    wysiwygClickBinding("data-adlaire-wysiwyg-mode", selectMode),
+    wysiwygClickBinding("data-adlaire-wysiwyg-toggle", togglePanel),
   ] as const;
 
-  const wysiwygSelectionClickBindings: readonly WysiwygInteractionBinding[] = [
-    wysiwygBinding("data-adlaire-wysiwyg-select", selectBlock),
+  const wysiwygSelectionClickBindings: readonly WysiwygClickBinding[] = [
+    wysiwygClickBinding("data-adlaire-wysiwyg-select", selectBlock),
   ] as const;
 
-  function handleFirstWysiwygBinding(source: Element | null, bindings: readonly WysiwygInteractionBinding[]): boolean {
+  function handleFirstWysiwygClick(source: Element | null, bindings: readonly WysiwygClickBinding[]): boolean {
     if (!source) return false;
     for (const binding of bindings) {
       const trigger = source.closest(binding.selector);
@@ -61,8 +61,8 @@
 
   document.addEventListener("click", (event) => {
     const target = targetElement(event.target);
-    handleFirstWysiwygBinding(target, wysiwygPrimaryClickBindings);
-    handleFirstWysiwygBinding(target, wysiwygSelectionClickBindings);
+    handleFirstWysiwygClick(target, wysiwygPrimaryClickBindings);
+    handleFirstWysiwygClick(target, wysiwygSelectionClickBindings);
   });
 
   function selectMode(modeTrigger: Element): void {
