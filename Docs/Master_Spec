@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.140
+Version: rev.145
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -172,6 +172,16 @@ Public, civic, and nonprofit operations UI is a first-class reusable contract. C
 
 Energy, utilities, and sustainability operations UI is a first-class reusable contract. Energy operations, utility customer operations, water/waste operations, sustainability/carbon, and environmental field monitoring components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
 
+Component quality and composition UI is a first-class reusable contract. Composition, status/feedback, selection/bulk, evidence/trust, and adaptive surface components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
+
+Data workbench and record operations UI is a first-class reusable contract. Query/filter, table configuration, record inspection, inline edit, import/export, data quality, bulk result, and saved view components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
+
+Agent and automation workbench UI is a first-class reusable contract. Agent run, automation control, approval/checkpoint, context/instruction, artifact validation, recovery, scheduling, notification, and run summary components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
+
+Developer platform and integration operations UI is a first-class reusable contract. API exploration, endpoint documentation, SDK selection, webhook delivery, integration setup, credential rotation, quota monitoring, environment readiness, compatibility, migration, changelog, and support escalation components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
+
+Theme and brand customization UI is a first-class reusable contract. Theme workspace, brand kit, palette editing, semantic color mapping, typography, spacing, radius, shadow, motion, density, preview, accessibility, token override, import/export, compliance, and publishing components must move together across catalog rows, TypeScript source, generated CSS/JavaScript, samples, and checks.
+
 Interaction contracts include representative accessibility hooks: dialog roles, modal state, labelled headings, dismiss buttons, Escape handling, focus containment, hidden decorative content, current-step indication, and expanded/pressed state synchronization.
 
 ## WYSIWYG Editor Direction
@@ -190,7 +200,7 @@ WYSIWYG UI contracts include slash menu, suggestion card, save banner, lock bann
 
 ## Samples
 
-Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Advanced Input and Design-System UI, Workspace / Command / Productivity UI, Business Operations UI, Enterprise Domain UI, Strategic Operations UI, Industry Operations UI, Customer Growth / Support Operations UI, Communication / Notification Operations UI, Content Publishing / Localization Operations UI, Device / Fleet / Edge Operations UI, Travel / Hospitality / Event Operations UI, Public / Civic / Nonprofit Operations UI, Energy / Utilities / Sustainability Operations UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Tokens, Brand, and the official 1520 SVG icons.
+Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Advanced Input and Design-System UI, Workspace / Command / Productivity UI, Business Operations UI, Enterprise Domain UI, Strategic Operations UI, Industry Operations UI, Customer Growth / Support Operations UI, Communication / Notification Operations UI, Content Publishing / Localization Operations UI, Device / Fleet / Edge Operations UI, Travel / Hospitality / Event Operations UI, Public / Civic / Nonprofit Operations UI, Energy / Utilities / Sustainability Operations UI, Component Quality / Composition UI, Data Workbench / Record Operations UI, Agent / Automation Workbench UI, Developer Platform / Integration Operations UI, Theme / Brand Customization UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Tokens, Brand, and the official 1520 SVG icons.
 
 Samples must not become the source of truth for tokens, CSS contracts, JavaScript behavior, or catalog state.
 

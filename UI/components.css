@@ -6247,6 +6247,647 @@
   color: var(--adlaire-semantic-success-text);
 }
 
+.adlaire-section-header,
+.adlaire-section-action-bar,
+.adlaire-content-group,
+.adlaire-summary-rail,
+.adlaire-inline-toolbar,
+.adlaire-status-badge-group,
+.adlaire-bulk-action-tray,
+.adlaire-range-selection-panel,
+.adlaire-batch-progress-list,
+.adlaire-provenance-panel,
+.adlaire-verification-checklist,
+.adlaire-density-switcher,
+.adlaire-responsive-stack-panel,
+.adlaire-mobile-overflow-bar,
+.adlaire-sticky-action-footer {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-detail-header,
+.adlaire-validation-summary-card,
+.adlaire-stale-data-banner,
+.adlaire-retry-action-panel,
+.adlaire-selection-counter-bar,
+.adlaire-compare-selection-card,
+.adlaire-confidence-score-card,
+.adlaire-audit-trail-card,
+.adlaire-viewport-notice,
+.adlaire-print-layout-panel {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-section-header,
+.adlaire-section-action-bar,
+.adlaire-detail-header,
+.adlaire-inline-toolbar,
+.adlaire-status-badge-item,
+.adlaire-sync-indicator-row,
+.adlaire-selectable-list-row,
+.adlaire-batch-progress-item,
+.adlaire-source-citation-row,
+.adlaire-audit-trail-item,
+.adlaire-verification-check-item,
+.adlaire-density-option {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adlaire-status-badge-item,
+.adlaire-sync-indicator-row,
+.adlaire-selectable-list-row,
+.adlaire-batch-progress-item,
+.adlaire-source-citation-row,
+.adlaire-audit-trail-item,
+.adlaire-verification-check-item,
+.adlaire-density-option {
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-section-action-bar,
+.adlaire-inline-toolbar,
+.adlaire-status-badge-group,
+.adlaire-bulk-action-tray,
+.adlaire-density-switcher,
+.adlaire-mobile-overflow-bar {
+  grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
+}
+
+.adlaire-content-group,
+.adlaire-responsive-stack-panel {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.adlaire-summary-rail {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.adlaire-severity-marker,
+.adlaire-freshness-badge {
+  display: inline-grid;
+  width: fit-content;
+  gap: 4px;
+  align-items: center;
+  padding: 6px 10px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: 999px;
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-bulk-action-item,
+.adlaire-density-option,
+.adlaire-selectable-list-row,
+.adlaire-verification-check-item {
+  cursor: pointer;
+}
+
+.adlaire-density-option[aria-pressed="true"],
+.adlaire-selectable-list-row[aria-selected="true"],
+.adlaire-verification-check-item[aria-checked="true"] {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  color: var(--adlaire-surface-accent-strong);
+}
+
+.adlaire-severity-marker[data-severity="high"],
+.adlaire-validation-summary-card[data-state="invalid"],
+.adlaire-stale-data-banner[data-state="stale"],
+.adlaire-viewport-notice[data-state="narrow"] {
+  background-color: var(--adlaire-semantic-warning-bg);
+  border-color: var(--adlaire-semantic-warning-border);
+  color: var(--adlaire-semantic-warning-text);
+}
+
+.adlaire-sync-indicator-row[data-state="synced"],
+.adlaire-confidence-score-card[data-state="high"],
+.adlaire-freshness-badge[data-state="fresh"],
+.adlaire-print-layout-panel[data-state="ready"] {
+  border-color: var(--adlaire-semantic-success-border);
+  color: var(--adlaire-semantic-success-text);
+}
+
+.adlaire-query-bar,
+.adlaire-saved-filter-bar,
+.adlaire-active-filter-chips,
+.adlaire-facet-panel,
+.adlaire-column-visibility-panel,
+.adlaire-column-pin-rail,
+.adlaire-record-list,
+.adlaire-sync-queue-panel,
+.adlaire-merge-suggestion-panel,
+.adlaire-view-preset-switcher {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-sort-control,
+.adlaire-row-action-menu,
+.adlaire-record-detail-preview,
+.adlaire-record-expansion-panel,
+.adlaire-inline-edit-field,
+.adlaire-edit-conflict-banner,
+.adlaire-change-summary-card,
+.adlaire-undo-action-banner,
+.adlaire-import-job-card,
+.adlaire-export-job-card,
+.adlaire-data-quality-score,
+.adlaire-duplicate-warning-card,
+.adlaire-bulk-confirmation-panel,
+.adlaire-bulk-result-summary,
+.adlaire-selection-scope-notice,
+.adlaire-table-footer-summary,
+.adlaire-pagination-status,
+.adlaire-saved-view-card,
+.adlaire-record-audit-summary {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-query-bar,
+.adlaire-saved-filter-bar,
+.adlaire-active-filter-chips,
+.adlaire-column-pin-rail,
+.adlaire-record-row,
+.adlaire-row-action-menu,
+.adlaire-inline-edit-field,
+.adlaire-undo-action-banner,
+.adlaire-sync-queue-item,
+.adlaire-table-footer-summary,
+.adlaire-pagination-status,
+.adlaire-saved-view-card,
+.adlaire-record-audit-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adlaire-query-bar,
+.adlaire-saved-filter-bar,
+.adlaire-active-filter-chips,
+.adlaire-column-pin-rail,
+.adlaire-view-preset-switcher {
+  grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
+}
+
+.adlaire-facet-panel,
+.adlaire-column-visibility-panel,
+.adlaire-record-list,
+.adlaire-sync-queue-panel,
+.adlaire-merge-suggestion-panel {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.adlaire-record-row,
+.adlaire-sync-queue-item,
+.adlaire-view-preset-option,
+.adlaire-active-filter-chip,
+.adlaire-facet-option,
+.adlaire-column-option {
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-sort-option,
+.adlaire-column-pin-item,
+.adlaire-view-preset-option,
+.adlaire-record-row,
+.adlaire-inline-edit-field,
+.adlaire-bulk-confirmation-panel {
+  cursor: pointer;
+}
+
+.adlaire-sort-option[aria-pressed="true"],
+.adlaire-view-preset-option[aria-pressed="true"],
+.adlaire-record-row[aria-selected="true"],
+.adlaire-inline-edit-field[aria-pressed="true"],
+.adlaire-bulk-confirmation-panel[aria-pressed="true"] {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  color: var(--adlaire-surface-accent-strong);
+}
+
+.adlaire-edit-conflict-banner[data-state="conflict"],
+.adlaire-duplicate-warning-card[data-state="warning"],
+.adlaire-selection-scope-notice[data-state="partial"] {
+  background-color: var(--adlaire-semantic-warning-bg);
+  border-color: var(--adlaire-semantic-warning-border);
+  color: var(--adlaire-semantic-warning-text);
+}
+
+.adlaire-import-job-card[data-state="running"],
+.adlaire-export-job-card[data-state="ready"],
+.adlaire-data-quality-score[data-state="good"],
+.adlaire-bulk-result-summary[data-state="complete"] {
+  border-color: var(--adlaire-semantic-success-border);
+  color: var(--adlaire-semantic-success-text);
+}
+
+.adlaire-agent-task-list,
+.adlaire-run-status-rail,
+.adlaire-execution-timeline,
+.adlaire-context-attachment-tray,
+.adlaire-context-source-list,
+.adlaire-instruction-stack,
+.adlaire-artifact-diff-panel,
+.adlaire-recovery-action-list {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-agent-run-card,
+.adlaire-automation-trigger-card,
+.adlaire-tool-permission-card,
+.adlaire-approval-gate-panel,
+.adlaire-human-review-card,
+.adlaire-checkpoint-card,
+.adlaire-retry-checkpoint-panel,
+.adlaire-handoff-card,
+.adlaire-memory-note-card,
+.adlaire-prompt-composer-panel,
+.adlaire-model-setting-row,
+.adlaire-reasoning-meter,
+.adlaire-token-budget-meter,
+.adlaire-artifact-preview-card,
+.adlaire-output-validation-card,
+.adlaire-guardrail-result-row,
+.adlaire-failure-diagnosis-panel,
+.adlaire-schedule-run-card,
+.adlaire-recurring-automation-row,
+.adlaire-notification-policy-card,
+.adlaire-run-summary-panel {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-agent-run-card,
+.adlaire-automation-trigger-card,
+.adlaire-tool-call-row,
+.adlaire-tool-permission-card,
+.adlaire-approval-gate-panel,
+.adlaire-checkpoint-card,
+.adlaire-handoff-card,
+.adlaire-context-attachment-item,
+.adlaire-context-source-item,
+.adlaire-instruction-step,
+.adlaire-model-setting-row,
+.adlaire-guardrail-result-row,
+.adlaire-recovery-action-item,
+.adlaire-recurring-automation-row,
+.adlaire-notification-policy-card,
+.adlaire-run-summary-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adlaire-agent-task-list,
+.adlaire-run-status-rail,
+.adlaire-context-attachment-tray,
+.adlaire-context-source-list,
+.adlaire-recovery-action-list {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.adlaire-instruction-stack,
+.adlaire-execution-timeline,
+.adlaire-artifact-diff-panel {
+  grid-template-columns: 1fr;
+}
+
+.adlaire-tool-call-row,
+.adlaire-run-status-item,
+.adlaire-execution-timeline-item,
+.adlaire-context-attachment-item,
+.adlaire-context-source-item,
+.adlaire-instruction-step,
+.adlaire-recovery-action-item {
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-tool-permission-card,
+.adlaire-approval-gate-panel,
+.adlaire-checkpoint-card,
+.adlaire-notification-policy-card {
+  cursor: pointer;
+}
+
+.adlaire-tool-permission-card[aria-pressed="true"],
+.adlaire-approval-gate-panel[aria-pressed="true"],
+.adlaire-checkpoint-card[aria-selected="true"],
+.adlaire-notification-policy-card[aria-pressed="true"] {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  color: var(--adlaire-surface-accent-strong);
+}
+
+.adlaire-token-budget-meter[data-state="high"],
+.adlaire-guardrail-result-row[data-state="blocked"],
+.adlaire-failure-diagnosis-panel[data-state="failed"] {
+  background-color: var(--adlaire-semantic-warning-bg);
+  border-color: var(--adlaire-semantic-warning-border);
+  color: var(--adlaire-semantic-warning-text);
+}
+
+.adlaire-artifact-preview-card[data-state="ready"],
+.adlaire-output-validation-card[data-state="valid"],
+.adlaire-schedule-run-card[data-state="scheduled"],
+.adlaire-run-summary-panel[data-state="complete"] {
+  border-color: var(--adlaire-semantic-success-border);
+  color: var(--adlaire-semantic-success-text);
+}
+
+.adlaire-api-explorer-panel,
+.adlaire-request-builder,
+.adlaire-schema-reference-panel,
+.adlaire-sdk-selector,
+.adlaire-webhook-delivery-log,
+.adlaire-integration-setup-checklist,
+.adlaire-production-readiness-checklist,
+.adlaire-deprecation-timeline,
+.adlaire-migration-step-list {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-endpoint-card,
+.adlaire-response-preview,
+.adlaire-code-sample-card,
+.adlaire-webhook-endpoint-card,
+.adlaire-oauth-consent-panel,
+.adlaire-api-key-rotation-card,
+.adlaire-secret-rotation-panel,
+.adlaire-rate-limit-meter,
+.adlaire-quota-usage-card,
+.adlaire-sandbox-environment-card,
+.adlaire-integration-health-panel,
+.adlaire-connection-test-card,
+.adlaire-payload-inspector,
+.adlaire-event-replay-panel,
+.adlaire-version-compatibility-badge,
+.adlaire-breaking-change-notice,
+.adlaire-developer-note-card,
+.adlaire-changelog-entry-card,
+.adlaire-support-escalation-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-endpoint-card,
+.adlaire-webhook-event-row,
+.adlaire-dependency-status-row,
+.adlaire-version-compatibility-badge,
+.adlaire-changelog-entry-card,
+.adlaire-support-escalation-card,
+.adlaire-sdk-option,
+.adlaire-environment-option,
+.adlaire-integration-setup-item,
+.adlaire-production-readiness-item,
+.adlaire-migration-step-item,
+.adlaire-deprecation-timeline-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adlaire-sdk-selector,
+.adlaire-integration-setup-checklist,
+.adlaire-production-readiness-checklist,
+.adlaire-migration-step-list {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.adlaire-webhook-event-row,
+.adlaire-webhook-delivery-item,
+.adlaire-dependency-status-row,
+.adlaire-sdk-option,
+.adlaire-environment-option,
+.adlaire-integration-setup-item,
+.adlaire-production-readiness-item,
+.adlaire-migration-step-item,
+.adlaire-deprecation-timeline-item {
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-sdk-option,
+.adlaire-sandbox-environment-card,
+.adlaire-connection-test-card,
+.adlaire-migration-step-item {
+  cursor: pointer;
+}
+
+.adlaire-sdk-option[aria-pressed="true"],
+.adlaire-sandbox-environment-card[aria-selected="true"],
+.adlaire-connection-test-card[aria-pressed="true"],
+.adlaire-migration-step-item[aria-checked="true"] {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  color: var(--adlaire-surface-accent-strong);
+}
+
+.adlaire-breaking-change-notice[data-state="breaking"],
+.adlaire-rate-limit-meter[data-state="limited"],
+.adlaire-quota-usage-card[data-state="near-limit"] {
+  background-color: var(--adlaire-semantic-warning-bg);
+  border-color: var(--adlaire-semantic-warning-border);
+  color: var(--adlaire-semantic-warning-text);
+}
+
+.adlaire-connection-test-card[data-state="passed"],
+.adlaire-integration-health-panel[data-state="healthy"],
+.adlaire-version-compatibility-badge[data-state="compatible"],
+.adlaire-production-readiness-checklist[data-state="ready"] {
+  border-color: var(--adlaire-semantic-success-border);
+  color: var(--adlaire-semantic-success-text);
+}
+
+.adlaire-theme-workspace-panel,
+.adlaire-brand-kit-card,
+.adlaire-palette-editor,
+.adlaire-color-ramp-row,
+.adlaire-semantic-color-mapping,
+.adlaire-contrast-check-card,
+.adlaire-typography-scale-panel,
+.adlaire-font-pairing-card,
+.adlaire-spacing-scale-preview,
+.adlaire-radius-scale-preview,
+.adlaire-shadow-elevation-panel,
+.adlaire-motion-preset-card,
+.adlaire-density-preset-card,
+.adlaire-theme-preview-frame,
+.adlaire-surface-preview-grid,
+.adlaire-dark-mode-switcher,
+.adlaire-high-contrast-preview,
+.adlaire-brand-asset-usage-card,
+.adlaire-logo-placement-guide,
+.adlaire-icon-style-selector,
+.adlaire-tone-of-voice-card,
+.adlaire-copy-pattern-panel,
+.adlaire-accessibility-score-card,
+.adlaire-contrast-issue-row,
+.adlaire-token-override-panel,
+.adlaire-token-diff-card,
+.adlaire-theme-export-panel,
+.adlaire-theme-import-card,
+.adlaire-brand-compliance-checklist,
+.adlaire-theme-publish-summary {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text);
+}
+
+.adlaire-theme-workspace-panel,
+.adlaire-palette-editor,
+.adlaire-semantic-color-mapping,
+.adlaire-typography-scale-panel,
+.adlaire-surface-preview-grid,
+.adlaire-logo-placement-guide,
+.adlaire-token-override-panel,
+.adlaire-brand-compliance-checklist {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.adlaire-color-ramp-row,
+.adlaire-font-pairing-card,
+.adlaire-density-preset-card,
+.adlaire-dark-mode-switcher,
+.adlaire-icon-style-selector,
+.adlaire-contrast-issue-row,
+.adlaire-token-diff-card,
+.adlaire-theme-publish-summary,
+.adlaire-brand-check-item,
+.adlaire-surface-preview-item,
+.adlaire-token-override-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adlaire-theme-option,
+.adlaire-brand-check-item,
+.adlaire-surface-preview-item,
+.adlaire-token-override-item {
+  padding: 10px 12px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+}
+
+.adlaire-color-swatch {
+  width: 28px;
+  height: 28px;
+  background-color: var(--adlaire-surface-accent);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-round);
+}
+
+.adlaire-theme-option,
+.adlaire-density-preset-card,
+.adlaire-dark-mode-switcher,
+.adlaire-high-contrast-preview,
+.adlaire-token-override-item {
+  cursor: pointer;
+}
+
+.adlaire-theme-option[aria-pressed="true"],
+.adlaire-density-preset-card[aria-pressed="true"],
+.adlaire-dark-mode-switcher[aria-pressed="true"],
+.adlaire-high-contrast-preview[aria-pressed="true"],
+.adlaire-token-override-item[aria-checked="true"] {
+  border-color: var(--adlaire-surface-accent);
+  box-shadow: var(--adlaire-shadow-focus-ring);
+  color: var(--adlaire-surface-accent-strong);
+}
+
+.adlaire-contrast-check-card[data-state="warning"],
+.adlaire-contrast-issue-row[data-state="issue"],
+.adlaire-token-diff-card[data-state="changed"] {
+  background-color: var(--adlaire-semantic-warning-bg);
+  border-color: var(--adlaire-semantic-warning-border);
+  color: var(--adlaire-semantic-warning-text);
+}
+
+.adlaire-accessibility-score-card[data-state="pass"],
+.adlaire-brand-compliance-checklist[data-state="ready"],
+.adlaire-theme-publish-summary[data-state="ready"] {
+  border-color: var(--adlaire-semantic-success-border);
+  color: var(--adlaire-semantic-success-text);
+}
+
 .adlaire-loading-state,
 .adlaire-state,
 .adlaire-state-empty,
