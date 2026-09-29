@@ -59,8 +59,10 @@ export class HeadlessEditorController implements EditorController {
     this.#document = sanitizeDocument(normalizeDocument(document, this.#registry), this.#registry);
     this.#selection = normalizeSelection(this.#document, this.#selection);
     this.#saveState = { dirty: false, saving: false };
+    this.#history.clear();
     this.#events.emit({ type: "document:changed", document: this.getDocument() });
     this.#events.emit({ type: "selection:changed", selection: this.getSelection() });
+    this.#events.emit({ type: "history:changed", canUndo: this.#history.canUndo, canRedo: this.#history.canRedo });
     this.#emitValidation();
   }
 
@@ -135,6 +137,10 @@ export class HeadlessEditorController implements EditorController {
 
   setSelection(selection: EditorSelection | null): void {
     this.#setSelection(selection, false);
+  }
+
+  getSaveState(): SaveState {
+    return { ...this.#saveState };
   }
 
   undo(): EditorCommandResult {

@@ -35,6 +35,30 @@ export const COMPONENTS_OPERATIONS_DATA_INSPECTION_CSS = `.adlaire-property-insp
   color: var(--adlaire-surface-text);
 }
 
+.adlaire-status-inspector,
+.adlaire-empty-recovery-panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background-color: var(--adlaire-surface-card);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-md);
+}
+
+.adlaire-status-inspector-row,
+.adlaire-empty-recovery-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background-color: var(--adlaire-surface-soft);
+  border: 1px solid var(--adlaire-surface-border);
+  border-radius: var(--adlaire-radius-sm);
+  color: var(--adlaire-surface-text-muted);
+}
+
 .adlaire-token-swatch,
 .adlaire-component-preview,
 .adlaire-component-state-matrix,

@@ -302,6 +302,8 @@ for path in \
   TypeScript/CSS/manifest.ts \
   TypeScript/CSS/index.ts \
   TypeScript/UI/components.ts \
+  TypeScript/UI/component-contracts.ts \
+  TypeScript/UI/interaction-contracts.ts \
   TypeScript/UI/forms.ts \
   TypeScript/UI/content.ts \
   TypeScript/EditorUI/wysiwyg.ts \
@@ -378,6 +380,23 @@ fi
 
 if [ -e "$ROOT/package.json" ] || [ -e "$ROOT/package-lock.json" ] || [ -e "$ROOT/node_modules" ]; then
   fail "Dependency policy" "npm and Node dependency files are prohibited."
+fi
+
+require_text "AGENTS.md" "構造化設定ファイルはJSONに統一" "Development configuration policy"
+require_text "Docs/Master_Spec" "JSON is the only structured file format for development, build, generation, check, and release-check settings" "Development configuration policy"
+
+find "$ROOT" -type f \( -name '*.yml' -o -name '*.yaml' \) \
+  ! -path "$ROOT/.git/*" \
+  ! -path "$ROOT/.github/*" \
+  ! -path "$ROOT/Icons/*" \
+  ! -path "$ROOT/Brand/*" \
+  ! -path "$ROOT/Samples/*" \
+  -print >"$TMP_DIR/development-yaml-files"
+
+if [ -s "$TMP_DIR/development-yaml-files" ]; then
+  echo "[Development configuration policy] development and build configuration must use JSON, not YAML:" >&2
+  cat "$TMP_DIR/development-yaml-files" >&2
+  exit 1
 fi
 
 for forbidden in '@import' '@charset'; do
@@ -475,10 +494,16 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-app-shell' \
   'Docs/Generic_Component_Catalog|.adlaire-split-pane' \
   'Docs/Generic_Component_Catalog|.adlaire-split-pane-collapsed' \
+  'Docs/Generic_Component_Catalog|.adlaire-resizable-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-resize-handle' \
   'Docs/Generic_Component_Catalog|.adlaire-mobile-stack' \
   'Docs/Generic_Component_Catalog|.adlaire-mobile-action-bar' \
   'Docs/Generic_Component_Catalog|.adlaire-filter' \
+  'Docs/Generic_Component_Catalog|.adlaire-form-grid' \
   'Docs/Generic_Component_Catalog|.adlaire-input-group' \
+  'Docs/Generic_Component_Catalog|.adlaire-input-addon' \
+  'Docs/Generic_Component_Catalog|.adlaire-field-hint' \
+  'Docs/Generic_Component_Catalog|.adlaire-required-marker' \
   'Docs/Generic_Component_Catalog|.adlaire-date-range' \
   'Docs/Generic_Component_Catalog|.adlaire-combobox' \
   'Docs/Generic_Component_Catalog|.adlaire-multi-select' \
@@ -490,13 +515,23 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-toggle' \
   'Docs/Generic_Component_Catalog|.adlaire-error-summary' \
   'Docs/Generic_Component_Catalog|.adlaire-validation-message' \
+  'Docs/Generic_Component_Catalog|.adlaire-validation-list' \
   'Docs/Generic_Component_Catalog|.adlaire-pagination' \
   'Docs/Generic_Component_Catalog|.adlaire-command-palette' \
   'Docs/Generic_Component_Catalog|.adlaire-tree-view' \
   'Docs/Generic_Component_Catalog|.adlaire-data-grid' \
+  'Docs/Generic_Component_Catalog|.adlaire-data-density-toolbar' \
+  'Docs/Generic_Component_Catalog|.adlaire-row-selection-cell' \
+  'Docs/Generic_Component_Catalog|.adlaire-data-grid-detail-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-data-grid-summary-row' \
+  'Docs/Generic_Component_Catalog|.adlaire-column-resize-handle' \
+  'Docs/Generic_Component_Catalog|.adlaire-cell-status' \
+  'Docs/Generic_Component_Catalog|.adlaire-import-preview-table' \
   'Docs/Generic_Component_Catalog|.adlaire-column-manager' \
   'Docs/Generic_Component_Catalog|.adlaire-saved-view-bar' \
   'Docs/Generic_Component_Catalog|.adlaire-property-inspector' \
+  'Docs/Generic_Component_Catalog|.adlaire-status-inspector' \
+  'Docs/Generic_Component_Catalog|.adlaire-empty-recovery-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-token-swatch' \
   'Docs/Generic_Component_Catalog|.adlaire-component-preview' \
   'Docs/Generic_Component_Catalog|.adlaire-component-state-matrix' \
@@ -544,7 +579,14 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-tab-workspace' \
   'Docs/Generic_Component_Catalog|.adlaire-dock-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-status-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-workspace-breadcrumb' \
+  'Docs/Generic_Component_Catalog|.adlaire-command-bar' \
+  'Docs/Generic_Component_Catalog|.adlaire-command-bar-item' \
+  'Docs/Generic_Component_Catalog|.adlaire-panel-stack' \
+  'Docs/Generic_Component_Catalog|.adlaire-panel-stack-item' \
   'Docs/Generic_Component_Catalog|.adlaire-panel-rail' \
+  'Docs/Generic_Component_Catalog|.adlaire-quick-switcher' \
+  'Docs/Generic_Component_Catalog|.adlaire-shortcut-recorder' \
   'Docs/Generic_Component_Catalog|.adlaire-context-menu' \
   'Docs/Generic_Component_Catalog|.adlaire-split-button' \
   'Docs/Generic_Component_Catalog|.adlaire-overflow-toolbar' \
@@ -1164,8 +1206,11 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-popover' \
   'Docs/Generic_Component_Catalog|.adlaire-tooltip' \
   'Docs/Generic_Component_Catalog|.adlaire-toast' \
+  'Docs/Generic_Component_Catalog|.adlaire-toast-queue' \
   'Docs/Generic_Component_Catalog|.adlaire-toast-viewport' \
   'Docs/Generic_Component_Catalog|.adlaire-backdrop' \
+  'Docs/Generic_Component_Catalog|.adlaire-focus-sentry' \
+  'Docs/Generic_Component_Catalog|.adlaire-touch-target' \
   'Docs/Generic_Component_Catalog|.adlaire-feedback-stack' \
   'Docs/Generic_Component_Catalog|.adlaire-progress' \
   'Docs/Generic_Component_Catalog|.adlaire-skeleton' \
@@ -1196,6 +1241,12 @@ for catalog_class in \
   'Docs/Generic_Component_Catalog|.adlaire-github-integration-list' \
   'Docs/Generic_Component_Catalog|.adlaire-github-webhook-panel' \
   'Docs/Generic_Component_Catalog|.adlaire-github-api-key-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-pr-card' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-checks-panel' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-merge-readiness' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-branch-badge' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-commit-timeline' \
+  'Docs/Generic_Component_Catalog|.adlaire-github-commit-item' \
   'Docs/Generic_Component_Catalog|.adlaire-cloud-service-card' \
   'Docs/Generic_Component_Catalog|.adlaire-cloud-region-card' \
   'Docs/Generic_Component_Catalog|.adlaire-cloud-environment-card' \
@@ -1278,6 +1329,8 @@ for js_hook in \
   'data-adlaire-split-button-toggle' \
   'data-adlaire-overflow-toggle' \
   'data-adlaire-dock-toggle' \
+  'data-adlaire-resizable-panel' \
+  'data-adlaire-resize-handle' \
   'data-adlaire-preview-compare' \
   'data-adlaire-time-slot' \
   'data-adlaire-floor-select' \
@@ -1595,6 +1648,8 @@ for editor_contract in \
   'Docs/Editor_Master_Spec|Document boundary' \
   'Docs/Editor_Master_Spec|Selection boundary' \
   'Docs/Editor_Master_Spec|History boundary' \
+  'Docs/Editor_Master_Spec|save state snapshot' \
+  'Docs/Editor_Master_Spec|history reset' \
   'Docs/Editor_Master_Spec|Validation boundary' \
   'Docs/Editor_Master_Spec|Event boundary' \
   'Docs/Editor_Master_Spec|Type boundary' \
@@ -1619,6 +1674,8 @@ for editor_contract in \
   'TypeScript/Editor/index.ts|window.AdlaireEditor' \
   'TypeScript/Editor/core.ts|HeadlessEditorController' \
   'TypeScript/Editor/core.ts|dispatchBatch' \
+  'TypeScript/Editor/core.ts|getSaveState' \
+  'TypeScript/Editor/core.ts|this.#history.clear()' \
   'TypeScript/Editor/core.ts|type DispatchValidationMode' \
   'TypeScript/Editor/core.ts|function validateDispatchCommand' \
   'TypeScript/Editor/core.ts|validateDispatchCommand(command, this.#readOnly, "single")' \
@@ -1639,6 +1696,7 @@ for editor_contract in \
   'TypeScript/Editor/selection.ts|normalizeSelection' \
   'TypeScript/Editor/selection.ts|sameSelection' \
   'TypeScript/Editor/history.ts|class History' \
+  'TypeScript/Editor/history.ts|clear(): void' \
   'TypeScript/Editor/history.ts|cloneSnapshot' \
   'TypeScript/Editor/validation.ts|sanitizeDocument' \
   'TypeScript/Editor/validation.ts|validateDocumentAsync' \
@@ -1646,10 +1704,13 @@ for editor_contract in \
   'TypeScript/Editor/events.ts|editorError' \
   'TypeScript/Editor/types.ts|EditorDocument' \
   'TypeScript/Editor/types.ts|EditorController' \
+  'TypeScript/Editor/types.ts|getSaveState(): SaveState' \
   'EditorUI/editor.js|window.AdlaireEditor' \
   'EditorUI/editor.js|function validateDispatchCommand' \
   'EditorUI/editor.js|validateDispatchCommand(command, this.readOnly, "single")' \
   'EditorUI/editor.js|validateDispatchCommand(command, this.readOnly, "batch")' \
+  'EditorUI/editor.js|HeadlessEditorController.prototype.getSaveState' \
+  'EditorUI/editor.js|History.prototype.clear' \
   'EditorUI/editor.js|failValidation' \
   'EditorUI/editor.js|documentCommandHandlers' \
   'EditorUI/editor.js|function childBoundaryError' \
@@ -1728,9 +1789,9 @@ exports = {
   "TypeScript/Editor/core.ts" => ["export class HeadlessEditorController", "export function createEditor"],
   "TypeScript/Editor/document.ts" => ["export class ToolRegistry", "export class BlockRegistry", "function handlePaste", "export function normalizeDocument", "export function isSafeHref"],
   "TypeScript/Editor/events.ts" => ["export class EventBus", "export function editorError"],
-  "TypeScript/Editor/history.ts" => ["export class History"],
+  "TypeScript/Editor/history.ts" => ["export class History", "clear(): void"],
   "TypeScript/Editor/selection.ts" => ["export function normalizeSelection", "export function sameSelection"],
-  "TypeScript/Editor/types.ts" => ["export interface EditorDocument", "export interface EditorController"],
+  "TypeScript/Editor/types.ts" => ["export interface EditorDocument", "export interface EditorController", "getSaveState(): SaveState"],
   "TypeScript/Editor/validation.ts" => ["export function validateDocument", "export async function validateDocumentAsync"],
 }
 
@@ -1760,6 +1821,10 @@ for sample_class in \
   'adlaire-timeline' \
   'adlaire-markdown-body' \
   'adlaire-filter-builder' \
+  'adlaire-form-grid' \
+  'adlaire-input-addon' \
+  'adlaire-field-hint' \
+  'adlaire-validation-list' \
   'adlaire-combobox' \
   'data-adlaire-combobox-input' \
   'data-adlaire-combobox-option' \
@@ -1772,9 +1837,18 @@ for sample_class in \
   'adlaire-tree-view' \
   'data-adlaire-tree-toggle' \
   'adlaire-data-grid' \
+  'adlaire-data-density-toolbar' \
+  'adlaire-row-selection-cell' \
+  'adlaire-data-grid-detail-row' \
+  'adlaire-data-grid-summary-row' \
+  'adlaire-column-resize-handle' \
+  'adlaire-cell-status' \
+  'adlaire-import-preview-table' \
   'adlaire-column-manager' \
   'adlaire-saved-view-bar' \
   'adlaire-property-inspector' \
+  'adlaire-status-inspector' \
+  'adlaire-empty-recovery-panel' \
   'adlaire-token-swatch' \
   'adlaire-component-preview' \
   'adlaire-component-state-matrix' \
@@ -1782,6 +1856,9 @@ for sample_class in \
   'adlaire-a11y-checklist' \
   'adlaire-keyboard-map' \
   'adlaire-bottom-sheet' \
+  'adlaire-toast-queue' \
+  'adlaire-focus-sentry' \
+  'adlaire-touch-target' \
   'adlaire-stepper' \
   'adlaire-progress' \
   'adlaire-skeleton' \
@@ -1793,9 +1870,22 @@ for sample_class in \
   'data-adlaire-validate-summary' \
   'data-adlaire-file-empty' \
   'adlaire-git-review-state' \
+  'adlaire-resizable-panel' \
+  'data-adlaire-resizable-panel' \
+  'data-adlaire-resize-handle' \
+  'adlaire-workspace-breadcrumb' \
+  'adlaire-command-bar' \
+  'adlaire-panel-stack' \
+  'adlaire-quick-switcher' \
+  'adlaire-shortcut-recorder' \
   'adlaire-git-ci-status' \
   'adlaire-git-merge-state' \
   'adlaire-git-diff-hunk' \
+  'adlaire-github-pr-card' \
+  'adlaire-github-checks-panel' \
+  'adlaire-github-merge-readiness' \
+  'adlaire-github-branch-badge' \
+  'adlaire-github-commit-timeline' \
   'adlaire-github-product-grid' \
   'adlaire-github-product-card' \
   'adlaire-github-action-card' \
@@ -2665,6 +2755,377 @@ for matrix_term in \
   require_text "Docs/Component_Contract_Matrix" "$matrix_term" "Component Contract Matrix"
 done
 
+for component_contract_term in \
+  'export interface ComponentContract' \
+  'export type ComponentContractReviewSurface' \
+  'export type ComponentContractReviewTier' \
+  'export interface ComponentContractCoverageGap' \
+  'export const COMPONENT_CONTRACT_REQUIRED_COVERAGE' \
+  'export const COMPONENT_CONTRACTS' \
+  'generatedCss' \
+  'generatedBehavior' \
+  'ariaRequirements' \
+  'stateAttributes' \
+  'requiredIcons' \
+  'sampleSection' \
+  'responsiveModes' \
+  'layout-system-core' \
+  'content-interaction-core' \
+  'admin-operations-core' \
+  'data-workbench-core' \
+  'business-operations-core' \
+  'enterprise-domain-core' \
+  'strategic-operations-core' \
+  'industry-operations-core' \
+  'customer-growth-support-core' \
+  'communication-notification-core' \
+  'content-publishing-localization-core' \
+  'device-fleet-edge-core' \
+  'travel-hospitality-event-core' \
+  'public-civic-nonprofit-core' \
+  'energy-utilities-sustainability-core' \
+  'component-quality-composition-core' \
+  'agent-automation-workbench-core' \
+  'data-ai-operations-core' \
+  'experience-guidance-core' \
+  'workspace-command-core' \
+  'form-input-core' \
+  'overlay-feedback-core' \
+  'github-platform-core' \
+  'developer-platform-core' \
+  'theme-brand-core' \
+  'cloud-infrastructure-core' \
+  'collaboration-review-core' \
+  'product-commerce-core' \
+  'observability-diagnostics-core' \
+  'workflow-governance-core' \
+  'wysiwyg-editor-ui-core' \
+  'componentContractIds' \
+  'componentContractsByArea' \
+  'componentContractReviewSurface' \
+  'componentContractReviewTier' \
+  'componentContractCoverageGaps' \
+  'componentContractRequiredClasses' \
+  'componentContractHooks' \
+  'componentContractAriaRequirements' \
+  'componentContractStateAttributes' \
+  'componentContractRequiredIcons' \
+  'componentContractSampleSections' \
+  'componentContractResponsiveModes'; do
+  require_text "TypeScript/UI/component-contracts.ts" "$component_contract_term" "UI component contract metadata"
+done
+
+for component_contract_matrix_term in \
+  'TypeScript/UI/component-contracts.ts' \
+  'UI component contract metadata' \
+  'layout-system-core' \
+  'content-interaction-core' \
+  'admin-operations-core' \
+  'data-workbench-core' \
+  'business-operations-core' \
+  'enterprise-domain-core' \
+  'strategic-operations-core' \
+  'industry-operations-core' \
+  'customer-growth-support-core' \
+  'communication-notification-core' \
+  'content-publishing-localization-core' \
+  'device-fleet-edge-core' \
+  'travel-hospitality-event-core' \
+  'public-civic-nonprofit-core' \
+  'energy-utilities-sustainability-core' \
+  'component-quality-composition-core' \
+  'agent-automation-workbench-core' \
+  'data-ai-operations-core' \
+  'experience-guidance-core' \
+  'workspace-command-core' \
+  'form-input-core' \
+  'overlay-feedback-core' \
+  'github-platform-core' \
+  'developer-platform-core' \
+  'theme-brand-core' \
+  'cloud-infrastructure-core' \
+  'collaboration-review-core' \
+  'product-commerce-core' \
+  'observability-diagnostics-core' \
+  'workflow-governance-core' \
+  'wysiwyg-editor-ui-core' \
+  'TypeScript/UI/interaction-contracts.ts' \
+  'UI interaction contract metadata' \
+  'review surface' \
+  'review tier' \
+  'required coverage gaps' \
+  'generated parity' \
+  'audit records' \
+  'queryInteractionRoot'; do
+  require_text "Docs/Component_Contract_Matrix" "$component_contract_matrix_term" "UI component contract metadata"
+done
+
+require_text "Docs/Document_Index" "TypeScript/UI/component-contracts.ts" "UI component contract metadata"
+require_text "Docs/Document_Index" "TypeScript/UI/interaction-contracts.ts" "UI interaction contract metadata"
+
+for interaction_contract_term in \
+  'export type UIInteractionSamplePolicy' \
+  'export interface UIInteractionContract' \
+  'export interface UIInteractionAuditRecord' \
+  'export const UI_INTERACTION_PRIMITIVES' \
+  'export const UI_INTERACTION_CONTRACTS' \
+  'uiInteractionHooks' \
+  'uiInteractionContractsByEvent' \
+  'uiInteractionHooksBySurface' \
+  'uiInteractionSampleRequiredHooks' \
+  'uiInteractionGeneratedTargets' \
+  'uiInteractionStateAttributes' \
+  'uiInteractionAuditRecords' \
+  'data-adlaire-toggle' \
+  'data-adlaire-dismiss' \
+  'data-adlaire-sidebar-toggle' \
+  'data-adlaire-pipeline-stage-select' \
+  'data-adlaire-filter-input' \
+  'data-adlaire-code-copy' \
+  'data-adlaire-wysiwyg-mode' \
+  'eventSourceElement' \
+  'hookSelector' \
+  'closestBoundTrigger' \
+  'queryInteractionRoot' \
+  'setBooleanAttribute' \
+  'setOpenState' \
+  'safeDocumentQuery' \
+  'safeScopedQuery' \
+  'safeScopedQueryAll' \
+  'writeClipboardText'; do
+  require_text "TypeScript/UI/interaction-contracts.ts" "$interaction_contract_term" "UI interaction contract metadata"
+done
+
+ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+source = File.read(File.join(root, "TypeScript/UI/component-contracts.ts"))
+
+matrix = File.read(File.join(root, "Docs/Component_Contract_Matrix"))
+
+def read_contract_file(root, path, context)
+  full_path = File.join(root, path)
+  abort("[UI component contract metadata] #{context} missing file: #{path}") unless File.file?(full_path)
+  File.read(full_path)
+end
+
+def decode_contract_string_literal(value)
+  value.gsub(/\\(["\\])/) { Regexp.last_match(1) }
+end
+
+def contract_string(body, field)
+  match = body.match(/^\s*#{Regexp.escape(field)}: "([^"]+)",?$/)
+  abort("[UI component contract metadata] contract missing #{field}") unless match
+  decode_contract_string_literal(match[1])
+end
+
+def contract_array(body, field)
+  match = body.match(/^\s*#{Regexp.escape(field)}: \[(.*?)\],/m)
+  abort("[UI component contract metadata] contract missing #{field}") unless match
+  match[1].scan(/"((?:\\.|[^"\\])*)"/).flatten.map { |value| decode_contract_string_literal(value) }
+end
+
+allowed_responsive_modes = %w[desktop tablet mobile reduced-motion print touch]
+contract_blocks = source.scan(/^  \{\n(.*?)^  \},?/m).flatten
+abort("[UI component contract metadata] COMPONENT_CONTRACTS must contain representative contracts.") if contract_blocks.empty?
+
+contracts = contract_blocks.map do |body|
+  {
+    id: contract_string(body, "id"),
+    catalog: contract_string(body, "catalog"),
+    css_sources: contract_array(body, "cssSources"),
+    generated_css: contract_array(body, "generatedCss"),
+    behavior_sources: contract_array(body, "behaviorSources"),
+    generated_behavior: contract_array(body, "generatedBehavior"),
+    sample: contract_string(body, "sample"),
+    required_classes: contract_array(body, "requiredClasses"),
+    hooks: contract_array(body, "hooks"),
+    aria_requirements: contract_array(body, "ariaRequirements"),
+    state_attributes: contract_array(body, "stateAttributes"),
+    required_icons: contract_array(body, "requiredIcons"),
+    sample_section: contract_string(body, "sampleSection"),
+    responsive_modes: contract_array(body, "responsiveModes"),
+    check_coverage: contract_array(body, "checkCoverage"),
+  }
+end
+
+required_coverage_match = source.match(/COMPONENT_CONTRACT_REQUIRED_COVERAGE:[^\[]+\[(.*?)\]\s+as const;/m)
+abort("[UI component contract metadata] COMPONENT_CONTRACT_REQUIRED_COVERAGE missing.") unless required_coverage_match
+required_coverage = required_coverage_match[1].scan(/"([^"]+)"/).flatten
+abort("[UI component contract metadata] COMPONENT_CONTRACT_REQUIRED_COVERAGE must include catalog and sample.") unless (required_coverage & %w[catalog sample]).sort == %w[catalog sample]
+
+contract_counts = Hash.new(0)
+contracts.each { |contract| contract_counts[contract.fetch(:id)] += 1 }
+duplicate_contract_ids = contract_counts.select { |_id, count| count > 1 }.keys
+abort("[UI component contract metadata] duplicate contract ids: #{duplicate_contract_ids.join(", ")}") unless duplicate_contract_ids.empty?
+
+contracts.each do |contract|
+  id = contract.fetch(:id)
+  abort("[UI component contract metadata] Component_Contract_Matrix missing #{id}") unless matrix.include?(id)
+  abort("[UI component contract metadata] #{id} must define check coverage.") if contract.fetch(:check_coverage).empty?
+  missing_required_coverage = required_coverage.reject { |coverage| contract.fetch(:check_coverage).include?(coverage) }
+  abort("[UI component contract metadata] #{id} missing required coverage: #{missing_required_coverage.join(", ")}") unless missing_required_coverage.empty?
+
+  catalog = read_contract_file(root, contract.fetch(:catalog), "#{id} catalog")
+  sample = read_contract_file(root, contract.fetch(:sample), "#{id} sample")
+  contract.fetch(:css_sources).each { |path| read_contract_file(root, path, "#{id} CSS source") }
+  contract.fetch(:behavior_sources).each { |path| read_contract_file(root, path, "#{id} behavior source") }
+
+  css_outputs = contract.fetch(:generated_css).map do |path|
+    [path, read_contract_file(root, path, "#{id} generated CSS")]
+  end
+  behavior_sources = contract.fetch(:behavior_sources).map do |path|
+    [path, read_contract_file(root, path, "#{id} behavior source")]
+  end
+  behavior_outputs = contract.fetch(:generated_behavior).map do |path|
+    [path, read_contract_file(root, path, "#{id} generated behavior")]
+  end
+  contract_texts = [sample] + css_outputs.map { |_path, text| text } + behavior_sources.map { |_path, text| text } + behavior_outputs.map { |_path, text| text }
+
+  missing_catalog = contract.fetch(:required_classes).reject { |klass| catalog.include?("`#{klass}`") }
+  abort("[UI component contract metadata] #{id} catalog missing classes: #{missing_catalog.join(", ")}") unless missing_catalog.empty?
+
+  missing_css = contract.fetch(:required_classes).reject do |klass|
+    css_outputs.any? { |_path, text| text.include?(klass) }
+  end
+  abort("[UI component contract metadata] #{id} generated CSS missing classes: #{missing_css.join(", ")}") unless missing_css.empty?
+
+  missing_sample = contract.fetch(:required_classes).reject { |klass| sample.include?(klass.delete_prefix(".")) }
+  abort("[UI component contract metadata] #{id} sample missing classes: #{missing_sample.join(", ")}") unless missing_sample.empty?
+
+  sample_section = contract.fetch(:sample_section)
+  abort("[UI component contract metadata] #{id} sampleSection must not be empty.") if sample_section.empty?
+  abort("[UI component contract metadata] #{id} sample missing section id: #{sample_section}") unless sample.include?(%Q(id="#{sample_section}"))
+
+  aria_requirements = contract.fetch(:aria_requirements)
+  abort("[UI component contract metadata] #{id} must define aria requirements.") if aria_requirements.empty?
+  missing_aria = aria_requirements.reject { |snippet| sample.include?(snippet) }
+  abort("[UI component contract metadata] #{id} sample missing aria requirements: #{missing_aria.join(", ")}") unless missing_aria.empty?
+
+  state_attributes = contract.fetch(:state_attributes)
+  abort("[UI component contract metadata] #{id} must define state attributes.") if state_attributes.empty?
+  missing_state = state_attributes.reject { |snippet| contract_texts.any? { |text| text.include?(snippet) } }
+  abort("[UI component contract metadata] #{id} missing state attributes: #{missing_state.join(", ")}") unless missing_state.empty?
+
+  required_icons = contract.fetch(:required_icons)
+  abort("[UI component contract metadata] #{id} icon-inventory coverage requires requiredIcons.") if contract.fetch(:check_coverage).include?("icon-inventory") && required_icons.empty?
+  missing_icons = required_icons.reject { |path| File.file?(File.join(root, path)) }
+  abort("[UI component contract metadata] #{id} missing required icons: #{missing_icons.join(", ")}") unless missing_icons.empty?
+  missing_sample_icons = required_icons.reject { |path| sample.include?(File.basename(path)) }
+  abort("[UI component contract metadata] #{id} sample missing required icons: #{missing_sample_icons.join(", ")}") unless missing_sample_icons.empty?
+
+  responsive_modes = contract.fetch(:responsive_modes)
+  abort("[UI component contract metadata] #{id} must define responsive modes.") if responsive_modes.empty?
+  invalid_modes = responsive_modes - allowed_responsive_modes
+  abort("[UI component contract metadata] #{id} uses invalid responsive modes: #{invalid_modes.join(", ")}") unless invalid_modes.empty?
+  if (responsive_modes & %w[tablet mobile]).any?
+    abort("[UI component contract metadata] #{id} responsive CSS missing @media coverage.") unless css_outputs.any? { |_path, text| text.include?("@media") }
+  end
+  if responsive_modes.include?("reduced-motion")
+    abort("[UI component contract metadata] #{id} responsive CSS missing reduced-motion coverage.") unless css_outputs.any? { |_path, text| text.include?("prefers-reduced-motion") }
+  end
+
+  hooks = contract.fetch(:hooks)
+  next if hooks.empty?
+
+  abort("[UI component contract metadata] #{id} defines hooks without behavior sources.") if behavior_sources.empty?
+  abort("[UI component contract metadata] #{id} defines hooks without generated behavior.") if behavior_outputs.empty?
+
+  missing_source_hooks = hooks.reject do |hook|
+    behavior_sources.any? { |_path, text| text.include?(hook) }
+  end
+  abort("[UI component contract metadata] #{id} behavior source missing hooks: #{missing_source_hooks.join(", ")}") unless missing_source_hooks.empty?
+
+  missing_output_hooks = hooks.reject do |hook|
+    behavior_outputs.any? { |_path, text| text.include?(hook) }
+  end
+  abort("[UI component contract metadata] #{id} generated behavior missing hooks: #{missing_output_hooks.join(", ")}") unless missing_output_hooks.empty?
+
+  missing_sample_hooks = hooks.reject { |hook| sample.include?(hook) }
+  abort("[UI component contract metadata] #{id} sample missing hooks: #{missing_sample_hooks.join(", ")}") unless missing_sample_hooks.empty?
+end
+RUBY
+
+ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+source = File.read(File.join(root, "TypeScript/UI/interaction-contracts.ts"))
+matrix = File.read(File.join(root, "Docs/Component_Contract_Matrix"))
+sample = File.read(File.join(root, "Samples/design/index.html"))
+
+def decode_interaction_string_literal(value)
+  value.gsub(/\\(["\\])/) { Regexp.last_match(1) }
+end
+
+def contains_exact_token?(text, token)
+  pattern = /(^|[^A-Za-z0-9-])#{Regexp.escape(token)}([^A-Za-z0-9-]|$)/
+  text.match?(pattern)
+end
+
+paths = source.scan(/^const\s+(\w+)\s+=\s+"([^"]+)";$/).to_h
+primitive_match = source.match(/UI_INTERACTION_PRIMITIVES:[^\[]+\[(.*?)\]\s+as const;/m)
+abort("[UI interaction contract metadata] UI_INTERACTION_PRIMITIVES missing.") unless primitive_match
+primitives = primitive_match[1].scan(/"([^"]+)"/).flatten
+abort("[UI interaction contract metadata] UI_INTERACTION_PRIMITIVES must list shared helpers.") if primitives.empty?
+
+runtime_texts = %w[
+  TypeScript/UI/components.ts
+  TypeScript/UI/forms.ts
+  TypeScript/UI/content.ts
+  TypeScript/EditorUI/wysiwyg.ts
+  UI/components.js
+  UI/forms.js
+  UI/content.js
+  EditorUI/wysiwyg.js
+].map { |path| File.read(File.join(root, path)) }
+
+missing_primitives = primitives.reject do |primitive|
+  runtime_texts.any? { |text| text.include?(primitive) }
+end
+abort("[UI interaction contract metadata] primitives missing from runtime source/output: #{missing_primitives.join(", ")}") unless missing_primitives.empty?
+
+contract_lines = source.lines.grep(/^\s*\{ surface: /)
+abort("[UI interaction contract metadata] UI_INTERACTION_CONTRACTS must contain contracts.") if contract_lines.empty?
+
+allowed_surfaces = %w[components forms content wysiwyg]
+allowed_events = %w[click input change keydown]
+hooks = []
+
+contract_lines.each do |line|
+  match = line.match(/\{\s*surface: "([^"]+)",\s*hook: "((?:\\.|[^"\\])*)",\s*event: "([^"]+)",\s*source: (\w+),\s*generated: (\w+),\s*sampleRequired: (true|false)(?:,\s*stateAttribute: "((?:\\.|[^"\\])*)")?\s*\},/)
+  abort("[UI interaction contract metadata] malformed contract line: #{line.strip}") unless match
+
+  surface, hook, event, source_key, generated_key, sample_required, state_attribute = match.captures
+  hook = decode_interaction_string_literal(hook)
+  state_attribute = decode_interaction_string_literal(state_attribute) if state_attribute
+  abort("[UI interaction contract metadata] invalid surface for #{hook}: #{surface}") unless allowed_surfaces.include?(surface)
+  abort("[UI interaction contract metadata] invalid event for #{hook}: #{event}") unless allowed_events.include?(event)
+
+  source_path = paths.fetch(source_key) { abort("[UI interaction contract metadata] #{hook} unknown source alias: #{source_key}") }
+  generated_path = paths.fetch(generated_key) { abort("[UI interaction contract metadata] #{hook} unknown generated alias: #{generated_key}") }
+  source_pathname = File.join(root, source_path)
+  generated_pathname = File.join(root, generated_path)
+  abort("[UI interaction contract metadata] #{hook} missing source file: #{source_path}") unless File.file?(source_pathname)
+  abort("[UI interaction contract metadata] #{hook} missing generated file: #{generated_path}") unless File.file?(generated_pathname)
+
+  source_text = File.read(source_pathname)
+  generated_text = File.read(generated_pathname)
+  abort("[UI interaction contract metadata] source missing hook #{hook}: #{source_path}") unless contains_exact_token?(source_text, hook)
+  abort("[UI interaction contract metadata] generated output missing hook #{hook}: #{generated_path}") unless contains_exact_token?(generated_text, hook)
+  if sample_required == "true"
+    abort("[UI interaction contract metadata] sample missing required hook #{hook}") unless contains_exact_token?(sample, hook)
+  end
+  if state_attribute && ![source_text, generated_text, sample].any? { |text| contains_exact_token?(text, state_attribute) }
+    abort("[UI interaction contract metadata] #{hook} missing state attribute #{state_attribute}")
+  end
+  hooks << hook
+end
+
+hook_counts = Hash.new(0)
+hooks.each { |hook| hook_counts[hook] += 1 }
+duplicates = hook_counts.select { |_hook, count| count > 1 }.keys
+abort("[UI interaction contract metadata] duplicate hook contracts: #{duplicates.join(", ")}") unless duplicates.empty?
+abort("[UI interaction contract metadata] Component_Contract_Matrix missing interaction-contracts.ts") unless matrix.include?("TypeScript/UI/interaction-contracts.ts")
+RUBY
+
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
   fail "WYSIWYG Editor UI" "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-."
 fi
@@ -2840,6 +3301,9 @@ for doc_term in \
   'Deno TypeScript' \
   'npm packages' \
   'Component_Contract_Matrix' \
+  'TypeScript/UI/component-contracts.ts' \
+  'TypeScript/UI/interaction-contracts.ts' \
+  'Representative UI component contract metadata' \
   'Samples are supporting' \
   'official 1520 SVG icons' \
   'startup synchronization' \
@@ -2848,6 +3312,7 @@ for doc_term in \
   'merge commits only' \
   'stale merged branch' \
   'family-labelled diagnostics' \
+  'JSON development and build configuration baseline' \
   'Token category boundaries' \
   'Token family usage discipline' \
   'Category naming' \
@@ -2871,6 +3336,8 @@ if command -v deno >/dev/null 2>&1; then
   (cd "$ROOT" && deno check --no-npm \
     TypeScript/CSS/index.ts \
     TypeScript/UI/components.ts \
+    TypeScript/UI/component-contracts.ts \
+    TypeScript/UI/interaction-contracts.ts \
     TypeScript/UI/forms.ts \
     TypeScript/UI/content.ts \
     TypeScript/EditorUI/wysiwyg.ts \

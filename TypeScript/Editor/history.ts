@@ -30,6 +30,11 @@ export class History {
     if (this.#undos.length > this.#limit) this.#undos.shift();
   }
 
+  clear(): void {
+    this.#undos = [];
+    this.#redos = [];
+  }
+
   undo(current: { document: EditorDocument; selection: EditorSelection | null }): HistorySnapshot | null {
     const snapshot = this.#undos.pop();
     if (!snapshot) return null;

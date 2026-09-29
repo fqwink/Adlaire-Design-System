@@ -269,7 +269,13 @@
 
   function fieldLabel(field) {
     var label = field.closest("label");
-    var labelText = label && label.textContent ? label.textContent.replace(field.value, "").trim() : "";
+    var labelText = label ? Array.prototype.filter.call(label.childNodes, function (node) {
+      return node.nodeType === Node.TEXT_NODE;
+    }).map(function (node) {
+      return node.textContent ? node.textContent.trim() : "";
+    }).filter(function (text) {
+      return text !== "";
+    }).join(" ") : "";
     return labelText || field.getAttribute("aria-label") || field.name || "Field";
   }
 

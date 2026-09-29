@@ -197,9 +197,11 @@
       return;
     }
 
-    safeScopedQueryAll(viewer, ".adlaire-git-line-highlight").forEach(function (item) {
+    safeScopedQueryAll(viewer, "[data-adlaire-code-line], .adlaire-git-line-highlight").forEach(function (item) {
       item.classList.remove("adlaire-git-line-highlight");
+      item.setAttribute("aria-selected", "false");
     });
     line.classList.add("adlaire-git-line-highlight");
+    line.setAttribute("aria-selected", "true");
   }
 }());

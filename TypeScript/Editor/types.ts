@@ -230,6 +230,7 @@ export interface EditorController {
   canDispatch(command: EditorCommand): boolean;
   getSelection(): EditorSelection | null;
   setSelection(selection: EditorSelection | null): void;
+  getSaveState(): SaveState;
   undo(): EditorCommandResult;
   redo(): EditorCommandResult;
   save(context?: SaveContext): SaveRequest;

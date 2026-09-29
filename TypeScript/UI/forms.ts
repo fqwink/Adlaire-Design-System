@@ -230,7 +230,13 @@
 
   function fieldLabel(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): string {
     const label = field.closest("label");
-    const labelText = label?.textContent?.replace(field.value, "").trim();
+    const labelText = label
+      ? Array.from(label.childNodes)
+        .filter((node) => node.nodeType === Node.TEXT_NODE)
+        .map((node) => node.textContent?.trim() ?? "")
+        .filter((text) => text !== "")
+        .join(" ")
+      : "";
     return labelText || field.getAttribute("aria-label") || field.name || "Field";
   }
 

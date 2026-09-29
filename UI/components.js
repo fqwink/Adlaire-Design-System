@@ -377,6 +377,10 @@
     };
   }
 
+  function queryInteractionRoot(trigger, rootSelector) {
+    return trigger.closest(rootSelector) || trigger.parentElement;
+  }
+
   var interactiveChoiceBindings = [
     choiceBinding("data-adlaire-time-slot", ".adlaire-time-slot-grid", "aria-selected"),
     choiceBinding("data-adlaire-floor-select", ".adlaire-floor-selector", "aria-pressed"),
@@ -684,7 +688,7 @@
   }
 
   function selectInteractiveChoice(trigger, rootSelector, itemSelector, selectedAttribute) {
-    var root = trigger.closest(rootSelector);
+    var root = queryInteractionRoot(trigger, rootSelector);
     if (!root) {
       return;
     }
@@ -697,7 +701,7 @@
   }
 
   function selectCurrentStep(trigger, rootSelector, itemSelector) {
-    var root = trigger.closest(rootSelector);
+    var root = queryInteractionRoot(trigger, rootSelector);
     if (!root) {
       return;
     }
@@ -766,6 +770,110 @@
     }
     compare.style.setProperty("--adlaire-preview-compare-position", Math.max(0, Math.min(100, value)) + "%");
   }
+
+  function numberAttribute(target, attribute, fallback) {
+    var raw = target.getAttribute(attribute);
+    if (raw === null) {
+      return fallback;
+    }
+    var value = Number(raw);
+    return Number.isFinite(value) ? value : fallback;
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function panelSize(root, handle, min, max) {
+    var raw = root.getAttribute("data-adlaire-panel-size");
+    if (raw === null) {
+      raw = handle.getAttribute("aria-valuenow");
+    }
+    if (raw === null) {
+      return clamp(320, min, max);
+    }
+    var value = Number(raw);
+    return Number.isFinite(value) ? clamp(value, min, max) : clamp(320, min, max);
+  }
+
+  function applyResizablePanelSize(root, handle, size) {
+    var min = numberAttribute(root, "data-adlaire-panel-min", 180);
+    var max = numberAttribute(root, "data-adlaire-panel-max", 520);
+    var next = Math.round(clamp(size, min, max));
+    root.setAttribute("data-adlaire-panel-size", String(next));
+    root.style.gridTemplateColumns = "minmax(" + min + "px, " + next + "px) 8px minmax(0, 1fr)";
+    handle.setAttribute("aria-valuemin", String(min));
+    handle.setAttribute("aria-valuemax", String(max));
+    handle.setAttribute("aria-valuenow", String(next));
+  }
+
+  function resizePanelWithKeyboard(root, handle, event) {
+    var min = numberAttribute(root, "data-adlaire-panel-min", 180);
+    var max = numberAttribute(root, "data-adlaire-panel-max", 520);
+    var step = numberAttribute(root, "data-adlaire-panel-step", 24);
+    var next = panelSize(root, handle, min, max);
+    if (event.key === "ArrowLeft") {
+      next -= step;
+    } else if (event.key === "ArrowRight") {
+      next += step;
+    } else if (event.key === "Home") {
+      next = min;
+    } else if (event.key === "End") {
+      next = max;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    applyResizablePanelSize(root, handle, next);
+  }
+
+  function startResizablePanelDrag(root, handle, event) {
+    if (event.button !== 0) {
+      return;
+    }
+    var rect = root.getBoundingClientRect();
+    var move = function (moveEvent) {
+      applyResizablePanelSize(root, handle, moveEvent.clientX - rect.left);
+    };
+    var stop = function (stopEvent) {
+      document.removeEventListener("pointermove", move);
+      try {
+        handle.releasePointerCapture(stopEvent.pointerId);
+      } catch (error) {
+        return;
+      }
+    };
+    event.preventDefault();
+    try {
+      handle.setPointerCapture(event.pointerId);
+    } catch (error) {
+      return;
+    }
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", stop, { once: true });
+    document.addEventListener("pointercancel", stop, { once: true });
+  }
+
+  safeDocumentQueryAll("[data-adlaire-resizable-panel]").forEach(function (root) {
+    var handle = safeScopedQuery(root, "[data-adlaire-resize-handle], .adlaire-resize-handle");
+    if (!handle) {
+      return;
+    }
+    if (!handle.hasAttribute("tabindex")) {
+      handle.setAttribute("tabindex", "0");
+    }
+    if (!handle.hasAttribute("role")) {
+      handle.setAttribute("role", "separator");
+    }
+    handle.setAttribute("aria-orientation", "vertical");
+    applyResizablePanelSize(root, handle, panelSize(root, handle, numberAttribute(root, "data-adlaire-panel-min", 180), numberAttribute(root, "data-adlaire-panel-max", 520)));
+    handle.addEventListener("keydown", function (event) {
+      resizePanelWithKeyboard(root, handle, event);
+    });
+    handle.addEventListener("pointerdown", function (event) {
+      startResizablePanelDrag(root, handle, event);
+    });
+  });
 
   safeDocumentQueryAll("[data-adlaire-split-pane]").forEach(function (root) {
     var handle = safeScopedQuery(root, ".adlaire-pane-resize-handle");
