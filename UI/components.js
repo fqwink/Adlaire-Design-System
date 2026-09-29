@@ -10,6 +10,52 @@
     return target instanceof Element ? target : null;
   }
 
+  function booleanState(active) {
+    return active ? "true" : "false";
+  }
+
+  function setBooleanAttribute(target, attribute, active) {
+    target.setAttribute(attribute, booleanState(active));
+  }
+
+  function setOpenState(target, open) {
+    target.hidden = !open;
+    target.classList.toggle("is-open", open);
+  }
+
+  function safeDocumentQuery(selector) {
+    if (!selector) {
+      return null;
+    }
+    try {
+      return document.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function safeScopedQuery(root, selector) {
+    if (!root || !selector) {
+      return null;
+    }
+    try {
+      return root.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function safeScopedQueryAll(root, selector) {
+    if (!root || !selector) {
+      return [];
+    }
+    try {
+      return Array.prototype.slice.call(root.querySelectorAll(selector));
+    } catch (error) {
+      return [];
+    }
+  }
+
   function getTarget(trigger) {
     var selector = trigger.getAttribute("data-adlaire-target") || trigger.getAttribute("href");
     if (!selector || selector.charAt(0) !== "#") {
@@ -30,18 +76,13 @@
     if (byId) {
       return byId;
     }
-    try {
-      return document.querySelector(selector);
-    } catch (error) {
-      return null;
-    }
+    return safeDocumentQuery(selector);
   }
 
   function setExpanded(trigger, target, expanded) {
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
     if (target) {
-      target.hidden = !expanded;
-      target.classList.toggle("is-open", expanded);
+      setOpenState(target, expanded);
       if (expanded && target.matches(overlaySelector)) {
         document.documentElement.classList.add("adlaire-overlay-open");
       }
@@ -127,10 +168,9 @@
   function dismissSurface(dismiss) {
     var dismissTarget = getTarget(dismiss) || dismiss.closest(".adlaire-modal, .adlaire-dialog, .adlaire-drawer, .adlaire-bottom-sheet, .adlaire-popover, .adlaire-dropdown-menu, .adlaire-toast");
     if (dismissTarget) {
-      dismissTarget.hidden = true;
-      dismissTarget.classList.remove("is-open");
+      setOpenState(dismissTarget, false);
       triggersForTarget(dismissTarget).forEach(function (item) {
-        item.setAttribute("aria-expanded", "false");
+        setBooleanAttribute(item, "aria-expanded", false);
       });
     }
     if (!document.querySelector(openOverlaySelector)) {
@@ -171,14 +211,13 @@
 
   function closeOpenSurfaces() {
     document.querySelectorAll(openOverlaySelector + ", .adlaire-popover.is-open, .adlaire-dropdown-menu.is-open, .adlaire-context-menu.is-open, .adlaire-overflow-toolbar-menu.is-open").forEach(function (target) {
-      target.hidden = true;
-      target.classList.remove("is-open");
+      setOpenState(target, false);
       triggersForTarget(target).forEach(function (trigger) {
-        trigger.setAttribute("aria-expanded", "false");
+        setBooleanAttribute(trigger, "aria-expanded", false);
       });
     });
     document.querySelectorAll("[data-adlaire-context-menu], [data-adlaire-split-button-toggle], [data-adlaire-overflow-toggle]").forEach(function (trigger) {
-      trigger.setAttribute("aria-expanded", "false");
+      setBooleanAttribute(trigger, "aria-expanded", false);
     });
     document.documentElement.classList.remove("adlaire-overlay-open");
     if (lastFocus && typeof lastFocus.focus === "function") {
@@ -240,12 +279,12 @@
     slides.forEach(function (slide, index) {
       var currentSlide = index === next;
       slide.classList.toggle("is-current", currentSlide);
-      slide.setAttribute("aria-hidden", currentSlide ? "false" : "true");
+      setBooleanAttribute(slide, "aria-hidden", !currentSlide);
     });
     Array.prototype.filter.call(root.querySelectorAll("[data-adlaire-carousel-index]"), function (indicator) {
       return !indicator.hasAttribute("data-adlaire-carousel");
     }).forEach(function (indicator, index) {
-      indicator.setAttribute("aria-current", index === next ? "true" : "false");
+      setBooleanAttribute(indicator, "aria-current", index === next);
     });
   }
 
@@ -532,7 +571,7 @@
       return;
     }
     list.querySelectorAll("[data-adlaire-select]").forEach(function (item) {
-      item.setAttribute("aria-selected", item === select ? "true" : "false");
+      setBooleanAttribute(item, "aria-selected", item === select);
     });
   }
 
@@ -549,19 +588,12 @@
     if (shell.id && !trigger.getAttribute("aria-controls")) {
       trigger.setAttribute("aria-controls", shell.id);
     }
-    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+    setBooleanAttribute(trigger, "aria-expanded", !collapsed);
+    setBooleanAttribute(trigger, "aria-pressed", collapsed);
   }
 
   function querySidebarShell(selector) {
-    if (!selector) {
-      return null;
-    }
-    try {
-      return document.querySelector(selector);
-    } catch (error) {
-      return null;
-    }
+    return safeDocumentQuery(selector);
   }
 
   function toggleTree(trigger) {
@@ -572,9 +604,8 @@
     }
 
     var expanded = trigger.getAttribute("aria-expanded") !== "true";
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
-    branch.hidden = !expanded;
-    branch.classList.toggle("is-open", expanded);
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
+    setOpenState(branch, expanded);
   }
 
   function queryTreeBranch(selector, trigger) {
@@ -584,14 +615,7 @@
       if (byId) {
         return byId;
       }
-      try {
-        var queried = document.querySelector(selector);
-        if (queried) {
-          return queried;
-        }
-      } catch (error) {
-        return null;
-      }
+      return safeDocumentQuery(selector);
     }
     var item = trigger.closest(".adlaire-tree-item");
     return item ? item.querySelector(".adlaire-tree-branch") : null;
@@ -606,27 +630,25 @@
 
     tabs.forEach(function (tab) {
       var selected = tab === trigger;
-      tab.setAttribute("aria-selected", selected ? "true" : "false");
+      setBooleanAttribute(tab, "aria-selected", selected);
       tab.setAttribute("tabindex", selected ? "0" : "-1");
       var panel = queryReferencedTarget(tab, "data-adlaire-workspace-tab");
       if (panel) {
-        panel.hidden = !selected;
-        panel.classList.toggle("is-open", selected);
+        setOpenState(panel, selected);
       }
     });
   }
 
   function toggleDisclosureSurface(trigger, attribute, rootSelector, fallbackSelector) {
     var root = rootSelector ? trigger.closest(rootSelector) : null;
-    var target = queryReferencedTarget(trigger, attribute) || (root && fallbackSelector ? root.querySelector(fallbackSelector) : null);
+    var target = queryReferencedTarget(trigger, attribute) || safeScopedQuery(root, fallbackSelector);
     if (!target) {
       return;
     }
 
     var expanded = trigger.getAttribute("aria-expanded") !== "true";
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
-    target.hidden = !expanded;
-    target.classList.toggle("is-open", expanded);
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
+    setOpenState(target, expanded);
   }
 
   function toggleDockPanel(trigger) {
@@ -637,8 +659,8 @@
 
     var collapsed = !panel.classList.contains("is-collapsed");
     panel.classList.toggle("is-collapsed", collapsed);
-    trigger.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    trigger.setAttribute("aria-pressed", collapsed ? "true" : "false");
+    setBooleanAttribute(trigger, "aria-expanded", !collapsed);
+    setBooleanAttribute(trigger, "aria-pressed", collapsed);
   }
 
   function selectInteractiveChoice(trigger, rootSelector, itemSelector, selectedAttribute) {
@@ -649,7 +671,7 @@
 
     root.querySelectorAll(itemSelector).forEach(function (item) {
       var selected = item === trigger;
-      item.setAttribute(selectedAttribute, selected ? "true" : "false");
+      setBooleanAttribute(item, selectedAttribute, selected);
       item.classList.toggle("is-selected", selected);
     });
   }
@@ -673,7 +695,7 @@
 
   function toggleBooleanState(trigger, stateAttribute) {
     var active = trigger.getAttribute(stateAttribute) !== "true";
-    trigger.setAttribute(stateAttribute, active ? "true" : "false");
+    setBooleanAttribute(trigger, stateAttribute, active);
     trigger.classList.toggle("is-selected", active);
   }
 
@@ -685,9 +707,8 @@
     }
 
     var expanded = trigger.getAttribute("aria-expanded") !== "true";
-    trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
-    branch.hidden = !expanded;
-    branch.classList.toggle("is-open", expanded);
+    setBooleanAttribute(trigger, "aria-expanded", expanded);
+    setOpenState(branch, expanded);
   }
 
   var componentInputBindings = [
@@ -701,14 +722,14 @@
   });
 
   function applyTextFilter(input) {
-    var root = document.querySelector(input.getAttribute("data-adlaire-filter-root") || input.getAttribute("data-adlaire-search-root"));
+    var root = safeDocumentQuery(input.getAttribute("data-adlaire-filter-root") || input.getAttribute("data-adlaire-search-root"));
     var itemSelector = input.getAttribute("data-adlaire-filter-item") || input.getAttribute("data-adlaire-search-item");
     if (!root || !itemSelector) {
       return;
     }
 
     var query = input.value.trim().toLowerCase();
-    root.querySelectorAll(itemSelector).forEach(function (item) {
+    safeScopedQueryAll(root, itemSelector).forEach(function (item) {
       var matched = item.textContent.toLowerCase().indexOf(query) !== -1;
       item.hidden = !matched;
     });

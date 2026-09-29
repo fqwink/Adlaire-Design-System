@@ -11,6 +11,37 @@
     return String(value || "").trim().toLowerCase();
   }
 
+  function booleanState(active: boolean): "true" | "false" {
+    return active ? "true" : "false";
+  }
+
+  function setBooleanAttribute(target: Element, attribute: string, active: boolean): void {
+    target.setAttribute(attribute, booleanState(active));
+  }
+
+  function setOpenState(target: HTMLElement, open: boolean): void {
+    target.hidden = !open;
+    target.classList.toggle("is-open", open);
+  }
+
+  function safeDocumentQuery(selector: string | null | undefined): HTMLElement | null {
+    if (!selector) return null;
+    try {
+      return document.querySelector<HTMLElement>(selector);
+    } catch {
+      return null;
+    }
+  }
+
+  function safeScopedQuery<T extends Element = HTMLElement>(root: ParentNode | null | undefined, selector: string | null | undefined): T | null {
+    if (!root || !selector) return null;
+    try {
+      return root.querySelector(selector) as T | null;
+    } catch {
+      return null;
+    }
+  }
+
   interface FormInteractionBinding {
     readonly selector: string;
     readonly handle: (trigger: Element) => void;
@@ -64,8 +95,7 @@
 
     if (count) count.textContent = String(visibleCount);
     if (empty) {
-      empty.hidden = visibleCount !== 0;
-      empty.classList.toggle("is-open", visibleCount === 0);
+      setOpenState(empty, visibleCount === 0);
     }
   }
 
@@ -128,14 +158,14 @@
     if (!root) return;
 
     root.querySelectorAll("[data-adlaire-filter-chip]").forEach((item) => {
-      item.setAttribute("aria-pressed", item === chip ? "true" : "false");
+      setBooleanAttribute(item, "aria-pressed", item === chip);
     });
     applyFilter(root);
   }
 
   function updateFileInput(fileInput: HTMLInputElement): void {
     const selector = fileInput.getAttribute("data-adlaire-file-output");
-    const output = selector ? document.querySelector(selector) : null;
+    const output = safeDocumentQuery(selector);
     const emptyText = fileInput.getAttribute("data-adlaire-file-empty") ?? "No file selected";
     const names = Array.from(fileInput.files ?? []).map((file) => file.name);
     if (output) output.textContent = names.length > 0 ? names.join(", ") : emptyText;
@@ -143,8 +173,8 @@
 
   function syncToggleInput(toggleInput: HTMLInputElement): void {
     const selector = toggleInput.getAttribute("data-adlaire-toggle-input");
-    const toggle = selector ? document.querySelector(selector) : null;
-    if (toggle) toggle.setAttribute("aria-checked", toggleInput.checked ? "true" : "false");
+    const toggle = safeDocumentQuery(selector);
+    if (toggle) setBooleanAttribute(toggle, "aria-checked", toggleInput.checked);
   }
 
   function validateField(field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): void {
@@ -152,7 +182,7 @@
     if (!field || !wrapper) return;
 
     const invalid = field.hasAttribute("required") && normalize(field.value) === "";
-    field.setAttribute("aria-invalid", invalid ? "true" : "false");
+    setBooleanAttribute(field, "aria-invalid", invalid);
     wrapper.classList.toggle("adlaire-field-error", invalid);
     wrapper.classList.toggle("adlaire-field-success", !invalid);
     updateValidationSummary(field);
@@ -165,8 +195,7 @@
 
     const invalidFields = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-adlaire-validate]"))
       .filter((item) => item.getAttribute("aria-invalid") === "true");
-    summary.hidden = invalidFields.length === 0;
-    summary.classList.toggle("is-open", invalidFields.length > 0);
+    setOpenState(summary, invalidFields.length > 0);
     summary.textContent = invalidFields.length === 0
       ? ""
       : invalidFields.map((item) => fieldLabel(item)).join(", ");
@@ -191,7 +220,7 @@
       if (visible) visibleCount += 1;
     });
     list.hidden = visibleCount === 0;
-    input.setAttribute("aria-expanded", visibleCount > 0 ? "true" : "false");
+    setBooleanAttribute(input, "aria-expanded", visibleCount > 0);
   }
 
   function selectComboboxOption(option: Element): void {
@@ -202,9 +231,9 @@
 
     const value = option.getAttribute("data-adlaire-combobox-option") ?? option.textContent?.trim() ?? "";
     input.value = value;
-    input.setAttribute("aria-expanded", "false");
+    setBooleanAttribute(input, "aria-expanded", false);
     root.querySelectorAll("[data-adlaire-combobox-option]").forEach((item) => {
-      item.setAttribute("aria-selected", item === option ? "true" : "false");
+      setBooleanAttribute(item, "aria-selected", item === option);
     });
     if (list) list.hidden = true;
   }
@@ -214,13 +243,13 @@
     if (!root) return;
 
     const selected = option.getAttribute("aria-selected") !== "true";
-    option.setAttribute("aria-selected", selected ? "true" : "false");
+    setBooleanAttribute(option, "aria-selected", selected);
     updateMultiSelectOutput(root);
   }
 
   function updateMultiSelectOutput(root: Element): void {
     const selector = root.getAttribute("data-adlaire-multi-select-output");
-    const output = selector ? document.querySelector<HTMLElement>(selector) : null;
+    const output = safeDocumentQuery(selector);
     if (!output) return;
 
     const selected = Array.from(root.querySelectorAll("[data-adlaire-multi-select-option][aria-selected='true']"))
@@ -236,7 +265,7 @@
     if (!root) return;
 
     root.querySelectorAll("[data-adlaire-date-preset]").forEach((item) => {
-      item.setAttribute("aria-pressed", item === preset ? "true" : "false");
+      setBooleanAttribute(item, "aria-pressed", item === preset);
     });
     setInputValue(root, preset.getAttribute("data-adlaire-date-start"), preset.getAttribute("data-adlaire-date-start-value"));
     setInputValue(root, preset.getAttribute("data-adlaire-date-end"), preset.getAttribute("data-adlaire-date-end-value"));
@@ -244,11 +273,7 @@
 
   function setInputValue(root: Element, selector: string | null, value: string | null): void {
     if (!selector || value === null) return;
-    try {
-      const input = root.querySelector<HTMLInputElement>(selector);
-      if (input) input.value = value;
-    } catch {
-      return;
-    }
+    const input = safeScopedQuery<HTMLInputElement>(root, selector);
+    if (input) input.value = value;
   }
 })();

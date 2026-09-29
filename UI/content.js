@@ -6,6 +6,17 @@
     return target instanceof Element ? target : null;
   }
 
+  function safeDocumentQuery(selector) {
+    if (!selector) {
+      return null;
+    }
+    try {
+      return document.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
   function hookSelector(attribute) {
     return "[" + attribute + "]";
   }
@@ -116,11 +127,11 @@
   function copyCodeBlock(copy) {
     var selector = copy.getAttribute("data-adlaire-code-copy");
     var statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
-    var target = selector ? document.querySelector(selector) : copy.closest(".adlaire-code-block");
+    var target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
     if (target && navigator.clipboard) {
       navigator.clipboard.writeText(target.textContent || "");
       copy.setAttribute("data-adlaire-copied", "true");
-      var status = statusSelector ? document.querySelector(statusSelector) : null;
+      var status = safeDocumentQuery(statusSelector);
       if (status) {
         status.textContent = "Copied";
       }
