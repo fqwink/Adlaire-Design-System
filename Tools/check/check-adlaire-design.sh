@@ -128,37 +128,175 @@ for path in \
   TypeScript/CSS/rules-components.ts \
   TypeScript/CSS/rules-components-foundation.ts \
   TypeScript/CSS/rules-components-foundation-core.ts \
+  TypeScript/CSS/rules-components-foundation-core-base.ts \
+  TypeScript/CSS/rules-components-foundation-core-controls.ts \
+  TypeScript/CSS/rules-components-foundation-core-status.ts \
+  TypeScript/CSS/rules-components-foundation-core-data.ts \
+  TypeScript/CSS/rules-components-foundation-core-announcements.ts \
+  TypeScript/CSS/rules-components-foundation-core-flow.ts \
+  TypeScript/CSS/rules-components-foundation-core-media.ts \
   TypeScript/CSS/rules-components-foundation-media.ts \
+  TypeScript/CSS/rules-components-foundation-media-base.ts \
+  TypeScript/CSS/rules-components-foundation-media-cards.ts \
+  TypeScript/CSS/rules-components-foundation-media-governance.ts \
+  TypeScript/CSS/rules-components-foundation-media-operations.ts \
+  TypeScript/CSS/rules-components-foundation-media-app.ts \
   TypeScript/CSS/rules-components-foundation-domains.ts \
+  TypeScript/CSS/rules-components-foundation-domains-product.ts \
+  TypeScript/CSS/rules-components-foundation-domains-commerce.ts \
+  TypeScript/CSS/rules-components-foundation-domains-data.ts \
+  TypeScript/CSS/rules-components-foundation-domains-collaboration.ts \
+  TypeScript/CSS/rules-components-foundation-domains-workflow.ts \
+  TypeScript/CSS/rules-components-foundation-domains-observability.ts \
   TypeScript/CSS/rules-components-foundation-support.ts \
+  TypeScript/CSS/rules-components-foundation-support-cards.ts \
+  TypeScript/CSS/rules-components-foundation-support-panels.ts \
+  TypeScript/CSS/rules-components-foundation-support-layout.ts \
+  TypeScript/CSS/rules-components-foundation-support-pagination.ts \
+  TypeScript/CSS/rules-components-foundation-support-filters.ts \
   TypeScript/CSS/rules-components-overlays.ts \
+  TypeScript/CSS/rules-components-overlays-surfaces.ts \
+  TypeScript/CSS/rules-components-overlays-carousel.ts \
+  TypeScript/CSS/rules-components-overlays-tooltip.ts \
+  TypeScript/CSS/rules-components-overlays-responsive.ts \
+  TypeScript/CSS/rules-components-overlays-catalog.ts \
   TypeScript/CSS/rules-components-operations.ts \
   TypeScript/CSS/rules-components-operations-admin.ts \
+  TypeScript/CSS/rules-components-operations-admin-layout.ts \
+  TypeScript/CSS/rules-components-operations-admin-states.ts \
+  TypeScript/CSS/rules-components-operations-admin-actions.ts \
+  TypeScript/CSS/rules-components-operations-admin-governance.ts \
+  TypeScript/CSS/rules-components-operations-admin-delivery.ts \
+  TypeScript/CSS/rules-components-operations-admin-lifecycle.ts \
+  TypeScript/CSS/rules-components-operations-admin-observability.ts \
+  TypeScript/CSS/rules-components-operations-admin-security.ts \
   TypeScript/CSS/rules-components-operations-data.ts \
+  TypeScript/CSS/rules-components-operations-data-navigation.ts \
+  TypeScript/CSS/rules-components-operations-data-dialogs.ts \
+  TypeScript/CSS/rules-components-operations-data-search.ts \
+  TypeScript/CSS/rules-components-operations-data-tree.ts \
+  TypeScript/CSS/rules-components-operations-data-grid.ts \
+  TypeScript/CSS/rules-components-operations-data-inspection.ts \
+  TypeScript/CSS/rules-components-operations-data-bottom-sheet.ts \
   TypeScript/CSS/rules-components-operations-workspace.ts \
+  TypeScript/CSS/rules-components-operations-workspace-tabs.ts \
+  TypeScript/CSS/rules-components-operations-workspace-menus.ts \
+  TypeScript/CSS/rules-components-operations-workspace-boards.ts \
+  TypeScript/CSS/rules-components-operations-workspace-metrics.ts \
+  TypeScript/CSS/rules-components-operations-workspace-assets.ts \
+  TypeScript/CSS/rules-components-operations-workspace-publishing.ts \
   TypeScript/CSS/rules-components-operations-business.ts \
+  TypeScript/CSS/rules-components-operations-business-planning.ts \
+  TypeScript/CSS/rules-components-operations-business-enterprise.ts \
+  TypeScript/CSS/rules-components-operations-business-governance.ts \
+  TypeScript/CSS/rules-components-operations-business-industry.ts \
+  TypeScript/CSS/rules-components-operations-business-insights.ts \
+  TypeScript/CSS/rules-components-operations-business-messaging.ts \
   TypeScript/CSS/rules-components-operations-industry.ts \
+  TypeScript/CSS/rules-components-operations-industry-content.ts \
+  TypeScript/CSS/rules-components-operations-industry-devices.ts \
+  TypeScript/CSS/rules-components-operations-industry-hospitality.ts \
+  TypeScript/CSS/rules-components-operations-industry-civic.ts \
+  TypeScript/CSS/rules-components-operations-industry-utilities.ts \
   TypeScript/CSS/rules-components-operations-workflow.ts \
+  TypeScript/CSS/rules-components-operations-workflow-layout.ts \
+  TypeScript/CSS/rules-components-operations-workflow-records.ts \
+  TypeScript/CSS/rules-components-operations-workflow-automation.ts \
   TypeScript/CSS/rules-components-platform.ts \
+  TypeScript/CSS/rules-components-platform-developer.ts \
+  TypeScript/CSS/rules-components-platform-theme.ts \
+  TypeScript/CSS/rules-components-platform-states.ts \
+  TypeScript/CSS/rules-components-platform-github.ts \
+  TypeScript/CSS/rules-components-platform-cloud.ts \
+  TypeScript/CSS/rules-components-platform-surfaces.ts \
   TypeScript/CSS/rules-site.ts \
   TypeScript/CSS/rules-forms.ts \
   TypeScript/CSS/rules-forms-foundation.ts \
+  TypeScript/CSS/rules-forms-foundation-base.ts \
+  TypeScript/CSS/rules-forms-foundation-controls.ts \
+  TypeScript/CSS/rules-forms-foundation-checks.ts \
+  TypeScript/CSS/rules-forms-foundation-buttons.ts \
+  TypeScript/CSS/rules-forms-foundation-notices.ts \
+  TypeScript/CSS/rules-forms-foundation-submit.ts \
   TypeScript/CSS/rules-forms-composite.ts \
+  TypeScript/CSS/rules-forms-composite-filters.ts \
+  TypeScript/CSS/rules-forms-composite-input-groups.ts \
+  TypeScript/CSS/rules-forms-composite-date-time.ts \
+  TypeScript/CSS/rules-forms-composite-selects.ts \
+  TypeScript/CSS/rules-forms-composite-tokens.ts \
+  TypeScript/CSS/rules-forms-composite-calendar.ts \
   TypeScript/CSS/rules-forms-upload.ts \
+  TypeScript/CSS/rules-forms-upload-files.ts \
+  TypeScript/CSS/rules-forms-upload-settings.ts \
+  TypeScript/CSS/rules-forms-upload-toggles.ts \
+  TypeScript/CSS/rules-forms-upload-danger.ts \
   TypeScript/CSS/rules-forms-validation.ts \
+  TypeScript/CSS/rules-forms-validation-fields.ts \
+  TypeScript/CSS/rules-forms-validation-admin.ts \
+  TypeScript/CSS/rules-forms-validation-stepper.ts \
+  TypeScript/CSS/rules-forms-validation-builder.ts \
+  TypeScript/CSS/rules-forms-validation-responsive.ts \
+  TypeScript/CSS/rules-forms-validation-aliases.ts \
   TypeScript/CSS/rules-content.ts \
   TypeScript/CSS/rules-content-foundation.ts \
+  TypeScript/CSS/rules-content-foundation-base.ts \
+  TypeScript/CSS/rules-content-foundation-patterns.ts \
+  TypeScript/CSS/rules-content-foundation-organization.ts \
+  TypeScript/CSS/rules-content-foundation-timeline.ts \
+  TypeScript/CSS/rules-content-foundation-tabs.ts \
+  TypeScript/CSS/rules-content-foundation-news.ts \
   TypeScript/CSS/rules-content-extended.ts \
+  TypeScript/CSS/rules-content-extended-toc.ts \
+  TypeScript/CSS/rules-content-extended-knowledge.ts \
+  TypeScript/CSS/rules-content-extended-repository.ts \
+  TypeScript/CSS/rules-content-extended-markdown.ts \
+  TypeScript/CSS/rules-content-extended-activity.ts \
+  TypeScript/CSS/rules-content-extended-responsive.ts \
   TypeScript/CSS/rules-content-catalog.ts \
+  TypeScript/CSS/rules-content-catalog-aliases.ts \
+  TypeScript/CSS/rules-content-catalog-news.ts \
+  TypeScript/CSS/rules-content-catalog-sidebar.ts \
+  TypeScript/CSS/rules-content-catalog-contact.ts \
+  TypeScript/CSS/rules-content-catalog-legal.ts \
+  TypeScript/CSS/rules-content-catalog-alerts.ts \
   TypeScript/CSS/rules-content-interactions.ts \
+  TypeScript/CSS/rules-content-interactions-sorting.ts \
+  TypeScript/CSS/rules-content-interactions-desktop.ts \
+  TypeScript/CSS/rules-content-interactions-tablet.ts \
+  TypeScript/CSS/rules-content-interactions-mobile.ts \
   TypeScript/CSS/rules-utilities.ts \
   TypeScript/CSS/rules-compat-agws.ts \
   TypeScript/CSS/rules-wysiwyg.ts \
   TypeScript/CSS/rules-wysiwyg-shell.ts \
+  TypeScript/CSS/rules-wysiwyg-shell-frame.ts \
+  TypeScript/CSS/rules-wysiwyg-shell-header.ts \
   TypeScript/CSS/rules-wysiwyg-toolbar.ts \
+  TypeScript/CSS/rules-wysiwyg-toolbar-layout.ts \
+  TypeScript/CSS/rules-wysiwyg-toolbar-tools.ts \
+  TypeScript/CSS/rules-wysiwyg-toolbar-focus.ts \
+  TypeScript/CSS/rules-wysiwyg-toolbar-disabled.ts \
   TypeScript/CSS/rules-wysiwyg-blocks.ts \
+  TypeScript/CSS/rules-wysiwyg-blocks-core.ts \
+  TypeScript/CSS/rules-wysiwyg-blocks-menus.ts \
+  TypeScript/CSS/rules-wysiwyg-blocks-preview.ts \
+  TypeScript/CSS/rules-wysiwyg-blocks-types.ts \
+  TypeScript/CSS/rules-wysiwyg-blocks-states.ts \
+  TypeScript/CSS/rules-wysiwyg-blocks-mobile.ts \
   TypeScript/CSS/rules-wysiwyg-support.ts \
+  TypeScript/CSS/rules-wysiwyg-support-editing.ts \
+  TypeScript/CSS/rules-wysiwyg-support-panels.ts \
+  TypeScript/CSS/rules-wysiwyg-support-advanced.ts \
+  TypeScript/CSS/rules-wysiwyg-support-motion.ts \
+  TypeScript/CSS/rules-wysiwyg-support-tablet.ts \
+  TypeScript/CSS/rules-wysiwyg-support-mobile.ts \
   TypeScript/CSS/rules-wysiwyg-extensions.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions-panels.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions-drag.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions-feedback.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions-blocks.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions-states.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions-collaboration.ts \
+  TypeScript/CSS/rules-wysiwyg-extensions-banners.ts \
   TypeScript/CSS/targets.ts \
   TypeScript/CSS/emit.ts \
   TypeScript/CSS/manifest.ts \
@@ -1218,6 +1356,7 @@ for ui_binding_term in \
   'choiceBinding' \
   'booleanBinding' \
   'stepBinding' \
+  'eventSourceElement' \
   'handleFirstComponentClick' \
   'handleEveryComponentClick' \
   'handleEveryComponentInput' \
@@ -1261,6 +1400,17 @@ if grep -n -F 'event.target.closest("[data-adlaire-filter-input]")' "$ROOT/UI/co
   fail "Declarative UI interaction bindings" "UI/components.js must keep component input routing in componentInputBindings."
 fi
 
+if grep -n -F 'targetElement(event.target)' "$ROOT/TypeScript/UI/components.ts" "$ROOT/UI/components.js" >/dev/null 2>&1; then
+  fail "Declarative UI interaction bindings" "UI components must route delegated events through eventSourceElement."
+fi
+
+require_text "TypeScript/UI/components.ts" 'closestBoundTrigger(source, bindings, index + 1)' "Declarative UI interaction bindings"
+require_text "UI/components.js" 'closestBoundTrigger(source, bindings, index + 1)' "Declarative UI interaction bindings"
+components_direct_dispatch_count=$(grep -h -F 'source.closest(binding.selector)' "$ROOT/TypeScript/UI/components.ts" "$ROOT/UI/components.js" | wc -l | tr -d ' ')
+if [ "$components_direct_dispatch_count" != "2" ]; then
+  fail "Declarative UI interaction bindings" "Component binding selector matching must stay centralized in closestBoundTrigger."
+fi
+
 if grep -n -F 'document.querySelector(input.getAttribute("data-adlaire-filter-root")' "$ROOT/UI/components.js" >/dev/null 2>&1; then
   fail "Safe UI DOM references" "UI/components.js must resolve filter roots through safeDocumentQuery."
 fi
@@ -1289,6 +1439,8 @@ for form_binding_term in \
   'formInputBindings' \
   'formClickBindings' \
   'formChangeBindings' \
+  'eventSourceElement' \
+  'closestBoundTrigger' \
   'handleEveryFormInteraction' \
   'handleFirstFormInteraction' \
   'safeDocumentQuery' \
@@ -1302,6 +1454,10 @@ done
 
 if grep -n -F 'selector ? document.querySelector(selector)' "$ROOT/UI/forms.js" >/dev/null 2>&1; then
   fail "Safe form DOM references" "UI/forms.js must resolve data-driven selectors through safeDocumentQuery."
+fi
+
+if grep -n -F 'targetElement(event.target)' "$ROOT/TypeScript/UI/forms.ts" "$ROOT/UI/forms.js" >/dev/null 2>&1; then
+  fail "Declarative form interaction bindings" "Form interactions must route delegated events through eventSourceElement."
 fi
 
 if grep -n -F 'root.querySelector<HTMLInputElement>(selector)' "$ROOT/TypeScript/UI/forms.ts" >/dev/null 2>&1; then
@@ -1326,6 +1482,8 @@ for content_binding_term in \
   'hookSelector' \
   'contentClickBinding' \
   'contentClickBindings' \
+  'eventSourceElement' \
+  'closestBoundTrigger' \
   'handleEveryContentClick' \
   'safeDocumentQuery' \
   'safeScopedQueryAll' \
@@ -1336,6 +1494,10 @@ done
 
 if grep -n -F 'selector ? document.querySelector(selector)' "$ROOT/UI/content.js" >/dev/null 2>&1; then
   fail "Safe content DOM references" "UI/content.js must resolve code copy selectors through safeDocumentQuery."
+fi
+
+if grep -n -F 'targetElement(event.target)' "$ROOT/TypeScript/UI/content.ts" "$ROOT/UI/content.js" >/dev/null 2>&1; then
+  fail "Declarative content interaction bindings" "Content interactions must route delegated events through eventSourceElement."
 fi
 
 if grep -n -F 'statusSelector ? document.querySelector(statusSelector)' "$ROOT/UI/content.js" >/dev/null 2>&1; then
@@ -1365,6 +1527,8 @@ for wysiwyg_binding_term in \
   'wysiwygClickBinding' \
   'wysiwygPrimaryClickBindings' \
   'wysiwygSelectionClickBindings' \
+  'eventSourceElement' \
+  'closestBoundTrigger' \
   'handleFirstWysiwygClick' \
   'safeDocumentQuery' \
   'safeScopedQueryAll' \
@@ -1376,6 +1540,10 @@ done
 
 if grep -n -F 'return selector ? document.querySelector(selector) : null' "$ROOT/EditorUI/wysiwyg.js" >/dev/null 2>&1; then
   fail "Safe WYSIWYG DOM references" "EditorUI/wysiwyg.js must resolve editor target selectors through safeDocumentQuery."
+fi
+
+if grep -n -F 'targetElement(event.target)' "$ROOT/TypeScript/EditorUI/wysiwyg.ts" "$ROOT/EditorUI/wysiwyg.js" >/dev/null 2>&1; then
+  fail "Declarative WYSIWYG interaction bindings" "WYSIWYG interactions must route delegated events through eventSourceElement."
 fi
 
 if grep -n -E 'root\.querySelectorAll\("(\\.adlaire-wysiwyg|\[data-adlaire-wysiwyg)' "$ROOT/EditorUI/wysiwyg.js" >/dev/null 2>&1; then
@@ -1451,10 +1619,16 @@ for editor_contract in \
   'TypeScript/Editor/index.ts|window.AdlaireEditor' \
   'TypeScript/Editor/core.ts|HeadlessEditorController' \
   'TypeScript/Editor/core.ts|dispatchBatch' \
+  'TypeScript/Editor/core.ts|type DispatchValidationMode' \
+  'TypeScript/Editor/core.ts|function validateDispatchCommand' \
+  'TypeScript/Editor/core.ts|validateDispatchCommand(command, this.#readOnly, "single")' \
+  'TypeScript/Editor/core.ts|validateDispatchCommand(command, this.#readOnly, "batch")' \
+  'TypeScript/Editor/core.ts|#fail(error: EditorError)' \
   'TypeScript/Editor/core.ts|command.readOnly' \
   'TypeScript/Editor/core.ts|function commandSelection' \
   'TypeScript/Editor/core.ts|function commandContext' \
   'TypeScript/Editor/commands.ts|applyCommand' \
+  'TypeScript/Editor/commands.ts|documentCommandHandlers' \
   'TypeScript/Editor/commands.ts|function commandPayload' \
   'TypeScript/Editor/commands.ts|function childBoundaryError' \
   'TypeScript/Editor/commands.ts|function insertChildBlock' \
@@ -1473,12 +1647,50 @@ for editor_contract in \
   'TypeScript/Editor/types.ts|EditorDocument' \
   'TypeScript/Editor/types.ts|EditorController' \
   'EditorUI/editor.js|window.AdlaireEditor' \
+  'EditorUI/editor.js|function validateDispatchCommand' \
+  'EditorUI/editor.js|validateDispatchCommand(command, this.readOnly, "single")' \
+  'EditorUI/editor.js|validateDispatchCommand(command, this.readOnly, "batch")' \
+  'EditorUI/editor.js|failValidation' \
+  'EditorUI/editor.js|documentCommandHandlers' \
+  'EditorUI/editor.js|function childBoundaryError' \
+  'EditorUI/editor.js|function insertChildBlock' \
+  'EditorUI/editor.js|function failed(document, error)' \
+  'EditorUI/editor.js|failed(document, editorError(' \
   'EditorUI/editor.js|function commandPayload' \
   'EditorUI/editor.js|function commandSelection'; do
   file=${editor_contract%%|*}
   text=${editor_contract#*|}
   require_text "$file" "$text" "Editor runtime"
 done
+
+if grep -n -F 'if (!knownCommands.has(command.type)) return this.#error' "$ROOT/TypeScript/Editor/core.ts" >/dev/null 2>&1; then
+  fail "Editor runtime" "Editor dispatch command validation must stay centralized in validateDispatchCommand."
+fi
+
+if grep -n -F 'if (!isKnownCommand(command.type)) return this.fail' "$ROOT/EditorUI/editor.js" >/dev/null 2>&1; then
+  fail "Editor runtime" "Generated editor dispatch command validation must stay centralized in validateDispatchCommand."
+fi
+
+if grep -n -F 'errors.push(editorError("command.unknown"' "$ROOT/EditorUI/editor.js" >/dev/null 2>&1; then
+  fail "Editor runtime" "Generated batch command validation must use validateDispatchCommand."
+fi
+
+if grep -n -F 'children: insertAt(target.children || []' "$ROOT/EditorUI/editor.js" >/dev/null 2>&1; then
+  fail "Editor runtime" "Generated nested block insertion must use insertChildBlock."
+fi
+
+editor_js_child_boundary_count=$(grep -c -F 'var parentTool = registry && registry.get(parent.type);' "$ROOT/EditorUI/editor.js" 2>/dev/null || printf '%s' 0)
+if [ "$editor_js_child_boundary_count" != "1" ]; then
+  fail "Editor runtime" "Generated nested child boundary checks must stay centralized in childBoundaryError."
+fi
+
+if grep -n -F 'failedWithError' "$ROOT/EditorUI/editor.js" >/dev/null 2>&1; then
+  fail "Editor runtime" "Generated command failures must use failed(document, editorError(...)) or pass an existing EditorError to failed."
+fi
+
+if grep -n -F 'failed(document, "' "$ROOT/EditorUI/editor.js" >/dev/null 2>&1; then
+  fail "Editor runtime" "Generated command failures must pass EditorError objects to failed."
+fi
 
 if grep -n -F 'command.payload as' "$ROOT/TypeScript/Editor/core.ts" "$ROOT/TypeScript/Editor/commands.ts" >/dev/null 2>&1; then
   fail "Editor runtime" "Editor command payload casts must stay centralized in command payload helpers."

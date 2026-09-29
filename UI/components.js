@@ -10,6 +10,18 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event) {
+    var fallbackTarget = event.target;
+    var path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (var index = 0; index < path.length; index += 1) {
+      var element = targetElement(path[index]);
+      if (element) {
+        return element;
+      }
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function booleanState(active) {
     return active ? "true" : "false";
   }
@@ -176,7 +188,7 @@
   ];
 
   document.addEventListener("click", function (event) {
-    handleFirstComponentClick(event, targetElement(event.target), overlayClickBindings);
+    handleFirstComponentClick(event, eventSourceElement(event), overlayClickBindings);
   });
 
   var componentKeyBindings = [
@@ -427,15 +439,15 @@
     stepBinding("data-adlaire-milestone-select", ".adlaire-milestone-tracker")
   ];
 
-  function closestBoundTrigger(source, bindings) {
+  function closestBoundTrigger(source, bindings, startIndex) {
     if (!source) {
       return null;
     }
-    for (var index = 0; index < bindings.length; index += 1) {
+    for (var index = startIndex || 0; index < bindings.length; index += 1) {
       var binding = bindings[index];
       var trigger = source.closest(binding.selector);
       if (trigger) {
-        return [trigger, binding];
+        return [trigger, binding, index];
       }
     }
     return null;
@@ -467,57 +479,46 @@
   }
 
   function handleFirstComponentClick(event, source, bindings) {
-    if (!source) {
+    var match = closestBoundTrigger(source, bindings);
+    if (!match) {
       return false;
     }
-    for (var index = 0; index < bindings.length; index += 1) {
-      var binding = bindings[index];
-      var trigger = source.closest(binding.selector);
-      if (!trigger) {
-        continue;
-      }
-      if (binding.preventDefault) {
-        event.preventDefault();
-      }
-      binding.handle(trigger, event);
-      return true;
+    if (match[1].preventDefault) {
+      event.preventDefault();
     }
-    return false;
+    match[1].handle(match[0], event);
+    return true;
   }
 
   function handleEveryComponentClick(event, source, bindings) {
-    if (!source) {
-      return false;
-    }
     var handled = false;
-    for (var index = 0; index < bindings.length; index += 1) {
-      var binding = bindings[index];
-      var trigger = source.closest(binding.selector);
-      if (!trigger) {
-        continue;
-      }
+    var match = closestBoundTrigger(source, bindings);
+    while (match) {
+      var trigger = match[0];
+      var binding = match[1];
+      var index = match[2];
       if (binding.preventDefault) {
         event.preventDefault();
       }
       binding.handle(trigger, event);
       handled = true;
+      match = closestBoundTrigger(source, bindings, index + 1);
     }
     return handled;
   }
 
   function handleEveryComponentInput(source, bindings) {
-    if (!source) {
-      return false;
-    }
     var handled = false;
-    for (var index = 0; index < bindings.length; index += 1) {
-      var binding = bindings[index];
-      var trigger = source.closest(binding.selector);
-      if (!trigger) {
-        continue;
+    var match = closestBoundTrigger(source, bindings);
+    while (match) {
+      var trigger = match[0];
+      var binding = match[1];
+      var index = match[2];
+      if (trigger instanceof HTMLInputElement) {
+        binding.handle(trigger);
+        handled = true;
       }
-      binding.handle(trigger);
-      handled = true;
+      match = closestBoundTrigger(source, bindings, index + 1);
     }
     return handled;
   }
@@ -555,7 +556,7 @@
   ];
 
   document.addEventListener("click", function (event) {
-    var source = targetElement(event.target);
+    var source = eventSourceElement(event);
     handleEveryComponentClick(event, source, componentClickBindings);
     if (handleDeclarativeInteraction(event, source)) {
       return;
@@ -736,7 +737,7 @@
   ];
 
   document.addEventListener("input", function (event) {
-    handleEveryComponentInput(targetElement(event.target), componentInputBindings);
+    handleEveryComponentInput(eventSourceElement(event), componentInputBindings);
   });
 
   function applyTextFilter(input) {

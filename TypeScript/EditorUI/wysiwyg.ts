@@ -7,6 +7,16 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event: Event): Element | null {
+    const fallbackTarget = event.target;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (const target of path) {
+      const element = targetElement(target);
+      if (element) return element;
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function booleanState(active: boolean): "true" | "false" {
     return active ? "true" : "false";
   }
@@ -54,6 +64,15 @@
     };
   }
 
+  function closestBoundTrigger<T extends { readonly selector: string }>(source: Element | null, bindings: readonly T[]): [Element, T] | null {
+    if (!source) return null;
+    for (const binding of bindings) {
+      const trigger = source.closest(binding.selector);
+      if (trigger) return [trigger, binding];
+    }
+    return null;
+  }
+
   function editorRoot(element: Element): Element | null {
     return element.closest(".adlaire-wysiwyg");
   }
@@ -80,18 +99,15 @@
   ] as const;
 
   function handleFirstWysiwygClick(source: Element | null, bindings: readonly WysiwygClickBinding[]): boolean {
-    if (!source) return false;
-    for (const binding of bindings) {
-      const trigger = source.closest(binding.selector);
-      if (!trigger) continue;
-      binding.handle(trigger);
-      return true;
-    }
-    return false;
+    const match = closestBoundTrigger(source, bindings);
+    if (!match) return false;
+    const [trigger, binding] = match;
+    binding.handle(trigger);
+    return true;
   }
 
   document.addEventListener("click", (event) => {
-    const target = targetElement(event.target);
+    const target = eventSourceElement(event);
     handleFirstWysiwygClick(target, wysiwygPrimaryClickBindings);
     handleFirstWysiwygClick(target, wysiwygSelectionClickBindings);
   });

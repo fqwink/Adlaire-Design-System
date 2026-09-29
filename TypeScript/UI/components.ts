@@ -11,6 +11,16 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event: Event): Element | null {
+    const fallbackTarget = event.target;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (const target of path) {
+      const element = targetElement(target);
+      if (element) return element;
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function booleanState(active: boolean): "true" | "false" {
     return active ? "true" : "false";
   }
@@ -155,7 +165,7 @@
   ] as const;
 
   document.addEventListener("click", (event) => {
-    const source = targetElement(event.target);
+    const source = eventSourceElement(event);
     handleFirstComponentClick(event, source, overlayClickBindings);
   });
 
@@ -397,11 +407,12 @@
     stepBinding("data-adlaire-milestone-select", ".adlaire-milestone-tracker"),
   ] as const;
 
-  function closestBoundTrigger<T extends { readonly selector: string }>(source: Element | null, bindings: readonly T[]): [Element, T] | null {
+  function closestBoundTrigger<T extends { readonly selector: string }>(source: Element | null, bindings: readonly T[], startIndex = 0): [Element, T, number] | null {
     if (!source) return null;
-    for (const binding of bindings) {
+    for (let index = startIndex; index < bindings.length; index += 1) {
+      const binding = bindings[index];
       const trigger = source.closest(binding.selector);
-      if (trigger) return [trigger, binding];
+      if (trigger) return [trigger, binding, index];
     }
     return null;
   }
@@ -435,38 +446,37 @@
   }
 
   function handleFirstComponentClick(event: MouseEvent, source: Element | null, bindings: readonly ComponentClickBinding[]): boolean {
-    if (!source) return false;
-    for (const binding of bindings) {
-      const trigger = source.closest(binding.selector);
-      if (!trigger) continue;
-      if (binding.preventDefault) event.preventDefault();
-      binding.handle(trigger, event);
-      return true;
-    }
-    return false;
+    const match = closestBoundTrigger(source, bindings);
+    if (!match) return false;
+    const [trigger, binding] = match;
+    if (binding.preventDefault) event.preventDefault();
+    binding.handle(trigger, event);
+    return true;
   }
 
   function handleEveryComponentClick(event: MouseEvent, source: Element | null, bindings: readonly ComponentClickBinding[]): boolean {
-    if (!source) return false;
     let handled = false;
-    for (const binding of bindings) {
-      const trigger = source.closest(binding.selector);
-      if (!trigger) continue;
+    let match = closestBoundTrigger(source, bindings);
+    while (match) {
+      const [trigger, binding, index] = match;
       if (binding.preventDefault) event.preventDefault();
       binding.handle(trigger, event);
       handled = true;
+      match = closestBoundTrigger(source, bindings, index + 1);
     }
     return handled;
   }
 
   function handleEveryComponentInput(source: Element | null, bindings: readonly ComponentInputBinding[]): boolean {
-    if (!source) return false;
     let handled = false;
-    for (const binding of bindings) {
-      const trigger = source.closest<HTMLInputElement>(binding.selector);
-      if (!trigger) continue;
-      binding.handle(trigger);
-      handled = true;
+    let match = closestBoundTrigger(source, bindings);
+    while (match) {
+      const [trigger, binding, index] = match;
+      if (trigger instanceof HTMLInputElement) {
+        binding.handle(trigger);
+        handled = true;
+      }
+      match = closestBoundTrigger(source, bindings, index + 1);
     }
     return handled;
   }
@@ -499,7 +509,7 @@
   ] as const;
 
   document.addEventListener("click", (event) => {
-    const source = targetElement(event.target);
+    const source = eventSourceElement(event);
     handleEveryComponentClick(event, source, componentClickBindings);
     if (handleDeclarativeInteraction(event, source)) return;
     handleEveryComponentClick(event, source, deferredComponentClickBindings);
@@ -650,7 +660,7 @@
   ] as const;
 
   document.addEventListener("input", (event) => {
-    handleEveryComponentInput(targetElement(event.target), componentInputBindings);
+    handleEveryComponentInput(eventSourceElement(event), componentInputBindings);
   });
 
   function applyTextFilter(input: HTMLInputElement): void {

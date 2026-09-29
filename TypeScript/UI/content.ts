@@ -7,6 +7,16 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event: Event): Element | null {
+    const fallbackTarget = event.target;
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (const target of path) {
+      const element = targetElement(target);
+      if (element) return element;
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function safeDocumentQuery(selector: string | null | undefined): HTMLElement | null {
     if (!selector) return null;
     try {
@@ -50,6 +60,16 @@
       selector: hookSelector(attribute),
       handle,
     };
+  }
+
+  function closestBoundTrigger<T extends { readonly selector: string }>(source: Element | null, bindings: readonly T[], startIndex = 0): [Element, T, number] | null {
+    if (!source) return null;
+    for (let index = startIndex; index < bindings.length; index += 1) {
+      const binding = bindings[index];
+      const trigger = source.closest(binding.selector);
+      if (trigger) return [trigger, binding, index];
+    }
+    return null;
   }
 
   function cellText(row: HTMLTableRowElement, index: number): string {
@@ -98,15 +118,16 @@
   ] as const;
 
   function handleEveryContentClick(source: Element | null): void {
-    if (!source) return;
-    contentClickBindings.forEach((binding) => {
-      const trigger = source.closest(binding.selector);
-      if (trigger) binding.handle(trigger);
-    });
+    let match = closestBoundTrigger(source, contentClickBindings);
+    while (match) {
+      const [trigger, binding, index] = match;
+      binding.handle(trigger);
+      match = closestBoundTrigger(source, contentClickBindings, index + 1);
+    }
   }
 
   document.addEventListener("click", (event) => {
-    handleEveryContentClick(targetElement(event.target));
+    handleEveryContentClick(eventSourceElement(event));
   });
 
   function sortTable(header: Element): void {

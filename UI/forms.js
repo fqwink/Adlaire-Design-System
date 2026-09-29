@@ -6,6 +6,18 @@
     return target instanceof Element ? target : null;
   }
 
+  function eventSourceElement(event) {
+    var fallbackTarget = event.target;
+    var path = typeof event.composedPath === "function" ? event.composedPath() : [];
+    for (var index = 0; index < path.length; index += 1) {
+      var element = targetElement(path[index]);
+      if (element) {
+        return element;
+      }
+    }
+    return targetElement(fallbackTarget);
+  }
+
   function normalize(value) {
     return String(value || "").trim().toLowerCase();
   }
@@ -83,6 +95,23 @@
     });
   }
 
+  function closestBoundTrigger(source, bindings, startIndex) {
+    if (startIndex === undefined) {
+      startIndex = 0;
+    }
+    if (!source) {
+      return null;
+    }
+    for (var index = startIndex; index < bindings.length; index += 1) {
+      var binding = bindings[index];
+      var trigger = source.closest(binding.selector);
+      if (trigger) {
+        return [trigger, binding, index];
+      }
+    }
+    return null;
+  }
+
   function isSupportedField(trigger) {
     return trigger instanceof HTMLInputElement || trigger instanceof HTMLTextAreaElement || trigger instanceof HTMLSelectElement;
   }
@@ -139,43 +168,37 @@
   ];
 
   function handleEveryFormInteraction(source, bindings) {
-    if (!source) {
-      return;
+    var match = closestBoundTrigger(source, bindings);
+    while (match) {
+      var trigger = match[0];
+      var binding = match[1];
+      var index = match[2];
+      binding.handle(trigger);
+      match = closestBoundTrigger(source, bindings, index + 1);
     }
-    bindings.forEach(function (binding) {
-      var trigger = source.closest(binding.selector);
-      if (trigger) {
-        binding.handle(trigger);
-      }
-    });
   }
 
   function handleFirstFormInteraction(source, bindings) {
-    if (!source) {
+    var match = closestBoundTrigger(source, bindings);
+    if (!match) {
       return false;
     }
-    for (var index = 0; index < bindings.length; index += 1) {
-      var binding = bindings[index];
-      var trigger = source.closest(binding.selector);
-      if (!trigger) {
-        continue;
-      }
-      binding.handle(trigger);
-      return true;
-    }
-    return false;
+    var trigger = match[0];
+    var binding = match[1];
+    binding.handle(trigger);
+    return true;
   }
 
   document.addEventListener("input", function (event) {
-    handleEveryFormInteraction(targetElement(event.target), formInputBindings);
+    handleEveryFormInteraction(eventSourceElement(event), formInputBindings);
   });
 
   document.addEventListener("click", function (event) {
-    handleFirstFormInteraction(targetElement(event.target), formClickBindings);
+    handleFirstFormInteraction(eventSourceElement(event), formClickBindings);
   });
 
   document.addEventListener("change", function (event) {
-    handleEveryFormInteraction(targetElement(event.target), formChangeBindings);
+    handleEveryFormInteraction(eventSourceElement(event), formChangeBindings);
   });
 
   function handleFilterInput(trigger) {

@@ -29,18 +29,22 @@ export interface CommandResult {
   errors: EditorError[];
 }
 
+type DocumentCommandHandler = (document: EditorDocument, command: EditorCommand, registry?: ToolRegistry) => CommandResult;
+
+const documentCommandHandlers: Record<string, DocumentCommandHandler> = {
+  "insert-block": (document, command, registry) => insertBlock(document, commandPayload<InsertBlockPayload>(command), registry),
+  "delete-block": (document, command) => deleteBlock(document, commandPayload<DeleteBlockPayload>(command)),
+  "update-block": (document, command, registry) => updateBlock(document, commandPayload<UpdateBlockPayload>(command), registry),
+  "move-block": (document, command, registry) => moveBlock(document, commandPayload<MoveBlockPayload>(command), registry),
+  "split-block": (document, command, registry) => splitBlock(document, commandPayload<SplitBlockPayload>(command), registry),
+  "merge-block": (document, command, registry) => mergeBlock(document, commandPayload<MergeBlockPayload>(command), registry),
+  "set-document-meta": (document, command) => setDocumentMeta(document, commandPayload<SetDocumentMetaPayload>(command)),
+} as const;
+
 export function applyCommand(document: EditorDocument, command: EditorCommand, registry?: ToolRegistry): CommandResult {
   if (!command || typeof command.type !== "string") return failed(document, editorError("command.invalid", "Command must be valid."));
-  switch (command.type) {
-    case "insert-block": return insertBlock(document, commandPayload<InsertBlockPayload>(command), registry);
-    case "delete-block": return deleteBlock(document, commandPayload<DeleteBlockPayload>(command));
-    case "update-block": return updateBlock(document, commandPayload<UpdateBlockPayload>(command), registry);
-    case "move-block": return moveBlock(document, commandPayload<MoveBlockPayload>(command), registry);
-    case "split-block": return splitBlock(document, commandPayload<SplitBlockPayload>(command), registry);
-    case "merge-block": return mergeBlock(document, commandPayload<MergeBlockPayload>(command), registry);
-    case "set-document-meta": return setDocumentMeta(document, commandPayload<SetDocumentMetaPayload>(command));
-    default: return failed(document, editorError("command.unknown", `Unknown command '${command.type}'.`));
-  }
+  const handler = documentCommandHandlers[command.type];
+  return handler ? handler(document, command, registry) : failed(document, editorError("command.unknown", `Unknown command '${command.type}'.`));
 }
 
 function commandPayload<TPayload extends object>(command: EditorCommand): Partial<TPayload> {
