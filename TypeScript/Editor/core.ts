@@ -28,6 +28,16 @@ import type {
 const mutableCommands = new Set(["insert-block", "delete-block", "move-block", "update-block", "split-block", "merge-block", "set-document-meta"]);
 const knownCommands = new Set([...mutableCommands, "set-selection", "save", "request-publish"]);
 
+function normalizeStateError(error: string, fallback: string): string {
+  const message = String(error ?? "").trim();
+  return message || fallback;
+}
+
+function normalizeCompletionError<T extends { error?: string }>(state: T, fallback: string): T {
+  if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) return state;
+  return { ...state, error: normalizeStateError(state.error, fallback) };
+}
+
 type DispatchValidationMode = "single" | "batch";
 type DispatchCommandValidation =
   | { readonly ok: true; readonly command: EditorCommand }
@@ -217,35 +227,49 @@ export class HeadlessEditorController implements EditorController {
   }
 
   completeSave(state: Partial<SaveState> = {}): SaveState {
-    this.#saveState = { ...this.#saveState, ...state, dirty: false, saving: false };
+    const normalizedState = normalizeCompletionError(state, "Save failed.");
+    const failed = Object.prototype.hasOwnProperty.call(normalizedState, "error") && normalizedState.error !== undefined;
+    this.#saveState = { ...this.#saveState, ...normalizedState, dirty: failed, saving: false };
     if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.#saveState.error;
+    if (failed) this.#emitError(editorError("save.failed", this.#saveState.error ?? "Save failed."));
     return this.getSaveState();
   }
 
   failSave(error: string): SaveState {
-    this.#saveState = { ...this.#saveState, dirty: true, saving: false, error };
+    this.#saveState = { ...this.#saveState, dirty: true, saving: false, error: normalizeStateError(error, "Save failed.") };
+    this.#emitError(editorError("save.failed", this.#saveState.error));
     return this.getSaveState();
   }
 
   requestPublish(context: PublishContext = { reason: "manual" }): PublishRequest {
     const document = sanitizeDocument(this.#document, this.#registry);
+    const validation = validateDocument(document, this.#registry);
+    for (const error of validation.errors) this.#emitError(error);
     this.#publishState = { ...this.#publishState, publishing: true, lastRequestedAt: new Date().toISOString() };
     delete this.#publishState.error;
-    const request = { document, context, validation: validateDocument(document, this.#registry), state: this.getPublishState() };
+    const request = { document, context, validation, state: this.getPublishState() };
     this.#events.emit({ type: "publish:requested", request });
     return request;
   }
 
   completePublish(state: Partial<PublishState> = {}): PublishState {
-    this.#publishState = { ...this.#publishState, ...state, publishing: false, lastCompletedAt: new Date().toISOString() };
+    const normalizedState = normalizeCompletionError(state, "Publish failed.");
+    this.#publishState = { ...this.#publishState, ...normalizedState, publishing: false, lastCompletedAt: new Date().toISOString() };
     if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.#publishState.error;
+    if (this.#publishState.error !== undefined) {
+      delete this.#publishState.lastCompletedAt;
+      this.#emitError(editorError("publish.failed", this.#publishState.error));
+      this.#events.emit({ type: "publish:failed", state: this.getPublishState() });
+      return this.getPublishState();
+    }
     this.#events.emit({ type: "publish:completed", state: this.getPublishState() });
     return this.getPublishState();
   }
 
   failPublish(error: string): PublishState {
-    this.#publishState = { ...this.#publishState, publishing: false, error };
+    this.#publishState = { ...this.#publishState, publishing: false, error: normalizeStateError(error, "Publish failed.") };
     delete this.#publishState.lastCompletedAt;
+    this.#emitError(editorError("publish.failed", this.#publishState.error));
     this.#events.emit({ type: "publish:failed", state: this.getPublishState() });
     return this.getPublishState();
   }
