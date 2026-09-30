@@ -35,6 +35,11 @@
     return target.hasAttribute("disabled") || target.getAttribute("aria-disabled") === "true";
   }
 
+  function isWysiwygDisabled(target) {
+    var root = editorRoot(target);
+    return Boolean(root && (isDisabledInteraction(root) || root.getAttribute("aria-busy") === "true"));
+  }
+
   function isNativeInteractive(target) {
     return target instanceof HTMLButtonElement ||
       target instanceof HTMLAnchorElement ||
@@ -83,7 +88,7 @@
     for (var index = 0; index < bindings.length; index += 1) {
       var binding = bindings[index];
       var trigger = source.closest(binding.selector);
-      if (trigger && !isDisabledInteraction(trigger)) {
+      if (trigger && !isDisabledInteraction(trigger) && !isWysiwygDisabled(trigger)) {
         return [trigger, binding];
       }
     }
@@ -97,13 +102,24 @@
   function setMode(root, mode) {
     root.setAttribute("data-adlaire-wysiwyg-mode", mode);
     safeScopedQueryAll(root, "[data-adlaire-wysiwyg-mode]").forEach(function (trigger) {
-      setBooleanAttribute(trigger, "aria-pressed", trigger.getAttribute("data-adlaire-wysiwyg-mode") === mode);
+      var selected = trigger.getAttribute("data-adlaire-wysiwyg-mode") === mode;
+      setBooleanAttribute(trigger, "aria-pressed", selected);
+      if (trigger instanceof HTMLElement) {
+        trigger.setAttribute("tabindex", selected ? "0" : "-1");
+      }
+      trigger.classList.toggle("is-selected", selected);
     });
   }
 
   function targetFor(trigger) {
-    var selector = trigger.getAttribute("data-adlaire-wysiwyg-target");
-    return safeDocumentQuery(selector);
+    var selector = trigger.getAttribute("data-adlaire-wysiwyg-target") || trigger.getAttribute("aria-controls");
+    if (!selector) {
+      return null;
+    }
+    if (selector.charAt(0) === "#") {
+      return document.getElementById(selector.slice(1));
+    }
+    return document.getElementById(selector) || safeDocumentQuery(selector);
   }
 
   var wysiwygPrimaryClickBindings = [
@@ -136,7 +152,13 @@
   });
 
   document.addEventListener("keydown", function (event) {
-    moveCompositeSelection(event);
+    if (closeWysiwygSurface(event)) {
+      return;
+    }
+    if (moveCompositeSelection(event)) {
+      return;
+    }
+    moveWysiwygControlSelection(event);
   });
 
   function selectMode(modeTrigger) {
@@ -153,10 +175,39 @@
       return;
     }
 
-    var open = toggle.getAttribute("aria-expanded") !== "true";
+    setPanelState(toggle, panel, toggle.getAttribute("aria-expanded") !== "true");
+  }
+
+  function setPanelState(toggle, panel, open) {
     setBooleanAttribute(toggle, "aria-expanded", open);
+    toggle.classList.toggle("is-selected", open);
     setOpenState(panel, open);
+    setBooleanAttribute(panel, "aria-hidden", !open);
     panel.setAttribute("data-adlaire-disclosure-state", open ? "open" : "closed");
+  }
+
+  function closeWysiwygSurface(event) {
+    if (event.key !== "Escape") return false;
+    var source = eventSourceElement(event);
+    var root = source ? editorRoot(source) : null;
+    if (!root) return false;
+    var closed = false;
+    safeScopedQueryAll(root, "[data-adlaire-wysiwyg-toggle][aria-expanded='true']").forEach(function (toggle) {
+      var panel = targetFor(toggle);
+      if (!panel) return;
+      setPanelState(toggle, panel, false);
+      closed = true;
+    });
+    safeScopedQueryAll(root, ".adlaire-wysiwyg-slash-menu, .adlaire-wysiwyg-suggestion-card, .adlaire-wysiwyg-assist-panel").forEach(function (panel) {
+      if (panel.hidden) return;
+      setOpenState(panel, false);
+      setBooleanAttribute(panel, "aria-hidden", true);
+      closed = true;
+    });
+    if (!closed) return false;
+    event.preventDefault();
+    if (source instanceof HTMLElement) source.focus();
+    return true;
   }
 
   function selectToolbarGroup(trigger) {
@@ -168,6 +219,7 @@
     safeScopedQueryAll(root, "[data-adlaire-wysiwyg-toolbar-group]").forEach(function (item) {
       var selected = item === trigger;
       setBooleanAttribute(item, "aria-pressed", selected);
+      item.setAttribute("tabindex", selected ? "0" : "-1");
       item.classList.toggle("is-selected", selected);
     });
     root.setAttribute("data-adlaire-toolbar-group", group);
@@ -179,12 +231,14 @@
       return;
     }
 
-    safeScopedQueryAll(root, ".adlaire-wysiwyg-block-selected, [data-adlaire-wysiwyg-select][aria-selected='true']").forEach(function (item) {
-      item.classList.remove("adlaire-wysiwyg-block-selected");
-      setBooleanAttribute(item, "aria-selected", false);
+    safeScopedQueryAll(root, "[data-adlaire-wysiwyg-select], .adlaire-wysiwyg-block-selected").forEach(function (item) {
+      var selected = item === selectable;
+      item.classList.toggle("adlaire-wysiwyg-block-selected", selected);
+      setBooleanAttribute(item, "aria-selected", selected);
+      if (item instanceof HTMLElement) {
+        item.setAttribute("tabindex", selected ? "0" : "-1");
+      }
     });
-    selectable.classList.add("adlaire-wysiwyg-block-selected");
-    setBooleanAttribute(selectable, "aria-selected", true);
   }
 
   function selectMenuItem(item) {
@@ -250,6 +304,53 @@
     return true;
   }
 
+  function moveWysiwygControlSelection(event) {
+    var source = eventSourceElement(event);
+    var item = source && source.closest("[data-adlaire-wysiwyg-mode], [data-adlaire-wysiwyg-toolbar-group], [data-adlaire-wysiwyg-select]");
+    if (!(item instanceof HTMLElement) || isDisabledInteraction(item) || isWysiwygDisabled(item)) {
+      return false;
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      if (isNativeInteractive(item)) {
+        return false;
+      }
+      event.preventDefault();
+      item.click();
+      return true;
+    }
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key !== "Home" && event.key !== "End") {
+      return false;
+    }
+    var selector = item.hasAttribute("data-adlaire-wysiwyg-mode")
+      ? "[data-adlaire-wysiwyg-mode]"
+      : item.hasAttribute("data-adlaire-wysiwyg-toolbar-group")
+        ? "[data-adlaire-wysiwyg-toolbar-group]"
+        : "[data-adlaire-wysiwyg-select]";
+    var root = item.closest(".adlaire-wysiwyg-toolbar") || editorRoot(item);
+    var items = safeScopedQueryAll(root, selector).filter(function (option) {
+      return !option.hidden && !isDisabledInteraction(option);
+    });
+    var current = items.indexOf(item);
+    if (current < 0) {
+      return false;
+    }
+    var next = current;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = items.length - 1;
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = current <= 0 ? items.length - 1 : current - 1;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") next = current >= items.length - 1 ? 0 : current + 1;
+    var target = items[next];
+    if (!target) {
+      return false;
+    }
+    event.preventDefault();
+    if (target.hasAttribute("data-adlaire-wysiwyg-mode")) selectMode(target);
+    if (target.hasAttribute("data-adlaire-wysiwyg-toolbar-group")) selectToolbarGroup(target);
+    if (target.hasAttribute("data-adlaire-wysiwyg-select")) selectBlock(target);
+    target.focus();
+    return true;
+  }
+
   function initializeCompositeState(rootSelector, itemSelector) {
     safeScopedQueryAll(document, rootSelector).forEach(function (root) {
       var items = safeScopedQueryAll(root, itemSelector).filter(function (item) {
@@ -264,12 +365,34 @@
     });
   }
 
+  function initializeWysiwygState() {
+    safeScopedQueryAll(document, ".adlaire-wysiwyg").forEach(function (root) {
+      var mode = root.getAttribute("data-adlaire-wysiwyg-mode");
+      if (mode) {
+        setMode(root, mode);
+      }
+
+      var selectedToolbarGroup = safeScopedQueryAll(root, "[data-adlaire-wysiwyg-toolbar-group]").filter(function (item) {
+        return item.getAttribute("aria-pressed") === "true" || item.classList.contains("is-selected");
+      })[0];
+      if (selectedToolbarGroup) {
+        selectToolbarGroup(selectedToolbarGroup);
+      }
+
+      var selectedBlock = safeScopedQuery(root, "[data-adlaire-wysiwyg-select][aria-selected='true'], .adlaire-wysiwyg-block-selected");
+      if (selectedBlock) {
+        selectBlock(selectedBlock);
+      }
+    });
+  }
+
+  initializeWysiwygState();
   initializeCompositeState(".adlaire-wysiwyg-slash-menu", "[data-adlaire-wysiwyg-slash-item], .adlaire-wysiwyg-slash-item");
   initializeCompositeState(".adlaire-wysiwyg-suggestion-card, .adlaire-wysiwyg-assist-panel", "[data-adlaire-wysiwyg-suggestion], .adlaire-wysiwyg-suggestion, .adlaire-wysiwyg-assist-suggestion");
   safeScopedQueryAll(document, "[data-adlaire-wysiwyg-toggle][aria-expanded]").forEach(function (toggle) {
     var panel = targetFor(toggle);
     if (panel) {
-      panel.setAttribute("data-adlaire-disclosure-state", toggle.getAttribute("aria-expanded") === "true" ? "open" : "closed");
+      setPanelState(toggle, panel, toggle.getAttribute("aria-expanded") === "true");
     }
   });
 }());

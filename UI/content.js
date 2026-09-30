@@ -184,7 +184,7 @@
     if (source && isNativeInteractive(source)) {
       return;
     }
-    var trigger = source && source.closest("[data-adlaire-code-line], [data-adlaire-toc-link]");
+    var trigger = source && source.closest("[data-adlaire-sort], [data-adlaire-code-line], [data-adlaire-toc-link]");
     if (!(trigger instanceof HTMLElement) || isDisabledInteraction(trigger)) {
       return;
     }
@@ -210,20 +210,28 @@
       headers.forEach(function (item) {
         item.removeAttribute("aria-sort");
         item.removeAttribute("data-adlaire-sort-order");
+        item.classList.remove("is-selected");
       });
     }
 
     columnHeader.setAttribute("aria-sort", direction === "asc" ? "ascending" : "descending");
     columnHeader.setAttribute("data-adlaire-sort-order", String(sortOrder(headers, columnHeader, multiSort)));
+    columnHeader.classList.add("is-selected");
     Array.prototype.slice.call(body.rows).sort(compareRows(index, direction, type)).forEach(function (row) {
       body.appendChild(row);
     });
     table.setAttribute("data-adlaire-sort-state", index + ":" + direction + ":" + type);
+    writeSortStatus(header, columnHeader, table, direction, multiSort);
+  }
 
-    var status = safeDocumentQuery(header.getAttribute("data-adlaire-sort-status") || table.getAttribute("data-adlaire-sort-status"));
+  function writeSortStatus(source, columnHeader, table, direction, multiSort) {
+    var status = safeDocumentQuery(source.getAttribute("data-adlaire-sort-status") || table.getAttribute("data-adlaire-sort-status"));
     if (status) {
       if (!status.hasAttribute("aria-live")) {
         status.setAttribute("aria-live", "polite");
+      }
+      if (!status.hasAttribute("role")) {
+        status.setAttribute("role", "status");
       }
       var order = columnHeader.getAttribute("data-adlaire-sort-order");
       status.textContent = (columnHeader.textContent ? columnHeader.textContent.trim() : "Column") + " sorted " + (direction === "asc" ? "ascending" : "descending") + (multiSort && order ? ", priority " + order : "");
@@ -243,21 +251,70 @@
     }).length + 1;
   }
 
+  function initializeSortState() {
+    safeDocumentQueryAll("th[aria-sort], [data-adlaire-sort][aria-sort]").forEach(function (sortTarget) {
+      var columnHeader = sortTarget.closest("th") || sortTarget;
+      var table = columnHeader.closest("table");
+      if (!(table instanceof HTMLTableElement) || !columnHeader.parentElement) {
+        return;
+      }
+
+      var headers = Array.prototype.slice.call(columnHeader.parentElement.children);
+      var index = headers.indexOf(columnHeader);
+      if (index < 0) {
+        return;
+      }
+      var direction = columnHeader.getAttribute("aria-sort") === "descending" ? "desc" : "asc";
+      var type = sortTarget.getAttribute("data-adlaire-sort") || columnHeader.getAttribute("data-adlaire-sort") || "text";
+      var multiSort = table.getAttribute("data-adlaire-sort-multi") === "true";
+      if (!columnHeader.hasAttribute("data-adlaire-sort-order")) {
+        columnHeader.setAttribute("data-adlaire-sort-order", String(sortOrder(headers, columnHeader, multiSort)));
+      }
+      columnHeader.classList.add("is-selected");
+      table.setAttribute("data-adlaire-sort-state", index + ":" + direction + ":" + type);
+      var body = table.tBodies[0] || null;
+      if (body) {
+        Array.prototype.slice.call(body.rows).sort(compareRows(index, direction, type)).forEach(function (row) {
+          body.appendChild(row);
+        });
+      }
+      writeSortStatus(sortTarget, columnHeader, table, direction, multiSort);
+    });
+  }
+
   function copyCodeBlock(copy) {
     var selector = copy.getAttribute("data-adlaire-code-copy");
     var statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     var target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
     var status = safeDocumentQuery(statusSelector);
+    syncCopyStatus(status);
     if (target && writeClipboardText(target.textContent || "")) {
       copy.setAttribute("data-adlaire-copied", "true");
+      copy.classList.add("is-selected");
       if (status) {
         status.textContent = "Copied";
       }
       window.setTimeout(function () {
         copy.removeAttribute("data-adlaire-copied");
+        copy.classList.remove("is-selected");
+        if (status && status.textContent === "Copied") {
+          status.textContent = "";
+        }
       }, 2000);
     } else if (status) {
       status.textContent = "Copy unavailable";
+    }
+  }
+
+  function syncCopyStatus(status) {
+    if (!status) {
+      return;
+    }
+    if (!status.hasAttribute("aria-live")) {
+      status.setAttribute("aria-live", "polite");
+    }
+    if (!status.hasAttribute("role")) {
+      status.setAttribute("role", "status");
     }
   }
 
@@ -268,11 +325,17 @@
     }
 
     safeScopedQueryAll(viewer, "[data-adlaire-code-line], .adlaire-git-line-highlight").forEach(function (item) {
+      if (item instanceof HTMLElement) {
+        item.setAttribute("tabindex", item === line ? "0" : "-1");
+      }
       item.classList.remove("adlaire-git-line-highlight");
       item.setAttribute("aria-selected", "false");
     });
     line.classList.add("adlaire-git-line-highlight");
     line.setAttribute("aria-selected", "true");
+    if (line instanceof HTMLElement && document.activeElement !== line) {
+      line.focus();
+    }
   }
 
   function selectTocLink(link) {
@@ -283,18 +346,57 @@
       } else {
         item.removeAttribute("aria-current");
       }
+      if (item instanceof HTMLElement) {
+        item.setAttribute("tabindex", item === link ? "0" : "-1");
+      }
+      item.classList.toggle("is-selected", item === link);
     });
   }
 
-  safeDocumentQueryAll("[data-adlaire-code-line]").forEach(function (line) {
-    if (!line.hasAttribute("tabindex")) {
-      line.setAttribute("tabindex", "0");
-    }
-    if (!line.hasAttribute("role")) {
-      line.setAttribute("role", "option");
-    }
-    if (!line.hasAttribute("aria-selected")) {
-      setBooleanAttribute(line, "aria-selected", false);
-    }
-  });
+  function initializeTocState() {
+    safeDocumentQueryAll("[data-adlaire-toc], .adlaire-toc, .legal-toc").forEach(function (root) {
+      var current = safeScopedQueryAll(root, "[data-adlaire-toc-link], .legal-toc-link").filter(function (item) {
+        return item.getAttribute("aria-current") === "true" || item.classList.contains("is-selected");
+      })[0];
+      if (current) {
+        selectTocLink(current);
+      }
+    });
+  }
+
+  function initializeCopyStatus() {
+    safeDocumentQueryAll("[data-adlaire-code-copy][data-adlaire-code-copy-status]").forEach(function (copy) {
+      syncCopyStatus(safeDocumentQuery(copy.getAttribute("data-adlaire-code-copy-status")));
+    });
+  }
+
+  function initializeCodeLineState() {
+    safeDocumentQueryAll("[data-adlaire-code-line]").forEach(function (line) {
+      if (!line.hasAttribute("tabindex")) {
+        line.setAttribute("tabindex", "0");
+      }
+      if (!line.hasAttribute("role")) {
+        line.setAttribute("role", "option");
+      }
+      if (!line.hasAttribute("aria-selected")) {
+        setBooleanAttribute(line, "aria-selected", false);
+      }
+    });
+    safeDocumentQueryAll(".adlaire-git-code-view").forEach(function (viewer) {
+      if (!viewer.hasAttribute("role")) {
+        viewer.setAttribute("role", "listbox");
+      }
+      var selected = safeScopedQueryAll(viewer, "[data-adlaire-code-line], .adlaire-git-line-highlight").filter(function (line) {
+        return line.getAttribute("aria-selected") === "true" || line.classList.contains("adlaire-git-line-highlight");
+      })[0];
+      if (selected) {
+        selectCodeLine(selected);
+      }
+    });
+  }
+
+  initializeSortState();
+  initializeCopyStatus();
+  initializeTocState();
+  initializeCodeLineState();
 }());

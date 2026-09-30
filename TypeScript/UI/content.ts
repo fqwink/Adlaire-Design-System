@@ -155,7 +155,7 @@
     if (event.key !== "Enter" && event.key !== " ") return;
     const source = eventSourceElement(event);
     if (source && isNativeInteractive(source)) return;
-    const trigger = source?.closest("[data-adlaire-code-line], [data-adlaire-toc-link]");
+    const trigger = source?.closest("[data-adlaire-sort], [data-adlaire-code-line], [data-adlaire-toc-link]");
     if (!(trigger instanceof HTMLElement) || isDisabledInteraction(trigger)) return;
     event.preventDefault();
     trigger.click();
@@ -176,15 +176,21 @@
     if (!multiSort) headers.forEach((item) => {
       item.removeAttribute("aria-sort");
       item.removeAttribute("data-adlaire-sort-order");
+      item.classList.remove("is-selected");
     });
     columnHeader.setAttribute("aria-sort", direction === "asc" ? "ascending" : "descending");
     columnHeader.setAttribute("data-adlaire-sort-order", String(sortOrder(headers, columnHeader, multiSort)));
+    columnHeader.classList.add("is-selected");
     Array.from(body.rows).sort(compareRows(index, direction, type)).forEach((row) => body.appendChild(row));
     table.setAttribute("data-adlaire-sort-state", `${index}:${direction}:${type}`);
+    writeSortStatus(header, columnHeader, table, direction, multiSort);
+  }
 
-    const status = safeDocumentQuery(header.getAttribute("data-adlaire-sort-status") ?? table.getAttribute("data-adlaire-sort-status"));
+  function writeSortStatus(source: Element, columnHeader: Element, table: HTMLTableElement, direction: string, multiSort: boolean): void {
+    const status = safeDocumentQuery(source.getAttribute("data-adlaire-sort-status") ?? table.getAttribute("data-adlaire-sort-status"));
     if (status) {
       if (!status.hasAttribute("aria-live")) status.setAttribute("aria-live", "polite");
+      if (!status.hasAttribute("role")) status.setAttribute("role", "status");
       const order = columnHeader.getAttribute("data-adlaire-sort-order");
       status.textContent = `${columnHeader.textContent?.trim() ?? "Column"} sorted ${direction === "asc" ? "ascending" : "descending"}${multiSort && order ? `, priority ${order}` : ""}`;
     }
@@ -197,31 +203,68 @@
     return headers.filter((item) => item.hasAttribute("data-adlaire-sort-order")).length + 1;
   }
 
+  function initializeSortState(): void {
+    safeDocumentQueryAll("th[aria-sort], [data-adlaire-sort][aria-sort]").forEach((sortTarget) => {
+      const columnHeader = sortTarget.closest("th") ?? sortTarget;
+      const table = columnHeader.closest("table");
+      if (!(table instanceof HTMLTableElement) || !columnHeader.parentElement) return;
+
+      const headers = Array.from(columnHeader.parentElement.children);
+      const index = headers.indexOf(columnHeader);
+      if (index < 0) return;
+      const direction = columnHeader.getAttribute("aria-sort") === "descending" ? "desc" : "asc";
+      const type = sortTarget.getAttribute("data-adlaire-sort") ?? columnHeader.getAttribute("data-adlaire-sort") ?? "text";
+      const multiSort = table.getAttribute("data-adlaire-sort-multi") === "true";
+      if (!columnHeader.hasAttribute("data-adlaire-sort-order")) {
+        columnHeader.setAttribute("data-adlaire-sort-order", String(sortOrder(headers, columnHeader, multiSort)));
+      }
+      columnHeader.classList.add("is-selected");
+      table.setAttribute("data-adlaire-sort-state", `${index}:${direction}:${type}`);
+      const body = table.tBodies[0] ?? null;
+      if (body) Array.from(body.rows).sort(compareRows(index, direction, type)).forEach((row) => body.appendChild(row));
+      writeSortStatus(sortTarget, columnHeader, table, direction, multiSort);
+    });
+  }
+
   function copyCodeBlock(copy: Element): void {
     const selector = copy.getAttribute("data-adlaire-code-copy");
     const statusSelector = copy.getAttribute("data-adlaire-code-copy-status");
     const target = selector ? safeDocumentQuery(selector) : copy.closest(".adlaire-code-block");
     const status = safeDocumentQuery(statusSelector);
+    syncCopyStatus(status);
     if (target && writeClipboardText(target.textContent ?? "")) {
       copy.setAttribute("data-adlaire-copied", "true");
+      copy.classList.add("is-selected");
       if (status) {
         status.textContent = "Copied";
       }
-      window.setTimeout(() => copy.removeAttribute("data-adlaire-copied"), 2000);
+      window.setTimeout(() => {
+        copy.removeAttribute("data-adlaire-copied");
+        copy.classList.remove("is-selected");
+        if (status?.textContent === "Copied") status.textContent = "";
+      }, 2000);
     } else if (status) {
       status.textContent = "Copy unavailable";
     }
+  }
+
+  function syncCopyStatus(status: HTMLElement | null): void {
+    if (!status) return;
+    if (!status.hasAttribute("aria-live")) status.setAttribute("aria-live", "polite");
+    if (!status.hasAttribute("role")) status.setAttribute("role", "status");
   }
 
   function selectCodeLine(line: Element): void {
     const viewer = line.closest(".adlaire-git-code-view");
     if (!viewer) return;
     safeScopedQueryAll(viewer, "[data-adlaire-code-line], .adlaire-git-line-highlight").forEach((item) => {
+      if (item instanceof HTMLElement) item.setAttribute("tabindex", item === line ? "0" : "-1");
       item.classList.remove("adlaire-git-line-highlight");
       item.setAttribute("aria-selected", "false");
     });
     line.classList.add("adlaire-git-line-highlight");
     line.setAttribute("aria-selected", "true");
+    if (line instanceof HTMLElement && document.activeElement !== line) line.focus();
   }
 
   function selectTocLink(link: Element): void {
@@ -232,12 +275,41 @@
       } else {
         item.removeAttribute("aria-current");
       }
+      if (item instanceof HTMLElement) item.setAttribute("tabindex", item === link ? "0" : "-1");
+      item.classList.toggle("is-selected", item === link);
     });
   }
 
-  safeDocumentQueryAll("[data-adlaire-code-line]").forEach((line) => {
-    if (!line.hasAttribute("tabindex")) line.setAttribute("tabindex", "0");
-    if (!line.hasAttribute("role")) line.setAttribute("role", "option");
-    if (!line.hasAttribute("aria-selected")) setBooleanAttribute(line, "aria-selected", false);
-  });
+  function initializeTocState(): void {
+    safeDocumentQueryAll("[data-adlaire-toc], .adlaire-toc, .legal-toc").forEach((root) => {
+      const current = safeScopedQueryAll(root, "[data-adlaire-toc-link], .legal-toc-link")
+        .find((item) => item.getAttribute("aria-current") === "true" || item.classList.contains("is-selected"));
+      if (current) selectTocLink(current);
+    });
+  }
+
+  function initializeCopyStatus(): void {
+    safeDocumentQueryAll("[data-adlaire-code-copy][data-adlaire-code-copy-status]").forEach((copy) => {
+      syncCopyStatus(safeDocumentQuery(copy.getAttribute("data-adlaire-code-copy-status")));
+    });
+  }
+
+  function initializeCodeLineState(): void {
+    safeDocumentQueryAll("[data-adlaire-code-line]").forEach((line) => {
+      if (!line.hasAttribute("tabindex")) line.setAttribute("tabindex", "0");
+      if (!line.hasAttribute("role")) line.setAttribute("role", "option");
+      if (!line.hasAttribute("aria-selected")) setBooleanAttribute(line, "aria-selected", false);
+    });
+    safeDocumentQueryAll(".adlaire-git-code-view").forEach((viewer) => {
+      if (!viewer.hasAttribute("role")) viewer.setAttribute("role", "listbox");
+      const selected = safeScopedQueryAll(viewer, "[data-adlaire-code-line], .adlaire-git-line-highlight")
+        .find((line) => line.getAttribute("aria-selected") === "true" || line.classList.contains("adlaire-git-line-highlight"));
+      if (selected) selectCodeLine(selected);
+    });
+  }
+
+  initializeSortState();
+  initializeCopyStatus();
+  initializeTocState();
+  initializeCodeLineState();
 })();

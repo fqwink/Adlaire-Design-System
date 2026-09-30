@@ -18,6 +18,16 @@
     return (prefix || "block") + "-" + Math.random().toString(36).slice(2, 10);
   }
 
+  function normalizeStateError(error, fallback) {
+    var message = String(error == null ? "" : error).trim();
+    return message || fallback;
+  }
+
+  function normalizeCompletionError(state, fallback) {
+    if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) return state;
+    return Object.assign({}, state, { error: normalizeStateError(state.error, fallback) });
+  }
+
   function createBlock(type, data, options) {
     var id = typeof options === "string" ? options : options && options.id;
     return { id: id || createId(type), type: type, data: data || {} };
@@ -490,32 +500,46 @@
   };
   HeadlessEditorController.prototype.completeSave = function (state) {
     state = state || {};
-    this.saveState = Object.assign({}, this.saveState, state, { dirty: false, saving: false });
+    var normalizedState = normalizeCompletionError(state, "Save failed.");
+    var failed = Object.prototype.hasOwnProperty.call(normalizedState, "error") && normalizedState.error !== undefined;
+    this.saveState = Object.assign({}, this.saveState, normalizedState, { dirty: failed, saving: false });
     if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.saveState.error;
+    if (failed) this.emitError(editorError("save.failed", this.saveState.error || "Save failed."));
     return this.getSaveState();
   };
   HeadlessEditorController.prototype.failSave = function (error) {
-    this.saveState = Object.assign({}, this.saveState, { dirty: true, saving: false, error: error });
+    this.saveState = Object.assign({}, this.saveState, { dirty: true, saving: false, error: normalizeStateError(error, "Save failed.") });
+    this.emitError(editorError("save.failed", this.saveState.error));
     return this.getSaveState();
   };
   HeadlessEditorController.prototype.requestPublish = function (context) {
     var document = sanitizeDocument(this.document, this.registry);
+    var validation = validateDocument(document, this.registry);
+    validation.errors.forEach(this.emitError.bind(this));
     this.publishState = Object.assign({}, this.publishState, { publishing: true, lastRequestedAt: new Date().toISOString() });
     delete this.publishState.error;
-    var request = { document: document, context: context || { reason: "manual" }, validation: validateDocument(document, this.registry), state: this.getPublishState() };
+    var request = { document: document, context: context || { reason: "manual" }, validation: validation, state: this.getPublishState() };
     this.events.emit({ type: "publish:requested", request: request });
     return request;
   };
   HeadlessEditorController.prototype.completePublish = function (state) {
     state = state || {};
-    this.publishState = Object.assign({}, this.publishState, state, { publishing: false, lastCompletedAt: new Date().toISOString() });
+    var normalizedState = normalizeCompletionError(state, "Publish failed.");
+    this.publishState = Object.assign({}, this.publishState, normalizedState, { publishing: false, lastCompletedAt: new Date().toISOString() });
     if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.publishState.error;
+    if (this.publishState.error !== undefined) {
+      delete this.publishState.lastCompletedAt;
+      this.emitError(editorError("publish.failed", this.publishState.error));
+      this.events.emit({ type: "publish:failed", state: this.getPublishState() });
+      return this.getPublishState();
+    }
     this.events.emit({ type: "publish:completed", state: this.getPublishState() });
     return this.getPublishState();
   };
   HeadlessEditorController.prototype.failPublish = function (error) {
-    this.publishState = Object.assign({}, this.publishState, { publishing: false, error: error });
+    this.publishState = Object.assign({}, this.publishState, { publishing: false, error: normalizeStateError(error, "Publish failed.") });
     delete this.publishState.lastCompletedAt;
+    this.emitError(editorError("publish.failed", this.publishState.error));
     this.events.emit({ type: "publish:failed", state: this.getPublishState() });
     return this.getPublishState();
   };
