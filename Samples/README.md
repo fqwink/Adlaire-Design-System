@@ -8,7 +8,7 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 
 | Path | Role |
 | --- | --- |
-| `Samples/design/index.html` | Static showcase surface for the current design system. |
+| `Samples/design/index.html` | Static showcase surface for the current design system, including the Product adoption surface. |
 | `Samples/design/sample.css` | Sample-only layout support. |
 | `Samples/design/sample.js` | Sample-only display and state-toggle support. |
 | `Samples/sample-current.png` | Reference screenshot. |
@@ -35,7 +35,7 @@ The Visual Baseline contract is recorded in `Tools/check/adlaire-design-contract
 | Icon Set | `Docs/Icon_Set_Catalog`, `Icons/` | Official 1520 SVG icons and category access. |
 | Tokens / Brand | `Tokens/`, `Brand/`, `Docs/Brand_Asset_Catalog` | Token colors, surfaces, layout tokens, brand assets. |
 
-The showcase groups the current system into Overview, Tokens, Components, Advanced Input and Design-System UI, Admin, WYSIWYG, Icons, Brand, and operational quality sections so visual review follows the same boundaries as the catalogs. The sample script may toggle representative states for review, but it does not define production behavior.
+The showcase starts with a Product adoption surface that presents the design system as an applied operations dashboard. It then groups the current system into Overview, Tokens, Components, Advanced Input and Design-System UI, Admin, WYSIWYG, Icons, Brand, and operational quality sections so visual review follows the same boundaries as the catalogs. The sample script may toggle representative states for review, but it does not define production behavior.
 
 ## Load Contract
 
@@ -52,4 +52,5 @@ The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, 
 - Sample CSS and JS must stay limited to `Samples/design/sample.css` and `Samples/design/sample.js`.
 - Sample state toggles must use `data-sample-*` attributes so they remain separate from production `data-adlaire-*` behavior.
 - Sample interaction controls cover overlay visibility, progress value changes, and WYSIWYG readonly, locked, accessibility, and save states without becoming production behavior.
+- Product adoption surface markup must remain sample-only and must not introduce new generated CSS/JavaScript outputs or production data contracts.
 - Reference screenshot changes require the related source or contract change in the same review unit.

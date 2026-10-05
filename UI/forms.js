@@ -466,7 +466,7 @@
       return;
     }
     wrapper.setAttribute("data-adlaire-field-touched", "true");
-    wrapper.setAttribute("data-adlaire-field-dirty", normalize(fieldStateValue(field)) !== normalize(defaultFieldValue(field)));
+    wrapper.setAttribute("data-adlaire-field-dirty", booleanState(normalize(fieldStateValue(field)) !== normalize(defaultFieldValue(field))));
   }
 
   function fieldStateValue(field) {

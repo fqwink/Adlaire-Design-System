@@ -56,6 +56,15 @@
     }
   }
 
+  function safeScopedQuery(root: ParentNode | null | undefined, selector: string | null | undefined): HTMLElement | null {
+    if (!root || !selector) return null;
+    try {
+      return root.querySelector<HTMLElement>(selector);
+    } catch {
+      return null;
+    }
+  }
+
   function safeScopedQueryAll(root: ParentNode | null | undefined, selector: string | null | undefined): HTMLElement[] {
     if (!root || !selector) return [];
     try {

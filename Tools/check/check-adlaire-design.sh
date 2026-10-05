@@ -104,9 +104,13 @@ end
 
 deno = manifest.fetch("denoValidation")
 abort("[Contract manifest] Deno validation must require Deno for complete release evidence.") unless deno.fetch("completeEvidenceRequiresDeno") == true
-abort("[Contract manifest] Deno skip diagnostic must be family-labelled.") unless deno.fetch("skipDiagnostic").start_with?("[Deno validation]")
-abort("[Contract manifest] Deno requiredEnv must be ADLAIRE_REQUIRE_DENO.") unless deno.fetch("requiredEnv") == "ADLAIRE_REQUIRE_DENO"
-abort("[Contract manifest] Deno required failure message must mention complete TypeScript and generated CSS parity evidence.") unless deno.fetch("requiredFailureMessage").include?("complete TypeScript and generated CSS parity evidence")
+abort("[Contract manifest] Deno validation executionMode must be local-docker.") unless deno.fetch("executionMode") == "local-docker"
+abort("[Contract manifest] Deno dockerImage must use denoland/deno.") unless deno.fetch("dockerImage").start_with?("denoland/deno:")
+abort("[Contract manifest] Deno dockerDigest must be pinned by sha256.") unless deno.fetch("dockerDigest").start_with?("sha256:")
+abort("[Contract manifest] Deno dockerReference must combine dockerImage and dockerDigest.") unless deno.fetch("dockerReference") == "#{deno.fetch("dockerImage")}@#{deno.fetch("dockerDigest")}"
+abort("[Contract manifest] Deno required failure message must mention local Docker Deno validation.") unless deno.fetch("requiredFailureMessage").include?("local Docker Deno validation")
+abort("[Contract manifest] bug-fix-zero validation principle must mention zero known check failures.") unless deno.fetch("bugFixZeroPrinciple").include?("zero known check failures")
+abort("[Contract manifest] bug-fix-zero validation principle must mention zero unresolved bugs.") unless deno.fetch("bugFixZeroPrinciple").include?("zero unresolved bugs")
 
 targets = deno.fetch("typeCheckTargets")
 abort("[Contract manifest] Deno type-check targets must not be empty.") if targets.empty?
@@ -330,21 +334,12 @@ puts targets
 RUBY
 )
 
-DENO_SKIP_DIAGNOSTIC=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+DENO_DOCKER_REFERENCE=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
 require "json"
 
 root = ENV.fetch("ROOT")
 manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
-puts manifest.fetch("denoValidation").fetch("skipDiagnostic")
-RUBY
-)
-
-DENO_REQUIRED_ENV=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
-require "json"
-
-root = ENV.fetch("ROOT")
-manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
-puts manifest.fetch("denoValidation").fetch("requiredEnv")
+puts manifest.fetch("denoValidation").fetch("dockerReference")
 RUBY
 )
 
@@ -354,6 +349,15 @@ require "json"
 root = ENV.fetch("ROOT")
 manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
 puts manifest.fetch("denoValidation").fetch("requiredFailureMessage")
+RUBY
+)
+
+DENO_BUG_FIX_ZERO_PRINCIPLE=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+puts manifest.fetch("denoValidation").fetch("bugFixZeroPrinciple")
 RUBY
 )
 
@@ -3670,8 +3674,12 @@ end
 def source_css_parts(root, source)
   source_text = File.read(File.join(root, source))
   direct = source_text.match(/css: `(.*)` \} as const;/m)
-  return [direct[1]] if direct
-  source_text.scan(/export const [A-Z_]+ = `(.*?)`;/m).flatten
+  return [decode_ts_template_css(direct[1])] if direct
+  source_text.scan(/export const [A-Z_]+ = `(.*?)`;/m).flatten.map { |part| decode_ts_template_css(part) }
+end
+
+def decode_ts_template_css(part)
+  part.gsub(/\\\\/, "\\")
 end
 
 target_entries.each do |output, kind, _first_line, modules_text, _migrated|
@@ -3819,19 +3827,34 @@ visual.fetch("requiredDocs").each do |doc|
 end
 RUBY
 
-DENO_BIN=$(command -v deno 2>/dev/null || true)
-if [ -n "$DENO_BIN" ]; then
-  (cd "$ROOT" && "$DENO_BIN" check --no-npm $DENO_TYPECHECK_TARGETS)
-  (cd "$ROOT" && "$DENO_BIN" run --allow-read TypeScript/CSS/index.ts check-generated-css)
-else
-  if [ "$(printenv "$DENO_REQUIRED_ENV" 2>/dev/null || true)" = "1" ]; then
-    fail "Deno validation" "$DENO_REQUIRED_FAILURE_MESSAGE"
-  fi
-  echo "$DENO_SKIP_DIAGNOSTIC" >&2
+DOCKER_BIN=$(command -v docker 2>/dev/null || true)
+if [ -z "$DOCKER_BIN" ] && [ -x "/Applications/Docker.app/Contents/Resources/bin/docker" ]; then
+  DOCKER_BIN="/Applications/Docker.app/Contents/Resources/bin/docker"
+fi
+if [ -z "$DOCKER_BIN" ]; then
+  fail "Deno validation" "$DENO_REQUIRED_FAILURE_MESSAGE"
+fi
+DOCKER_BIN_DIR=$(dirname "$DOCKER_BIN")
+DOCKER_PATH="$DOCKER_BIN_DIR:$PATH"
+
+run_deno_docker() {
+  PATH="$DOCKER_PATH" "$DOCKER_BIN" run --rm --network none -v "$ROOT:/workspace:ro" -w /workspace "$DENO_DOCKER_REFERENCE" deno "$@"
+}
+
+if ! run_deno_docker --version >&2; then
+  fail "Deno validation" "$DENO_REQUIRED_FAILURE_MESSAGE"
+fi
+if ! run_deno_docker check --no-npm $DENO_TYPECHECK_TARGETS; then
+  fail "Deno validation" "local Docker Deno type check failed; $DENO_BUG_FIX_ZERO_PRINCIPLE"
+fi
+if ! run_deno_docker run --allow-read TypeScript/CSS/index.ts check-generated-css; then
+  fail "Deno validation" "local Docker Deno generated CSS parity check failed; $DENO_BUG_FIX_ZERO_PRINCIPLE"
 fi
 
 if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
-  git -C "$ROOT" fetch backup --prune
+  if ! git -C "$ROOT" fetch backup --prune; then
+    fail "Release readiness" "git fetch backup --prune failed; release readiness cannot be claimed until backup/main is refreshed."
+  fi
   require_local_git_config "fetch.prune" "true"
   require_local_git_config "pull.ff" "only"
   require_local_git_config "remote.pushDefault" "backup"

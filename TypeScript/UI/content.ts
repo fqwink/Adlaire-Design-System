@@ -165,7 +165,7 @@
     const columnHeader = header.closest("th") ?? header;
     const table = columnHeader.closest("table");
     const body = table?.tBodies[0] ?? null;
-    if (!body || !columnHeader.parentElement) return;
+    if (!table || !body || !columnHeader.parentElement) return;
 
     const headers = Array.from(columnHeader.parentElement.children);
     const index = headers.indexOf(columnHeader);

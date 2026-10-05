@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.145
+Version: rev.147
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -11,6 +11,8 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 Adlaire-Design-System is a repository-local frontend foundation for Adlaire products. It defines tokens, CSS contracts, UI JavaScript contracts, WYSIWYG Editor UI, structured editor output, brand assets, official icons, samples, checks, and governance rules.
 
 It is not a React/Vue/Svelte replacement, not a utility-first CSS framework, and not an npm package workspace. The system is framework-independent and repository-owned.
+
+The system must also show a Product adoption surface: a realistic product-operations sample that demonstrates how approved tokens, generated CSS, generated JavaScript, catalogs, icon assets, and validation states combine in a concrete Adlaire product screen. This surface is a sample-support review aid, not a new authority layer.
 
 ## Authority Model
 
@@ -235,6 +237,8 @@ WYSIWYG UI contracts include toolbar group state, slash menu keyboard navigation
 
 Samples are confirmation aids. `Samples/design/index.html` covers Generic UI, Advanced Input and Design-System UI, Workspace / Command / Productivity UI, Business Operations UI, Enterprise Domain UI, Strategic Operations UI, Industry Operations UI, Customer Growth / Support Operations UI, Communication / Notification Operations UI, Content Publishing / Localization Operations UI, Device / Fleet / Edge Operations UI, Travel / Hospitality / Event Operations UI, Public / Civic / Nonprofit Operations UI, Energy / Utilities / Sustainability Operations UI, Component Quality / Composition UI, Data Workbench / Record Operations UI, Agent / Automation Workbench UI, Developer Platform / Integration Operations UI, Theme / Brand Customization UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Tokens, Brand, and the official 1520 SVG icons.
 
+The Product adoption surface appears before the catalog confirmation sections so reviewers can first see the design system as an applied product dashboard. It must use only sample-support markup, `Samples/design/sample.css`, `Samples/design/sample.js`, generated repository CSS/JavaScript, existing brand assets, and existing official icons.
+
 Samples must not become the source of truth for tokens, CSS contracts, JavaScript behavior, or catalog state.
 
 Checks keep representative sample coverage for Layout System v2, operational feedback, and WYSIWYG state UI so sample drift is visible without making Samples authoritative.
@@ -259,19 +263,21 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 The release check must run on local `main`. It assumes the local Git consistency baseline, `git fetch backup --prune`, local `main` synchronized with `backup/main`, a clean worktree, no stale merged local branches, and no stale merged `backup/*` remote-tracking branches.
 
+The Validation mode contract keeps normal checks and release readiness checks distinct. A normal check is allowed on feature branches and validates repository governance for the current host. A release check is allowed only after PR merge cleanup on local `main` and must fail with family-labelled diagnostics when remote fetch, Git configuration, ignored artifact policy, stale branch state, or `main` synchronization cannot be proven.
+
 The Ignored local artifact policy allows only `.DS_Store` and `Work/` as ignored local artifacts during release readiness checks. Additional ignored artifacts must either become tracked source material, be removed, or be explicitly governed before release.
 
-Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, `assetInventory`, `documentationGovernance`, ignored local artifact policy, local Git consistency drift, stale merged branches, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, Local Docker Deno validation, `assetInventory`, `documentationGovernance`, ignored local artifact policy, local Git consistency drift, stale merged branches, and post-merge release readiness.
 
-The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before the optional Deno command is invoked. When the `deno` command is available, the normal check also runs the Deno type check for TypeScript sources and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check must emit a family-labelled skip message and the report must not claim Deno type or generated CSS parity verification for that environment.
+The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before Docker execution. Deno execution is fixed to local Docker and must use `denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34`. The repository check must not use host `deno`; missing Docker, Docker startup failure, Deno type-check failure, or generated CSS parity failure is a failed validation.
 
-`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, the Deno complete validation gate, the Deno required failure message, Generated JavaScript parity contract terms, grouped repositoryInventory, TypeScript source inventory, generated CSS inventory, generated JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, or reference screenshot hash drift.
+`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, Local Docker Deno validation image and digest, the Deno complete validation gate, the Deno required failure message, the bug-fix-zero validation principle, Generated JavaScript parity contract terms, grouped repositoryInventory, TypeScript source inventory, generated CSS inventory, generated JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, or reference screenshot hash drift.
 
-The Deno complete validation gate is opt-in through `ADLAIRE_REQUIRE_DENO=1`. Without that environment variable, a host without `deno` emits the family-labelled skip diagnostic; with it, Deno absence fails the check using the manifest Deno required failure message.
+The Deno complete validation gate is always active through Local Docker Deno validation. A result without Docker Deno type checking and Docker Deno generated CSS parity evidence is incomplete and must not be reported as validation success.
 
 The TypeScript source inventory in `Tools/check/adlaire-design-contracts.json` must match every `TypeScript/**/*.ts` source file and cover Deno type-check targets, Generated JavaScript pair sources, and CSS compiler required files. The generated CSS inventory and CSS target metadata in the same manifest must match `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, first-line headers, and generated CSS files. The generated JavaScript inventory must match the Generated JavaScript pair contract, every UI interaction source/generated pair must be represented by a Generated JavaScript pair, the Sample asset/load order must match `Samples/design/index.html`, `assetInventory` must match icons and brand assets, and `documentationGovernance` must match the documented governance terms.
 
-Complete Deno-backed release evidence requires running the release check on a host with Deno available and `ADLAIRE_REQUIRE_DENO=1`. A release check without Deno remains useful for repository, document, manifest, Git, and generated output governance, but it must not be reported as Deno-backed TypeScript or generated CSS parity evidence.
+Complete Deno-backed release evidence requires the release check to complete through the fixed local Docker Deno path. The bug-fix-zero validation principle is absolute: validation findings, generated-output drift, known check failures, and unresolved bugs discovered during verification must be corrected before completion is reported.
 
 Check failures use family-labelled diagnostics so the broken contract area is visible before reading the full failure details.
 

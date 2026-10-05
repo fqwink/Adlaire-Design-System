@@ -16,7 +16,7 @@
 
   var total = document.querySelector('[data-sample-icon-total]');
   if (total) {
-    total.textContent = '500';
+    total.textContent = '1520';
   }
 
   var navLinks = document.querySelectorAll('.sample-showcase-nav a');

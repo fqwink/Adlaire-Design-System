@@ -115,7 +115,8 @@ export function splitBlock(document: EditorDocument, payload: Partial<SplitBlock
   if (location.block.type === "unsupported") return failed(document, editorError("block.unsupported.split", "Unsupported block cannot be split.", payload.blockId));
   const newId = `${location.block.id}-split`;
   if (collectBlockIds(document.blocks).has(newId)) return failed(document, editorError("block.id.duplicate", `Block id '${newId}' already exists.`, newId));
-  const split = splitBlockData(location.block, payload);
+  const splitPayload: SplitBlockPayload = { blockId: payload.blockId, ...(payload.position === undefined ? {} : { position: payload.position }) };
+  const split = splitBlockData(location.block, splitPayload);
   if ("error" in split) return failed(document, split.error);
   const [left, right] = split.blocks;
   const nextSiblings = [

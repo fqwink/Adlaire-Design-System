@@ -214,7 +214,7 @@ export class HeadlessEditorController implements EditorController {
     const document = sanitizeDocument(this.#document, this.#registry);
     const validation = validateDocument(document, this.#registry);
     for (const error of validation.errors) this.#emitError(error);
-    const request = {
+    const request: SaveRequest = {
       document,
       context,
       state: { ...this.#saveState, saving: true, lastRequestedAt: new Date().toISOString() },
@@ -237,7 +237,7 @@ export class HeadlessEditorController implements EditorController {
 
   failSave(error: string): SaveState {
     this.#saveState = { ...this.#saveState, dirty: true, saving: false, error: normalizeStateError(error, "Save failed.") };
-    this.#emitError(editorError("save.failed", this.#saveState.error));
+    this.#emitError(editorError("save.failed", this.#saveState.error ?? "Save failed."));
     return this.getSaveState();
   }
 
@@ -258,7 +258,7 @@ export class HeadlessEditorController implements EditorController {
     if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.#publishState.error;
     if (this.#publishState.error !== undefined) {
       delete this.#publishState.lastCompletedAt;
-      this.#emitError(editorError("publish.failed", this.#publishState.error));
+      this.#emitError(editorError("publish.failed", this.#publishState.error ?? "Publish failed."));
       this.#events.emit({ type: "publish:failed", state: this.getPublishState() });
       return this.getPublishState();
     }
@@ -269,7 +269,7 @@ export class HeadlessEditorController implements EditorController {
   failPublish(error: string): PublishState {
     this.#publishState = { ...this.#publishState, publishing: false, error: normalizeStateError(error, "Publish failed.") };
     delete this.#publishState.lastCompletedAt;
-    this.#emitError(editorError("publish.failed", this.#publishState.error));
+    this.#emitError(editorError("publish.failed", this.#publishState.error ?? "Publish failed."));
     this.#events.emit({ type: "publish:failed", state: this.getPublishState() });
     return this.getPublishState();
   }
