@@ -64,6 +64,10 @@ The Generated output placement contract allows CSS and JavaScript files only at 
 
 Generated output names must not introduce `dist/`, `build/`, `Dist/`, `Build/`, minified CSS/JavaScript files, bundled CSS/JavaScript files, or alternate generated output directories.
 
+The TypeScript source inventory contract keeps every TypeScript source file check-covered. CSS generator sources must be listed by the CSS compiler registry, UI behavior sources must be listed by the JavaScript pair and interaction contracts, and structured editor sources must be listed by the editor runtime module registry.
+
+The Source/output/sample boundary contract keeps TypeScript sources, generated outputs, and sample-support files separate. `TypeScript/` owns source, `Tokens/`, `UI/`, and `EditorUI/` own generated outputs, and `Samples/` owns non-authoritative confirmation material only.
+
 ## Repository Structure
 
 | Path | Role |
@@ -252,7 +256,9 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 The release check must run on local `main`. It assumes the local Git consistency baseline, `git fetch backup --prune`, local `main` synchronized with `backup/main`, a clean worktree, no stale merged local branches, and no stale merged `backup/*` remote-tracking branches.
 
-Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, local Git configuration drift, stale merged branches, and post-merge release readiness.
+The Ignored local artifact policy allows only `.DS_Store` and `Work/` as ignored local artifacts during release readiness checks. Additional ignored artifacts must either become tracked source material, be removed, or be explicitly governed before release.
+
+Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, ignored local artifact policy, local Git configuration drift, stale merged branches, and post-merge release readiness.
 
 The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before the optional Deno command is invoked. When the `deno` command is available, the normal check also runs the Deno type check for TypeScript sources and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check must emit a family-labelled skip message and the report must not claim Deno type or generated CSS parity verification for that environment.
 
