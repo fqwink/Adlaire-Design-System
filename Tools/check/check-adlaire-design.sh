@@ -1885,6 +1885,35 @@ unless actual_files == expected_files
   abort("[Editor runtime structural check] TypeScript/Editor file set mismatch: #{delta}")
 end
 
+module_registry_docs = %w[
+  README.md
+  Docs/Master_Spec
+  Docs/Document_Index
+  Docs/Component_Contract_Matrix
+  Docs/Editor_Master_Spec
+]
+module_registry_docs.each do |doc|
+  text = File.read(File.join(root, doc))
+  abort("[Editor runtime module registry contract] #{doc} missing contract term") unless text.include?("Editor runtime module registry contract")
+end
+
+editor_spec = File.read(File.join(root, "Docs/Editor_Master_Spec"))
+expected_module_rows = {
+  "core.ts" => "Editor creation and runtime coordination.",
+  "document.ts" => "Structured document data and block operations.",
+  "commands.ts" => "Command definitions and command execution.",
+  "selection.ts" => "Selection model.",
+  "history.ts" => "Undo and redo history, including history reset for document replacement.",
+  "validation.ts" => "Document, command, and selection validation.",
+  "events.ts" => "Runtime events.",
+  "types.ts" => "Shared editor types.",
+  "index.ts" => "Public TypeScript entry point.",
+}
+expected_module_rows.each do |module_name, responsibility|
+  row = "| `#{module_name}` | #{responsibility} |"
+  abort("[Editor runtime module registry contract] Docs/Editor_Master_Spec missing module row: #{module_name}") unless editor_spec.include?(row)
+end
+
 exports = {
   "TypeScript/Editor/commands.ts" => ["export function applyCommand"],
   "TypeScript/Editor/core.ts" => ["export class HeadlessEditorController", "export function createEditor"],
@@ -3515,6 +3544,68 @@ required_files = required_block[1].scan(/"([^"]+)"/).flatten.sort
 target_entries = manifest.scan(/\{ path: "([^"]+)", kind: "([^"]+)", firstLine: "([^"]+)", sourceModules: \[([^\]]*)\], migrated: (true|false) \}/)
 abort("[CSS compiler registry] missing CSS_TARGETS entries in TypeScript/CSS/manifest.ts") if target_entries.empty?
 
+expected_css_targets = [
+  ["Tokens/colors.css", "token", "/* Adlaire-Design color tokens */"],
+  ["Tokens/typography.css", "token", "/* Adlaire-Design typography tokens */"],
+  ["Tokens/spacing.css", "token", "/* Adlaire-Design spacing tokens */"],
+  ["Tokens/layout.css", "token", "/* Adlaire-Design layout tokens */"],
+  ["Tokens/motion.css", "token", "/* Adlaire-Design motion tokens */"],
+  ["Tokens/layer.css", "token", "/* Adlaire-Design layer tokens */"],
+  ["Tokens/breakpoints.css", "token", "/* Adlaire-Design breakpoint tokens */"],
+  ["Tokens/surface.css", "token", "/* Adlaire-Design surface tokens */"],
+  ["Tokens/status.css", "token", "/* Adlaire-Design status tokens */"],
+  ["Tokens/effects.css", "token", "/* Adlaire-Design effect tokens */"],
+  ["UI/adlaire.css", "ui", "/* Adlaire-Design color utilities */"],
+  ["UI/base.css", "ui", "/* Adlaire-Design base styles */"],
+  ["UI/grid.css", "ui", "/* Adlaire-Design grid utilities */"],
+  ["UI/layout.css", "ui", "/* Adlaire-Design public layout */"],
+  ["UI/components.css", "ui", "/* Adlaire-Design public components */"],
+  ["UI/site.css", "ui", "/* Adlaire-Design site chrome */"],
+  ["UI/forms.css", "ui", "/* Adlaire-Design form components */"],
+  ["UI/content.css", "ui", "/* Adlaire-Design content components */"],
+  ["UI/utilities.css", "ui", "/* Adlaire-Design utility classes */"],
+  ["UI/compat-agws.css", "ui", "/* Adlaire-Design specification layer */"],
+  ["EditorUI/wysiwyg.css", "editor-ui", "/* Adlaire-Design WYSIWYG editor */"],
+]
+
+actual_css_targets = target_entries.map { |path, kind, first_line, _modules_text, migrated| [path, kind, first_line, migrated] }
+expected_css_targets_with_migration = expected_css_targets.map { |row| row + ["true"] }
+unless actual_css_targets == expected_css_targets_with_migration
+  actual_paths = actual_css_targets.map(&:first).join(", ")
+  abort("[CSS target manifest contract] CSS_TARGETS order or metadata mismatch: #{actual_paths}")
+end
+
+expected_css_targets.each do |path, _kind, first_line|
+  output_path = File.join(root, path)
+  abort("[CSS target manifest contract] missing generated CSS target: #{path}") unless File.file?(output_path)
+  actual_first_line = File.open(output_path, &:gets)&.chomp
+  abort("[CSS target manifest contract] #{path} first line must be #{first_line}") unless actual_first_line == first_line
+end
+
+generated_css_outputs = Dir.chdir(root) do
+  (Dir.glob("Tokens/*.css") + Dir.glob("UI/*.css") + Dir.glob("EditorUI/*.css")).sort
+end
+expected_css_output_set = expected_css_targets.map(&:first).sort
+unless generated_css_outputs == expected_css_output_set
+  delta = ((expected_css_output_set - generated_css_outputs) + (generated_css_outputs - expected_css_output_set)).join(", ")
+  abort("[CSS target manifest contract] generated CSS output set mismatch: #{delta}")
+end
+
+css_target_docs = %w[
+  README.md
+  Docs/Master_Spec
+  Docs/Document_Index
+  Docs/Component_Contract_Matrix
+]
+css_target_docs.each do |doc|
+  text = File.read(File.join(root, doc))
+  abort("[CSS target manifest contract] #{doc} missing contract term") unless text.include?("CSS target manifest contract")
+end
+master_spec = File.read(File.join(root, "Docs/Master_Spec"))
+expected_css_targets.each do |path, _kind, _first_line|
+  abort("[CSS target manifest contract] Docs/Master_Spec missing CSS target #{path}") unless master_spec.include?(path)
+end
+
 compiler_source_modules = target_entries.flat_map do |_output, _kind, _first_line, modules_text, _migrated|
   modules_text.scan(/"([^"]+)"/).flatten.map { |source| "TypeScript/CSS/#{source}" }
 end.uniq.sort
@@ -3679,6 +3770,8 @@ for doc_term in \
   'Generated JavaScript pair contract' \
   'JavaScript public surface contract' \
   'Sample asset/load contract' \
+  'CSS target manifest contract' \
+  'Editor runtime module registry contract' \
   'JSON development and build configuration baseline' \
   'Token category boundaries' \
   'Token family usage discipline' \

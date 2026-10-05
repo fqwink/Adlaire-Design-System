@@ -26,6 +26,8 @@
 | `types.ts` | Shared editor types. |
 | `index.ts` | Public TypeScript entry point. |
 
+The Editor runtime module registry contract keeps this table, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts` re-exports, generated `EditorUI/editor.js`, and repository checks synchronized whenever runtime modules change.
+
 The runtime keeps invalid commands from mutating document state. Duplicate block identifiers, invalid payloads, and invalid selection references are errors.
 
 ## Runtime Contract
@@ -81,4 +83,4 @@ Concrete class coverage is maintained in `Docs/WYSIWYG_Editor_UI_Catalog`.
 
 ## Checks
 
-The repository check verifies required files, generated outputs, catalog governance terms, editor runtime exports, structural runtime file/API markers, controller state APIs, module boundaries, and forbidden dependency patterns.
+The repository check verifies required files, generated outputs, catalog governance terms, editor runtime exports, structural runtime file/API markers, controller state APIs, module boundaries, the Editor runtime module registry contract, and forbidden dependency patterns.
