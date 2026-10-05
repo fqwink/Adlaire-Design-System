@@ -52,10 +52,11 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `TypeScript/UI/interaction-contracts.ts` | UI interaction contract metadata used to review declarative hooks, shared interaction primitives, event partitions, generated JavaScript targets, optional sample requirements, audit records, and synchronized state attributes. |
 | `TypeScript/EditorUI/` | WYSIWYG Editor UI JavaScript source. |
 | `TypeScript/Editor/` | Structured editor source. |
+| `TypeScript/Tests/` | Deno unit test source for CSS source-module contracts, UI contract metadata, and structured editor runtime state transitions. |
 
 ## TypeScript Source Inventory Contract
 
-The TypeScript source inventory contract keeps every `TypeScript/**/*.ts` source file listed in `Tools/check/adlaire-design-contracts.json` and check-covered by one of the source registries: the CSS compiler registry, generated JavaScript pair contract, UI interaction contract metadata, UI component contract metadata, or editor runtime module registry.
+The TypeScript source inventory contract keeps every `TypeScript/**/*.ts` source file listed in `Tools/check/adlaire-design-contracts.json` and check-covered by one of the source registries: the CSS compiler registry, generated JavaScript pair contract, UI interaction contract metadata, UI component contract metadata, editor runtime module registry, or Deno unit test target coverage.
 
 ## Documentation Structure Contract
 
@@ -69,8 +70,10 @@ The Documentation structure contract keeps `README.md` as the compact language g
 | Development configuration contract | `Docs/Master_Spec` | JSON-only settings; no YAML, npm, Node, npm-compatible package manager files, or external frontend build configuration. |
 | Generated output placement contract | `Docs/Master_Spec` | Generated CSS/JS paths in `Tools/check/adlaire-design-contracts.json`; sample-support files in `Samples/design/`. |
 | TypeScript source inventory contract | `Docs/Master_Spec` | `TypeScript/**/*.ts`, Deno type-check target coverage, Generated JavaScript pair sources, and CSS compiler source registries. |
+| Deno unit test target coverage | `Docs/Master_Spec` | `TypeScript/Tests/*.test.ts`, `Tools/check/adlaire-design-contracts.json`, and Local Docker Deno validation. |
+| Deno unit test execution | `Docs/Master_Spec` | `Tools/check/check-adlaire-design.sh`, local Docker `deno test`, and bug-fix-zero validation principle. |
 | Source/output/sample boundary contract | `Docs/Master_Spec` | `TypeScript/` source, `Tokens/`, `UI/`, `EditorUI/` generated outputs, and `Samples/` support material. |
-| CSS target manifest contract | `Docs/Master_Spec` | `TypeScript/CSS/manifest.ts`, CSS target metadata, generated CSS inventory, public CSS order, `tokenCategories`, and sample loading. |
+| CSS target manifest contract | `Docs/Master_Spec` | `TypeScript/CSS/manifest.ts`, CSS target metadata, `sourceModules`, generated CSS inventory, public CSS order, `tokenCategories`, and sample loading. |
 | Generated JavaScript pair contract | `Docs/Master_Spec` | Pair table below, generated JavaScript inventory, generated headers, and required documentation coverage. |
 | Generated JavaScript parity contract | `Docs/Master_Spec` | Parity terms in `Tools/check/adlaire-design-contracts.json`, TypeScript sources, and generated JavaScript outputs. |
 | JavaScript public surface contract | `Docs/Master_Spec` | `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, `EditorUI/editor.js`, and `window.AdlaireEditor`. |
@@ -87,6 +90,7 @@ The Documentation structure contract keeps `README.md` as the compact language g
 | Public UI CSS | `UI/adlaire.css`, `UI/base.css`, `UI/grid.css`, `UI/layout.css`, `UI/components.css`, `UI/site.css`, `UI/forms.css`, `UI/content.css`, `UI/utilities.css`, `UI/compat-agws.css` |
 | Editor UI CSS | `EditorUI/wysiwyg.css` |
 | Generated JavaScript | `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, `EditorUI/editor.js` |
+| Deno tests | `TypeScript/Tests/component-contracts.test.ts`, `TypeScript/Tests/css-contracts.test.ts`, `TypeScript/Tests/editor-runtime.test.ts` |
 | Sample support | `Samples/design/index.html`, `Samples/design/sample.css`, `Samples/design/sample.js`, `Samples/sample-current.png` |
 
 ## Generated JavaScript Pair Contract
@@ -114,26 +118,26 @@ The Generated JavaScript pair contract keeps each Deno TypeScript source, genera
 
 ## Visual Baseline
 
-`Samples/sample-current.png` is the Visual Baseline reference screenshot. Reference screenshot changes require the related source or contract change in the same review unit, and `Tools/check/adlaire-design-contracts.json` records the checked Visual Baseline hash, byte size, and documentation requirements.
+`Samples/sample-current.png` is the Visual Baseline reference screenshot. Reference screenshot changes require the related source or contract change in the same review unit, and `Tools/check/adlaire-design-contracts.json` records the checked Visual Baseline hash, byte size, Visual Baseline dimensions, and documentation requirements.
 
 ## Checks
 
 | Path | Role |
 | --- | --- |
-| `Tools/check/check-adlaire-design.sh` | Shell runner for normal and release validation, Local Docker Deno validation, local Git consistency, documentation governance, generated output parity, and stale merged branch reporting. |
-| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest for check-covered paths, Deno gates, parity terms, repository inventories, asset/documentation governance, and Visual Baseline requirements. |
+| `Tools/check/check-adlaire-design.sh` | Shell runner for normal and release validation, Local Docker Deno validation, Deno unit test execution, local Git consistency, documentation governance, generated output parity, sample accessibility references, and stale merged branch reporting. |
+| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest for check-covered paths, Deno gates, Deno unit test targets, parity terms, repository inventories, asset/documentation governance, and Visual Baseline requirements. |
 
 The shell runner covers:
 
 - Development configuration contract, Generated output placement contract, TypeScript source inventory contract, and Source/output/sample boundary contract.
-- Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, and Editor runtime module registry contract.
+- Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, and editor runtime state transitions.
 - Normal validation, release-readiness checks, local Git consistency, ignored local artifact policy, and stale merged branch reporting.
 
 The manifest records:
 
-- Deno type-check target coverage, the Deno complete validation gate, Deno required failure message, and bug-fix-zero validation principle.
+- Deno type-check target coverage, Deno unit test target coverage, Deno unit test execution, the Deno complete validation gate, Deno required failure message, and bug-fix-zero validation principle.
 - Generated JavaScript parity contract terms, `repositoryInventory`, generated CSS inventory, generated JavaScript inventory, and CSS target metadata.
-- `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Interaction audit contract coverage, and Visual Baseline hash requirements.
+- `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Interaction audit contract coverage, Visual Baseline hash requirements, and Visual Baseline dimensions.
 
 ## Operational Quality
 
@@ -144,7 +148,7 @@ The manifest records:
 | Post-merge cleanup | After a user merges a PR, the next task verifies the PR state, fetches `backup --prune`, synchronizes local `main` with `backup/main`, and deletes only the matching merged local branch for the PR just handled. Older unrelated branches are never deleted automatically. |
 | Release readiness gate | The release check must run on local `main`, allows only `.DS_Store` and `Work/` under the Ignored local artifact policy, then reports local and `backup/*` remote-tracking branches already contained in `backup/main`; additional cleanup requires an explicit scope. |
 | Validation mode contract | Normal checks validate repository governance and fixed Local Docker Deno validation; release checks additionally prove local `main`, `backup/main`, Git configuration, ignored local artifacts, and stale merged branch state. |
-| Complete Deno release evidence | Run `sh Tools/check/check-adlaire-design.sh --release-check` after PR merge cleanup. The check must execute Deno through local Docker, fixed to `denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34`, and must finish with zero known check failures and zero unresolved bugs. |
+| Complete Deno release evidence | Run `sh Tools/check/check-adlaire-design.sh --release-check` after PR merge cleanup. The check must execute Deno through local Docker, fixed to `denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34`, include Deno unit test execution, and must finish with zero known check failures and zero unresolved bugs. |
 | Product adoption surface | `Samples/design/index.html` starts with a realistic product operations dashboard before catalog confirmation sections so adoption review can see the system in context without making Samples authoritative. |
 | Layout System v2 | Meaningful layout contracts are documented in `Docs/Master_Spec`, listed in `Docs/Generic_Component_Catalog`, implemented in `TypeScript/CSS/rules-grid.ts` and `TypeScript/CSS/rules-layout.ts`, and generated to `UI/grid.css` and `UI/layout.css`. |
 | Interaction readiness | Dialog, drawer, popover, toast, progress, skeleton, data state, bulk feedback, stepper, and filter builder classes remain catalog-listed and check-covered. |

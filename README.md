@@ -30,9 +30,9 @@ Authority remains:
 | Editor specification / Editor仕様 | `Docs/Editor_Master_Spec` |
 | Check contract manifest / 検査契約マニフェスト | `Tools/check/adlaire-design-contracts.json` |
 
-The README language split must preserve these checked contracts: Source/output/sample boundary contract, CSS target manifest contract, Editor runtime module registry contract, and Visual Baseline.
+The README language split must preserve these checked contracts: Source/output/sample boundary contract, CSS target manifest contract, Editor runtime module registry contract, Deno unit test target coverage, and Visual Baseline.
 
-READMEの言語分離後も、Source/output/sample boundary contract、CSS target manifest contract、Editor runtime module registry contract、Visual Baseline は維持します。
+READMEの言語分離後も、Source/output/sample boundary contract、CSS target manifest contract、Editor runtime module registry contract、Deno unit test target coverage、Visual Baseline は維持します。
 
 ## Generated JavaScript Pair Anchor / 生成JavaScriptペアアンカー
 
@@ -46,4 +46,4 @@ READMEの言語分離後も、Source/output/sample boundary contract、CSS targe
 
 `Samples/sample-current.png` is the Visual Baseline reference screenshot.
 Reference screenshot changes require the related source or contract change in the same review unit.
-The Visual Baseline hash and byte size are listed in `Tools/check/adlaire-design-contracts.json`.
+The Visual Baseline hash, byte size, and Visual Baseline dimensions are listed in `Tools/check/adlaire-design-contracts.json`.

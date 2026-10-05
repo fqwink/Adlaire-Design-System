@@ -47,13 +47,13 @@ The full contract definitions live in `Docs/Master_Spec`; the repository invento
 | `Docs/Master_Spec` | Contract definitions and validation policy. |
 | `Docs/Document_Index` | Repository inventory, output locations, and checked governance maps. |
 | `Docs/Component_Contract_Matrix` | Family-level catalog, source, output, sample, and check synchronization. |
-| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest for paths, terms, Deno gates, parity terms, inventories, and baseline hashes. |
+| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest for paths, terms, Deno gates, Deno test targets, parity terms, inventories, and baseline hashes. |
 
 Primary contracts in `Docs/Master_Spec` include:
 
 - Development configuration contract; Generated output placement contract; TypeScript source inventory contract; Source/output/sample boundary contract.
 - CSS target manifest contract; Generated JavaScript pair contract; Generated JavaScript parity contract; JavaScript public surface contract.
-- Sample asset/load contract; Editor runtime module registry contract; Interaction audit contract; Validation mode contract.
+- Sample asset/load contract; Editor runtime module registry contract; Interaction audit contract; Deno unit test target coverage; Validation mode contract.
 
 ## Generated JavaScript Pairs
 
@@ -98,7 +98,7 @@ GitHub uses PRs to `main`, merge commits only, automatic head-branch deletion, m
 
 Checks use family-labelled diagnostics. Work is complete only when validation reaches zero known check failures and zero unresolved bugs.
 
-Complete Deno release evidence requires Local Docker Deno validation, including the Deno-backed generated CSS parity check and Deno type-check target coverage.
+Complete Deno release evidence requires Local Docker Deno validation, including the Deno-backed generated CSS parity check, Deno type-check target coverage, and Deno unit test execution.
 
 ## Samples And Visual Baseline
 
@@ -110,4 +110,4 @@ Samples remain sample-support material.
 
 `Samples/sample-current.png` is the Visual Baseline reference screenshot.
 Reference screenshot changes require the related source or contract change in the same review unit.
-The checked Visual Baseline hash and byte size stay in `Tools/check/adlaire-design-contracts.json`.
+The checked Visual Baseline hash, byte size, and Visual Baseline dimensions stay in `Tools/check/adlaire-design-contracts.json`.

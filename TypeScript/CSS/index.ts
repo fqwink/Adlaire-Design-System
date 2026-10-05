@@ -97,6 +97,6 @@ async function main(args: readonly string[]): Promise<void> {
   Deno?.exit?.(1);
 }
 
-if (typeof Deno !== "undefined") {
+if (typeof Deno !== "undefined" && import.meta.main) {
   await main(Deno.args ?? []);
 }

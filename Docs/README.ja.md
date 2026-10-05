@@ -49,13 +49,13 @@
 | `Docs/Master_Spec` | 契約定義と検査方針。 |
 | `Docs/Document_Index` | リポジトリインベントリ、出力位置、検査対象ガバナンス表。 |
 | `Docs/Component_Contract_Matrix` | ファミリー単位のカタログ、ソース、生成物、サンプル、検査同期。 |
-| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest として、path、terms、Deno gate、parity term、inventory、baseline hash を管理。 |
+| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest として、path、terms、Deno gate、Deno test target、parity term、inventory、baseline hash を管理。 |
 
 `Docs/Master_Spec` の主要契約:
 
 - Development configuration contract、Generated output placement contract、TypeScript source inventory contract、Source/output/sample boundary contract。
 - CSS target manifest contract、Generated JavaScript pair contract、Generated JavaScript parity contract、JavaScript public surface contract。
-- Sample asset/load contract、Editor runtime module registry contract、Interaction audit contract、Validation mode contract。
+- Sample asset/load contract、Editor runtime module registry contract、Interaction audit contract、Deno unit test target coverage、Validation mode contract。
 
 ## 生成JavaScriptペア
 
@@ -100,7 +100,7 @@ GitHub側は `main` へのPR、merge commits only、head branch自動削除、ma
 
 検査失敗は family-labelled diagnostics で表示します。作業完了は zero known check failures と zero unresolved bugs の状態でのみ報告します。
 
-Complete Deno release evidence には、Local Docker Deno validation、Deno-backed generated CSS parity check、Deno type-check target coverage が必要です。
+Complete Deno release evidence には、Local Docker Deno validation、Deno-backed generated CSS parity check、Deno type-check target coverage、Deno unit test execution が必要です。
 
 ## サンプルとVisual Baseline
 
@@ -112,4 +112,4 @@ Generic UI、Advanced Input and Design-System UI、Admin UI、WYSIWYG Editor UI�
 
 `Samples/sample-current.png` は Visual Baseline の参照スクリーンショットです。参照スクリーンショットの変更は、原因となるソースまたは契約変更と同じレビュー単位で扱います。
 
-検査済みの Visual Baseline hash とbyte sizeは `Tools/check/adlaire-design-contracts.json` に保持します。
+検査済みの Visual Baseline hash、byte size、Visual Baseline dimensions は `Tools/check/adlaire-design-contracts.json` に保持します。

@@ -118,6 +118,13 @@ require_unique_values(targets, "Deno type-check target")
 targets.each do |target|
   require_existing_file(root, target, "Deno type-check target")
 end
+test_targets = deno.fetch("testTargets")
+abort("[Contract manifest] Deno test targets must not be empty.") if test_targets.empty?
+require_unique_values(test_targets, "Deno test target")
+test_targets.each do |target|
+  abort("[Contract manifest] Deno test target must be TypeScript test source: #{target}") unless target.start_with?("TypeScript/Tests/") && target.end_with?(".test.ts")
+  require_existing_file(root, target, "Deno test target")
+end
 
 pairs = manifest.fetch("generatedJavaScriptPairs")
 abort("[Contract manifest] generatedJavaScriptPairs must not be empty.") if pairs.empty?
@@ -212,7 +219,7 @@ inventory_file_groups.each do |group|
   values.each { |path| require_existing_file(root, path, "repositoryInventory #{group}") }
 end
 typescript_sources_by_group = inventory.fetch("typescriptSources")
-typescript_source_groups = %w[css ui editorUi editor]
+typescript_source_groups = %w[css ui editorUi editor tests]
 missing_ts_groups = typescript_source_groups - typescript_sources_by_group.keys
 extra_ts_groups = typescript_sources_by_group.keys - typescript_source_groups
 abort("[Contract manifest] repositoryInventory typescriptSources missing groups: #{missing_ts_groups.join(", ")}") unless missing_ts_groups.empty?
@@ -222,6 +229,7 @@ typescript_group_prefixes = {
   "ui" => "TypeScript/UI/",
   "editorUi" => "TypeScript/EditorUI/",
   "editor" => "TypeScript/Editor/",
+  "tests" => "TypeScript/Tests/",
 }
 typescript_sources = typescript_source_groups.flat_map do |group|
   values = typescript_sources_by_group.fetch(group)
@@ -242,6 +250,8 @@ abort("[Contract manifest] repositoryInventory typescriptSources missing actual 
 abort("[Contract manifest] repositoryInventory typescriptSources has missing files: #{extra_ts_sources.join(", ")}") unless extra_ts_sources.empty?
 missing_deno_inventory = targets - typescript_sources
 abort("[Contract manifest] Deno type-check targets missing from TypeScript source inventory: #{missing_deno_inventory.join(", ")}") unless missing_deno_inventory.empty?
+missing_test_inventory = test_targets - typescript_sources
+abort("[Contract manifest] Deno test targets missing from TypeScript source inventory: #{missing_test_inventory.join(", ")}") unless missing_test_inventory.empty?
 missing_pair_inventory = pairs.map { |pair| pair.fetch("source") } - typescript_sources
 abort("[Contract manifest] generated JavaScript pair sources missing from TypeScript source inventory: #{missing_pair_inventory.join(", ")}") unless missing_pair_inventory.empty?
 editor_inventory_sources = typescript_sources_by_group.fetch("editor")
@@ -324,6 +334,14 @@ actual_sha256 = Digest::SHA256.file(reference_path).hexdigest
 actual_bytes = File.size(reference_path)
 abort("[Visual baseline contract] #{reference} SHA-256 mismatch: #{actual_sha256}") unless actual_sha256 == visual.fetch("sha256")
 abort("[Visual baseline contract] #{reference} size mismatch: #{actual_bytes}") unless actual_bytes == visual.fetch("bytes")
+File.open(reference_path, "rb") do |file|
+  header = file.read(24)
+  abort("[Visual baseline contract] #{reference} must be a PNG reference screenshot.") unless header && header.bytesize == 24 && header.start_with?("\x89PNG\r\n\x1a\n".b)
+  width = header[16, 4].unpack("N").first
+  height = header[20, 4].unpack("N").first
+  abort("[Visual baseline contract] #{reference} width mismatch: #{width}") unless width == visual.fetch("width")
+  abort("[Visual baseline contract] #{reference} height mismatch: #{height}") unless height == visual.fetch("height")
+end
 required_terms = visual.fetch("requiredTerms")
 required_docs = visual.fetch("requiredDocs")
 require_unique_values(required_terms, "Visual Baseline required term")
@@ -331,6 +349,15 @@ require_unique_values(required_docs, "Visual Baseline required doc")
 required_docs.each { |path| require_existing_file(root, path, "Visual Baseline required doc") }
 
 puts targets
+RUBY
+)
+
+DENO_TEST_TARGETS=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+puts manifest.fetch("denoValidation").fetch("testTargets")
 RUBY
 )
 
@@ -418,9 +445,16 @@ if find "$ROOT/TypeScript/Editor" -mindepth 1 -type d | grep . >/dev/null 2>&1; 
   fail "Editor runtime boundary" "TypeScript/Editor must stay flat."
 fi
 
+if find "$ROOT/TypeScript/Tests" -mindepth 1 -type d | grep . >/dev/null 2>&1; then
+  fail "Deno validation" "TypeScript/Tests must stay flat."
+fi
+
 require_text "AGENTS.md" "構造化設定ファイルはJSONに統一" "Development configuration policy"
 require_text "Docs/Master_Spec" "JSON is the only structured file format for development, build, generation, check, and release-check settings" "Development configuration policy"
-require_text "Docs/Master_Spec" "The Development configuration contract forbids YAML as a technology selection for development, build, generation, check, and release-check configuration" "Development configuration policy"
+require_text \
+  "Docs/Master_Spec" \
+  "The Development configuration contract forbids YAML as a technology selection for development, build, generation, check, and release-check configuration" \
+  "Development configuration policy"
 require_text "Docs/Master_Spec" "The Generated output placement contract allows CSS and JavaScript files only at the generated and sample-support paths listed in the JSON inventory" "Generated output placement contract"
 require_text "Docs/Master_Spec" "The TypeScript source inventory contract keeps every TypeScript source file listed in the JSON source inventory and check-covered" "TypeScript source inventory contract"
 require_text "Docs/Master_Spec" "The Source/output/sample boundary contract keeps TypeScript sources, generated outputs, and sample-support files separate" "Source/output/sample boundary contract"
@@ -1565,11 +1599,12 @@ if ! cmp -s "$components_ts_hooks" "$components_js_hooks"; then
   fail "Declarative UI interaction bindings" "TypeScript/UI/components.ts and UI/components.js data-adlaire hook sets differ: $(tr '\n' ' ' < "$components_hook_diff")"
 fi
 
-if grep -n -E 'const (copy|remove|toastDismiss|select|sidebarToggle|treeToggle|workspaceTab|contextMenu|splitToggle|overflowToggle|dockToggle|folderToggle|policyExceptionToggle) = source\?\.closest' "$ROOT/TypeScript/UI/components.ts" >/dev/null 2>&1; then
+component_click_bindings='copy|remove|toastDismiss|select|sidebarToggle|treeToggle|workspaceTab|contextMenu|splitToggle|overflowToggle|dockToggle|folderToggle|policyExceptionToggle'
+if grep -n -E "const (${component_click_bindings}) = source\?\.closest" "$ROOT/TypeScript/UI/components.ts" >/dev/null 2>&1; then
   fail "Declarative UI interaction bindings" "TypeScript/UI/components.ts must keep component click routing in componentClickBindings."
 fi
 
-if grep -n -E 'var (copy|remove|toastDismiss|select|sidebarToggle|treeToggle|workspaceTab|contextMenu|splitToggle|overflowToggle|dockToggle|folderToggle|policyExceptionToggle) = event\.target\.closest' "$ROOT/UI/components.js" >/dev/null 2>&1; then
+if grep -n -E "var (${component_click_bindings}) = event\.target\.closest" "$ROOT/UI/components.js" >/dev/null 2>&1; then
   fail "Declarative UI interaction bindings" "UI/components.js must keep component click routing in componentClickBindings."
 fi
 
@@ -3404,7 +3439,8 @@ hooks.each { |hook| hook_counts[hook] += 1 }
 duplicates = hook_counts.select { |_hook, count| count > 1 }.keys
 abort("[UI interaction contract metadata] duplicate hook contracts: #{duplicates.join(", ")}") unless duplicates.empty?
 missing_interaction_pairs = expected_interaction_pair_keys - interaction_pair_keys.uniq
-abort("[UI interaction contract metadata] generated JavaScript pairs without interaction contracts: #{missing_interaction_pairs.map { |source, generated| "#{source} -> #{generated}" }.join(", ")}") unless missing_interaction_pairs.empty?
+missing_interaction_pair_text = missing_interaction_pairs.map { |source, generated| "#{source} -> #{generated}" }.join(", ")
+abort("[UI interaction contract metadata] generated JavaScript pairs without interaction contracts: #{missing_interaction_pair_text}") unless missing_interaction_pairs.empty?
 
 audit_interface = source.match(/export interface UIInteractionAuditRecord \{\n(.*?)^\}/m)
 abort("[UI interaction audit contract] UIInteractionAuditRecord interface missing.") unless audit_interface
@@ -3549,8 +3585,55 @@ editor_source = File.read(File.join(root, "TypeScript/Editor/index.ts"))
 end
 RUBY
 
+ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+sample_path = File.join(root, "Samples/design/index.html")
+html = File.read(sample_path)
+
+ids = html.scan(/\bid="([^"]+)"/).flatten
+id_counts = Hash.new(0)
+ids.each { |id| id_counts[id] += 1 }
+duplicate_ids = id_counts.select { |_id, count| count > 1 }.keys
+abort("[Sample accessibility contract] Samples/design/index.html duplicate ids: #{duplicate_ids.join(", ")}") unless duplicate_ids.empty?
+
+id_lookup = {}
+ids.each { |id| id_lookup[id] = true }
+%w[aria-controls aria-labelledby aria-describedby].each do |attribute|
+  missing = html.scan(/\b#{attribute}="([^"]+)"/).flatten.flat_map { |value| value.split(/\s+/) }.reject { |id| id_lookup[id] }.uniq
+  abort("[Sample accessibility contract] Samples/design/index.html #{attribute} missing referenced ids: #{missing.join(", ")}") unless missing.empty?
+end
+
+tab_controls = html.scan(/<[^>]+\brole="tab"[^>]*>/m)
+tab_panels = html.scan(/<[^>]+\brole="tabpanel"[^>]*>/m)
+abort("[Sample accessibility contract] Samples/design/index.html must keep role=tab controls.") if tab_controls.empty?
+abort("[Sample accessibility contract] Samples/design/index.html must keep role=tabpanel panels.") if tab_panels.empty?
+
+tab_panel_ids = tab_panels.map { |tag| tag[/\bid="([^"]+)"/, 1] }.compact
+tab_ids = tab_controls.map { |tag| tag[/\bid="([^"]+)"/, 1] }.compact
+tab_controls.each do |tag|
+  id = tag[/\bid="([^"]+)"/, 1]
+  controls = tag[/\baria-controls="([^"]+)"/, 1]
+  selected = tag[/\baria-selected="([^"]+)"/, 1]
+  abort("[Sample accessibility contract] role=tab missing id: #{tag}") unless id
+  abort("[Sample accessibility contract] role=tab #{id} missing aria-controls.") unless controls
+  abort("[Sample accessibility contract] role=tab #{id} controls unknown panel: #{controls}") unless tab_panel_ids.include?(controls)
+  abort("[Sample accessibility contract] role=tab #{id} missing aria-selected.") unless %w[true false].include?(selected)
+end
+tab_panels.each do |tag|
+  id = tag[/\bid="([^"]+)"/, 1]
+  labelled_by = tag[/\baria-labelledby="([^"]+)"/, 1]
+  abort("[Sample accessibility contract] role=tabpanel missing id: #{tag}") unless id
+  abort("[Sample accessibility contract] role=tabpanel #{id} missing aria-labelledby.") unless labelled_by
+  abort("[Sample accessibility contract] role=tabpanel #{id} labelled by unknown tab: #{labelled_by}") unless tab_ids.include?(labelled_by)
+end
+RUBY
+
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
   fail "WYSIWYG Editor UI" "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-."
+fi
+
+if grep -R -n -E '(^|[^A-Za-z0-9_])eval\(|new Function\(|document\.write\(|\.innerHTML([^A-Za-z0-9_]|$)' "$ROOT/TypeScript" "$ROOT/UI" "$ROOT/EditorUI" "$ROOT/Samples/design" >/dev/null 2>&1; then
+  fail "JavaScript public surface contract" "UI sources, generated JavaScript, and samples must not use eval, new Function, document.write, or innerHTML."
 fi
 
 for css_compiler_term in \
@@ -3595,14 +3678,31 @@ required_block = manifest.match(/export const CSS_COMPILER_REQUIRED_FILES: reado
 abort("[CSS compiler registry] missing CSS_COMPILER_REQUIRED_FILES in TypeScript/CSS/manifest.ts") unless required_block
 required_files = required_block[1].scan(/"([^"]+)"/).flatten.sort
 
-target_entries = manifest.scan(/\{ path: "([^"]+)", kind: "([^"]+)", firstLine: "([^"]+)", sourceModules: \[([^\]]*)\], migrated: (true|false) \}/)
+def css_target_entries(manifest)
+  targets_block = manifest.match(/export const CSS_TARGETS: readonly CssTarget\[\] = \[(.*?)\] as const;/m)
+  abort("[CSS compiler registry] missing CSS_TARGETS in TypeScript/CSS/manifest.ts") unless targets_block
+  targets_block[1].scan(/\{\s*path: "([^"]+)",\s*kind: "([^"]+)",\s*firstLine: "([^"]+)",\s*sourceModules: \[(.*?)\],\s*migrated: (true|false),?\s*\}/m).map do |path, kind, first_line, modules_text, migrated|
+    [path, kind, first_line, modules_text.scan(/"([^"]+)"/).flatten, migrated]
+  end
+end
+
+target_entries = css_target_entries(manifest)
 abort("[CSS compiler registry] missing CSS_TARGETS entries in TypeScript/CSS/manifest.ts") if target_entries.empty?
+target_entries.each do |path, _kind, _first_line, modules, _migrated|
+  abort("[CSS compiler registry] #{path} sourceModules must not be empty.") if modules.empty?
+  module_counts = Hash.new(0)
+  modules.each { |source| module_counts[source] += 1 }
+  duplicate_modules = module_counts.select { |_source, count| count > 1 }.keys
+  abort("[CSS compiler registry] #{path} sourceModules has duplicates: #{duplicate_modules.join(", ")}") unless duplicate_modules.empty?
+  invalid_modules = modules.reject { |source| source.end_with?(".ts") }
+  abort("[CSS compiler registry] #{path} sourceModules must be TypeScript files: #{invalid_modules.join(", ")}") unless invalid_modules.empty?
+end
 
 expected_css_targets = contract_manifest.fetch("generatedCssTargets").map do |target|
   [target.fetch("path"), target.fetch("kind"), target.fetch("firstLine")]
 end
 
-actual_css_targets = target_entries.map { |path, kind, first_line, _modules_text, migrated| [path, kind, first_line, migrated] }
+actual_css_targets = target_entries.map { |path, kind, first_line, _modules, migrated| [path, kind, first_line, migrated] }
 expected_css_targets_with_migration = expected_css_targets.map { |row| row + ["true"] }
 unless actual_css_targets == expected_css_targets_with_migration
   actual_paths = actual_css_targets.map(&:first).join(", ")
@@ -3640,8 +3740,8 @@ expected_css_targets.each do |path, _kind, _first_line|
   abort("[CSS target manifest contract] Docs/Master_Spec missing CSS target #{path}") unless master_spec.include?(path)
 end
 
-compiler_source_modules = target_entries.flat_map do |_output, _kind, _first_line, modules_text, _migrated|
-  modules_text.scan(/"([^"]+)"/).flatten.map { |source| "TypeScript/CSS/#{source}" }
+compiler_source_modules = target_entries.flat_map do |_output, _kind, _first_line, modules, _migrated|
+  modules.map { |source| "TypeScript/CSS/#{source}" }
 end.uniq.sort
 missing_required_modules = compiler_source_modules - required_files
 abort("[CSS compiler registry] sourceModules missing from CSS_COMPILER_REQUIRED_FILES: #{missing_required_modules.join(", ")}") unless missing_required_modules.empty?
@@ -3684,10 +3784,10 @@ def decode_ts_template_css(part)
   part.gsub(/\\\\/, "\\")
 end
 
-target_entries.each do |output, kind, _first_line, modules_text, _migrated|
+target_entries.each do |output, kind, _first_line, modules, _migrated|
   next if kind == "token"
 
-  sources = modules_text.scan(/"([^"]+)"/).flatten.map { |source| "TypeScript/CSS/#{source}" }
+  sources = modules.map { |source| "TypeScript/CSS/#{source}" }
   css_parts = sources.reject { |source| source == "TypeScript/CSS/rules.ts" }.flat_map { |source| source_css_parts(root, source) }
   abort("[Generated CSS source] missing css template fragments for #{output}: #{sources.join(", ")}") if css_parts.empty?
 
@@ -3790,6 +3890,27 @@ abort("[Deno type-check target coverage] unexpected targets: #{extra.join(", ")}
 abort("[Deno type-check target coverage] targets missing files: #{missing_files.join(", ")}") unless missing_files.empty?
 RUBY
 
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" DENO_TEST_TARGETS="$DENO_TEST_TARGETS" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+deno_targets = ENV.fetch("DENO_TEST_TARGETS").split
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+expected_targets = manifest.fetch("denoValidation").fetch("testTargets")
+
+counts = Hash.new(0)
+deno_targets.each { |target| counts[target] += 1 }
+duplicates = counts.select { |_target, count| count > 1 }.keys
+missing = expected_targets - deno_targets
+extra = deno_targets - expected_targets
+missing_files = deno_targets.reject { |target| File.file?(File.join(root, target)) }
+
+abort("[Deno unit test target coverage] duplicate targets: #{duplicates.join(", ")}") unless duplicates.empty?
+abort("[Deno unit test target coverage] missing targets: #{missing.join(", ")}") unless missing.empty?
+abort("[Deno unit test target coverage] unexpected targets: #{extra.join(", ")}") unless extra.empty?
+abort("[Deno unit test target coverage] targets missing files: #{missing_files.join(", ")}") unless missing_files.empty?
+RUBY
+
 ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
 require "json"
 
@@ -3819,6 +3940,14 @@ reference = visual.fetch("reference")
 sample = visual.fetch("sample")
 abort("[Visual baseline contract] missing reference screenshot: #{reference}") unless File.file?(File.join(root, reference))
 abort("[Visual baseline contract] missing sample surface: #{sample}") unless File.file?(File.join(root, sample))
+File.open(File.join(root, reference), "rb") do |file|
+  header = file.read(24)
+  abort("[Visual baseline contract] #{reference} must be a PNG reference screenshot.") unless header && header.bytesize == 24 && header.start_with?("\x89PNG\r\n\x1a\n".b)
+  width = header[16, 4].unpack("N").first
+  height = header[20, 4].unpack("N").first
+  abort("[Visual baseline contract] #{reference} width mismatch: #{width}") unless width == visual.fetch("width")
+  abort("[Visual baseline contract] #{reference} height mismatch: #{height}") unless height == visual.fetch("height")
+end
 
 required_terms = visual.fetch("requiredTerms")
 visual.fetch("requiredDocs").each do |doc|
@@ -3851,6 +3980,9 @@ if ! run_deno_docker check --no-npm $DENO_TYPECHECK_TARGETS; then
 fi
 if ! run_deno_docker run --allow-read TypeScript/CSS/index.ts check-generated-css; then
   fail "Deno validation" "local Docker Deno generated CSS parity check failed; $DENO_BUG_FIX_ZERO_PRINCIPLE"
+fi
+if ! run_deno_docker test --no-npm --allow-read $DENO_TEST_TARGETS; then
+  fail "Deno validation" "local Docker Deno unit test execution failed; $DENO_BUG_FIX_ZERO_PRINCIPLE"
 fi
 
 if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then

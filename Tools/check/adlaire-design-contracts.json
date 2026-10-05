@@ -17,6 +17,11 @@
       "TypeScript/UI/content.ts",
       "TypeScript/EditorUI/wysiwyg.ts",
       "TypeScript/Editor/index.ts"
+    ],
+    "testTargets": [
+      "TypeScript/Tests/component-contracts.test.ts",
+      "TypeScript/Tests/css-contracts.test.ts",
+      "TypeScript/Tests/editor-runtime.test.ts"
     ]
   },
   "generatedJavaScriptPairs": [
@@ -384,6 +389,8 @@
       "Complete Deno release evidence",
       "Validation mode contract",
       "Local Docker Deno validation",
+      "Deno unit test target coverage",
+      "Deno unit test execution",
       "bug-fix-zero validation principle",
       "zero known check failures",
       "Product adoption surface",
@@ -397,6 +404,7 @@
       "Category naming",
       "Brand asset inventory is checked",
       "Visual Baseline",
+      "Visual Baseline dimensions",
       "Reference screenshot changes require",
       "output file unit",
       "check-covered contract",
@@ -708,6 +716,11 @@
         "TypeScript/Editor/selection.ts",
         "TypeScript/Editor/types.ts",
         "TypeScript/Editor/validation.ts"
+      ],
+      "tests": [
+        "TypeScript/Tests/component-contracts.test.ts",
+        "TypeScript/Tests/css-contracts.test.ts",
+        "TypeScript/Tests/editor-runtime.test.ts"
       ]
     },
     "requiredFiles": [
@@ -771,6 +784,7 @@
       "TypeScript/UI",
       "TypeScript/EditorUI",
       "TypeScript/Editor",
+      "TypeScript/Tests",
       "Icons",
       "Brand",
       "Samples",
@@ -783,8 +797,11 @@
     "sample": "Samples/design/index.html",
     "sha256": "e863268cc0432d9432d1fe0f0655fd1258bf26deb57b74b38475e147cf85b218",
     "bytes": 611241,
+    "width": 1440,
+    "height": 1440,
     "requiredTerms": [
       "Visual Baseline",
+      "Visual Baseline dimensions",
       "Reference screenshot changes require",
       "Samples/sample-current.png"
     ],
