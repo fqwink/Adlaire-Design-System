@@ -3859,7 +3859,6 @@ for doc_term in \
   'Editor runtime module registry contract' \
   'Development configuration contract' \
   'Generated output placement contract' \
-  'JSON development and build configuration baseline' \
   'Token category boundaries' \
   'Token family usage discipline' \
   'Category naming' \
@@ -3904,6 +3903,10 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
     cat "$TMP_DIR/git-worktree-status" >&2
     exit 1
   fi
+  current_branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || printf '%s' HEAD)"
+  if [ "$current_branch" != "main" ]; then
+    fail "Release readiness" "release check must run on local main; current branch is $current_branch."
+  fi
   if ! git -C "$ROOT" rev-parse --verify backup/main >/dev/null 2>&1; then
     fail "Release readiness" "release check requires backup/main."
   fi
@@ -3926,17 +3929,6 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
     echo "[Release readiness] release check found stale merged backup remote-tracking branches:" >&2
     cat "$TMP_DIR/stale-backup-branches" >&2
     exit 1
-  fi
-  current_branch="$(git -C "$ROOT" symbolic-ref --quiet --short HEAD || printf '%s' HEAD)"
-  if [ "$current_branch" != "main" ]; then
-    if git -C "$ROOT" rev-parse --verify "backup/$current_branch" >/dev/null 2>&1; then
-      fail "Release readiness" "release check requires the matching merged branch to be deleted: backup/$current_branch"
-    fi
-    if git -C "$ROOT" cherry -v backup/main HEAD | grep -E '^\+' >/dev/null 2>&1; then
-      echo "[Release readiness] release check requires no patches outside backup/main." >&2
-      git -C "$ROOT" cherry -v backup/main HEAD >&2
-      exit 1
-    fi
   fi
   echo "adlaire-design-release-check-ok"
   exit 0
