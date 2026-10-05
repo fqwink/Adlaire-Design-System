@@ -50,6 +50,8 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 The Generated JavaScript pair contract keeps each Deno TypeScript source, generated JavaScript file, generated file header, and documentation row synchronized. The Deno type-check target coverage keeps the normal type-check target list explicit and check-covered before optional Deno execution.
 
+The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` loadable without bundling and keeps `window.AdlaireEditor` exposed by the structured editor runtime.
+
 ## Assets and Samples
 
 | Path | Role |
@@ -58,14 +60,14 @@ The Generated JavaScript pair contract keeps each Deno TypeScript source, genera
 | `Brand/` | Brand assets. |
 | `Brand/README.md` | Brand asset rules. |
 | `Samples/README.md` | Sample rules and coverage. |
-| `Samples/design/` | Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, official 1520 SVG icons, Tokens, Brand, and sample-only state toggles. |
+| `Samples/design/` | Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, official 1520 SVG icons, Tokens, Brand, Sample asset/load contract, JavaScript public surface contract, and sample-only state toggles. |
 | `Samples/*.png`, `Samples/*.webp` | Supporting screenshots. |
 
 ## Checks
 
 | Path | Role |
 | --- | --- |
-| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Deno-backed generated CSS parity check, Deno type-check target coverage, generated JavaScript hooks, Generated JavaScript pair contract, CSS variable, sample coverage, asset, local Git consistency, stale merged branch, and release checks. |
+| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Deno-backed generated CSS parity check, Deno type-check target coverage, generated JavaScript hooks, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS variable, sample coverage, asset, local Git consistency, stale merged branch, and release checks. |
 
 ## Operational Quality
 
