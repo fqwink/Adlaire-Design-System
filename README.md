@@ -54,6 +54,12 @@ The Generated JavaScript pair contract keeps each TypeScript source, generated J
 | `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` |
 | `TypeScript/Editor/index.ts` | `EditorUI/editor.js` |
 
+## Sample And JavaScript Surface
+
+The Sample asset/load contract keeps `Samples/design/index.html` aligned with the public CSS order, WYSIWYG CSS, generated JavaScript order, and sample-only support files.
+
+The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` loadable without bundling. The structured editor runtime exposes `window.AdlaireEditor`.
+
 ## Checks
 
 Repository work starts with `AGENTS.md`, `git fetch backup --prune`, and a local/remote consistency check. The local Git consistency baseline uses automatic pruning, fast-forward-only pulls, `backup` as the default push remote, the current branch as the default push target, and automatic upstream setup. GitHub accepts merge commits only, requires PRs for `main`, automatically deletes merged head branches, and blocks force pushes and deletion of `main`.
@@ -64,7 +70,7 @@ Run the normal repository check:
 sh Tools/check/check-adlaire-design.sh
 ```
 
-The normal check verifies the Generated JavaScript pair contract and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
+The normal check verifies the Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
 
 Run the release check only after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift and stale merged local or `backup/*` remote-tracking branches:
 

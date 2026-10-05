@@ -31,6 +31,12 @@ Update the screenshot only when the rendered showcase intentionally changes. A s
 
 The showcase groups the current system into Overview, Tokens, Components, Advanced Input and Design-System UI, Admin, WYSIWYG, Icons, Brand, and operational quality sections so visual review follows the same boundaries as the catalogs. The sample script may toggle representative states for review, but it does not define production behavior.
 
+## Load Contract
+
+The Sample asset/load contract keeps `Samples/design/index.html` aligned with the public CSS load order from `Docs/Master_Spec`, then `EditorUI/wysiwyg.css`, `Samples/design/sample.css`, generated JavaScript, and `Samples/design/sample.js`.
+
+The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` loadable without bundling. `EditorUI/editor.js` exposes `window.AdlaireEditor` for structured editor runtime confirmation.
+
 ## Update Rules
 
 - Samples may be updated only as supporting material.

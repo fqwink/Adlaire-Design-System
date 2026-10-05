@@ -3349,6 +3349,117 @@ pairs.each do |pair|
 end
 RUBY
 
+ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+sample = File.join(root, "Samples/design/index.html")
+html = File.read(sample)
+sample_dir = File.dirname(sample)
+
+expected_styles = %w[
+  ../../Tokens/colors.css
+  ../../Tokens/typography.css
+  ../../Tokens/spacing.css
+  ../../Tokens/layout.css
+  ../../Tokens/motion.css
+  ../../Tokens/layer.css
+  ../../Tokens/breakpoints.css
+  ../../Tokens/surface.css
+  ../../Tokens/status.css
+  ../../Tokens/effects.css
+  ../../UI/adlaire.css
+  ../../UI/base.css
+  ../../UI/grid.css
+  ../../UI/layout.css
+  ../../UI/components.css
+  ../../UI/site.css
+  ../../UI/forms.css
+  ../../UI/content.css
+  ../../UI/utilities.css
+  ../../UI/compat-agws.css
+  ../../EditorUI/wysiwyg.css
+  ./sample.css
+]
+
+expected_scripts = %w[
+  ../../UI/components.js
+  ../../UI/forms.js
+  ../../UI/content.js
+  ../../EditorUI/editor.js
+  ../../EditorUI/wysiwyg.js
+  ./sample.js
+]
+
+styles = html.scan(/<link rel="stylesheet" href="([^"]+)">/).flatten
+abort("[Sample asset/load contract] Samples/design/index.html stylesheet order mismatch: #{styles.join(", ")}") unless styles == expected_styles
+
+scripts = html.scan(/<script src="([^"]+)"([^>]*)><\/script>/)
+script_sources = scripts.map(&:first)
+abort("[Sample asset/load contract] Samples/design/index.html script order mismatch: #{script_sources.join(", ")}") unless script_sources == expected_scripts
+missing_defer = scripts.reject { |_source, attributes| attributes.include?("defer") }.map(&:first)
+abort("[Sample asset/load contract] sample scripts must all use defer: #{missing_defer.join(", ")}") unless missing_defer.empty?
+
+(styles + script_sources).each do |relative|
+  resolved = File.expand_path(relative, sample_dir)
+  unless resolved.start_with?(root + File::SEPARATOR) && File.file?(resolved)
+    abort("[Sample asset/load contract] sample references missing repository file: #{relative}")
+  end
+end
+
+public_surface_markers = {
+  "UI/components.js" => [
+    'document.addEventListener("click"',
+    'document.addEventListener("keydown"',
+    'document.addEventListener("input"',
+    'safeDocumentQueryAll("[data-adlaire-resizable-panel]")',
+  ],
+  "UI/forms.js" => [
+    'document.addEventListener("input"',
+    'document.addEventListener("click"',
+    'document.addEventListener("change"',
+    'document.addEventListener("keydown"',
+    'document.addEventListener("reset"',
+    "initializeFormState();",
+  ],
+  "UI/content.js" => [
+    'document.addEventListener("click"',
+    'document.addEventListener("keydown"',
+    "initializeSortState();",
+    "initializeCopyStatus();",
+    "initializeTocState();",
+    "initializeCodeLineState();",
+  ],
+  "EditorUI/wysiwyg.js" => [
+    'document.addEventListener("click"',
+    'document.addEventListener("keydown"',
+    "initializeWysiwygState();",
+    'safeScopedQueryAll(document, "[data-adlaire-wysiwyg-toggle][aria-expanded]")',
+  ],
+  "EditorUI/editor.js" => [
+    "window.AdlaireEditor = {",
+    "HeadlessEditorController: HeadlessEditorController",
+    "createEditor: function (config)",
+    "validateDocumentAsync: validateDocumentAsync",
+  ],
+}
+
+public_surface_markers.each do |file, markers|
+  text = File.read(File.join(root, file))
+  markers.each do |marker|
+    abort("[JavaScript public surface contract] #{file} missing public marker: #{marker}") unless text.include?(marker)
+  end
+end
+
+editor_source = File.read(File.join(root, "TypeScript/Editor/index.ts"))
+%w[
+  export\ const\ AdlaireEditor
+  browserGlobal.window.AdlaireEditor\ =\ AdlaireEditor
+  validateDocumentAsync
+].each do |escaped_marker|
+  marker = escaped_marker.gsub("\\ ", " ")
+  abort("[JavaScript public surface contract] TypeScript/Editor/index.ts missing public marker: #{marker}") unless editor_source.include?(marker)
+end
+RUBY
+
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
   fail "WYSIWYG Editor UI" "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-."
 fi
@@ -3566,6 +3677,8 @@ for doc_term in \
   'Deno-backed generated CSS parity check' \
   'Deno type-check target coverage' \
   'Generated JavaScript pair contract' \
+  'JavaScript public surface contract' \
+  'Sample asset/load contract' \
   'JSON development and build configuration baseline' \
   'Token category boundaries' \
   'Token family usage discipline' \
