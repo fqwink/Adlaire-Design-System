@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_INDUSTRY_CONTENT_CSS = `.adlaire-editorial-calendar,
+export const COMPONENTS_OPERATIONS_INDUSTRY_CONTENT_CSS =
+  `.adlaire-editorial-calendar,
 .adlaire-draft-status-board,
 .adlaire-review-gate-panel,
 .adlaire-media-library-panel,

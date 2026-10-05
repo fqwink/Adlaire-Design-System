@@ -1,5 +1,11 @@
-import { CSS_TARGETS, CSS_COMPILER_REQUIRED_FILES, FORBIDDEN_CSS_COMPILER_PATHS, cssCompilerSourceModules, cssTargetPaths } from "./manifest.ts";
-import { renderCssFile, type GeneratedCssFile } from "./emit.ts";
+import {
+  CSS_COMPILER_REQUIRED_FILES,
+  CSS_TARGETS,
+  cssCompilerSourceModules,
+  cssTargetPaths,
+  FORBIDDEN_CSS_COMPILER_PATHS,
+} from "./manifest.ts";
+import { type GeneratedCssFile, renderCssFile } from "./emit.ts";
 
 export * from "./manifest.ts";
 export * from "./tokens.ts";
@@ -44,7 +50,9 @@ function printLine(line: string): void {
   globalThis.console.log(line);
 }
 
-async function writeGeneratedCss(files: readonly GeneratedCssFile[]): Promise<void> {
+async function writeGeneratedCss(
+  files: readonly GeneratedCssFile[],
+): Promise<void> {
   if (typeof Deno === "undefined" || !Deno.writeTextFile) {
     throw new Error("generate-css requires Deno.writeTextFile.");
   }
@@ -53,7 +61,9 @@ async function writeGeneratedCss(files: readonly GeneratedCssFile[]): Promise<vo
   }
 }
 
-async function checkGeneratedCss(files: readonly GeneratedCssFile[]): Promise<number> {
+async function checkGeneratedCss(
+  files: readonly GeneratedCssFile[],
+): Promise<number> {
   if (typeof Deno === "undefined" || !Deno.readTextFile) {
     throw new Error("check-generated-css requires Deno.readTextFile.");
   }
@@ -93,10 +103,12 @@ async function main(args: readonly string[]): Promise<void> {
     return;
   }
 
-  printLine("usage: deno run --allow-read --allow-write TypeScript/CSS/index.ts [--list|generate-css|check-generated-css]");
+  printLine(
+    "usage: deno run --allow-read --allow-write TypeScript/CSS/index.ts [--list|generate-css|check-generated-css]",
+  );
   Deno?.exit?.(1);
 }
 
-if (typeof Deno !== "undefined") {
+if (typeof Deno !== "undefined" && import.meta.main) {
   await main(Deno.args ?? []);
 }

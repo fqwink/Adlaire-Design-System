@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_BUSINESS_GOVERNANCE_CSS = `.adlaire-key-result-tracker,
+export const COMPONENTS_OPERATIONS_BUSINESS_GOVERNANCE_CSS =
+  `.adlaire-key-result-tracker,
 .adlaire-initiative-map,
 .adlaire-confidence-indicator,
 .adlaire-review-cadence,

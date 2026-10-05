@@ -6,10 +6,14 @@
     "dockerImage": "denoland/deno:2.1.4",
     "dockerDigest": "sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34",
     "dockerReference": "denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34",
-    "requiredFailureMessage": "local Docker Deno validation requires Docker and denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34 for complete TypeScript and generated CSS parity evidence.",
+    "requiredFailureMessage": "local Docker Deno validation requires Docker and denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34 for complete TypeScript formatting, type checking, generated CSS parity, generated JavaScript integrity, and unit test evidence.",
     "bugFixZeroPrinciple": "Validation must finish with zero known check failures and zero unresolved bugs before completion is reported.",
+    "formatTargets": [
+      "TypeScript"
+    ],
     "typeCheckTargets": [
       "TypeScript/CSS/index.ts",
+      "TypeScript/JavaScript/index.ts",
       "TypeScript/UI/components.ts",
       "TypeScript/UI/component-contracts.ts",
       "TypeScript/UI/interaction-contracts.ts",
@@ -17,6 +21,12 @@
       "TypeScript/UI/content.ts",
       "TypeScript/EditorUI/wysiwyg.ts",
       "TypeScript/Editor/index.ts"
+    ],
+    "testTargets": [
+      "TypeScript/Tests/component-contracts.test.ts",
+      "TypeScript/Tests/css-contracts.test.ts",
+      "TypeScript/Tests/editor-runtime.test.ts",
+      "TypeScript/Tests/javascript-contracts.test.ts"
     ]
   },
   "generatedJavaScriptPairs": [
@@ -25,6 +35,8 @@
       "source": "TypeScript/UI/components.ts",
       "generated": "UI/components.js",
       "header": "/* Adlaire-Design component interactions */",
+      "bytes": 52834,
+      "sha256": "31fbb1cc9bf92b37810681e2e69584d2bbcd817269ca07c712949d6dacd0a268",
       "parityTerms": [
         "data-adlaire-toggle",
         "data-adlaire-dismiss",
@@ -42,6 +54,8 @@
       "source": "TypeScript/UI/forms.ts",
       "generated": "UI/forms.js",
       "header": "/* Adlaire-Design form interactions */",
+      "bytes": 34519,
+      "sha256": "94fc7bb67f61856285cbe6ab6dbe415f85d8638e695f3468dad2884ff79e9ac7",
       "parityTerms": [
         "data-adlaire-filter-input",
         "data-adlaire-combobox-input",
@@ -59,6 +73,8 @@
       "source": "TypeScript/UI/content.ts",
       "generated": "UI/content.js",
       "header": "/* Adlaire-Design content interactions */",
+      "bytes": 13864,
+      "sha256": "4e3039f30f9c1fbed737250e991b405d86bccc2ac8dc71a0f29e3d7820785721",
       "parityTerms": [
         "data-adlaire-sort",
         "data-adlaire-code-copy",
@@ -74,6 +90,8 @@
       "source": "TypeScript/EditorUI/wysiwyg.ts",
       "generated": "EditorUI/wysiwyg.js",
       "header": "/* Adlaire-Design WYSIWYG editor interactions */",
+      "bytes": 14706,
+      "sha256": "499e4d58d8ab067f1b930862342225789ca497ea57bdaa5378234fb61f13b0a3",
       "parityTerms": [
         "data-adlaire-wysiwyg-mode",
         "data-adlaire-wysiwyg-toggle",
@@ -90,6 +108,8 @@
       "source": "TypeScript/Editor/index.ts",
       "generated": "EditorUI/editor.js",
       "header": "/* Adlaire-Design editor core */",
+      "bytes": 52596,
+      "sha256": "4764721f79afbc627e198330d1ff9990e1c8f097d185f98a3ef610beaf635d15",
       "parityTerms": [
         "AdlaireEditor",
         "HeadlessEditorController",
@@ -104,7 +124,7 @@
   ],
   "contractCoverage": {
     "minimumComponentContractCount": 31,
-    "minimumInteractionContractCount": 99,
+    "minimumInteractionContractCount": 103,
     "requiredComponentCoverage": [
       "catalog",
       "sample"
@@ -361,10 +381,12 @@
       "stale merged branch",
       "family-labelled diagnostics",
       "Deno-backed generated CSS parity check",
+      "Deno-backed generated JavaScript integrity check",
       "Deno type-check target coverage",
       "Deno complete validation gate",
       "Generated JavaScript pair contract",
       "Generated JavaScript parity contract",
+      "Generated JavaScript integrity contract",
       "Interaction audit contract",
       "JavaScript public surface contract",
       "Sample asset/load contract",
@@ -384,6 +406,8 @@
       "Complete Deno release evidence",
       "Validation mode contract",
       "Local Docker Deno validation",
+      "Deno unit test target coverage",
+      "Deno unit test execution",
       "bug-fix-zero validation principle",
       "zero known check failures",
       "Product adoption surface",
@@ -397,6 +421,8 @@
       "Category naming",
       "Brand asset inventory is checked",
       "Visual Baseline",
+      "Visual Baseline dimensions",
+      "Visual Baseline capture procedure",
       "Reference screenshot changes require",
       "output file unit",
       "check-covered contract",
@@ -688,6 +714,10 @@
         "TypeScript/CSS/targets.ts",
         "TypeScript/CSS/tokens.ts"
       ],
+      "javascript": [
+        "TypeScript/JavaScript/index.ts",
+        "TypeScript/JavaScript/manifest.ts"
+      ],
       "ui": [
         "TypeScript/UI/component-contracts.ts",
         "TypeScript/UI/components.ts",
@@ -708,6 +738,12 @@
         "TypeScript/Editor/selection.ts",
         "TypeScript/Editor/types.ts",
         "TypeScript/Editor/validation.ts"
+      ],
+      "tests": [
+        "TypeScript/Tests/component-contracts.test.ts",
+        "TypeScript/Tests/css-contracts.test.ts",
+        "TypeScript/Tests/editor-runtime.test.ts",
+        "TypeScript/Tests/javascript-contracts.test.ts"
       ]
     },
     "requiredFiles": [
@@ -768,9 +804,11 @@
       "EditorUI",
       "TypeScript",
       "TypeScript/CSS",
+      "TypeScript/JavaScript",
       "TypeScript/UI",
       "TypeScript/EditorUI",
       "TypeScript/Editor",
+      "TypeScript/Tests",
       "Icons",
       "Brand",
       "Samples",
@@ -783,8 +821,12 @@
     "sample": "Samples/design/index.html",
     "sha256": "e863268cc0432d9432d1fe0f0655fd1258bf26deb57b74b38475e147cf85b218",
     "bytes": 611241,
+    "width": 1440,
+    "height": 1440,
     "requiredTerms": [
       "Visual Baseline",
+      "Visual Baseline dimensions",
+      "Visual Baseline capture procedure",
       "Reference screenshot changes require",
       "Samples/sample-current.png"
     ],
@@ -793,6 +835,13 @@
       "Docs/Master_Spec",
       "Docs/Document_Index",
       "Samples/README.md"
-    ]
+    ],
+    "procedure": {
+      "captureSurface": "Samples/design/index.html",
+      "viewportWidth": 1440,
+      "viewportHeight": 1440,
+      "reviewUnit": "Reference screenshot changes require the related source or contract change in the same review unit.",
+      "evidenceMode": "local browser visual review"
+    }
   }
 }

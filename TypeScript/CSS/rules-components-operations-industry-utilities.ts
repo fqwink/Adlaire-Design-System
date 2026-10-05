@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_INDUSTRY_UTILITIES_CSS = `.adlaire-demand-response-panel,
+export const COMPONENTS_OPERATIONS_INDUSTRY_UTILITIES_CSS =
+  `.adlaire-demand-response-panel,
 .adlaire-grid-event-timeline,
 .adlaire-service-appointment-board,
 .adlaire-waste-pickup-schedule,

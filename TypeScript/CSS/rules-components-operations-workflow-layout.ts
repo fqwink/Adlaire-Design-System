@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_WORKFLOW_LAYOUT_CSS = `.adlaire-section-header,
+export const COMPONENTS_OPERATIONS_WORKFLOW_LAYOUT_CSS =
+  `.adlaire-section-header,
 .adlaire-section-action-bar,
 .adlaire-content-group,
 .adlaire-summary-rail,

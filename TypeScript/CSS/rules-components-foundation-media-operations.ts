@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_MEDIA_OPERATIONS_CSS = `.adlaire-monitoring-card,
+export const COMPONENTS_FOUNDATION_MEDIA_OPERATIONS_CSS =
+  `.adlaire-monitoring-card,
 .adlaire-deployment-card,
 .adlaire-team-card {
   display: grid;

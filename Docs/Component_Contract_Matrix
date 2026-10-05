@@ -14,6 +14,8 @@ Contract definitions live in `Docs/Master_Spec`. This matrix records which catal
 
 `TypeScript/UI/interaction-contracts.ts` records UI interaction contract metadata as TypeScript source metadata. It keeps declarative hooks, shared interaction primitives, source files, generated JavaScript targets, generated parity, event partitions, input modality, optional sample requirements, audit records, state attributes, fallback policies, and state scopes synchronized across public components, forms, content, and WYSIWYG UI.
 
+`TypeScript/Tests/` records Deno unit tests for high-value repository contracts. Deno unit test target coverage and Deno unit test execution verify CSS target metadata, CSS source modules, component and interaction metadata, and editor runtime state transitions without creating a new authority layer.
+
 ## Contract Matrix
 
 | Family | Catalog / spec | CSS source | Generated CSS | JavaScript source | Generated JavaScript | Sample coverage | Check coverage |
@@ -45,9 +47,10 @@ Contract definitions live in `Docs/Master_Spec`. This matrix records which catal
 | Git Provider UI | `Docs/Generic_Component_Catalog`, `Docs/Icon_Set_Catalog` | `TypeScript/CSS/rules-components.ts` | `UI/components.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | required classes, GitHub product classes, icon inventory, sample coverage |
 | Cloud / Infrastructure UI | `Docs/Generic_Component_Catalog`, `Docs/Icon_Set_Catalog` | `TypeScript/CSS/rules-components.ts` | `UI/components.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | required classes, cloud infrastructure classes, icon inventory, sample coverage |
 | WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | `TypeScript/CSS/rules-wysiwyg.ts` | `EditorUI/wysiwyg.css` | `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` | `Samples/design/index.html` | required classes, JavaScript hooks, sample coverage, CSS target manifest contract, JavaScript public surface contract, Sample asset/load contract |
-| Editor runtime | `Docs/Editor_Master_Spec` | Not CSS-owned | `EditorUI/editor.js` runtime output | `TypeScript/Editor/index.ts` | `EditorUI/editor.js` | Demonstrated through WYSIWYG sample states | module exports, module boundaries, Editor runtime module registry contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract |
+| Editor runtime | `Docs/Editor_Master_Spec` | Not CSS-owned | `EditorUI/editor.js` runtime output | `TypeScript/Editor/index.ts` | `EditorUI/editor.js` | Demonstrated through WYSIWYG sample states | module exports, module boundaries, Editor runtime module registry contract, editor runtime state transitions, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract |
 | Tokens | `Docs/Master_Spec` | `TypeScript/CSS/tokens.ts` | `Tokens/*.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | generated token CSS, token inventory, duplicate tokens, undefined variables, CSS target manifest contract |
 | Icons and brand | `Docs/Icon_Set_Catalog`, `Docs/Brand_Asset_Catalog` | Asset files | `Icons/`, `Brand/` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | icon count, asset inventory |
+| Deno contract tests | `Docs/Master_Spec` | Not CSS-owned | Not CSS-owned | `TypeScript/Tests/*.test.ts` | Not generated | Not sample-owned | Deno unit test target coverage, Deno unit test execution |
 
 ## Representative Subcontracts
 

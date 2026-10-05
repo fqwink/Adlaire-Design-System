@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_CORE_BASE_CSS = `/* Adlaire-Design public components */
+export const COMPONENTS_FOUNDATION_CORE_BASE_CSS =
+  `/* Adlaire-Design public components */
 .adlaire-card {
   background-color: var(--adlaire-surface-card);
   border: 1px solid var(--adlaire-surface-border);

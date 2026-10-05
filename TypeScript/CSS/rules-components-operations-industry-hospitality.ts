@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_INDUSTRY_HOSPITALITY_CSS = `.adlaire-booking-summary-panel,
+export const COMPONENTS_OPERATIONS_INDUSTRY_HOSPITALITY_CSS =
+  `.adlaire-booking-summary-panel,
 .adlaire-trip-status-timeline,
 .adlaire-room-inventory-board,
 .adlaire-amenity-request-queue,

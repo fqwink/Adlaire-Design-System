@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_BUSINESS_INDUSTRY_CSS = `.adlaire-shipment-tracker,
+export const COMPONENTS_OPERATIONS_BUSINESS_INDUSTRY_CSS =
+  `.adlaire-shipment-tracker,
 .adlaire-delivery-route-board,
 .adlaire-exception-queue,
 .adlaire-quality-inspection-panel,

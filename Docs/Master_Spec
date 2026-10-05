@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.152
+Version: rev.153
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -25,6 +25,7 @@ The system must also show a Product adoption surface: a realistic product-operat
 | Declarative UI interaction contract metadata | `TypeScript/UI/interaction-contracts.ts` |
 | Catalog sources | `Docs/*_Catalog` |
 | TypeScript implementation source | `TypeScript/` |
+| TypeScript validation source | `TypeScript/Tests/` |
 | Generated CSS | `Tokens/`, `UI/`, `EditorUI/wysiwyg.css` |
 | Generated JavaScript | `UI/*.js`, `EditorUI/*.js` |
 | Asset sources | `Icons/`, `Brand/` |
@@ -84,7 +85,7 @@ The Generated output placement contract allows CSS and JavaScript files only at 
 
 Generated output names must not introduce `dist/`, `build/`, `Dist/`, `Build/`, minified CSS/JavaScript files, bundled CSS/JavaScript files, or alternate generated output directories.
 
-The TypeScript source inventory contract keeps every TypeScript source file listed in the JSON source inventory and check-covered. CSS generator sources must be listed by the CSS compiler registry, UI behavior sources must be listed by the JavaScript pair and interaction contracts, and structured editor sources must be listed by the editor runtime module registry.
+The TypeScript source inventory contract keeps every TypeScript source file listed in the JSON source inventory and check-covered. CSS generator sources must be listed by the CSS compiler registry, UI behavior sources must be listed by the JavaScript pair and interaction contracts, structured editor sources must be listed by the editor runtime module registry, and Deno test sources must be listed by Deno unit test target coverage.
 
 The Source/output/sample boundary contract keeps TypeScript sources, generated outputs, and sample-support files separate. `TypeScript/` owns source, `Tokens/`, `UI/`, and `EditorUI/` own generated outputs, and `Samples/` owns non-authoritative confirmation material only.
 
@@ -97,6 +98,7 @@ The Source/output/sample boundary contract keeps TypeScript sources, generated o
 | `UI/` | Public UI CSS and JavaScript outputs. |
 | `EditorUI/` | WYSIWYG Editor UI CSS/JavaScript and editor runtime output. |
 | `TypeScript/` | Deno TypeScript source. |
+| `TypeScript/Tests/` | Deno unit test source for repository-local contracts. |
 | `Icons/` | Official 1520 SVG icons. |
 | `Brand/` | Brand assets. |
 | `Samples/` | Supporting confirmation samples. |
@@ -145,7 +147,7 @@ CSS load order for public surfaces is:
 
 `Tokens/colors.css`, `Tokens/typography.css`, `Tokens/spacing.css`, `Tokens/layout.css`, `Tokens/motion.css`, `Tokens/layer.css`, `Tokens/breakpoints.css`, `Tokens/surface.css`, `Tokens/status.css`, `Tokens/effects.css`, then `UI/adlaire.css`, `UI/base.css`, `UI/grid.css`, `UI/layout.css`, `UI/components.css`, `UI/site.css`, `UI/forms.css`, `UI/content.css`, `UI/utilities.css`, `UI/compat-agws.css`.
 
-The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, generated CSS output files, generated first-line headers, public CSS order, sample loading, and documentation synchronized as one output registry.
+The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS` sourceModules, generated CSS output files, generated first-line headers, public CSS order, sample loading, and documentation synchronized as one output registry.
 
 The Sample asset/load contract keeps `Samples/design/index.html` aligned with the JSON sample load order for public CSS, WYSIWYG CSS, generated JavaScript, and sample-only support files.
 
@@ -159,10 +161,13 @@ UI JavaScript is generated from Deno TypeScript and kept responsibility-based.
 | `UI/forms.js` | `TypeScript/UI/forms.ts` | Form behavior. |
 | `UI/content.js` | `TypeScript/UI/content.ts` | Content behavior. |
 | UI interaction contract metadata | `TypeScript/UI/interaction-contracts.ts` | Checked source metadata for declarative UI hooks, shared interaction primitives, generated JavaScript targets, optional sample coverage, and synchronized state attributes; this file is not generated JavaScript output. |
+| Generated JavaScript integrity contract | `TypeScript/JavaScript/index.ts`, `TypeScript/JavaScript/manifest.ts` | Deno TypeScript metadata and `check-generated-js` command for generated JavaScript headers, byte sizes, SHA-256 hashes, source pairs, and parity terms. |
 | `EditorUI/wysiwyg.js` | `TypeScript/EditorUI/wysiwyg.ts` | WYSIWYG Editor UI behavior. |
 | `EditorUI/editor.js` | `TypeScript/Editor/index.ts` | Structured editor runtime output. |
 
 The Generated JavaScript pair contract requires each generated JavaScript output to keep its Deno TypeScript source, generated output path, generated file header, `Docs/Master_Spec`, `Docs/Document_Index`, `Docs/Component_Contract_Matrix`, and `README.md` synchronized as a single review unit.
+
+The Generated JavaScript integrity contract records generated JavaScript byte sizes and SHA-256 hashes in both `Tools/check/adlaire-design-contracts.json` and `TypeScript/JavaScript/manifest.ts`. The Deno-backed generated JavaScript integrity check runs `check-generated-js` through the fixed local Docker Deno path and fails when any generated output header, byte count, or hash drifts.
 
 The JavaScript public surface contract keeps the generated behavior files loadable without bundling: `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` are loaded by the sample in that order before `Samples/design/sample.js`. Public UI behavior owns delegated document listeners and initialization state, while the structured editor runtime exposes `window.AdlaireEditor`.
 
@@ -264,7 +269,7 @@ Checks keep representative sample coverage for Layout System v2, operational fee
 
 `Samples/sample-current.png` is the reference screenshot for human visual review. It is updated only with the related sample, catalog, token, CSS, JavaScript, or check change that intentionally changes the rendered showcase.
 
-The Visual Baseline contract records `Samples/sample-current.png`, its hash and byte size, `Samples/design/index.html`, and the required documentation terms in `Tools/check/adlaire-design-contracts.json`. Reference screenshot changes require the related source or contract change in the same review unit.
+The Visual Baseline contract records `Samples/sample-current.png`, its hash, byte size, Visual Baseline dimensions, `Samples/design/index.html`, and the Visual Baseline capture procedure in `Tools/check/adlaire-design-contracts.json`. Reference screenshot changes require the related source or contract change in the same review unit.
 
 ## Checks
 
@@ -286,19 +291,19 @@ The Validation mode contract keeps normal checks and release readiness checks di
 
 The Ignored local artifact policy allows only `.DS_Store` and `Work/` as ignored local artifacts during release readiness checks. Additional ignored artifacts must either become tracked source material, be removed, or be explicitly governed before release.
 
-Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, Local Docker Deno validation, `assetInventory`, `documentationGovernance`, ignored local artifact policy, local Git consistency drift, stale merged branches, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, sample accessibility references, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the Generated JavaScript integrity contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract sourceModules, the Editor runtime module registry contract, editor runtime state transitions, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, Local Docker Deno validation, Deno format target coverage, Deno format execution, Deno unit test target coverage, Deno unit test execution, Deno-backed generated JavaScript integrity check, `assetInventory`, `documentationGovernance`, Visual Baseline dimensions, Visual Baseline capture procedure, ignored local artifact policy, local Git consistency drift, stale merged branches, and post-merge release readiness.
 
 `Docs/Document_Index` inventories where those contracts appear. `Docs/Component_Contract_Matrix` maps which catalog, source, generated output, sample, and check surface must move together for each component family.
 
-The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before Docker execution. Deno execution is fixed to local Docker and must use `denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34`. The repository check must not use host `deno`; missing Docker, Docker startup failure, Deno type-check failure, or generated CSS parity failure is a failed validation.
+The Deno format target coverage keeps the `deno fmt --check` target list explicit and check-covered before Docker execution. The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before Docker execution. The Deno unit test target coverage keeps every `TypeScript/Tests/*.test.ts` file explicit in the JSON source inventory, and Deno format execution plus Deno unit test execution must run through the same fixed local Docker path. Deno execution is fixed to local Docker and must use `denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34`. The repository check must not use host `deno`; missing Docker, Docker startup failure, Deno format failure, Deno type-check failure, generated CSS parity failure, generated JavaScript integrity failure, or Deno unit test failure is a failed validation.
 
-`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, Local Docker Deno validation image and digest, the Deno complete validation gate, the Deno required failure message, the bug-fix-zero validation principle, Generated JavaScript parity contract terms, grouped repositoryInventory, TypeScript source inventory, generated CSS inventory, generated JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, or reference screenshot hash drift.
+`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno format targets, Deno validation targets, Deno unit test targets, Local Docker Deno validation image and digest, the Deno complete validation gate, the Deno required failure message, the bug-fix-zero validation principle, Generated JavaScript parity contract terms, Generated JavaScript integrity contract metadata, grouped repositoryInventory, TypeScript source inventory, generated CSS inventory, generated JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, generated JavaScript hashes, reference screenshot hash, Visual Baseline dimensions, or Visual Baseline capture procedure drift.
 
-The Deno complete validation gate is always active through Local Docker Deno validation. A result without Docker Deno type checking and Docker Deno generated CSS parity evidence is incomplete and must not be reported as validation success.
+The Deno complete validation gate is always active through Local Docker Deno validation. A result without Docker Deno format evidence, Docker Deno type checking, Docker Deno generated CSS parity evidence, Docker Deno generated JavaScript integrity evidence, and Docker Deno unit test execution is incomplete and must not be reported as validation success.
 
-The TypeScript source inventory in `Tools/check/adlaire-design-contracts.json` must match every `TypeScript/**/*.ts` source file and cover Deno type-check targets, Generated JavaScript pair sources, and CSS compiler required files. The generated CSS inventory and CSS target metadata in the same manifest must match `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, first-line headers, and generated CSS files. The generated JavaScript inventory must match the Generated JavaScript pair contract, every UI interaction source/generated pair must be represented by a Generated JavaScript pair, the Sample asset/load order must match `Samples/design/index.html`, `assetInventory` must match icons and brand assets, and `documentationGovernance` must match the documented governance terms.
+The TypeScript source inventory in `Tools/check/adlaire-design-contracts.json` must match every `TypeScript/**/*.ts` source file and cover Deno format targets, Deno type-check targets, Deno unit test targets, Generated JavaScript pair sources, Generated JavaScript integrity source files, and CSS compiler required files. The generated CSS inventory and CSS target metadata in the same manifest must match `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, first-line headers, and generated CSS files. The generated JavaScript inventory must match the Generated JavaScript pair contract, every UI interaction source/generated pair must be represented by a Generated JavaScript pair, generated JavaScript bytes and hashes must match `TypeScript/JavaScript/manifest.ts`, the Sample asset/load order and sample accessibility references must match `Samples/design/index.html`, `assetInventory` must match icons and brand assets, and `documentationGovernance` must match the documented governance terms.
 
-Complete Deno-backed release evidence requires the release check to complete through the fixed local Docker Deno path. The bug-fix-zero validation principle is absolute: validation findings, generated-output drift, known check failures, and unresolved bugs discovered during verification must be corrected before completion is reported.
+Complete Deno-backed release evidence requires the release check to complete through the fixed local Docker Deno path, including Deno format execution, Deno-backed generated JavaScript integrity check, and Deno unit test execution. The bug-fix-zero validation principle is absolute: validation findings, generated-output drift, known check failures, and unresolved bugs discovered during verification must be corrected before completion is reported.
 
 Check failures use family-labelled diagnostics so the broken contract area is visible before reading the full failure details.
 

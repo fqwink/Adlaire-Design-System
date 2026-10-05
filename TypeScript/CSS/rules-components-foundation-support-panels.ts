@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_SUPPORT_PANELS_CSS = `.adlaire-help-center-panel,
+export const COMPONENTS_FOUNDATION_SUPPORT_PANELS_CSS =
+  `.adlaire-help-center-panel,
 .adlaire-recommendation-panel,
 .adlaire-preference-panel,
 .adlaire-language-selector-panel,

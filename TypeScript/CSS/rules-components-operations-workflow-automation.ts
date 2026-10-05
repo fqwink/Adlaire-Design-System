@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_WORKFLOW_AUTOMATION_CSS = `.adlaire-agent-task-list,
+export const COMPONENTS_OPERATIONS_WORKFLOW_AUTOMATION_CSS =
+  `.adlaire-agent-task-list,
 .adlaire-run-status-rail,
 .adlaire-execution-timeline,
 .adlaire-context-attachment-tray,

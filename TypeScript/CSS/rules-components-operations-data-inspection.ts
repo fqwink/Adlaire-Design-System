@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_DATA_INSPECTION_CSS = `.adlaire-property-inspector {
+export const COMPONENTS_OPERATIONS_DATA_INSPECTION_CSS =
+  `.adlaire-property-inspector {
   display: grid;
   gap: 12px;
   padding: 14px;

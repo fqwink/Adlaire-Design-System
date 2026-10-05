@@ -1,4 +1,5 @@
-export const COMPONENTS_OVERLAY_CATALOG_CSS = `/* Catalog completeness aliases */
+export const COMPONENTS_OVERLAY_CATALOG_CSS =
+  `/* Catalog completeness aliases */
 .adlaire-affiliation-meta,
 .adlaire-invite-status,
 .adlaire-role-badge,

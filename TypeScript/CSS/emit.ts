@@ -9,7 +9,9 @@ export interface GeneratedCssFile {
 }
 
 export function renderCssFile(target: CssTarget): GeneratedCssFile {
-  const css = target.kind === "token" ? tokenCssForPath(target.path) : ruleCssForPath(target.path);
+  const css = target.kind === "token"
+    ? tokenCssForPath(target.path)
+    : ruleCssForPath(target.path);
   if (css === undefined) {
     throw new Error(`Missing CSS source for ${target.path}`);
   }
@@ -22,7 +24,11 @@ export function renderCssFile(target: CssTarget): GeneratedCssFile {
 }
 
 function assertCssFirstLine(target: CssTarget, css: string): void {
-  if (!css.startsWith(`${target.firstLine}\n`) && css !== `${target.firstLine}\n`) {
-    throw new Error(`CSS source for ${target.path} must preserve first line: ${target.firstLine}`);
+  if (
+    !css.startsWith(`${target.firstLine}\n`) && css !== `${target.firstLine}\n`
+  ) {
+    throw new Error(
+      `CSS source for ${target.path} must preserve first line: ${target.firstLine}`,
+    );
   }
 }

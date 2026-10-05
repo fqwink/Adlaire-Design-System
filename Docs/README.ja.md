@@ -34,7 +34,7 @@
 ## 開発ルール
 
 - 生成CSSと生成JavaScriptの実装正本は Deno TypeScript です。
-- 検証時のDeno実行は Local Docker Deno validation に固定し、ホストの `deno` は使用しません。
+- 検証時のDeno実行は Local Docker Deno validation に固定し、ホストの `deno` は使用せず、`TypeScript/` 正本に `deno fmt --check` を適用します。
 - `npm packages`、`package.json`、npm互換lockfile、`node_modules`、Node.js依存ツール、外部フロントエンドフレームワークは使用しません。
 - 外部フロントエンドビルド設定、CSSプリプロセッサ、minify bundle、`dist/`、`build/` も使用しません。
 - 開発、ビルド、生成、検査、release-check の構造化設定はJSON-onlyです。これらの範囲でYAMLは技術選定しません。
@@ -49,13 +49,13 @@
 | `Docs/Master_Spec` | 契約定義と検査方針。 |
 | `Docs/Document_Index` | リポジトリインベントリ、出力位置、検査対象ガバナンス表。 |
 | `Docs/Component_Contract_Matrix` | ファミリー単位のカタログ、ソース、生成物、サンプル、検査同期。 |
-| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest として、path、terms、Deno gate、parity term、inventory、baseline hash を管理。 |
+| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest として、path、terms、Deno gate、Deno test target、parity term、inventory、baseline hash を管理。 |
 
 `Docs/Master_Spec` の主要契約:
 
 - Development configuration contract、Generated output placement contract、TypeScript source inventory contract、Source/output/sample boundary contract。
-- CSS target manifest contract、Generated JavaScript pair contract、Generated JavaScript parity contract、JavaScript public surface contract。
-- Sample asset/load contract、Editor runtime module registry contract、Interaction audit contract、Validation mode contract。
+- CSS target manifest contract、Generated JavaScript pair contract、Generated JavaScript parity contract、Generated JavaScript integrity contract、JavaScript public surface contract。
+- Sample asset/load contract、Editor runtime module registry contract、Interaction audit contract、Deno unit test target coverage、Validation mode contract。
 
 ## 生成JavaScriptペア
 
@@ -66,6 +66,8 @@
 | `TypeScript/UI/content.ts` | `UI/content.js` |
 | `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` |
 | `TypeScript/Editor/index.ts` | `EditorUI/editor.js` |
+
+`TypeScript/JavaScript/manifest.ts` と `TypeScript/JavaScript/index.ts` は、これらの出力に対する Deno-backed generated JavaScript integrity check を定義します。
 
 ## 検査
 
@@ -100,7 +102,7 @@ GitHub側は `main` へのPR、merge commits only、head branch自動削除、ma
 
 検査失敗は family-labelled diagnostics で表示します。作業完了は zero known check failures と zero unresolved bugs の状態でのみ報告します。
 
-Complete Deno release evidence には、Local Docker Deno validation、Deno-backed generated CSS parity check、Deno type-check target coverage が必要です。
+Complete Deno release evidence には、Local Docker Deno validation、Deno-backed generated CSS parity check、Deno-backed generated JavaScript integrity check、Deno type-check target coverage、Deno unit test execution が必要です。
 
 ## サンプルとVisual Baseline
 
@@ -112,4 +114,4 @@ Generic UI、Advanced Input and Design-System UI、Admin UI、WYSIWYG Editor UI�
 
 `Samples/sample-current.png` は Visual Baseline の参照スクリーンショットです。参照スクリーンショットの変更は、原因となるソースまたは契約変更と同じレビュー単位で扱います。
 
-検査済みの Visual Baseline hash とbyte sizeは `Tools/check/adlaire-design-contracts.json` に保持します。
+検査済みの Visual Baseline hash、byte size、Visual Baseline dimensions、Visual Baseline capture procedure は `Tools/check/adlaire-design-contracts.json` に保持します。

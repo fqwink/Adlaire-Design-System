@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_BUSINESS_MESSAGING_CSS = `.adlaire-message-composer,
+export const COMPONENTS_OPERATIONS_BUSINESS_MESSAGING_CSS =
+  `.adlaire-message-composer,
 .adlaire-channel-list,
 .adlaire-mention-picker,
 .adlaire-notification-center,

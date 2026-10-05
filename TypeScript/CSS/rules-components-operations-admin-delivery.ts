@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_ADMIN_DELIVERY_CSS = `.adlaire-admin-insight-panel,
+export const COMPONENTS_OPERATIONS_ADMIN_DELIVERY_CSS =
+  `.adlaire-admin-insight-panel,
 .adlaire-admin-health-check,
 .adlaire-admin-task-board,
 .adlaire-admin-incident-panel,

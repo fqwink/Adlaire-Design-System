@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_WORKSPACE_MENUS_CSS = `.adlaire-context-menu {
+export const COMPONENTS_OPERATIONS_WORKSPACE_MENUS_CSS =
+  `.adlaire-context-menu {
   gap: 4px;
   min-width: 220px;
   padding: 8px;

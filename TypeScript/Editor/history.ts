@@ -1,5 +1,9 @@
 import { cloneDocument } from "./document.ts";
-import type { EditorCommand, EditorDocument, EditorSelection } from "./types.ts";
+import type {
+  EditorCommand,
+  EditorDocument,
+  EditorSelection,
+} from "./types.ts";
 
 export interface HistorySnapshot {
   before: { document: EditorDocument; selection: EditorSelection | null };
@@ -35,25 +39,48 @@ export class History {
     this.#redos = [];
   }
 
-  undo(current: { document: EditorDocument; selection: EditorSelection | null }): HistorySnapshot | null {
+  undo(
+    current: { document: EditorDocument; selection: EditorSelection | null },
+  ): HistorySnapshot | null {
     const snapshot = this.#undos.pop();
     if (!snapshot) return null;
-    this.#redos.push({ before: cloneState(snapshot.before), after: cloneState(current), commands: snapshot.commands });
+    this.#redos.push({
+      before: cloneState(snapshot.before),
+      after: cloneState(current),
+      commands: snapshot.commands,
+    });
     return cloneSnapshot(snapshot);
   }
 
-  redo(current: { document: EditorDocument; selection: EditorSelection | null }): HistorySnapshot | null {
+  redo(
+    current: { document: EditorDocument; selection: EditorSelection | null },
+  ): HistorySnapshot | null {
     const snapshot = this.#redos.pop();
     if (!snapshot) return null;
-    this.#undos.push({ before: cloneState(current), after: cloneState(snapshot.after), commands: snapshot.commands });
+    this.#undos.push({
+      before: cloneState(current),
+      after: cloneState(snapshot.after),
+      commands: snapshot.commands,
+    });
     return cloneSnapshot(snapshot);
   }
 }
 
 function cloneSnapshot(snapshot: HistorySnapshot): HistorySnapshot {
-  return { before: cloneState(snapshot.before), after: cloneState(snapshot.after), commands: [...snapshot.commands] };
+  return {
+    before: cloneState(snapshot.before),
+    after: cloneState(snapshot.after),
+    commands: [...snapshot.commands],
+  };
 }
 
-function cloneState(state: { document: EditorDocument; selection: EditorSelection | null }) {
-  return { document: cloneDocument(state.document), selection: state.selection ? JSON.parse(JSON.stringify(state.selection)) : null };
+function cloneState(
+  state: { document: EditorDocument; selection: EditorSelection | null },
+) {
+  return {
+    document: cloneDocument(state.document),
+    selection: state.selection
+      ? JSON.parse(JSON.stringify(state.selection))
+      : null,
+  };
 }

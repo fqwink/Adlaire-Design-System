@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_ADMIN_LIFECYCLE_CSS = `.adlaire-admin-notification-center,
+export const COMPONENTS_OPERATIONS_ADMIN_LIFECYCLE_CSS =
+  `.adlaire-admin-notification-center,
 .adlaire-admin-broadcast-panel,
 .adlaire-admin-maintenance-window,
 .adlaire-admin-backup-panel,

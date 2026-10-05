@@ -25,7 +25,7 @@ The Source/output/sample boundary contract keeps Samples as non-authoritative co
 
 Update the screenshot only when the rendered showcase intentionally changes. A screenshot update must be reviewed together with the matching sample, catalog, token, CSS, JavaScript, or check change that caused the visual change.
 
-The Visual Baseline contract is recorded in `Tools/check/adlaire-design-contracts.json` so the reference screenshot hash, byte size, sample surface, and required review wording stay check-covered. Reference screenshot changes require the related source or contract change in the same review unit.
+The Visual Baseline contract is recorded in `Tools/check/adlaire-design-contracts.json` so the reference screenshot hash, byte size, Visual Baseline dimensions, Visual Baseline capture procedure, sample surface, and required review wording stay check-covered. Reference screenshot changes require the related source or contract change in the same review unit.
 
 ## Coverage
 
@@ -44,6 +44,8 @@ The showcase starts with a Product adoption surface that presents the design sys
 The Sample asset/load contract keeps `Samples/design/index.html` aligned with the public CSS load order from `Docs/Master_Spec`, then `EditorUI/wysiwyg.css`, `Samples/design/sample.css`, generated JavaScript, and `Samples/design/sample.js`.
 
 The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` loadable without bundling. `EditorUI/editor.js` exposes `window.AdlaireEditor` for structured editor runtime confirmation.
+
+The sample accessibility reference checks keep duplicate IDs, ARIA ID references, and tab-to-panel relationships aligned with `Samples/design/index.html`.
 
 ## Update Rules
 

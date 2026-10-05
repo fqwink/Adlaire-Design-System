@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_DATA_BOTTOM_SHEET_CSS = `.adlaire-bottom-sheet {
+export const COMPONENTS_OPERATIONS_DATA_BOTTOM_SHEET_CSS =
+  `.adlaire-bottom-sheet {
   position: fixed;
   inset: 0;
   z-index: var(--adlaire-layer-modal);

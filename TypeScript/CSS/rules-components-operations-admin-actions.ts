@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_ADMIN_ACTIONS_CSS = `.adlaire-admin-action-bar,
+export const COMPONENTS_OPERATIONS_ADMIN_ACTIONS_CSS =
+  `.adlaire-admin-action-bar,
 .adlaire-admin-action-group {
   display: flex;
   flex-wrap: wrap;

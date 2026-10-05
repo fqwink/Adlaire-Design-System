@@ -758,10 +758,10 @@
             </div>
           </div>
           <div class="adlaire-tab-workspace-list" role="tablist" aria-label="Workspace surfaces">
-            <button class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="true" data-adlaire-workspace-tab="#sample-workspace-design">Design</button>
-            <button class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-adlaire-workspace-tab="#sample-workspace-review">Review</button>
+            <button id="sample-workspace-design-tab" class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="true" aria-controls="sample-workspace-design" data-adlaire-workspace-tab="#sample-workspace-design">Design</button>
+            <button id="sample-workspace-review-tab" class="adlaire-tab-workspace-tab" type="button" role="tab" aria-selected="false" aria-controls="sample-workspace-review" tabindex="-1" data-adlaire-workspace-tab="#sample-workspace-review">Review</button>
           </div>
-          <div id="sample-workspace-design" class="adlaire-tab-workspace-panel is-open" role="tabpanel">
+          <div id="sample-workspace-design" class="adlaire-tab-workspace-panel is-open" role="tabpanel" aria-labelledby="sample-workspace-design-tab">
             <div class="adlaire-status-bar"><span>Design workspace</span><span>Synced</span></div>
             <div class="adlaire-panel-rail" aria-label="Panel rail">
               <button class="adlaire-panel-rail-item" type="button" aria-current="true">L</button>
@@ -769,7 +769,7 @@
               <button class="adlaire-panel-rail-item" type="button">A</button>
             </div>
           </div>
-          <div id="sample-workspace-review" class="adlaire-tab-workspace-panel" role="tabpanel" hidden>
+          <div id="sample-workspace-review" class="adlaire-tab-workspace-panel" role="tabpanel" aria-labelledby="sample-workspace-review-tab" hidden>
             <div class="adlaire-status-bar"><span>Review workspace</span><span>2 checks</span></div>
           </div>
           <section id="sample-dock-panel" class="adlaire-dock-panel" aria-label="Dock panel sample">

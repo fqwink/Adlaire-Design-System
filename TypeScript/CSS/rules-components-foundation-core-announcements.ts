@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_CORE_ANNOUNCEMENTS_CSS = `.adlaire-announcement-bar,
+export const COMPONENTS_FOUNDATION_CORE_ANNOUNCEMENTS_CSS =
+  `.adlaire-announcement-bar,
 .adlaire-update-notice,
 .adlaire-maintenance-notice {
   padding: 12px 16px;

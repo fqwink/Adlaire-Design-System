@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_MEDIA_GOVERNANCE_CSS = `.adlaire-permission-matrix {
+export const COMPONENTS_FOUNDATION_MEDIA_GOVERNANCE_CSS =
+  `.adlaire-permission-matrix {
   display: grid;
   min-width: 0;
   overflow-x: auto;

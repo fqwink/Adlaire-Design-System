@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_DOMAINS_OBSERVABILITY_CSS = `.adlaire-service-status-card,
+export const COMPONENTS_FOUNDATION_DOMAINS_OBSERVABILITY_CSS =
+  `.adlaire-service-status-card,
 .adlaire-span-detail,
 .adlaire-metric-threshold-card,
 .adlaire-alert-rule-card,

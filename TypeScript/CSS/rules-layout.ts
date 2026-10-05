@@ -1,6 +1,8 @@
 import type { CssRuleFile } from "./rules-types.ts";
 
-export const LAYOUT_RULE_FILE: CssRuleFile = { path: "UI/layout.css", css: `/* Adlaire-Design public layout */
+export const LAYOUT_RULE_FILE: CssRuleFile = {
+  path: "UI/layout.css",
+  css: `/* Adlaire-Design public layout */
 .adlaire-container {
   max-width: var(--adlaire-layout-container);
   margin-right: auto;
@@ -279,4 +281,5 @@ export const LAYOUT_RULE_FILE: CssRuleFile = { path: "UI/layout.css", css: `/* A
     display: none;
   }
 }
-` } as const;
+`,
+} as const;

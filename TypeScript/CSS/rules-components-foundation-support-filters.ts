@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_SUPPORT_FILTERS_CSS = `.adlaire-filter-chip-list {
+export const COMPONENTS_FOUNDATION_SUPPORT_FILTERS_CSS =
+  `.adlaire-filter-chip-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;

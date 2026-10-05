@@ -24,7 +24,10 @@ export interface TokenFile {
 }
 
 export const TOKEN_FILES: readonly TokenFile[] = [
-  { path: "Tokens/colors.css", category: "color", css: `/* Adlaire-Design color tokens */
+  {
+    path: "Tokens/colors.css",
+    category: "color",
+    css: `/* Adlaire-Design color tokens */
 :root {
   --adlaire-color-agws-blue-primary: #0066cc;
   --adlaire-color-agws-blue-secondary: #0055aa;
@@ -39,8 +42,12 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-color-border: #e0e0e0;
   --adlaire-color-support: var(--adlaire-color-agws-green-primary);
 }
-` },
-  { path: "Tokens/typography.css", category: "typography", css: `/* Adlaire-Design typography tokens */
+`,
+  },
+  {
+    path: "Tokens/typography.css",
+    category: "typography",
+    css: `/* Adlaire-Design typography tokens */
 :root {
   --adlaire-font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --adlaire-font-family-mono: "Courier New", Courier, monospace;
@@ -58,8 +65,12 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-font-weight-semibold: 600;
   --adlaire-font-weight-bold: 700;
 }
-` },
-  { path: "Tokens/spacing.css", category: "spacing", css: `/* Adlaire-Design spacing tokens */
+`,
+  },
+  {
+    path: "Tokens/spacing.css",
+    category: "spacing",
+    css: `/* Adlaire-Design spacing tokens */
 :root {
   --adlaire-space-0: 0;
   --adlaire-space-1: 0.25rem;
@@ -72,8 +83,12 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-space-10: 2.5rem;
   --adlaire-space-12: 3rem;
 }
-` },
-  { path: "Tokens/layout.css", category: "layout", css: `/* Adlaire-Design layout tokens */
+`,
+  },
+  {
+    path: "Tokens/layout.css",
+    category: "layout",
+    css: `/* Adlaire-Design layout tokens */
 :root {
   --adlaire-layout-container: 1200px;
   --adlaire-layout-container-narrow: 760px;
@@ -87,8 +102,12 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-layout-gutter: 1.5rem;
   --adlaire-layout-gutter-compact: 1rem;
 }
-` },
-  { path: "Tokens/motion.css", category: "motion", css: `/* Adlaire-Design motion tokens */
+`,
+  },
+  {
+    path: "Tokens/motion.css",
+    category: "motion",
+    css: `/* Adlaire-Design motion tokens */
 :root {
   --adlaire-motion-duration-fast: 120ms;
   --adlaire-motion-duration-base: 180ms;
@@ -106,8 +125,12 @@ export const TOKEN_FILES: readonly TokenFile[] = [
     --adlaire-motion-duration-slow: 1ms;
   }
 }
-` },
-  { path: "Tokens/layer.css", category: "layer", css: `/* Adlaire-Design layer tokens */
+`,
+  },
+  {
+    path: "Tokens/layer.css",
+    category: "layer",
+    css: `/* Adlaire-Design layer tokens */
 :root {
   --adlaire-layer-base: 0;
   --adlaire-layer-raised: 10;
@@ -117,16 +140,24 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-layer-modal: 500;
   --adlaire-layer-toast: 700;
 }
-` },
-  { path: "Tokens/breakpoints.css", category: "breakpoint", css: `/* Adlaire-Design breakpoint tokens */
+`,
+  },
+  {
+    path: "Tokens/breakpoints.css",
+    category: "breakpoint",
+    css: `/* Adlaire-Design breakpoint tokens */
 :root {
   --adlaire-breakpoint-sm: 480px;
   --adlaire-breakpoint-md: 768px;
   --adlaire-breakpoint-lg: 1024px;
   --adlaire-breakpoint-xl: 1200px;
 }
-` },
-  { path: "Tokens/surface.css", category: "surface", css: `/* Adlaire-Design surface tokens */
+`,
+  },
+  {
+    path: "Tokens/surface.css",
+    category: "surface",
+    css: `/* Adlaire-Design surface tokens */
 :root {
   --adlaire-surface-accent: #0066cc;
   --adlaire-surface-accent-mid: #0055aa;
@@ -143,8 +174,12 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-surface-notice-soft: #fff3cd;
   --adlaire-surface-notice-text: #856404;
 }
-` },
-  { path: "Tokens/status.css", category: "status", css: `/* Adlaire-Design status tokens */
+`,
+  },
+  {
+    path: "Tokens/status.css",
+    category: "status",
+    css: `/* Adlaire-Design status tokens */
 :root {
   --adlaire-status-secondary: #6c757d;
   --adlaire-status-secondary-strong: #5a6268;
@@ -198,8 +233,12 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-semantic-muted-bg: var(--adlaire-status-gray-light);
   --adlaire-semantic-muted-border: var(--adlaire-status-gray-ddd);
 }
-` },
-  { path: "Tokens/effects.css", category: "effects", css: `/* Adlaire-Design effect tokens */
+`,
+  },
+  {
+    path: "Tokens/effects.css",
+    category: "effects",
+    css: `/* Adlaire-Design effect tokens */
 :root {
   --adlaire-radius-sm: 4px;
   --adlaire-radius-md: 6px;
@@ -238,7 +277,8 @@ export const TOKEN_FILES: readonly TokenFile[] = [
   --adlaire-z-sticky: 100;
   --adlaire-z-page-top: 1000;
 }
-` },
+`,
+  },
 ] as const;
 
 export function tokenCssForPath(path: string): string | undefined {

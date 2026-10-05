@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_SUPPORT_CARDS_CSS = `.adlaire-help-article-card,
+export const COMPONENTS_FOUNDATION_SUPPORT_CARDS_CSS =
+  `.adlaire-help-article-card,
 .adlaire-personalization-card,
 .adlaire-release-highlight {
   display: grid;

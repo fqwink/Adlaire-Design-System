@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_BUSINESS_INSIGHTS_CSS = `.adlaire-support-inbox,
+export const COMPONENTS_OPERATIONS_BUSINESS_INSIGHTS_CSS =
+  `.adlaire-support-inbox,
 .adlaire-ticket-priority-board,
 .adlaire-escalation-path,
 .adlaire-content-calendar,
