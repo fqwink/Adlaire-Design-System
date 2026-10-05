@@ -196,7 +196,7 @@
     var columnHeader = header.closest("th") || header;
     var table = columnHeader.closest("table");
     var body = table ? table.tBodies[0] : null;
-    if (!body || !columnHeader.parentElement) {
+    if (!table || !body || !columnHeader.parentElement) {
       return;
     }
 

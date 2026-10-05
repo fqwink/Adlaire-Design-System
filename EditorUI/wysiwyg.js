@@ -59,6 +59,17 @@
     }
   }
 
+  function safeScopedQuery(root, selector) {
+    if (!root || !selector) {
+      return null;
+    }
+    try {
+      return root.querySelector(selector);
+    } catch (error) {
+      return null;
+    }
+  }
+
   function safeScopedQueryAll(root, selector) {
     if (!root || !selector) {
       return [];

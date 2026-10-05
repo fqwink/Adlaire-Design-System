@@ -60,7 +60,7 @@ The Source/output/sample boundary contract keeps `TypeScript/` as source, `Token
 
 The Generated JavaScript pair contract keeps each TypeScript source, generated JavaScript output, generated file header, and documentation row synchronized.
 
-`Tools/check/adlaire-design-contracts.json` records the check-side contract manifest for Deno validation targets, the Deno complete validation gate, Deno required failure message, Generated JavaScript parity contract terms, minimum component and interaction contract coverage, grouped repositoryInventory, TypeScript source inventory, generated CSS/JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, and the Visual Baseline hash and byte size. It is JSON because development, build, generation, check, and release-check configuration is JSON-only.
+`Tools/check/adlaire-design-contracts.json` records the check-side contract manifest for Deno validation targets, the Local Docker Deno validation image and digest, the Deno complete validation gate, Deno required failure message, the bug-fix-zero validation principle, Generated JavaScript parity contract terms, minimum component and interaction contract coverage, grouped repositoryInventory, TypeScript source inventory, generated CSS/JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, and the Visual Baseline hash and byte size. It is JSON because development, build, generation, check, and release-check configuration is JSON-only.
 
 | Source | Generated output |
 | --- | --- |
@@ -86,17 +86,21 @@ The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, `ed
 
 Repository work starts with `AGENTS.md`, `git fetch backup --prune`, and a local/remote consistency check. The local Git consistency baseline uses automatic pruning, fast-forward-only pulls, `backup` as the default push remote, the current branch as the default push target, and automatic upstream setup. GitHub accepts merge commits only, requires PRs for `main`, automatically deletes merged head branches, and blocks force pushes and deletion of `main`.
 
+The Validation mode contract separates normal repository validation from release readiness validation. Normal validation proves repository, document, manifest, generated output, sample load, Local Docker Deno validation, TypeScript type checking, and generated CSS parity. Release readiness validation additionally proves local `main`, `backup/main`, local Git configuration, ignored local artifact policy, and stale merged branch state after PR cleanup.
+
 Run the normal repository check:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh
 ```
 
-The normal check verifies the Development configuration contract, Generated output placement contract, TypeScript source inventory contract, Source/output/sample boundary contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, `documentationGovernance`, and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
+The normal check verifies the Development configuration contract, Generated output placement contract, TypeScript source inventory contract, Source/output/sample boundary contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, `documentationGovernance`, and Deno type-check target coverage. The check always runs Deno through local Docker, fixed to `denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34`, then executes Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. Host `deno` is not used, and missing Docker or Docker Deno failure is a failed validation, not a skip.
 
-The same check reads `Tools/check/adlaire-design-contracts.json` for Deno type-check targets, the Deno required failure message, Generated JavaScript parity contract terms, minimum component and interaction contract counts, grouped repositoryInventory, TypeScript source inventory synchronized with `TypeScript/**/*.ts`, generated CSS inventory and CSS target metadata synchronized with `TypeScript/CSS/manifest.ts`, generated JavaScript inventory synchronized with pair contracts, Sample asset/load order, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, and Visual Baseline documentation requirements. `ADLAIRE_REQUIRE_DENO=1` turns Deno availability into a complete-validation gate instead of a skip.
+The same check reads `Tools/check/adlaire-design-contracts.json` for Deno type-check targets, Docker Deno image and digest, the Deno required failure message, the bug-fix-zero validation principle, Generated JavaScript parity contract terms, minimum component and interaction contract counts, grouped repositoryInventory, TypeScript source inventory synchronized with `TypeScript/**/*.ts`, generated CSS inventory and CSS target metadata synchronized with `TypeScript/CSS/manifest.ts`, generated JavaScript inventory synchronized with pair contracts, Sample asset/load order, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, and Visual Baseline documentation requirements.
 
-Run the release check only from local `main`, after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift, unexpected ignored local artifacts under the Ignored local artifact policy, and stale merged local or `backup/*` remote-tracking branches. Complete Deno-backed release evidence requires running it on a Deno host with `ADLAIRE_REQUIRE_DENO=1`:
+The bug-fix-zero validation principle means work is not complete while there are known check failures, known generated-output drifts, or unresolved bugs found by validation. Fixes must continue until the reported state has zero known check failures and zero unresolved bugs.
+
+Run the release check only from local `main`, after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift, unexpected ignored local artifacts under the Ignored local artifact policy, and stale merged local or `backup/*` remote-tracking branches. Complete Deno-backed release evidence is provided by the same Local Docker Deno validation path:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh --release-check
@@ -105,6 +109,8 @@ sh Tools/check/check-adlaire-design.sh --release-check
 ## Samples
 
 `Samples/design/index.html` is a confirmation surface for Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Brand, Tokens, and the official 1520 SVG icons. Samples are supporting materials, not specification sources.
+
+The Product adoption surface at the top of the sample shows how the same contracts can support a realistic operations dashboard before the catalog-by-catalog confirmation sections begin. It remains sample-support material and does not become a source of truth.
 
 ## Visual Baseline
 

@@ -509,7 +509,7 @@
   };
   HeadlessEditorController.prototype.failSave = function (error) {
     this.saveState = Object.assign({}, this.saveState, { dirty: true, saving: false, error: normalizeStateError(error, "Save failed.") });
-    this.emitError(editorError("save.failed", this.saveState.error));
+    this.emitError(editorError("save.failed", this.saveState.error || "Save failed."));
     return this.getSaveState();
   };
   HeadlessEditorController.prototype.requestPublish = function (context) {
@@ -529,7 +529,7 @@
     if (!Object.prototype.hasOwnProperty.call(state, "error") || state.error === undefined) delete this.publishState.error;
     if (this.publishState.error !== undefined) {
       delete this.publishState.lastCompletedAt;
-      this.emitError(editorError("publish.failed", this.publishState.error));
+      this.emitError(editorError("publish.failed", this.publishState.error || "Publish failed."));
       this.events.emit({ type: "publish:failed", state: this.getPublishState() });
       return this.getPublishState();
     }
@@ -539,7 +539,7 @@
   HeadlessEditorController.prototype.failPublish = function (error) {
     this.publishState = Object.assign({}, this.publishState, { publishing: false, error: normalizeStateError(error, "Publish failed.") });
     delete this.publishState.lastCompletedAt;
-    this.emitError(editorError("publish.failed", this.publishState.error));
+    this.emitError(editorError("publish.failed", this.publishState.error || "Publish failed."));
     this.events.emit({ type: "publish:failed", state: this.getPublishState() });
     return this.getPublishState();
   };
@@ -656,7 +656,8 @@
     if (location.block.type === "unsupported") return failed(document, editorError("block.unsupported.split", "Unsupported block cannot be split.", payload.blockId));
     var newId = location.block.id + "-split";
     if (collectBlockIds(document.blocks)[newId]) return failed(document, editorError("block.id.duplicate", "Split id already exists.", newId));
-    var split = splitBlockData(location.block, payload);
+    var splitPayload = Object.assign({ blockId: payload.blockId }, payload.position === undefined ? {} : { position: payload.position });
+    var split = splitBlockData(location.block, splitPayload);
     if (split.error) return failed(document, split.error);
     var nextSiblings = location.siblings.slice(0, location.index).concat([registry ? normalizeBlock(split.blocks[0], registry) : split.blocks[0], registry ? normalizeBlock(split.blocks[1], registry) : split.blocks[1]], location.siblings.slice(location.index + 1));
     if (!location.parent) return changed(Object.assign({}, document, { blocks: nextSiblings }));

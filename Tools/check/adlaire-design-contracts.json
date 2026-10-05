@@ -2,9 +2,12 @@
   "contractManifestVersion": 1,
   "denoValidation": {
     "completeEvidenceRequiresDeno": true,
-    "requiredEnv": "ADLAIRE_REQUIRE_DENO",
-    "skipDiagnostic": "[Deno validation] deno command not found; skipped Deno type check and Deno-backed generated CSS parity check.",
-    "requiredFailureMessage": "ADLAIRE_REQUIRE_DENO=1 requires deno for complete TypeScript and generated CSS parity evidence.",
+    "executionMode": "local-docker",
+    "dockerImage": "denoland/deno:2.1.4",
+    "dockerDigest": "sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34",
+    "dockerReference": "denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34",
+    "requiredFailureMessage": "local Docker Deno validation requires Docker and denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34 for complete TypeScript and generated CSS parity evidence.",
+    "bugFixZeroPrinciple": "Validation must finish with zero known check failures and zero unresolved bugs before completion is reported.",
     "typeCheckTargets": [
       "TypeScript/CSS/index.ts",
       "TypeScript/UI/components.ts",
@@ -379,6 +382,11 @@
       "Deno required failure message",
       "Visual Baseline hash",
       "Complete Deno release evidence",
+      "Validation mode contract",
+      "Local Docker Deno validation",
+      "bug-fix-zero validation principle",
+      "zero known check failures",
+      "Product adoption surface",
       "Development configuration contract",
       "Generated output placement contract",
       "TypeScript source inventory contract",
@@ -769,8 +777,8 @@
   "visualBaseline": {
     "reference": "Samples/sample-current.png",
     "sample": "Samples/design/index.html",
-    "sha256": "753e008ceafeafe375e718b4cb69ba9ffc27f730b31a6c605223039b1ffa17db",
-    "bytes": 605876,
+    "sha256": "e863268cc0432d9432d1fe0f0655fd1258bf26deb57b74b38475e147cf85b218",
+    "bytes": 611241,
     "requiredTerms": [
       "Visual Baseline",
       "Reference screenshot changes require",
