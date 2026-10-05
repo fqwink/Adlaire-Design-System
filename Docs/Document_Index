@@ -13,6 +13,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `Docs/Editor_Master_Spec` | Editor and WYSIWYG Editor UI source of truth. |
 | `Docs/Component_Contract_Matrix` | Component family synchronization matrix. |
 | `Docs/Pending_Tasks` | Unfinished task list only. |
+| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest for Deno validation, Deno complete validation gate, Generated JavaScript parity contract terms, repositoryInventory, minimum contract coverage, Interaction audit contract coverage, and Visual Baseline hash requirements. |
 
 ## Catalogs
 
@@ -66,6 +67,8 @@ The Source/output/sample boundary contract keeps TypeScript sources, generated C
 
 The Generated JavaScript pair contract keeps each Deno TypeScript source, generated JavaScript file, generated file header, and documentation row synchronized. The Deno type-check target coverage keeps the normal type-check target list explicit and check-covered before optional Deno execution.
 
+`Tools/check/adlaire-design-contracts.json` lists the generated JavaScript pairs and parity terms checked against both TypeScript source and generated output. The Interaction audit contract keeps audit records derived one-to-one from `UI_INTERACTION_CONTRACTS`.
+
 The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` loadable without bundling and keeps `window.AdlaireEditor` exposed by the structured editor runtime.
 
 The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts`, and `EditorUI/editor.js` synchronized as the editor runtime module registry.
@@ -81,11 +84,16 @@ The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, the
 | `Samples/design/` | Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, official 1520 SVG icons, Tokens, Brand, Sample asset/load contract, JavaScript public surface contract, and sample-only state toggles. |
 | `Samples/*.png`, `Samples/*.webp` | Supporting screenshots. |
 
+## Visual Baseline
+
+`Samples/sample-current.png` is the Visual Baseline reference screenshot. Reference screenshot changes require the related source or contract change in the same review unit, and `Tools/check/adlaire-design-contracts.json` records the checked Visual Baseline hash, byte size, and documentation requirements.
+
 ## Checks
 
 | Path | Role |
 | --- | --- |
 | `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Deno-backed generated CSS parity check, Deno type-check target coverage, generated JavaScript hooks, Development configuration contract, Generated output placement contract, TypeScript source inventory contract, Source/output/sample boundary contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, CSS variable, sample coverage, asset, local Git consistency, ignored local artifact policy, stale merged branch, and release checks. |
+| `Tools/check/adlaire-design-contracts.json` | JSON contract manifest consumed by the check for Deno targets, Deno complete validation gate, Generated JavaScript parity terms, repositoryInventory, minimum component and interaction contract counts, Interaction audit contract coverage, and Visual Baseline documentation requirements. |
 
 ## Operational Quality
 

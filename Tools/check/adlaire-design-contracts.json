@@ -1,0 +1,173 @@
+{
+  "contractManifestVersion": 1,
+  "denoValidation": {
+    "completeEvidenceRequiresDeno": true,
+    "requiredEnv": "ADLAIRE_REQUIRE_DENO",
+    "skipDiagnostic": "[Deno validation] deno command not found; skipped Deno type check and Deno-backed generated CSS parity check.",
+    "typeCheckTargets": [
+      "TypeScript/CSS/index.ts",
+      "TypeScript/UI/components.ts",
+      "TypeScript/UI/component-contracts.ts",
+      "TypeScript/UI/interaction-contracts.ts",
+      "TypeScript/UI/forms.ts",
+      "TypeScript/UI/content.ts",
+      "TypeScript/EditorUI/wysiwyg.ts",
+      "TypeScript/Editor/index.ts"
+    ]
+  },
+  "generatedJavaScriptPairs": [
+    {
+      "label": "public component interactions",
+      "source": "TypeScript/UI/components.ts",
+      "generated": "UI/components.js",
+      "header": "/* Adlaire-Design component interactions */",
+      "parityTerms": [
+        "data-adlaire-toggle",
+        "data-adlaire-dismiss",
+        "data-adlaire-tab",
+        "data-adlaire-sidebar-toggle",
+        "data-adlaire-column-toggle",
+        "data-adlaire-page-select",
+        "data-adlaire-saved-view-apply",
+        "adlaire-overlay-open",
+        "writeClipboardText"
+      ]
+    },
+    {
+      "label": "form interactions",
+      "source": "TypeScript/UI/forms.ts",
+      "generated": "UI/forms.js",
+      "header": "/* Adlaire-Design form interactions */",
+      "parityTerms": [
+        "data-adlaire-filter-input",
+        "data-adlaire-combobox-input",
+        "data-adlaire-range-input",
+        "data-adlaire-character-count",
+        "data-adlaire-validate",
+        "data-adlaire-token-add",
+        "data-adlaire-token-remove",
+        "data-adlaire-field-dirty",
+        "data-adlaire-field-touched"
+      ]
+    },
+    {
+      "label": "content interactions",
+      "source": "TypeScript/UI/content.ts",
+      "generated": "UI/content.js",
+      "header": "/* Adlaire-Design content interactions */",
+      "parityTerms": [
+        "data-adlaire-sort",
+        "data-adlaire-code-copy",
+        "data-adlaire-code-line",
+        "data-adlaire-toc-link",
+        "data-adlaire-sort-state",
+        "data-adlaire-copied",
+        "writeClipboardText"
+      ]
+    },
+    {
+      "label": "WYSIWYG editor interactions",
+      "source": "TypeScript/EditorUI/wysiwyg.ts",
+      "generated": "EditorUI/wysiwyg.js",
+      "header": "/* Adlaire-Design WYSIWYG editor interactions */",
+      "parityTerms": [
+        "data-adlaire-wysiwyg-mode",
+        "data-adlaire-wysiwyg-toggle",
+        "data-adlaire-wysiwyg-toolbar-group",
+        "data-adlaire-wysiwyg-select",
+        "data-adlaire-wysiwyg-slash-item",
+        "data-adlaire-wysiwyg-suggestion",
+        "data-adlaire-toolbar-group",
+        "data-adlaire-disclosure-state"
+      ]
+    },
+    {
+      "label": "structured editor runtime",
+      "source": "TypeScript/Editor/index.ts",
+      "generated": "EditorUI/editor.js",
+      "header": "/* Adlaire-Design editor core */",
+      "parityTerms": [
+        "AdlaireEditor",
+        "HeadlessEditorController",
+        "createEditor",
+        "createDefaultBlockRegistry",
+        "createDefaultToolRegistry",
+        "validateDocument",
+        "validateDocumentAsync",
+        "window.AdlaireEditor"
+      ]
+    }
+  ],
+  "contractCoverage": {
+    "minimumComponentContractCount": 31,
+    "minimumInteractionContractCount": 99,
+    "requiredComponentCoverage": [
+      "catalog",
+      "sample"
+    ],
+    "requiredContractDocs": [
+      "README.md",
+      "Docs/Master_Spec",
+      "Docs/Document_Index",
+      "Docs/Component_Contract_Matrix"
+    ]
+  },
+  "repositoryInventory": {
+    "requiredFiles": [
+      "AGENTS.md",
+      "README.md",
+      "LICENSE",
+      "Docs/Master_Spec",
+      "Docs/Editor_Master_Spec",
+      "Docs/Component_Contract_Matrix",
+      "Docs/Document_Index",
+      "Docs/Generic_Component_Catalog",
+      "Docs/Admin_UI_Catalog",
+      "Docs/WYSIWYG_Editor_UI_Catalog",
+      "Docs/Icon_Set_Catalog",
+      "Docs/Brand_Asset_Catalog",
+      "Docs/Pending_Tasks",
+      "Brand/README.md",
+      "Samples/README.md",
+      "Samples/sample-current.png",
+      "Samples/design/index.html",
+      "Samples/design/sample.css",
+      "Samples/design/sample.js",
+      "Tools/check/check-adlaire-design.sh",
+      "Tools/check/adlaire-design-contracts.json"
+    ],
+    "requiredDirectories": [
+      "Docs",
+      "Tokens",
+      "UI",
+      "EditorUI",
+      "TypeScript",
+      "TypeScript/CSS",
+      "TypeScript/UI",
+      "TypeScript/EditorUI",
+      "TypeScript/Editor",
+      "Icons",
+      "Brand",
+      "Samples",
+      "Samples/design",
+      "Tools/check"
+    ]
+  },
+  "visualBaseline": {
+    "reference": "Samples/sample-current.png",
+    "sample": "Samples/design/index.html",
+    "sha256": "753e008ceafeafe375e718b4cb69ba9ffc27f730b31a6c605223039b1ffa17db",
+    "bytes": 605876,
+    "requiredTerms": [
+      "Visual Baseline",
+      "Reference screenshot changes require",
+      "Samples/sample-current.png"
+    ],
+    "requiredDocs": [
+      "README.md",
+      "Docs/Master_Spec",
+      "Docs/Document_Index",
+      "Samples/README.md"
+    ]
+  }
+}

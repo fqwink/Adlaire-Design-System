@@ -23,6 +23,8 @@ The Source/output/sample boundary contract keeps Samples as non-authoritative co
 
 Update the screenshot only when the rendered showcase intentionally changes. A screenshot update must be reviewed together with the matching sample, catalog, token, CSS, JavaScript, or check change that caused the visual change.
 
+The Visual Baseline contract is recorded in `Tools/check/adlaire-design-contracts.json` so the reference screenshot hash, byte size, sample surface, and required review wording stay check-covered. Reference screenshot changes require the related source or contract change in the same review unit.
+
 ## Coverage
 
 | Area | Source | Sample coverage |

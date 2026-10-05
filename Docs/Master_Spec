@@ -28,6 +28,7 @@ It is not a React/Vue/Svelte replacement, not a utility-first CSS framework, and
 | Asset sources | `Icons/`, `Brand/` |
 | Task source | `Docs/Pending_Tasks` |
 | Checks | `Tools/check/check-adlaire-design.sh` |
+| Check contract manifest | `Tools/check/adlaire-design-contracts.json` |
 
 Samples are supporting confirmation material. They are not a specification source.
 
@@ -240,6 +241,8 @@ Checks keep representative sample coverage for Layout System v2, operational fee
 
 `Samples/sample-current.png` is the reference screenshot for human visual review. It is updated only with the related sample, catalog, token, CSS, JavaScript, or check change that intentionally changes the rendered showcase.
 
+The Visual Baseline contract records `Samples/sample-current.png`, its hash and byte size, `Samples/design/index.html`, and the required documentation terms in `Tools/check/adlaire-design-contracts.json`. Reference screenshot changes require the related source or contract change in the same review unit.
+
 ## Checks
 
 Normal check:
@@ -261,6 +264,10 @@ The Ignored local artifact policy allows only `.DS_Store` and `Work/` as ignored
 Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, ignored local artifact policy, local Git configuration drift, stale merged branches, and post-merge release readiness.
 
 The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before the optional Deno command is invoked. When the `deno` command is available, the normal check also runs the Deno type check for TypeScript sources and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check must emit a family-labelled skip message and the report must not claim Deno type or generated CSS parity verification for that environment.
+
+`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, the Deno complete validation gate, Generated JavaScript parity contract terms, repositoryInventory, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, or reference screenshot hash drift.
+
+The Deno complete validation gate is opt-in through `ADLAIRE_REQUIRE_DENO=1`. Without that environment variable, a host without `deno` emits the family-labelled skip diagnostic; with it, Deno absence fails the check.
 
 Check failures use family-labelled diagnostics so the broken contract area is visible before reading the full failure details.
 

@@ -19,6 +19,7 @@ This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG
 | Icon catalog | `Docs/Icon_Set_Catalog` |
 | Brand asset catalog | `Docs/Brand_Asset_Catalog` |
 | Open tasks | `Docs/Pending_Tasks` |
+| Check contract manifest | `Tools/check/adlaire-design-contracts.json` |
 
 ## Repository Areas
 
@@ -59,6 +60,8 @@ The Source/output/sample boundary contract keeps `TypeScript/` as source, `Token
 
 The Generated JavaScript pair contract keeps each TypeScript source, generated JavaScript output, generated file header, and documentation row synchronized.
 
+`Tools/check/adlaire-design-contracts.json` records the check-side contract manifest for Deno validation targets, the Deno complete validation gate, Generated JavaScript parity contract terms, minimum component and interaction contract coverage, repositoryInventory, and the Visual Baseline hash and byte size. It is JSON because development, build, generation, check, and release-check configuration is JSON-only.
+
 | Source | Generated output |
 | --- | --- |
 | `TypeScript/UI/components.ts` | `UI/components.js` |
@@ -91,6 +94,8 @@ sh Tools/check/check-adlaire-design.sh
 
 The normal check verifies the Development configuration contract, Generated output placement contract, TypeScript source inventory contract, Source/output/sample boundary contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
 
+The same check reads `Tools/check/adlaire-design-contracts.json` for Deno type-check targets, Generated JavaScript parity contract terms, minimum component and interaction contract counts, repositoryInventory, and Visual Baseline documentation requirements. `ADLAIRE_REQUIRE_DENO=1` turns Deno availability into a complete-validation gate instead of a skip.
+
 Run the release check only from local `main`, after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift, unexpected ignored local artifacts under the Ignored local artifact policy, and stale merged local or `backup/*` remote-tracking branches:
 
 ```sh
@@ -100,3 +105,7 @@ sh Tools/check/check-adlaire-design.sh --release-check
 ## Samples
 
 `Samples/design/index.html` is a confirmation surface for Generic UI, Advanced Input and Design-System UI, Admin UI, WYSIWYG Editor UI, Git Provider UI, Cloud / Infrastructure UI, Brand, Tokens, and the official 1520 SVG icons. Samples are supporting materials, not specification sources.
+
+## Visual Baseline
+
+`Samples/sample-current.png` is the Visual Baseline reference screenshot. Reference screenshot changes require the related source or contract change in the same review unit, and the Visual Baseline hash and byte size are listed in `Tools/check/adlaire-design-contracts.json`.
