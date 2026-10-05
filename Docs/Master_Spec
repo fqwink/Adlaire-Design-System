@@ -49,10 +49,20 @@ Routine post-merge cleanup is scoped to the matching merged branch for the PR ju
 
 - TypeScript assumes the Deno runtime.
 - Standard adoption libraries are limited to Deno standard libraries when needed.
-- npm compatibility packages, npm dependencies, Node.js dependencies, external frontend frameworks, CSS preprocessors, CSS minification, CSS bundling, `dist/`, `build/`, and `node_modules/` are prohibited.
+- npm compatibility packages, npm dependencies, Node.js dependencies, external frontend frameworks, external frontend build configuration files, CSS preprocessors, CSS minification, CSS bundling, `dist/`, `build/`, and `node_modules/` are prohibited.
 - JSON is the only structured file format for development, build, generation, check, and release-check settings; YAML development/build configuration files are prohibited.
 - CSS and JavaScript are managed as separate outputs.
 - Generated outputs are kept in the repository and checked against local rules.
+
+## Development Configuration And Output Placement
+
+The Development configuration contract forbids YAML as a technology selection for development, build, generation, check, and release-check configuration. JSON is the only file-backed structured configuration format for those scopes.
+
+The same contract forbids npm, Node, npm-compatible package managers, and external frontend build tool configuration. `package.json`, lockfiles for npm-compatible package managers, `node_modules/`, npm registry configuration, webpack, Vite, Rollup, Parcel, PostCSS, Tailwind, Babel, Gulp, Grunt, tsup, and esbuild configuration files must not be introduced.
+
+The Generated output placement contract allows CSS and JavaScript files only at the explicit generated and sample-support paths listed in this specification. Generated CSS paths are `Tokens/*.css`, `UI/*.css`, and `EditorUI/wysiwyg.css`. Generated JavaScript paths are `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, and `EditorUI/editor.js`. Sample-support CSS and JavaScript paths are limited to `Samples/design/sample.css` and `Samples/design/sample.js`.
+
+Generated output names must not introduce `dist/`, `build/`, `Dist/`, `Build/`, minified CSS/JavaScript files, bundled CSS/JavaScript files, or alternate generated output directories.
 
 ## Repository Structure
 

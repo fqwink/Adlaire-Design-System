@@ -42,6 +42,12 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, generated CSS output files, first-line headers, public CSS order, sample loading, and documentation synchronized. Token targets are `Tokens/colors.css`, `Tokens/typography.css`, `Tokens/spacing.css`, `Tokens/layout.css`, `Tokens/motion.css`, `Tokens/layer.css`, `Tokens/breakpoints.css`, `Tokens/surface.css`, `Tokens/status.css`, and `Tokens/effects.css`. Public UI targets are `UI/adlaire.css`, `UI/base.css`, `UI/grid.css`, `UI/layout.css`, `UI/components.css`, `UI/site.css`, `UI/forms.css`, `UI/content.css`, `UI/utilities.css`, and `UI/compat-agws.css`. Editor UI CSS output is `EditorUI/wysiwyg.css`.
 
+## Development Configuration And Output Placement Contracts
+
+The Development configuration contract keeps development, build, generation, check, and release-check settings JSON-only and rejects YAML as a technology selection for those scopes. It also rejects npm, Node, npm-compatible package manager files, and external frontend build tool configuration.
+
+The Generated output placement contract keeps repository CSS and JavaScript files limited to the generated output paths in `Tokens/`, `UI/`, and `EditorUI/`, plus the sample-support files `Samples/design/sample.css` and `Samples/design/sample.js`.
+
 ## Generated JavaScript Pair Contract
 
 | Source | Generated output |
@@ -73,7 +79,7 @@ The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, the
 
 | Path | Role |
 | --- | --- |
-| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Deno-backed generated CSS parity check, Deno type-check target coverage, generated JavaScript hooks, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, CSS variable, sample coverage, asset, local Git consistency, stale merged branch, and release checks. |
+| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Deno-backed generated CSS parity check, Deno type-check target coverage, generated JavaScript hooks, Development configuration contract, Generated output placement contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, CSS variable, sample coverage, asset, local Git consistency, stale merged branch, and release checks. |
 
 ## Operational Quality
 
