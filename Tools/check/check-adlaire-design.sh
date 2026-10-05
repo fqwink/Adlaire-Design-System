@@ -3465,6 +3465,7 @@ for doc_term in \
   'merge commits only' \
   'stale merged branch' \
   'family-labelled diagnostics' \
+  'Deno-backed generated CSS parity check' \
   'JSON development and build configuration baseline' \
   'Token category boundaries' \
   'Token family usage discipline' \
@@ -3485,8 +3486,9 @@ if grep -R -n -E 'TODO|FIXME|未修正|未完了タスク|保留' "$ROOT/README.
   fail "Documentation governance" "documentation must not contain unresolved task markers."
 fi
 
-if command -v deno >/dev/null 2>&1; then
-  (cd "$ROOT" && deno check --no-npm \
+DENO_BIN=$(command -v deno 2>/dev/null || true)
+if [ -n "$DENO_BIN" ]; then
+  (cd "$ROOT" && "$DENO_BIN" check --no-npm \
     TypeScript/CSS/index.ts \
     TypeScript/UI/components.ts \
     TypeScript/UI/component-contracts.ts \
@@ -3495,7 +3497,9 @@ if command -v deno >/dev/null 2>&1; then
     TypeScript/UI/content.ts \
     TypeScript/EditorUI/wysiwyg.ts \
     TypeScript/Editor/index.ts)
-  (cd "$ROOT" && deno run --allow-read TypeScript/CSS/index.ts check-generated-css)
+  (cd "$ROOT" && "$DENO_BIN" run --allow-read TypeScript/CSS/index.ts check-generated-css)
+else
+  echo "[Deno validation] deno command not found; skipped Deno type check and Deno-backed generated CSS parity check." >&2
 fi
 
 if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
