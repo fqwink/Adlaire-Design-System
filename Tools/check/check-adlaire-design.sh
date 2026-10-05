@@ -388,12 +388,44 @@ if find "$ROOT/TypeScript/Editor" -mindepth 1 -type d | grep . >/dev/null 2>&1; 
   fail "Editor runtime boundary" "TypeScript/Editor must stay flat."
 fi
 
-if [ -e "$ROOT/package.json" ] || [ -e "$ROOT/package-lock.json" ] || [ -e "$ROOT/node_modules" ]; then
-  fail "Dependency policy" "npm and Node dependency files are prohibited."
-fi
-
 require_text "AGENTS.md" "構造化設定ファイルはJSONに統一" "Development configuration policy"
 require_text "Docs/Master_Spec" "JSON is the only structured file format for development, build, generation, check, and release-check settings" "Development configuration policy"
+require_text "Docs/Master_Spec" "The Development configuration contract forbids YAML as a technology selection for development, build, generation, check, and release-check configuration" "Development configuration policy"
+require_text "Docs/Master_Spec" "The Generated output placement contract allows CSS and JavaScript files only at the explicit generated and sample-support paths listed in this specification" "Generated output placement contract"
+
+find "$ROOT" \
+  \( -path "$ROOT/.git" -o -path "$ROOT/.github" \) -prune -o \
+  \( -name 'package.json' \
+    -o -name 'package-lock.json' \
+    -o -name 'npm-shrinkwrap.json' \
+    -o -name 'node_modules' \
+    -o -name '.npmrc' \
+    -o -name 'yarn.lock' \
+    -o -name '.yarnrc' \
+    -o -name '.yarnrc.yml' \
+    -o -name 'pnpm-lock.yaml' \
+    -o -name 'pnpm-workspace.yaml' \
+    -o -name 'bun.lock' \
+    -o -name 'bun.lockb' \
+    -o -name 'webpack.config.*' \
+    -o -name 'vite.config.*' \
+    -o -name 'rollup.config.*' \
+    -o -name 'parcel.config.*' \
+    -o -name 'postcss.config.*' \
+    -o -name 'tailwind.config.*' \
+    -o -name 'babel.config.*' \
+    -o -name '.babelrc' \
+    -o -name 'gulpfile.*' \
+    -o -name 'gruntfile.*' \
+    -o -name 'tsup.config.*' \
+    -o -name 'esbuild.config.*' \) \
+  -print >"$TMP_DIR/forbidden-node-build-files"
+
+if [ -s "$TMP_DIR/forbidden-node-build-files" ]; then
+  echo "[Dependency policy] npm, Node, and external frontend build configuration files are prohibited:" >&2
+  cat "$TMP_DIR/forbidden-node-build-files" >&2
+  exit 1
+fi
 
 find "$ROOT" -type f \( -name '*.yml' -o -name '*.yaml' \) \
   ! -path "$ROOT/.git/*" \
@@ -404,8 +436,61 @@ find "$ROOT" -type f \( -name '*.yml' -o -name '*.yaml' \) \
   -print >"$TMP_DIR/development-yaml-files"
 
 if [ -s "$TMP_DIR/development-yaml-files" ]; then
-  echo "[Development configuration policy] development and build configuration must use JSON, not YAML:" >&2
+  echo "[Development configuration policy] development, build, generation, check, and release-check configuration must use JSON, not YAML:" >&2
   cat "$TMP_DIR/development-yaml-files" >&2
+  exit 1
+fi
+
+find "$ROOT" \
+  \( -path "$ROOT/.git" -o -path "$ROOT/.github" \) -prune -o \
+  \( -type d \( -name 'Dist' -o -name 'dist' -o -name 'Build' -o -name 'build' \) \
+    -o -type f \( -name '*.min.css' -o -name '*.min.js' -o -name '*.bundle.css' -o -name '*.bundle.js' \) \) \
+  -print >"$TMP_DIR/forbidden-generated-output-artifacts"
+
+if [ -s "$TMP_DIR/forbidden-generated-output-artifacts" ]; then
+  echo "[Generated output placement contract] dist/build directories and minified or bundled CSS/JavaScript outputs are prohibited:" >&2
+  cat "$TMP_DIR/forbidden-generated-output-artifacts" >&2
+  exit 1
+fi
+
+cat >"$TMP_DIR/allowed-css-js-files" <<'LIST'
+EditorUI/editor.js
+EditorUI/wysiwyg.css
+EditorUI/wysiwyg.js
+Samples/design/sample.css
+Samples/design/sample.js
+Tokens/breakpoints.css
+Tokens/colors.css
+Tokens/effects.css
+Tokens/layer.css
+Tokens/layout.css
+Tokens/motion.css
+Tokens/spacing.css
+Tokens/status.css
+Tokens/surface.css
+Tokens/typography.css
+UI/adlaire.css
+UI/base.css
+UI/compat-agws.css
+UI/components.css
+UI/components.js
+UI/content.css
+UI/content.js
+UI/forms.css
+UI/forms.js
+UI/grid.css
+UI/layout.css
+UI/site.css
+UI/utilities.css
+LIST
+
+(cd "$ROOT" && find . -type f \( -name '*.css' -o -name '*.js' \) ! -path './.git/*' | sed 's#^\./##' | sort) >"$TMP_DIR/current-css-js-files"
+sort "$TMP_DIR/allowed-css-js-files" >"$TMP_DIR/allowed-css-js-files-sorted"
+comm -23 "$TMP_DIR/current-css-js-files" "$TMP_DIR/allowed-css-js-files-sorted" >"$TMP_DIR/unexpected-css-js-files"
+
+if [ -s "$TMP_DIR/unexpected-css-js-files" ]; then
+  echo "[Generated output placement contract] unexpected CSS or JavaScript files:" >&2
+  cat "$TMP_DIR/unexpected-css-js-files" >&2
   exit 1
 fi
 
@@ -3772,6 +3857,8 @@ for doc_term in \
   'Sample asset/load contract' \
   'CSS target manifest contract' \
   'Editor runtime module registry contract' \
+  'Development configuration contract' \
+  'Generated output placement contract' \
   'JSON development and build configuration baseline' \
   'Token category boundaries' \
   'Token family usage discipline' \

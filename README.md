@@ -37,10 +37,17 @@ This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG
 
 - Deno TypeScript is the implementation source for generated CSS and JavaScript.
 - Standard libraries are limited to Deno standard libraries when needed.
-- npm packages, `package.json`, `node_modules`, Node.js-dependent tooling, external frontend frameworks, CSS preprocessors, minified bundles, and generated `dist` or `build` outputs are not used.
+- npm packages, `package.json`, npm-compatible lockfiles, `node_modules`, Node.js-dependent tooling, external frontend frameworks, external frontend build configuration files, CSS preprocessors, minified bundles, and generated `dist` or `build` outputs are not used.
+- JSON is the only structured file format for development, build, generation, check, and release-check settings. YAML is not used for those scopes.
 - CSS and JavaScript are not mixed in the same file.
 - Generated CSS remains in `Tokens/`, `UI/`, and `EditorUI/`.
 - Generated JavaScript remains in `UI/` and `EditorUI/`.
+
+## Generated Output Placement
+
+The Generated output placement contract keeps repository CSS and JavaScript files limited to explicit generated outputs and sample-support files. Generated CSS is limited to `Tokens/*.css`, `UI/*.css`, and `EditorUI/wysiwyg.css`. Generated JavaScript is limited to `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, and `EditorUI/editor.js`.
+
+`Samples/design/sample.css` and `Samples/design/sample.js` are sample-support files only. They are not generated design-system outputs and must not become source-of-truth files.
 
 ## Generated JavaScript Pairs
 
@@ -76,7 +83,7 @@ Run the normal repository check:
 sh Tools/check/check-adlaire-design.sh
 ```
 
-The normal check verifies the Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
+The normal check verifies the Development configuration contract, Generated output placement contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
 
 Run the release check only after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift and stale merged local or `backup/*` remote-tracking branches:
 

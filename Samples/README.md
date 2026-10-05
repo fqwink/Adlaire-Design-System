@@ -13,6 +13,8 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 | `Samples/design/sample.js` | Sample-only display and state-toggle support. |
 | `Samples/sample-current.png` | Reference screenshot. |
 
+`Samples/design/sample.css` and `Samples/design/sample.js` are the only sample-support CSS and JavaScript files allowed by the Generated output placement contract. They must remain sample-only support files and must not become generated design-system outputs or source-of-truth files.
+
 ## Visual Baseline
 
 `Samples/sample-current.png` is the current reference screenshot for human visual review. It is not a generated source of truth and must not override catalogs, tokens, generated CSS, generated JavaScript, or checks.
@@ -43,6 +45,7 @@ The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, 
 - If a sample exposes a specification gap, update the authoritative document or catalog first.
 - When Samples change, check whether `Docs/Master_Spec`, `Docs/Document_Index`, and `Tools/check/check-adlaire-design.sh` also need synchronization.
 - Sample HTML, CSS, and JS must not introduce npm, bundling, minification, CSS preprocessors, or source-of-truth values.
+- Sample CSS and JS must stay limited to `Samples/design/sample.css` and `Samples/design/sample.js`.
 - Sample state toggles must use `data-sample-*` attributes so they remain separate from production `data-adlaire-*` behavior.
 - Sample interaction controls cover overlay visibility, progress value changes, and WYSIWYG readonly, locked, accessibility, and save states without becoming production behavior.
 - Reference screenshot changes require the related source or contract change in the same review unit.
