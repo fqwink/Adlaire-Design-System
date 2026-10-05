@@ -42,6 +42,18 @@ This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG
 - Generated CSS remains in `Tokens/`, `UI/`, and `EditorUI/`.
 - Generated JavaScript remains in `UI/` and `EditorUI/`.
 
+## Generated JavaScript Pairs
+
+The Generated JavaScript pair contract keeps each TypeScript source, generated JavaScript output, generated file header, and documentation row synchronized.
+
+| Source | Generated output |
+| --- | --- |
+| `TypeScript/UI/components.ts` | `UI/components.js` |
+| `TypeScript/UI/forms.ts` | `UI/forms.js` |
+| `TypeScript/UI/content.ts` | `UI/content.js` |
+| `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` |
+| `TypeScript/Editor/index.ts` | `EditorUI/editor.js` |
+
 ## Checks
 
 Repository work starts with `AGENTS.md`, `git fetch backup --prune`, and a local/remote consistency check. The local Git consistency baseline uses automatic pruning, fast-forward-only pulls, `backup` as the default push remote, the current branch as the default push target, and automatic upstream setup. GitHub accepts merge commits only, requires PRs for `main`, automatically deletes merged head branches, and blocks force pushes and deletion of `main`.
@@ -52,7 +64,7 @@ Run the normal repository check:
 sh Tools/check/check-adlaire-design.sh
 ```
 
-When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
+The normal check verifies the Generated JavaScript pair contract and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
 
 Run the release check only after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift and stale merged local or `backup/*` remote-tracking branches:
 

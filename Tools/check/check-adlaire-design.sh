@@ -5,6 +5,16 @@ TOOL_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$TOOL_DIR/../.." && pwd)
 TMP_DIR="${TMPDIR:-/tmp}/adlaire-design-check.$$"
 RUN_RELEASE_CHECK=0
+DENO_TYPECHECK_TARGETS='
+TypeScript/CSS/index.ts
+TypeScript/UI/components.ts
+TypeScript/UI/component-contracts.ts
+TypeScript/UI/interaction-contracts.ts
+TypeScript/UI/forms.ts
+TypeScript/UI/content.ts
+TypeScript/EditorUI/wysiwyg.ts
+TypeScript/Editor/index.ts
+'
 
 case "${1:-}" in
   "")
@@ -3278,6 +3288,67 @@ abort("[UI interaction contract metadata] duplicate hook contracts: #{duplicates
 abort("[UI interaction contract metadata] Component_Contract_Matrix missing interaction-contracts.ts") unless matrix.include?("TypeScript/UI/interaction-contracts.ts")
 RUBY
 
+ROOT="$ROOT" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+
+pairs = [
+  {
+    label: "public component interactions",
+    source: "TypeScript/UI/components.ts",
+    generated: "UI/components.js",
+    header: "/* Adlaire-Design component interactions */",
+  },
+  {
+    label: "form interactions",
+    source: "TypeScript/UI/forms.ts",
+    generated: "UI/forms.js",
+    header: "/* Adlaire-Design form interactions */",
+  },
+  {
+    label: "content interactions",
+    source: "TypeScript/UI/content.ts",
+    generated: "UI/content.js",
+    header: "/* Adlaire-Design content interactions */",
+  },
+  {
+    label: "WYSIWYG editor interactions",
+    source: "TypeScript/EditorUI/wysiwyg.ts",
+    generated: "EditorUI/wysiwyg.js",
+    header: "/* Adlaire-Design WYSIWYG editor interactions */",
+  },
+  {
+    label: "structured editor runtime",
+    source: "TypeScript/Editor/index.ts",
+    generated: "EditorUI/editor.js",
+    header: "/* Adlaire-Design editor core */",
+  },
+]
+
+coverage_docs = %w[
+  README.md
+  Docs/Master_Spec
+  Docs/Document_Index
+  Docs/Component_Contract_Matrix
+]
+
+pairs.each do |pair|
+  source_path = File.join(root, pair.fetch(:source))
+  generated_path = File.join(root, pair.fetch(:generated))
+  abort("[Generated JavaScript pair contract] #{pair.fetch(:label)} missing source: #{pair.fetch(:source)}") unless File.file?(source_path)
+  abort("[Generated JavaScript pair contract] #{pair.fetch(:label)} missing generated output: #{pair.fetch(:generated)}") unless File.file?(generated_path)
+
+  first_line = File.open(generated_path, &:gets)&.chomp
+  abort("[Generated JavaScript pair contract] #{pair.fetch(:generated)} first line must be #{pair.fetch(:header)}") unless first_line == pair.fetch(:header)
+
+  coverage_docs.each do |doc|
+    text = File.read(File.join(root, doc))
+    unless text.include?(pair.fetch(:source)) && text.include?(pair.fetch(:generated))
+      abort("[Generated JavaScript pair contract] #{doc} missing #{pair.fetch(:source)} -> #{pair.fetch(:generated)}")
+    end
+  end
+end
+RUBY
+
 if grep -R -n -F '.adlaire-wysiwyg- {' "$ROOT/TypeScript/CSS" "$ROOT/EditorUI" >/dev/null 2>&1; then
   fail "WYSIWYG Editor UI" "WYSIWYG CSS must not contain incomplete class selector .adlaire-wysiwyg-."
 fi
@@ -3449,6 +3520,33 @@ find "$ROOT/Brand" -maxdepth 1 -type f ! -name '.gitkeep' ! -name 'README.md' | 
   esac
 done
 
+ROOT="$ROOT" DENO_TYPECHECK_TARGETS="$DENO_TYPECHECK_TARGETS" ruby <<'RUBY'
+root = ENV.fetch("ROOT")
+deno_targets = ENV.fetch("DENO_TYPECHECK_TARGETS").split
+expected_targets = %w[
+  TypeScript/CSS/index.ts
+  TypeScript/UI/components.ts
+  TypeScript/UI/component-contracts.ts
+  TypeScript/UI/interaction-contracts.ts
+  TypeScript/UI/forms.ts
+  TypeScript/UI/content.ts
+  TypeScript/EditorUI/wysiwyg.ts
+  TypeScript/Editor/index.ts
+]
+
+counts = Hash.new(0)
+deno_targets.each { |target| counts[target] += 1 }
+duplicates = counts.select { |_target, count| count > 1 }.keys
+missing = expected_targets - deno_targets
+extra = deno_targets - expected_targets
+missing_files = deno_targets.reject { |target| File.file?(File.join(root, target)) }
+
+abort("[Deno type-check target coverage] duplicate targets: #{duplicates.join(", ")}") unless duplicates.empty?
+abort("[Deno type-check target coverage] missing targets: #{missing.join(", ")}") unless missing.empty?
+abort("[Deno type-check target coverage] unexpected targets: #{extra.join(", ")}") unless extra.empty?
+abort("[Deno type-check target coverage] targets missing files: #{missing_files.join(", ")}") unless missing_files.empty?
+RUBY
+
 for doc_term in \
   'Adlaire-Design-System' \
   'Deno TypeScript' \
@@ -3466,6 +3564,8 @@ for doc_term in \
   'stale merged branch' \
   'family-labelled diagnostics' \
   'Deno-backed generated CSS parity check' \
+  'Deno type-check target coverage' \
+  'Generated JavaScript pair contract' \
   'JSON development and build configuration baseline' \
   'Token category boundaries' \
   'Token family usage discipline' \
@@ -3488,15 +3588,7 @@ fi
 
 DENO_BIN=$(command -v deno 2>/dev/null || true)
 if [ -n "$DENO_BIN" ]; then
-  (cd "$ROOT" && "$DENO_BIN" check --no-npm \
-    TypeScript/CSS/index.ts \
-    TypeScript/UI/components.ts \
-    TypeScript/UI/component-contracts.ts \
-    TypeScript/UI/interaction-contracts.ts \
-    TypeScript/UI/forms.ts \
-    TypeScript/UI/content.ts \
-    TypeScript/EditorUI/wysiwyg.ts \
-    TypeScript/Editor/index.ts)
+  (cd "$ROOT" && "$DENO_BIN" check --no-npm $DENO_TYPECHECK_TARGETS)
   (cd "$ROOT" && "$DENO_BIN" run --allow-read TypeScript/CSS/index.ts check-generated-css)
 else
   echo "[Deno validation] deno command not found; skipped Deno type check and Deno-backed generated CSS parity check." >&2

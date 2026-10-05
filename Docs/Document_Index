@@ -38,6 +38,18 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 | `TypeScript/EditorUI/` | WYSIWYG Editor UI JavaScript source. |
 | `TypeScript/Editor/` | Structured editor source. |
 
+## Generated JavaScript Pair Contract
+
+| Source | Generated output |
+| --- | --- |
+| `TypeScript/UI/components.ts` | `UI/components.js` |
+| `TypeScript/UI/forms.ts` | `UI/forms.js` |
+| `TypeScript/UI/content.ts` | `UI/content.js` |
+| `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` |
+| `TypeScript/Editor/index.ts` | `EditorUI/editor.js` |
+
+The Generated JavaScript pair contract keeps each Deno TypeScript source, generated JavaScript file, generated file header, and documentation row synchronized. The Deno type-check target coverage keeps the normal type-check target list explicit and check-covered before optional Deno execution.
+
 ## Assets and Samples
 
 | Path | Role |
@@ -53,7 +65,7 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 | Path | Role |
 | --- | --- |
-| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Deno-backed generated CSS parity check, generated JavaScript hooks, CSS variable, sample coverage, asset, local Git consistency, stale merged branch, and release checks. |
+| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Deno-backed generated CSS parity check, Deno type-check target coverage, generated JavaScript hooks, Generated JavaScript pair contract, CSS variable, sample coverage, asset, local Git consistency, stale merged branch, and release checks. |
 
 ## Operational Quality
 
