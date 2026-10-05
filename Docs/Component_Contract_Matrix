@@ -4,6 +4,8 @@ This matrix maps component families to the documents, source files, generated fi
 
 `Docs/Master_Spec` remains the higher-level source of truth. This file is a navigation and verification matrix, not a separate implementation authority.
 
+The Generated JavaScript pair contract keeps the listed Deno TypeScript source, generated JavaScript output, generated file header, and documentation coverage synchronized for each behavior surface. The Deno type-check target coverage keeps the normal TypeScript type-check entrypoints explicit and check-covered.
+
 `TypeScript/UI/component-contracts.ts` records representative UI component contracts as TypeScript source metadata. It does not replace this matrix; it gives checks and implementation review a typed source for high-risk synchronized families, generated CSS/JavaScript files, ARIA requirements, state attributes, required icons, sample sections, responsive modes, review surface, review tier, contract owner, contract depth, contract risk, contract lifecycle, platform support, accessibility records, behavior-required contracts, governance records, and required coverage gaps.
 
 `TypeScript/UI/interaction-contracts.ts` records UI interaction contract metadata as TypeScript source metadata. It keeps declarative hooks, shared interaction primitives, source files, generated JavaScript targets, generated parity, event partitions, input modality, optional sample requirements, audit records, state attributes, fallback policies, and state scopes synchronized across public components, forms, content, and WYSIWYG UI.
@@ -39,7 +41,7 @@ This matrix maps component families to the documents, source files, generated fi
 | Git Provider UI | `Docs/Generic_Component_Catalog`, `Docs/Icon_Set_Catalog` | `TypeScript/CSS/rules-components.ts` | `UI/components.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | required classes, GitHub product classes, icon inventory, sample coverage |
 | Cloud / Infrastructure UI | `Docs/Generic_Component_Catalog`, `Docs/Icon_Set_Catalog` | `TypeScript/CSS/rules-components.ts` | `UI/components.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | required classes, cloud infrastructure classes, icon inventory, sample coverage |
 | WYSIWYG Editor UI | `Docs/WYSIWYG_Editor_UI_Catalog` | `TypeScript/CSS/rules-wysiwyg.ts` | `EditorUI/wysiwyg.css` | `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` | `Samples/design/index.html` | required classes, JavaScript hooks, sample coverage |
-| Editor runtime | `Docs/Editor_Master_Spec` | Not CSS-owned | `EditorUI/editor.js` runtime output | `TypeScript/Editor/` | `EditorUI/editor.js` | Demonstrated through WYSIWYG sample states | module exports, module boundaries |
+| Editor runtime | `Docs/Editor_Master_Spec` | Not CSS-owned | `EditorUI/editor.js` runtime output | `TypeScript/Editor/index.ts` | `EditorUI/editor.js` | Demonstrated through WYSIWYG sample states | module exports, module boundaries, Generated JavaScript pair contract |
 | Tokens | `Docs/Master_Spec` | `TypeScript/CSS/tokens.ts` | `Tokens/*.css` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | generated token CSS, token inventory, duplicate tokens, undefined variables |
 | Icons and brand | `Docs/Icon_Set_Catalog`, `Docs/Brand_Asset_Catalog` | Asset files | `Icons/`, `Brand/` | Not JavaScript-owned | Not JavaScript-owned | `Samples/design/index.html` | icon count, asset inventory |
 
