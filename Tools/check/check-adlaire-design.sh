@@ -4,17 +4,8 @@ set -eu
 TOOL_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$TOOL_DIR/../.." && pwd)
 TMP_DIR="${TMPDIR:-/tmp}/adlaire-design-check.$$"
+CONTRACT_MANIFEST=Tools/check/adlaire-design-contracts.json
 RUN_RELEASE_CHECK=0
-DENO_TYPECHECK_TARGETS='
-TypeScript/CSS/index.ts
-TypeScript/UI/components.ts
-TypeScript/UI/component-contracts.ts
-TypeScript/UI/interaction-contracts.ts
-TypeScript/UI/forms.ts
-TypeScript/UI/content.ts
-TypeScript/EditorUI/wysiwyg.ts
-TypeScript/Editor/index.ts
-'
 
 case "${1:-}" in
   "")
@@ -97,6 +88,7 @@ for path in \
   Docs/Icon_Set_Catalog \
   Docs/Brand_Asset_Catalog \
   Docs/Pending_Tasks \
+  Tools/check/adlaire-design-contracts.json \
   Brand/README.md \
   Samples/README.md \
   Samples/design/index.html \
@@ -332,6 +324,120 @@ done
 for path in Docs Tokens UI EditorUI TypeScript TypeScript/CSS TypeScript/UI TypeScript/EditorUI TypeScript/Editor Icons Brand Samples Samples/design Tools/check; do
   require_dir "$path"
 done
+
+DENO_TYPECHECK_TARGETS=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+require "digest"
+
+root = ENV.fetch("ROOT")
+manifest_path = File.join(root, ENV.fetch("CONTRACT_MANIFEST"))
+manifest = JSON.parse(File.read(manifest_path))
+abort("[Contract manifest] contractManifestVersion must be 1.") unless manifest.fetch("contractManifestVersion") == 1
+
+def require_unique_values(values, label)
+  counts = Hash.new(0)
+  values.each { |value| counts[value] += 1 }
+  duplicates = counts.select { |_value, count| count > 1 }.keys
+  abort("[Contract manifest] duplicate #{label}: #{duplicates.join(", ")}") unless duplicates.empty?
+end
+
+def require_existing_file(root, path, label)
+  abort("[Contract manifest] #{label} must not be empty.") if path.to_s.empty?
+  abort("[Contract manifest] #{label} missing file: #{path}") unless File.file?(File.join(root, path))
+end
+
+def require_existing_directory(root, path, label)
+  abort("[Contract manifest] #{label} must not be empty.") if path.to_s.empty?
+  abort("[Contract manifest] #{label} missing directory: #{path}") unless File.directory?(File.join(root, path))
+end
+
+deno = manifest.fetch("denoValidation")
+abort("[Contract manifest] Deno validation must require Deno for complete release evidence.") unless deno.fetch("completeEvidenceRequiresDeno") == true
+abort("[Contract manifest] Deno skip diagnostic must be family-labelled.") unless deno.fetch("skipDiagnostic").start_with?("[Deno validation]")
+abort("[Contract manifest] Deno requiredEnv must be ADLAIRE_REQUIRE_DENO.") unless deno.fetch("requiredEnv") == "ADLAIRE_REQUIRE_DENO"
+
+targets = deno.fetch("typeCheckTargets")
+abort("[Contract manifest] Deno type-check targets must not be empty.") if targets.empty?
+require_unique_values(targets, "Deno type-check target")
+targets.each do |target|
+  require_existing_file(root, target, "Deno type-check target")
+end
+
+pairs = manifest.fetch("generatedJavaScriptPairs")
+abort("[Contract manifest] generatedJavaScriptPairs must not be empty.") if pairs.empty?
+require_unique_values(pairs.map { |pair| pair.fetch("label") }, "generated JavaScript label")
+require_unique_values(pairs.map { |pair| pair.fetch("source") }, "generated JavaScript source")
+require_unique_values(pairs.map { |pair| pair.fetch("generated") }, "generated JavaScript output")
+pairs.each do |pair|
+  %w[label source generated header].each do |field|
+    abort("[Contract manifest] generated JavaScript pair missing #{field}.") if pair.fetch(field).to_s.empty?
+  end
+  require_existing_file(root, pair.fetch("source"), "#{pair.fetch("label")} source")
+  require_existing_file(root, pair.fetch("generated"), "#{pair.fetch("label")} generated")
+  parity_terms = pair.fetch("parityTerms")
+  abort("[Contract manifest] #{pair.fetch("label")} parityTerms must not be empty.") if parity_terms.empty?
+  abort("[Contract manifest] #{pair.fetch("label")} parityTerms must not contain empty terms.") if parity_terms.any?(&:empty?)
+  require_unique_values(parity_terms, "#{pair.fetch("label")} parity term")
+end
+
+coverage = manifest.fetch("contractCoverage")
+abort("[Contract manifest] minimumComponentContractCount must be positive.") unless coverage.fetch("minimumComponentContractCount").positive?
+abort("[Contract manifest] minimumInteractionContractCount must be positive.") unless coverage.fetch("minimumInteractionContractCount").positive?
+required_coverage = coverage.fetch("requiredComponentCoverage")
+require_unique_values(required_coverage, "required component coverage")
+abort("[Contract manifest] requiredComponentCoverage must include catalog and sample.") unless (required_coverage & %w[catalog sample]).sort == %w[catalog sample]
+contract_docs = coverage.fetch("requiredContractDocs")
+abort("[Contract manifest] requiredContractDocs must not be empty.") if contract_docs.empty?
+require_unique_values(contract_docs, "required contract doc")
+contract_docs.each { |path| require_existing_file(root, path, "required contract doc") }
+
+inventory = manifest.fetch("repositoryInventory")
+required_files = inventory.fetch("requiredFiles")
+required_directories = inventory.fetch("requiredDirectories")
+abort("[Contract manifest] repositoryInventory requiredFiles must not be empty.") if required_files.empty?
+abort("[Contract manifest] repositoryInventory requiredDirectories must not be empty.") if required_directories.empty?
+require_unique_values(required_files, "repository required file")
+require_unique_values(required_directories, "repository required directory")
+required_files.each { |path| require_existing_file(root, path, "repository required file") }
+required_directories.each { |path| require_existing_directory(root, path, "repository required directory") }
+
+visual = manifest.fetch("visualBaseline")
+reference = visual.fetch("reference")
+sample = visual.fetch("sample")
+require_existing_file(root, reference, "Visual Baseline reference")
+require_existing_file(root, sample, "Visual Baseline sample")
+reference_path = File.join(root, reference)
+actual_sha256 = Digest::SHA256.file(reference_path).hexdigest
+actual_bytes = File.size(reference_path)
+abort("[Visual baseline contract] #{reference} SHA-256 mismatch: #{actual_sha256}") unless actual_sha256 == visual.fetch("sha256")
+abort("[Visual baseline contract] #{reference} size mismatch: #{actual_bytes}") unless actual_bytes == visual.fetch("bytes")
+required_terms = visual.fetch("requiredTerms")
+required_docs = visual.fetch("requiredDocs")
+require_unique_values(required_terms, "Visual Baseline required term")
+require_unique_values(required_docs, "Visual Baseline required doc")
+required_docs.each { |path| require_existing_file(root, path, "Visual Baseline required doc") }
+
+puts targets
+RUBY
+)
+
+DENO_SKIP_DIAGNOSTIC=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+puts manifest.fetch("denoValidation").fetch("skipDiagnostic")
+RUBY
+)
+
+DENO_REQUIRED_ENV=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+puts manifest.fetch("denoValidation").fetch("requiredEnv")
+RUBY
+)
 
 find "$ROOT" -mindepth 1 -maxdepth 1 \
   ! -name '.git' \
@@ -3174,8 +3280,12 @@ for interaction_contract_term in \
   require_text "TypeScript/UI/interaction-contracts.ts" "$interaction_contract_term" "UI interaction contract metadata"
 done
 
-ROOT="$ROOT" ruby <<'RUBY'
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
 root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+contract_coverage = manifest.fetch("contractCoverage")
 source = File.read(File.join(root, "TypeScript/UI/component-contracts.ts"))
 
 matrix = File.read(File.join(root, "Docs/Component_Contract_Matrix"))
@@ -3229,7 +3339,9 @@ end
 required_coverage_match = source.match(/COMPONENT_CONTRACT_REQUIRED_COVERAGE:[^\[]+\[(.*?)\]\s+as const;/m)
 abort("[UI component contract metadata] COMPONENT_CONTRACT_REQUIRED_COVERAGE missing.") unless required_coverage_match
 required_coverage = required_coverage_match[1].scan(/"([^"]+)"/).flatten
-abort("[UI component contract metadata] COMPONENT_CONTRACT_REQUIRED_COVERAGE must include catalog and sample.") unless (required_coverage & %w[catalog sample]).sort == %w[catalog sample]
+manifest_required_coverage = contract_coverage.fetch("requiredComponentCoverage")
+abort("[UI component contract metadata] COMPONENT_CONTRACT_REQUIRED_COVERAGE must match contract manifest.") unless required_coverage.sort == manifest_required_coverage.sort
+abort("[UI component contract metadata] COMPONENT_CONTRACTS below manifest minimum: #{contracts.length}") if contracts.length < contract_coverage.fetch("minimumComponentContractCount")
 
 contract_counts = Hash.new(0)
 contracts.each { |contract| contract_counts[contract.fetch(:id)] += 1 }
@@ -3323,8 +3435,11 @@ contracts.each do |contract|
 end
 RUBY
 
-ROOT="$ROOT" ruby <<'RUBY'
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
 root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
 source = File.read(File.join(root, "TypeScript/UI/interaction-contracts.ts"))
 matrix = File.read(File.join(root, "Docs/Component_Contract_Matrix"))
 sample = File.read(File.join(root, "Samples/design/index.html"))
@@ -3362,6 +3477,8 @@ abort("[UI interaction contract metadata] primitives missing from runtime source
 
 contract_lines = source.lines.grep(/^\s*\{ surface: /)
 abort("[UI interaction contract metadata] UI_INTERACTION_CONTRACTS must contain contracts.") if contract_lines.empty?
+minimum_interaction_contracts = manifest.fetch("contractCoverage").fetch("minimumInteractionContractCount")
+abort("[UI interaction contract metadata] UI_INTERACTION_CONTRACTS below manifest minimum: #{contract_lines.length}") if contract_lines.length < minimum_interaction_contracts
 
 allowed_surfaces = %w[components forms content wysiwyg]
 allowed_events = %w[click input change keydown]
@@ -3401,66 +3518,57 @@ hook_counts = Hash.new(0)
 hooks.each { |hook| hook_counts[hook] += 1 }
 duplicates = hook_counts.select { |_hook, count| count > 1 }.keys
 abort("[UI interaction contract metadata] duplicate hook contracts: #{duplicates.join(", ")}") unless duplicates.empty?
+
+audit_interface = source.match(/export interface UIInteractionAuditRecord \{\n(.*?)^\}/m)
+abort("[UI interaction audit contract] UIInteractionAuditRecord interface missing.") unless audit_interface
+%w[surface hook event source generated samplePolicy stateAttribute fallbackPolicy stateScope inputModality].each do |field|
+  abort("[UI interaction audit contract] UIInteractionAuditRecord missing field: #{field}") unless audit_interface[1].include?("readonly #{field}:")
+end
+abort("[UI interaction audit contract] uiInteractionAuditRecords function missing.") unless source.include?("export function uiInteractionAuditRecords(): readonly UIInteractionAuditRecord[]")
+abort("[UI interaction audit contract] audit records must map directly from UI_INTERACTION_CONTRACTS.") unless source.include?("return UI_INTERACTION_CONTRACTS.map((contract) => ({")
+%w[surface hook event source generated samplePolicy stateAttribute fallbackPolicy stateScope inputModality].each do |field|
+  abort("[UI interaction audit contract] uiInteractionAuditRecords missing mapped field: #{field}") unless source.include?("#{field}:")
+end
+%w[uiInteractionFallbackPolicy uiInteractionStateScope uiInteractionInputModality].each do |helper|
+  abort("[UI interaction audit contract] uiInteractionAuditRecords missing helper: #{helper}") unless source.include?("#{helper}(contract)")
+end
 abort("[UI interaction contract metadata] Component_Contract_Matrix missing interaction-contracts.ts") unless matrix.include?("TypeScript/UI/interaction-contracts.ts")
 RUBY
 
-ROOT="$ROOT" ruby <<'RUBY'
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
 root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
 
-pairs = [
-  {
-    label: "public component interactions",
-    source: "TypeScript/UI/components.ts",
-    generated: "UI/components.js",
-    header: "/* Adlaire-Design component interactions */",
-  },
-  {
-    label: "form interactions",
-    source: "TypeScript/UI/forms.ts",
-    generated: "UI/forms.js",
-    header: "/* Adlaire-Design form interactions */",
-  },
-  {
-    label: "content interactions",
-    source: "TypeScript/UI/content.ts",
-    generated: "UI/content.js",
-    header: "/* Adlaire-Design content interactions */",
-  },
-  {
-    label: "WYSIWYG editor interactions",
-    source: "TypeScript/EditorUI/wysiwyg.ts",
-    generated: "EditorUI/wysiwyg.js",
-    header: "/* Adlaire-Design WYSIWYG editor interactions */",
-  },
-  {
-    label: "structured editor runtime",
-    source: "TypeScript/Editor/index.ts",
-    generated: "EditorUI/editor.js",
-    header: "/* Adlaire-Design editor core */",
-  },
-]
-
-coverage_docs = %w[
-  README.md
-  Docs/Master_Spec
-  Docs/Document_Index
-  Docs/Component_Contract_Matrix
-]
+pairs = manifest.fetch("generatedJavaScriptPairs")
+coverage_docs = manifest.fetch("contractCoverage").fetch("requiredContractDocs")
+abort("[Generated JavaScript pair contract] contract manifest must define generated JavaScript pairs.") if pairs.empty?
 
 pairs.each do |pair|
-  source_path = File.join(root, pair.fetch(:source))
-  generated_path = File.join(root, pair.fetch(:generated))
-  abort("[Generated JavaScript pair contract] #{pair.fetch(:label)} missing source: #{pair.fetch(:source)}") unless File.file?(source_path)
-  abort("[Generated JavaScript pair contract] #{pair.fetch(:label)} missing generated output: #{pair.fetch(:generated)}") unless File.file?(generated_path)
+  source_path = File.join(root, pair.fetch("source"))
+  generated_path = File.join(root, pair.fetch("generated"))
+  abort("[Generated JavaScript pair contract] #{pair.fetch("label")} missing source: #{pair.fetch("source")}") unless File.file?(source_path)
+  abort("[Generated JavaScript pair contract] #{pair.fetch("label")} missing generated output: #{pair.fetch("generated")}") unless File.file?(generated_path)
 
   first_line = File.open(generated_path, &:gets)&.chomp
-  abort("[Generated JavaScript pair contract] #{pair.fetch(:generated)} first line must be #{pair.fetch(:header)}") unless first_line == pair.fetch(:header)
+  abort("[Generated JavaScript pair contract] #{pair.fetch("generated")} first line must be #{pair.fetch("header")}") unless first_line == pair.fetch("header")
+
+  source_text = File.read(source_path)
+  generated_text = File.read(generated_path)
+  parity_terms = pair.fetch("parityTerms")
+  abort("[Generated JavaScript parity contract] #{pair.fetch("label")} must define parity terms.") if parity_terms.empty?
+  missing_source_terms = parity_terms.reject { |term| source_text.include?(term) }
+  missing_generated_terms = parity_terms.reject { |term| generated_text.include?(term) }
+  abort("[Generated JavaScript parity contract] #{pair.fetch("source")} missing parity terms: #{missing_source_terms.join(", ")}") unless missing_source_terms.empty?
+  abort("[Generated JavaScript parity contract] #{pair.fetch("generated")} missing parity terms: #{missing_generated_terms.join(", ")}") unless missing_generated_terms.empty?
 
   coverage_docs.each do |doc|
     text = File.read(File.join(root, doc))
-    unless text.include?(pair.fetch(:source)) && text.include?(pair.fetch(:generated))
-      abort("[Generated JavaScript pair contract] #{doc} missing #{pair.fetch(:source)} -> #{pair.fetch(:generated)}")
+    unless text.include?(pair.fetch("source")) && text.include?(pair.fetch("generated"))
+      abort("[Generated JavaScript pair contract] #{doc} missing #{pair.fetch("source")} -> #{pair.fetch("generated")}")
     end
+    abort("[Generated JavaScript pair contract] #{doc} missing contract manifest reference.") unless text.include?(ENV.fetch("CONTRACT_MANIFEST"))
   end
 end
 RUBY
@@ -3845,19 +3953,13 @@ find "$ROOT/Brand" -maxdepth 1 -type f ! -name '.gitkeep' ! -name 'README.md' | 
   esac
 done
 
-ROOT="$ROOT" DENO_TYPECHECK_TARGETS="$DENO_TYPECHECK_TARGETS" ruby <<'RUBY'
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" DENO_TYPECHECK_TARGETS="$DENO_TYPECHECK_TARGETS" ruby <<'RUBY'
+require "json"
+
 root = ENV.fetch("ROOT")
 deno_targets = ENV.fetch("DENO_TYPECHECK_TARGETS").split
-expected_targets = %w[
-  TypeScript/CSS/index.ts
-  TypeScript/UI/components.ts
-  TypeScript/UI/component-contracts.ts
-  TypeScript/UI/interaction-contracts.ts
-  TypeScript/UI/forms.ts
-  TypeScript/UI/content.ts
-  TypeScript/EditorUI/wysiwyg.ts
-  TypeScript/Editor/index.ts
-]
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+expected_targets = manifest.fetch("denoValidation").fetch("typeCheckTargets")
 
 counts = Hash.new(0)
 deno_targets.each { |target| counts[target] += 1 }
@@ -3890,11 +3992,17 @@ for doc_term in \
   'family-labelled diagnostics' \
   'Deno-backed generated CSS parity check' \
   'Deno type-check target coverage' \
+  'Deno complete validation gate' \
   'Generated JavaScript pair contract' \
+  'Generated JavaScript parity contract' \
+  'Interaction audit contract' \
   'JavaScript public surface contract' \
   'Sample asset/load contract' \
   'CSS target manifest contract' \
   'Editor runtime module registry contract' \
+  'JSON check contract manifest' \
+  'repositoryInventory' \
+  'Visual Baseline hash' \
   'Development configuration contract' \
   'Generated output placement contract' \
   'TypeScript source inventory contract' \
@@ -3919,12 +4027,36 @@ if grep -R -n -E 'TODO|FIXME|未修正|未完了タスク|保留' "$ROOT/README.
   fail "Documentation governance" "documentation must not contain unresolved task markers."
 fi
 
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest_path = ENV.fetch("CONTRACT_MANIFEST")
+manifest = JSON.parse(File.read(File.join(root, manifest_path)))
+visual = manifest.fetch("visualBaseline")
+reference = visual.fetch("reference")
+sample = visual.fetch("sample")
+abort("[Visual baseline contract] missing reference screenshot: #{reference}") unless File.file?(File.join(root, reference))
+abort("[Visual baseline contract] missing sample surface: #{sample}") unless File.file?(File.join(root, sample))
+
+required_terms = visual.fetch("requiredTerms")
+visual.fetch("requiredDocs").each do |doc|
+  text = File.read(File.join(root, doc))
+  abort("[Visual baseline contract] #{doc} missing contract manifest reference.") unless text.include?(manifest_path)
+  missing_terms = required_terms.reject { |term| text.include?(term) }
+  abort("[Visual baseline contract] #{doc} missing terms: #{missing_terms.join(", ")}") unless missing_terms.empty?
+end
+RUBY
+
 DENO_BIN=$(command -v deno 2>/dev/null || true)
 if [ -n "$DENO_BIN" ]; then
   (cd "$ROOT" && "$DENO_BIN" check --no-npm $DENO_TYPECHECK_TARGETS)
   (cd "$ROOT" && "$DENO_BIN" run --allow-read TypeScript/CSS/index.ts check-generated-css)
 else
-  echo "[Deno validation] deno command not found; skipped Deno type check and Deno-backed generated CSS parity check." >&2
+  if [ "$(printenv "$DENO_REQUIRED_ENV" 2>/dev/null || true)" = "1" ]; then
+    fail "Deno validation" "$DENO_REQUIRED_ENV=1 requires deno for complete TypeScript and generated CSS parity evidence."
+  fi
+  echo "$DENO_SKIP_DIAGNOSTIC" >&2
 fi
 
 if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
