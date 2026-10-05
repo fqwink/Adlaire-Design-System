@@ -1,6 +1,6 @@
 # Adlaire-Design-System Master Specification
 
-Version: rev.147
+Version: rev.152
 
 `Docs/Master_Spec` is the overall source of truth for Adlaire-Design-System.
 
@@ -29,10 +29,27 @@ The system must also show a Product adoption surface: a realistic product-operat
 | Generated JavaScript | `UI/*.js`, `EditorUI/*.js` |
 | Asset sources | `Icons/`, `Brand/` |
 | Task source | `Docs/Pending_Tasks` |
+| Language gateway | `README.md` |
+| Reader guides | `Docs/README.en.md`, `Docs/README.ja.md` |
 | Checks | `Tools/check/check-adlaire-design.sh` |
 | Check contract manifest | `Tools/check/adlaire-design-contracts.json` |
 
 Samples are supporting confirmation material. They are not a specification source.
+
+The root README is a compact language gateway and checked contract anchor. `Docs/README.en.md` and `Docs/README.ja.md` are language-specific reader guides that summarize the source-of-truth documents without adding a new authority layer.
+
+When these reader guides change, `Docs/Document_Index`, `documentationGovernance`, and the generated JavaScript pair contract coverage must remain synchronized.
+
+Documentation roles are intentionally separated:
+
+- `Docs/Master_Spec` defines contracts.
+- `Docs/Document_Index` inventories repository material through table-first reading-order, ownership, output, and contract-location maps.
+- `Docs/Component_Contract_Matrix` maps synchronized implementation families.
+- Language README files provide reader navigation.
+
+Contract definitions should not be duplicated across those documents unless a check-covered anchor explicitly requires the term.
+
+Reader guides must prefer navigation, responsibility summaries, and command entry points over full contract redefinition. Detailed check coverage terms remain anchored in `Docs/Master_Spec`, `Docs/Document_Index`, and `Tools/check/adlaire-design-contracts.json`.
 
 ## Startup Synchronization
 
@@ -163,6 +180,8 @@ All catalogs use the same implementation-state vocabulary: `実装済み`, `策�
 
 Required Class Families in Generic, Admin, and WYSIWYG catalogs are a check-covered contract. Listed classes must stay present in the catalog and generated CSS together.
 
+Catalog and support-document naming uses `Adlaire-Design-System` for current document headings. `Adlaire-Design` remains the current repository name and may appear only where repository identity, legacy compatibility, or generated output names require it.
+
 `Docs/Component_Contract_Matrix` maps component families to their catalog or specification owner, TypeScript source, generated output, JavaScript hooks, sample coverage, and check coverage.
 
 `TypeScript/UI/component-contracts.ts` records representative high-risk UI component contracts as typed source metadata. It supports review and checks for synchronized catalog classes, per-contract generated CSS/JavaScript targets, JavaScript hooks, ARIA requirements, state attributes, required icons, sample sections, responsive modes, matrix coverage, review surface, review tier, and required coverage gaps across layout, content, admin, data, business, enterprise, strategic, industry, support, communication, publishing, device, travel, civic, energy, quality, agent, developer, theme, cloud, collaboration, product, commerce, observability, workflow, AI, guidance, and WYSIWYG families; it does not replace `Docs/Component_Contract_Matrix`.
@@ -269,6 +288,8 @@ The Ignored local artifact policy allows only `.DS_Store` and `Work/` as ignored
 
 Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, Local Docker Deno validation, `assetInventory`, `documentationGovernance`, ignored local artifact policy, local Git consistency drift, stale merged branches, and post-merge release readiness.
 
+`Docs/Document_Index` inventories where those contracts appear. `Docs/Component_Contract_Matrix` maps which catalog, source, generated output, sample, and check surface must move together for each component family.
+
 The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before Docker execution. Deno execution is fixed to local Docker and must use `denoland/deno:2.1.4@sha256:3bf75873714baa410dcf7fabaf76d806d20f0ac8a7579df11577b4ed97416e34`. The repository check must not use host `deno`; missing Docker, Docker startup failure, Deno type-check failure, or generated CSS parity failure is a failed validation.
 
 `Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, Local Docker Deno validation image and digest, the Deno complete validation gate, the Deno required failure message, the bug-fix-zero validation principle, Generated JavaScript parity contract terms, grouped repositoryInventory, TypeScript source inventory, generated CSS inventory, generated JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, or reference screenshot hash drift.
@@ -290,6 +311,7 @@ Check failures use family-labelled diagnostics so the broken contract area is vi
 | UI JavaScript change | Relevant TypeScript source, generated JS, specs, checks. |
 | Editor runtime change | `Docs/Editor_Master_Spec`, `TypeScript/Editor/`, `EditorUI/editor.js`, checks. |
 | Catalog change | `Docs/Master_Spec`, target catalog, `Docs/Pending_Tasks` when needed, checks. |
+| Documentation structure change | `README.md`, `Docs/README.en.md`, `Docs/README.ja.md`, `Docs/Document_Index`, `documentationGovernance`, checks. |
 | Sample change | `Samples/README.md`, `Samples/design/`, index and checks when needed. |
 | Asset change | Relevant asset catalog, asset files, index, checks. |
 

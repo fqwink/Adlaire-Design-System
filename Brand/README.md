@@ -1,6 +1,8 @@
-# Adlaire Brand Assets
+# Adlaire-Design-System Brand Assets
 
-`Brand/` stores Adlaire-Design brand assets owned by this repository.
+`Brand/` stores Adlaire-Design-System brand assets owned by this repository.
+
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
 
 The catalog source is `Docs/Brand_Asset_Catalog`.
 

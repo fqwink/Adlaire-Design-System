@@ -1,8 +1,10 @@
-# Adlaire-Design Brand Asset Catalog
+# Adlaire-Design-System Brand Asset Catalog
 
-This catalog governs brand assets stored in `Brand/`.
+This catalog governs brand assets stored in `Brand/` for Adlaire-Design-System.
 
-`Docs/Master_Spec` is the higher-level source of truth.
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
+
+`Docs/Master_Spec` is the higher-level source of truth. This catalog is a catalog source within that authority model, not a separate source of truth.
 
 ## Allowed Asset Types
 

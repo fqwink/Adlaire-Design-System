@@ -1,8 +1,10 @@
-# Adlaire-Design Admin UI Catalog
+# Adlaire-Design-System Admin UI Catalog
 
-This catalog governs Admin-only UI patterns used by administrators, operators, editors, reviewers, and maintainers.
+This catalog governs Admin-only UI patterns used by administrators, operators, editors, reviewers, and maintainers in Adlaire-Design-System.
 
-`Docs/Master_Spec` is the higher-level source of truth.
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
+
+`Docs/Master_Spec` is the higher-level source of truth. This catalog is a catalog source within that authority model, not a separate source of truth.
 
 ## Scope
 

@@ -1,8 +1,10 @@
-# Adlaire-Design WYSIWYG Editor UI Catalog
+# Adlaire-Design-System WYSIWYG Editor UI Catalog
 
-This catalog governs WYSIWYG Editor UI components and states.
+This catalog governs WYSIWYG Editor UI components and states for Adlaire-Design-System.
 
-`Docs/Editor_Master_Spec` governs editor details. `Docs/Master_Spec` governs the whole system.
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
+
+`Docs/Editor_Master_Spec` governs editor details. `Docs/Master_Spec` governs the whole system. This catalog is a catalog source within that authority model, not a separate source of truth.
 
 ## Scope
 

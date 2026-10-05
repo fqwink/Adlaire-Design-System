@@ -1,6 +1,8 @@
-# Adlaire-Design Samples
+# Adlaire-Design-System Samples
 
-`Samples/` contains supporting visual materials for checking the design system in context.
+`Samples/` contains supporting visual materials for checking Adlaire-Design-System in context.
+
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
 
 Samples are not specification sources. The authoritative sources are `Docs/Master_Spec`, the catalogs, `Tokens/`, `UI/`, `EditorUI/`, `Icons/`, and `Brand/`.
 
