@@ -15,6 +15,8 @@ Samples are not specification sources. The authoritative sources are `Docs/Maste
 
 `Samples/design/sample.css` and `Samples/design/sample.js` are the only sample-support CSS and JavaScript files allowed by the Generated output placement contract. They must remain sample-only support files and must not become generated design-system outputs or source-of-truth files.
 
+The Source/output/sample boundary contract keeps Samples as non-authoritative confirmation material. Samples can demonstrate contracts, but they do not own TypeScript source, generated CSS, generated JavaScript, tokens, catalogs, or brand asset rules.
+
 ## Visual Baseline
 
 `Samples/sample-current.png` is the current reference screenshot for human visual review. It is not a generated source of truth and must not override catalogs, tokens, generated CSS, generated JavaScript, or checks.

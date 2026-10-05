@@ -392,6 +392,8 @@ require_text "AGENTS.md" "構造化設定ファイルはJSONに統一" "Developm
 require_text "Docs/Master_Spec" "JSON is the only structured file format for development, build, generation, check, and release-check settings" "Development configuration policy"
 require_text "Docs/Master_Spec" "The Development configuration contract forbids YAML as a technology selection for development, build, generation, check, and release-check configuration" "Development configuration policy"
 require_text "Docs/Master_Spec" "The Generated output placement contract allows CSS and JavaScript files only at the explicit generated and sample-support paths listed in this specification" "Generated output placement contract"
+require_text "Docs/Master_Spec" "The TypeScript source inventory contract keeps every TypeScript source file check-covered" "TypeScript source inventory contract"
+require_text "Docs/Master_Spec" "The Source/output/sample boundary contract keeps TypeScript sources, generated outputs, and sample-support files separate" "Source/output/sample boundary contract"
 
 find "$ROOT" \
   \( -path "$ROOT/.git" -o -path "$ROOT/.github" \) -prune -o \
@@ -3707,6 +3709,42 @@ allowed_registry_helpers = [
 unregistered_rule_sources = actual_rule_sources - compiler_source_modules - allowed_registry_helpers
 abort("[CSS compiler registry] rules source files missing from CSS_TARGETS sourceModules: #{unregistered_rule_sources.join(", ")}") unless unregistered_rule_sources.empty?
 
+expected_ts_sources = (required_files + %w[
+  TypeScript/CSS/manifest.ts
+  TypeScript/CSS/emit.ts
+  TypeScript/CSS/index.ts
+  TypeScript/CSS/targets.ts
+  TypeScript/UI/components.ts
+  TypeScript/UI/component-contracts.ts
+  TypeScript/UI/interaction-contracts.ts
+  TypeScript/UI/forms.ts
+  TypeScript/UI/content.ts
+  TypeScript/EditorUI/wysiwyg.ts
+  TypeScript/Editor/commands.ts
+  TypeScript/Editor/core.ts
+  TypeScript/Editor/document.ts
+  TypeScript/Editor/events.ts
+  TypeScript/Editor/history.ts
+  TypeScript/Editor/index.ts
+  TypeScript/Editor/selection.ts
+  TypeScript/Editor/types.ts
+  TypeScript/Editor/validation.ts
+]).uniq.sort
+actual_ts_sources = Dir.chdir(root) { Dir.glob("TypeScript/**/*.ts").sort }
+ts_source_delta = (expected_ts_sources - actual_ts_sources) + (actual_ts_sources - expected_ts_sources)
+abort("[TypeScript source inventory contract] TypeScript source inventory mismatch: #{ts_source_delta.join(", ")}") unless expected_ts_sources == actual_ts_sources
+
+boundary_docs = %w[
+  README.md
+  Docs/Master_Spec
+  Docs/Document_Index
+  Samples/README.md
+]
+boundary_docs.each do |doc|
+  text = File.read(File.join(root, doc))
+  abort("[Source/output/sample boundary contract] #{doc} missing contract term") unless text.include?("Source/output/sample boundary contract")
+end
+
 def source_css_parts(root, source)
   source_text = File.read(File.join(root, source))
   direct = source_text.match(/css: `(.*)` \} as const;/m)
@@ -3859,6 +3897,9 @@ for doc_term in \
   'Editor runtime module registry contract' \
   'Development configuration contract' \
   'Generated output placement contract' \
+  'TypeScript source inventory contract' \
+  'Source/output/sample boundary contract' \
+  'Ignored local artifact policy' \
   'Token category boundaries' \
   'Token family usage discipline' \
   'Category naming' \
@@ -3915,6 +3956,14 @@ if [ "$RUN_RELEASE_CHECK" -eq 1 ]; then
   fi
   if [ "$(git -C "$ROOT" rev-parse main)" != "$(git -C "$ROOT" rev-parse backup/main)" ]; then
     fail "Release readiness" "release check requires local main to match backup/main."
+  fi
+  git -C "$ROOT" status --ignored --short >"$TMP_DIR/git-ignored-status"
+  grep -E '^!! ' "$TMP_DIR/git-ignored-status" | sed 's/^!! //' >"$TMP_DIR/ignored-artifacts" || true
+  grep -v -E '^\.DS_Store$|^Work/$' "$TMP_DIR/ignored-artifacts" >"$TMP_DIR/unexpected-ignored-artifacts" || true
+  if [ -s "$TMP_DIR/unexpected-ignored-artifacts" ]; then
+    echo "[Ignored local artifact policy] release check found unexpected ignored artifacts:" >&2
+    cat "$TMP_DIR/unexpected-ignored-artifacts" >&2
+    exit 1
   fi
   git -C "$ROOT" for-each-ref --merged=backup/main --format='%(refname:short)' refs/heads >"$TMP_DIR/merged-local-branches"
   grep -v -E '^main$' "$TMP_DIR/merged-local-branches" >"$TMP_DIR/stale-local-branches" || true
