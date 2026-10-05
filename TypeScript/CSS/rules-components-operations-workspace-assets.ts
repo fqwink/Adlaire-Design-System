@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_WORKSPACE_ASSETS_CSS = `.adlaire-asset-browser {
+export const COMPONENTS_OPERATIONS_WORKSPACE_ASSETS_CSS =
+  `.adlaire-asset-browser {
   grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr);
 }
 

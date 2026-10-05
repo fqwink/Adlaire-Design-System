@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_DOMAINS_COMMERCE_CSS = `.adlaire-commerce-cart,
+export const COMPONENTS_FOUNDATION_DOMAINS_COMMERCE_CSS =
+  `.adlaire-commerce-cart,
 .adlaire-checkout-summary,
 .adlaire-inventory-panel,
 .adlaire-review-summary,

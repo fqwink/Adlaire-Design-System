@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_DATA_NAVIGATION_CSS = `.adlaire-language-switcher,
+export const COMPONENTS_OPERATIONS_DATA_NAVIGATION_CSS =
+  `.adlaire-language-switcher,
 .adlaire-language-current,
 .adlaire-language-list,
 .adlaire-language-option {

@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_ADMIN_OBSERVABILITY_CSS = `.adlaire-admin-observability-panel,
+export const COMPONENTS_OPERATIONS_ADMIN_OBSERVABILITY_CSS =
+  `.adlaire-admin-observability-panel,
 .adlaire-admin-log-stream,
 .adlaire-admin-alert-rule-list,
 .adlaire-admin-cost-summary,

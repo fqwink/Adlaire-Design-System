@@ -1,6 +1,8 @@
 import { CSS_TARGETS, type CssTarget, type CssTargetKind } from "./manifest.ts";
 
-export const CSS_LOAD_ORDER: readonly string[] = CSS_TARGETS.map((target) => target.path);
+export const CSS_LOAD_ORDER: readonly string[] = CSS_TARGETS.map((target) =>
+  target.path
+);
 
 export const TOKEN_CSS_LOAD_ORDER: readonly string[] = CSS_TARGETS
   .filter((target) => target.kind === "token")

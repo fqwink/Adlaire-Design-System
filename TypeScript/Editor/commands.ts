@@ -29,93 +29,321 @@ export interface CommandResult {
   errors: EditorError[];
 }
 
-type DocumentCommandHandler = (document: EditorDocument, command: EditorCommand, registry?: ToolRegistry) => CommandResult;
+type DocumentCommandHandler = (
+  document: EditorDocument,
+  command: EditorCommand,
+  registry?: ToolRegistry,
+) => CommandResult;
 
 const documentCommandHandlers: Record<string, DocumentCommandHandler> = {
-  "insert-block": (document, command, registry) => insertBlock(document, commandPayload<InsertBlockPayload>(command), registry),
-  "delete-block": (document, command) => deleteBlock(document, commandPayload<DeleteBlockPayload>(command)),
-  "update-block": (document, command, registry) => updateBlock(document, commandPayload<UpdateBlockPayload>(command), registry),
-  "move-block": (document, command, registry) => moveBlock(document, commandPayload<MoveBlockPayload>(command), registry),
-  "split-block": (document, command, registry) => splitBlock(document, commandPayload<SplitBlockPayload>(command), registry),
-  "merge-block": (document, command, registry) => mergeBlock(document, commandPayload<MergeBlockPayload>(command), registry),
-  "set-document-meta": (document, command) => setDocumentMeta(document, commandPayload<SetDocumentMetaPayload>(command)),
+  "insert-block": (document, command, registry) =>
+    insertBlock(
+      document,
+      commandPayload<InsertBlockPayload>(command),
+      registry,
+    ),
+  "delete-block": (document, command) =>
+    deleteBlock(document, commandPayload<DeleteBlockPayload>(command)),
+  "update-block": (document, command, registry) =>
+    updateBlock(
+      document,
+      commandPayload<UpdateBlockPayload>(command),
+      registry,
+    ),
+  "move-block": (document, command, registry) =>
+    moveBlock(document, commandPayload<MoveBlockPayload>(command), registry),
+  "split-block": (document, command, registry) =>
+    splitBlock(document, commandPayload<SplitBlockPayload>(command), registry),
+  "merge-block": (document, command, registry) =>
+    mergeBlock(document, commandPayload<MergeBlockPayload>(command), registry),
+  "set-document-meta": (document, command) =>
+    setDocumentMeta(document, commandPayload<SetDocumentMetaPayload>(command)),
 } as const;
 
-export function applyCommand(document: EditorDocument, command: EditorCommand, registry?: ToolRegistry): CommandResult {
-  if (!command || typeof command.type !== "string") return failed(document, editorError("command.invalid", "Command must be valid."));
+export function applyCommand(
+  document: EditorDocument,
+  command: EditorCommand,
+  registry?: ToolRegistry,
+): CommandResult {
+  if (!command || typeof command.type !== "string") {
+    return failed(
+      document,
+      editorError("command.invalid", "Command must be valid."),
+    );
+  }
   const handler = documentCommandHandlers[command.type];
-  return handler ? handler(document, command, registry) : failed(document, editorError("command.unknown", `Unknown command '${command.type}'.`));
+  return handler ? handler(document, command, registry) : failed(
+    document,
+    editorError("command.unknown", `Unknown command '${command.type}'.`),
+  );
 }
 
-function commandPayload<TPayload extends object>(command: EditorCommand): Partial<TPayload> {
+function commandPayload<TPayload extends object>(
+  command: EditorCommand,
+): Partial<TPayload> {
   return asRecord(command.payload) as Partial<TPayload>;
 }
 
-export function insertBlock(document: EditorDocument, payload: Partial<InsertBlockPayload>, registry?: ToolRegistry): CommandResult {
-  if (!payload?.block?.id || !payload.block.type) return failed(document, editorError("command.payload.invalid", "insert-block requires a block."));
-  const block = registry ? normalizeBlock(payload.block, registry) : cloneJson(payload.block);
-  if (collectBlockIds(document.blocks).has(block.id)) return failed(document, editorError("block.id.duplicate", `Block id '${block.id}' already exists.`, block.id));
+export function insertBlock(
+  document: EditorDocument,
+  payload: Partial<InsertBlockPayload>,
+  registry?: ToolRegistry,
+): CommandResult {
+  if (!payload?.block?.id || !payload.block.type) {
+    return failed(
+      document,
+      editorError("command.payload.invalid", "insert-block requires a block."),
+    );
+  }
+  const block = registry
+    ? normalizeBlock(payload.block, registry)
+    : cloneJson(payload.block);
+  if (collectBlockIds(document.blocks).has(block.id)) {
+    return failed(
+      document,
+      editorError(
+        "block.id.duplicate",
+        `Block id '${block.id}' already exists.`,
+        block.id,
+      ),
+    );
+  }
   if (payload.parentBlockId) {
     const parent = findBlock(document, payload.parentBlockId);
-    if (!parent) return failed(document, editorError("block.parent.notFound", "Parent block was not found.", payload.parentBlockId));
+    if (!parent) {
+      return failed(
+        document,
+        editorError(
+          "block.parent.notFound",
+          "Parent block was not found.",
+          payload.parentBlockId,
+        ),
+      );
+    }
     const boundaryError = childBoundaryError(parent, registry);
     if (boundaryError) return failed(document, boundaryError);
-    return changed({ ...document, blocks: updateBlockById(document.blocks, parent.id, (target) => insertChildBlock(target, block, payload.index)) });
+    return changed({
+      ...document,
+      blocks: updateBlockById(
+        document.blocks,
+        parent.id,
+        (target) => insertChildBlock(target, block, payload.index),
+      ),
+    });
   }
-  return changed({ ...document, blocks: insertAt(document.blocks, block, payload.index) });
+  return changed({
+    ...document,
+    blocks: insertAt(document.blocks, block, payload.index),
+  });
 }
 
-export function deleteBlock(document: EditorDocument, payload: Partial<DeleteBlockPayload>): CommandResult {
-  if (typeof payload?.blockId !== "string") return failed(document, editorError("command.payload.invalid", "delete-block requires blockId."));
+export function deleteBlock(
+  document: EditorDocument,
+  payload: Partial<DeleteBlockPayload>,
+): CommandResult {
+  if (typeof payload?.blockId !== "string") {
+    return failed(
+      document,
+      editorError("command.payload.invalid", "delete-block requires blockId."),
+    );
+  }
   const removed = removeBlockById(document.blocks, payload.blockId);
-  if (!removed.block) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
+  if (!removed.block) {
+    return failed(
+      document,
+      editorError(
+        "block.notFound",
+        `Block '${payload.blockId}' was not found.`,
+        payload.blockId,
+      ),
+    );
+  }
   return changed({ ...document, blocks: removed.blocks });
 }
 
-export function updateBlock(document: EditorDocument, payload: Partial<UpdateBlockPayload>, registry?: ToolRegistry): CommandResult {
-  if (typeof payload?.blockId !== "string") return failed(document, editorError("command.payload.invalid", "update-block requires blockId."));
+export function updateBlock(
+  document: EditorDocument,
+  payload: Partial<UpdateBlockPayload>,
+  registry?: ToolRegistry,
+): CommandResult {
+  if (typeof payload?.blockId !== "string") {
+    return failed(
+      document,
+      editorError("command.payload.invalid", "update-block requires blockId."),
+    );
+  }
   const target = findBlock(document, payload.blockId);
-  if (!target) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
-  if (target.type === "unsupported" && payload.data !== undefined) return failed(document, editorError("block.unsupported.readOnly", "Unsupported block data is read-only.", payload.blockId));
+  if (!target) {
+    return failed(
+      document,
+      editorError(
+        "block.notFound",
+        `Block '${payload.blockId}' was not found.`,
+        payload.blockId,
+      ),
+    );
+  }
+  if (target.type === "unsupported" && payload.data !== undefined) {
+    return failed(
+      document,
+      editorError(
+        "block.unsupported.readOnly",
+        "Unsupported block data is read-only.",
+        payload.blockId,
+      ),
+    );
+  }
   return changed({
     ...document,
     blocks: updateBlockById(document.blocks, payload.blockId, (block) => {
       const next = {
         ...block,
         data: payload.data === undefined ? block.data : asRecord(payload.data),
-        ...(payload.meta === undefined ? {} : { meta: { ...block.meta, ...payload.meta } }),
+        ...(payload.meta === undefined
+          ? {}
+          : { meta: { ...block.meta, ...payload.meta } }),
       };
       return registry ? normalizeBlock(next, registry) : next;
     }),
   });
 }
 
-export function moveBlock(document: EditorDocument, payload: Partial<MoveBlockPayload>, registry?: ToolRegistry): CommandResult {
-  if (typeof payload?.blockId !== "string" || typeof payload.toIndex !== "number") return failed(document, editorError("command.payload.invalid", "move-block requires blockId and toIndex.", payload?.blockId));
+export function moveBlock(
+  document: EditorDocument,
+  payload: Partial<MoveBlockPayload>,
+  registry?: ToolRegistry,
+): CommandResult {
+  if (
+    typeof payload?.blockId !== "string" || typeof payload.toIndex !== "number"
+  ) {
+    return failed(
+      document,
+      editorError(
+        "command.payload.invalid",
+        "move-block requires blockId and toIndex.",
+        payload?.blockId,
+      ),
+    );
+  }
   const source = findBlockLocation(document.blocks, payload.blockId);
-  if (!source) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
-  if (payload.fromParentBlockId !== undefined && source.parent?.id !== payload.fromParentBlockId) return failed(document, editorError("block.parent.mismatch", "Source block parent does not match fromParentBlockId.", payload.blockId));
+  if (!source) {
+    return failed(
+      document,
+      editorError(
+        "block.notFound",
+        `Block '${payload.blockId}' was not found.`,
+        payload.blockId,
+      ),
+    );
+  }
+  if (
+    payload.fromParentBlockId !== undefined &&
+    source.parent?.id !== payload.fromParentBlockId
+  ) {
+    return failed(
+      document,
+      editorError(
+        "block.parent.mismatch",
+        "Source block parent does not match fromParentBlockId.",
+        payload.blockId,
+      ),
+    );
+  }
   const removed = removeBlockById(document.blocks, payload.blockId);
-  if (!removed.block) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
+  if (!removed.block) {
+    return failed(
+      document,
+      editorError(
+        "block.notFound",
+        `Block '${payload.blockId}' was not found.`,
+        payload.blockId,
+      ),
+    );
+  }
   const movedBlock = removed.block;
   if (payload.toParentBlockId) {
-    const parent = findBlock({ ...document, blocks: removed.blocks }, payload.toParentBlockId);
-    if (!parent) return failed(document, editorError("block.parent.notFound", "Target parent block was not found.", payload.toParentBlockId));
+    const parent = findBlock(
+      { ...document, blocks: removed.blocks },
+      payload.toParentBlockId,
+    );
+    if (!parent) {
+      return failed(
+        document,
+        editorError(
+          "block.parent.notFound",
+          "Target parent block was not found.",
+          payload.toParentBlockId,
+        ),
+      );
+    }
     const boundaryError = childBoundaryError(parent, registry);
     if (boundaryError) return failed(document, boundaryError);
-    return changed({ ...document, blocks: updateBlockById(removed.blocks, parent.id, (target) => insertChildBlock(target, movedBlock, payload.toIndex)) });
+    return changed({
+      ...document,
+      blocks: updateBlockById(
+        removed.blocks,
+        parent.id,
+        (target) => insertChildBlock(target, movedBlock, payload.toIndex),
+      ),
+    });
   }
-  return changed({ ...document, blocks: insertAt(removed.blocks, movedBlock, payload.toIndex) });
+  return changed({
+    ...document,
+    blocks: insertAt(removed.blocks, movedBlock, payload.toIndex),
+  });
 }
 
-export function splitBlock(document: EditorDocument, payload: Partial<SplitBlockPayload>, registry?: ToolRegistry): CommandResult {
-  if (typeof payload?.blockId !== "string") return failed(document, editorError("command.payload.invalid", "split-block requires blockId.", payload?.blockId));
+export function splitBlock(
+  document: EditorDocument,
+  payload: Partial<SplitBlockPayload>,
+  registry?: ToolRegistry,
+): CommandResult {
+  if (typeof payload?.blockId !== "string") {
+    return failed(
+      document,
+      editorError(
+        "command.payload.invalid",
+        "split-block requires blockId.",
+        payload?.blockId,
+      ),
+    );
+  }
   const location = findBlockLocation(document.blocks, payload.blockId);
-  if (!location) return failed(document, editorError("block.notFound", `Block '${payload.blockId}' was not found.`, payload.blockId));
-  if (location.block.type === "unsupported") return failed(document, editorError("block.unsupported.split", "Unsupported block cannot be split.", payload.blockId));
+  if (!location) {
+    return failed(
+      document,
+      editorError(
+        "block.notFound",
+        `Block '${payload.blockId}' was not found.`,
+        payload.blockId,
+      ),
+    );
+  }
+  if (location.block.type === "unsupported") {
+    return failed(
+      document,
+      editorError(
+        "block.unsupported.split",
+        "Unsupported block cannot be split.",
+        payload.blockId,
+      ),
+    );
+  }
   const newId = `${location.block.id}-split`;
-  if (collectBlockIds(document.blocks).has(newId)) return failed(document, editorError("block.id.duplicate", `Block id '${newId}' already exists.`, newId));
-  const splitPayload: SplitBlockPayload = { blockId: payload.blockId, ...(payload.position === undefined ? {} : { position: payload.position }) };
+  if (collectBlockIds(document.blocks).has(newId)) {
+    return failed(
+      document,
+      editorError(
+        "block.id.duplicate",
+        `Block id '${newId}' already exists.`,
+        newId,
+      ),
+    );
+  }
+  const splitPayload: SplitBlockPayload = {
+    blockId: payload.blockId,
+    ...(payload.position === undefined ? {} : { position: payload.position }),
+  };
   const split = splitBlockData(location.block, splitPayload);
   if ("error" in split) return failed(document, split.error);
   const [left, right] = split.blocks;
@@ -126,78 +354,239 @@ export function splitBlock(document: EditorDocument, payload: Partial<SplitBlock
     ...location.siblings.slice(location.index + 1),
   ];
   if (!location.parent) return changed({ ...document, blocks: nextSiblings });
-  return changed({ ...document, blocks: updateBlockById(document.blocks, location.parent.id, (parent) => ({ ...parent, children: nextSiblings })) });
+  return changed({
+    ...document,
+    blocks: updateBlockById(
+      document.blocks,
+      location.parent.id,
+      (parent) => ({ ...parent, children: nextSiblings }),
+    ),
+  });
 }
 
-export function mergeBlock(document: EditorDocument, payload: Partial<MergeBlockPayload>, registry?: ToolRegistry): CommandResult {
-  if (typeof payload?.sourceBlockId !== "string" || typeof payload.targetBlockId !== "string") return failed(document, editorError("command.payload.invalid", "merge-block requires sourceBlockId and targetBlockId."));
-  if (payload.sourceBlockId === payload.targetBlockId) return failed(document, editorError("block.merge.sameBlock", "Cannot merge a block into itself.", payload.sourceBlockId));
+export function mergeBlock(
+  document: EditorDocument,
+  payload: Partial<MergeBlockPayload>,
+  registry?: ToolRegistry,
+): CommandResult {
+  if (
+    typeof payload?.sourceBlockId !== "string" ||
+    typeof payload.targetBlockId !== "string"
+  ) {
+    return failed(
+      document,
+      editorError(
+        "command.payload.invalid",
+        "merge-block requires sourceBlockId and targetBlockId.",
+      ),
+    );
+  }
+  if (payload.sourceBlockId === payload.targetBlockId) {
+    return failed(
+      document,
+      editorError(
+        "block.merge.sameBlock",
+        "Cannot merge a block into itself.",
+        payload.sourceBlockId,
+      ),
+    );
+  }
   const source = findBlock(document, payload.sourceBlockId);
   const target = findBlock(document, payload.targetBlockId);
-  if (!source || !target) return failed(document, editorError("block.notFound", "Merge source or target was not found."));
-  if (source.type === "unsupported" || target.type === "unsupported") return failed(document, editorError("block.unsupported.merge", "Unsupported block cannot be merged."));
-  if (source.type !== target.type) return failed(document, editorError("block.merge.typeMismatch", "Only blocks of the same type can be merged."));
+  if (!source || !target) {
+    return failed(
+      document,
+      editorError("block.notFound", "Merge source or target was not found."),
+    );
+  }
+  if (source.type === "unsupported" || target.type === "unsupported") {
+    return failed(
+      document,
+      editorError(
+        "block.unsupported.merge",
+        "Unsupported block cannot be merged.",
+      ),
+    );
+  }
+  if (source.type !== target.type) {
+    return failed(
+      document,
+      editorError(
+        "block.merge.typeMismatch",
+        "Only blocks of the same type can be merged.",
+      ),
+    );
+  }
   const tool = registry?.get(target.type);
-  const mergedData = tool?.merge ? asRecord(tool.merge(target.data, source.data)) : { ...target.data, ...source.data };
+  const mergedData = tool?.merge
+    ? asRecord(tool.merge(target.data, source.data))
+    : { ...target.data, ...source.data };
   const withoutSource = removeBlockById(document.blocks, source.id).blocks;
-  return changed({ ...document, blocks: updateBlockById(withoutSource, target.id, (block) => registry ? normalizeBlock({ ...block, data: mergedData }, registry) : { ...block, data: mergedData }) });
+  return changed({
+    ...document,
+    blocks: updateBlockById(
+      withoutSource,
+      target.id,
+      (block) =>
+        registry
+          ? normalizeBlock({ ...block, data: mergedData }, registry)
+          : { ...block, data: mergedData },
+    ),
+  });
 }
 
-export function setDocumentMeta(document: EditorDocument, payload: Partial<SetDocumentMetaPayload>): CommandResult {
-  if (!asRecord(payload).meta) return failed(document, editorError("command.payload.invalid", "set-document-meta requires meta."));
+export function setDocumentMeta(
+  document: EditorDocument,
+  payload: Partial<SetDocumentMetaPayload>,
+): CommandResult {
+  if (!asRecord(payload).meta) {
+    return failed(
+      document,
+      editorError(
+        "command.payload.invalid",
+        "set-document-meta requires meta.",
+      ),
+    );
+  }
   const meta = asRecord(payload.meta);
-  return changed({ ...document, meta: payload.merge === false ? cloneJson(meta) : { ...document.meta, ...meta } });
+  return changed({
+    ...document,
+    meta: payload.merge === false
+      ? cloneJson(meta)
+      : { ...document.meta, ...meta },
+  });
 }
 
-function splitBlockData(block: EditorBlock, payload: SplitBlockPayload): { blocks: [EditorBlock, EditorBlock] } | { error: EditorError } {
+function splitBlockData(
+  block: EditorBlock,
+  payload: SplitBlockPayload,
+): { blocks: [EditorBlock, EditorBlock] } | { error: EditorError } {
   const position = payload.position;
   const data = asRecord(block.data);
-  if (block.type === "code" && position?.path?.[0] === "code" && typeof data.code === "string") {
+  if (
+    block.type === "code" && position?.path?.[0] === "code" &&
+    typeof data.code === "string"
+  ) {
     const offset = validOffset(position.offset, data.code.length);
-    if (offset === null) return { error: editorError("block.split.unsupported", "Split position is outside editable text.", block.id) };
-    return { blocks: [
-      { ...block, data: { ...data, code: data.code.slice(0, offset) } },
-      { ...block, id: `${block.id}-split`, data: { ...data, code: data.code.slice(offset) } },
-    ] };
+    if (offset === null) {
+      return {
+        error: editorError(
+          "block.split.unsupported",
+          "Split position is outside editable text.",
+          block.id,
+        ),
+      };
+    }
+    return {
+      blocks: [
+        { ...block, data: { ...data, code: data.code.slice(0, offset) } },
+        {
+          ...block,
+          id: `${block.id}-split`,
+          data: { ...data, code: data.code.slice(offset) },
+        },
+      ],
+    };
   }
-  if (position?.path?.[0] === "text" && typeof position.path[1] === "number" && position.path[2] === "text") {
-    const items = Array.isArray(data.text) ? data.text.map((item) => cloneJson(item)) : null;
+  if (
+    position?.path?.[0] === "text" && typeof position.path[1] === "number" &&
+    position.path[2] === "text"
+  ) {
+    const items = Array.isArray(data.text)
+      ? data.text.map((item) => cloneJson(item))
+      : null;
     const index = position.path[1];
     const item = items?.[index];
-    if (!items || !item || typeof item !== "object" || (item as { type?: unknown }).type !== "text" || typeof (item as { text?: unknown }).text !== "string") {
-      return { error: editorError("block.split.unsupported", "Split position must target editable text.", block.id) };
+    if (
+      !items || !item || typeof item !== "object" ||
+      (item as { type?: unknown }).type !== "text" ||
+      typeof (item as { text?: unknown }).text !== "string"
+    ) {
+      return {
+        error: editorError(
+          "block.split.unsupported",
+          "Split position must target editable text.",
+          block.id,
+        ),
+      };
     }
     const text = (item as { text: string }).text;
     const offset = validOffset(position.offset, text.length);
-    if (offset === null) return { error: editorError("block.split.unsupported", "Split position is outside editable text.", block.id) };
+    if (offset === null) {
+      return {
+        error: editorError(
+          "block.split.unsupported",
+          "Split position is outside editable text.",
+          block.id,
+        ),
+      };
+    }
     const leftItem = { ...item, text: text.slice(0, offset) };
     const rightItem = { ...item, text: text.slice(offset) };
     const leftData = { ...data, text: [...items.slice(0, index), leftItem] };
     const rightData = { ...data, text: [rightItem, ...items.slice(index + 1)] };
-    return { blocks: [{ ...block, data: leftData }, { ...block, id: `${block.id}-split`, data: rightData }] };
+    return {
+      blocks: [{ ...block, data: leftData }, {
+        ...block,
+        id: `${block.id}-split`,
+        data: rightData,
+      }],
+    };
   }
-  if (position) return { error: editorError("block.split.unsupported", "Split position is not supported for this block.", block.id) };
-  return { blocks: [{ ...block, data: cloneJson(block.data) }, { ...block, id: `${block.id}-split`, data: cloneJson(block.data) }] };
+  if (position) {
+    return {
+      error: editorError(
+        "block.split.unsupported",
+        "Split position is not supported for this block.",
+        block.id,
+      ),
+    };
+  }
+  return {
+    blocks: [{ ...block, data: cloneJson(block.data) }, {
+      ...block,
+      id: `${block.id}-split`,
+      data: cloneJson(block.data),
+    }],
+  };
 }
 
-function insertAt(blocks: EditorBlock[], block: EditorBlock, index = blocks.length): EditorBlock[] {
+function insertAt(
+  blocks: EditorBlock[],
+  block: EditorBlock,
+  index = blocks.length,
+): EditorBlock[] {
   const next = blocks.map((item) => cloneJson(item));
   next.splice(Math.max(0, Math.min(index, next.length)), 0, cloneJson(block));
   return next;
 }
 
-function childBoundaryError(parent: EditorBlock, registry?: ToolRegistry): EditorError | null {
+function childBoundaryError(
+  parent: EditorBlock,
+  registry?: ToolRegistry,
+): EditorError | null {
   const parentTool = registry?.get(parent.type);
   return parentTool && !parentTool.allowsChildren
-    ? editorError("block.children.notAllowed", `Block type '${parent.type}' does not allow nested blocks.`, parent.id)
+    ? editorError(
+      "block.children.notAllowed",
+      `Block type '${parent.type}' does not allow nested blocks.`,
+      parent.id,
+    )
     : null;
 }
 
-function insertChildBlock(parent: EditorBlock, block: EditorBlock, index?: number): EditorBlock {
+function insertChildBlock(
+  parent: EditorBlock,
+  block: EditorBlock,
+  index?: number,
+): EditorBlock {
   return { ...parent, children: insertAt(parent.children ?? [], block, index) };
 }
 
-function removeBlockById(blocks: EditorBlock[], blockId: string): { blocks: EditorBlock[]; block: EditorBlock | null } {
+function removeBlockById(
+  blocks: EditorBlock[],
+  blockId: string,
+): { blocks: EditorBlock[]; block: EditorBlock | null } {
   let removed: EditorBlock | null = null;
   const next = blocks.flatMap((block): EditorBlock[] => {
     if (block.id === blockId) {
@@ -212,10 +601,19 @@ function removeBlockById(blocks: EditorBlock[], blockId: string): { blocks: Edit
   return { blocks: next, block: removed };
 }
 
-function updateBlockById(blocks: EditorBlock[], blockId: string, updater: (block: EditorBlock) => EditorBlock): EditorBlock[] {
+function updateBlockById(
+  blocks: EditorBlock[],
+  blockId: string,
+  updater: (block: EditorBlock) => EditorBlock,
+): EditorBlock[] {
   return blocks.map((block) => {
     if (block.id === blockId) return updater(cloneJson(block));
-    if (block.children) return { ...cloneJson(block), children: updateBlockById(block.children, blockId, updater) };
+    if (block.children) {
+      return {
+        ...cloneJson(block),
+        children: updateBlockById(block.children, blockId, updater),
+      };
+    }
     return cloneJson(block);
   });
 }

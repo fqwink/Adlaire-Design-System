@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_WORKSPACE_PUBLISHING_CSS = `.adlaire-document-outline {
+export const COMPONENTS_OPERATIONS_WORKSPACE_PUBLISHING_CSS =
+  `.adlaire-document-outline {
   gap: 6px;
 }
 

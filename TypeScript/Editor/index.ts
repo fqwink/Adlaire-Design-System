@@ -12,8 +12,18 @@ import {
 } from "./document.ts";
 import { EventBus } from "./events.ts";
 import { History } from "./history.ts";
-import { getFirstBlockPosition, getLastBlockPosition, getNextBlockPosition, getPreviousBlockPosition } from "./selection.ts";
-import { sanitizeDocument, validateBlock, validateDocument, validateDocumentAsync } from "./validation.ts";
+import {
+  getFirstBlockPosition,
+  getLastBlockPosition,
+  getNextBlockPosition,
+  getPreviousBlockPosition,
+} from "./selection.ts";
+import {
+  sanitizeDocument,
+  validateBlock,
+  validateDocument,
+  validateDocumentAsync,
+} from "./validation.ts";
 import { createEditor, HeadlessEditorController } from "./core.ts";
 
 export * from "./types.ts";

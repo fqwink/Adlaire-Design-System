@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_INDUSTRY_DEVICES_CSS = `.adlaire-device-registry-table,
+export const COMPONENTS_OPERATIONS_INDUSTRY_DEVICES_CSS =
+  `.adlaire-device-registry-table,
 .adlaire-remote-command-queue,
 .adlaire-offline-queue,
 .adlaire-deployment-ring-selector,

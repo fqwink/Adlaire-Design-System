@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_DOMAINS_COLLABORATION_CSS = `.adlaire-review-request-card,
+export const COMPONENTS_FOUNDATION_DOMAINS_COLLABORATION_CSS =
+  `.adlaire-review-request-card,
 .adlaire-annotation-card,
 .adlaire-meeting-notes {
   display: grid;

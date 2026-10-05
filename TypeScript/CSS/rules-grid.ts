@@ -1,6 +1,8 @@
 import type { CssRuleFile } from "./rules-types.ts";
 
-export const GRID_RULE_FILE: CssRuleFile = { path: "UI/grid.css", css: `/* Adlaire-Design grid utilities */
+export const GRID_RULE_FILE: CssRuleFile = {
+  path: "UI/grid.css",
+  css: `/* Adlaire-Design grid utilities */
 .adlaire-content-container,
 .container,
 .container-fluid {
@@ -194,4 +196,5 @@ export const GRID_RULE_FILE: CssRuleFile = { path: "UI/grid.css", css: `/* Adlai
     grid-template-columns: 1fr;
   }
 }
-` } as const;
+`,
+} as const;

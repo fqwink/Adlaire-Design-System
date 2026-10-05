@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_ADMIN_GOVERNANCE_CSS = `.adlaire-admin-kpi-card,
+export const COMPONENTS_OPERATIONS_ADMIN_GOVERNANCE_CSS =
+  `.adlaire-admin-kpi-card,
 .adlaire-admin-resource-header,
 .adlaire-admin-data-toolbar,
 .adlaire-admin-selection-summary,

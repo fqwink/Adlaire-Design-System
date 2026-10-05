@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_SUPPORT_PAGINATION_CSS = `.adlaire-pagination {
+export const COMPONENTS_FOUNDATION_SUPPORT_PAGINATION_CSS =
+  `.adlaire-pagination {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;

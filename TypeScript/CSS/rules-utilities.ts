@@ -1,6 +1,8 @@
 import type { CssRuleFile } from "./rules-types.ts";
 
-export const UTILITIES_RULE_FILE: CssRuleFile = { path: "UI/utilities.css", css: `/* Adlaire-Design utility classes */
+export const UTILITIES_RULE_FILE: CssRuleFile = {
+  path: "UI/utilities.css",
+  css: `/* Adlaire-Design utility classes */
 .mt-0 {
   margin-top: 0;
 }
@@ -237,4 +239,5 @@ export const UTILITIES_RULE_FILE: CssRuleFile = { path: "UI/utilities.css", css:
 .adlaire-gap-6 {
   gap: var(--adlaire-space-6);
 }
-` } as const;
+`,
+} as const;

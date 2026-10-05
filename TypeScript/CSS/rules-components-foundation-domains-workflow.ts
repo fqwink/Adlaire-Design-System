@@ -1,4 +1,5 @@
-export const COMPONENTS_FOUNDATION_DOMAINS_WORKFLOW_CSS = `.adlaire-workflow-runner,
+export const COMPONENTS_FOUNDATION_DOMAINS_WORKFLOW_CSS =
+  `.adlaire-workflow-runner,
 .adlaire-automation-rule-card,
 .adlaire-policy-card,
 .adlaire-evidence-locker,

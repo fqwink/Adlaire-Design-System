@@ -1,6 +1,8 @@
 import type { CssRuleFile } from "./rules-types.ts";
 
-export const SITE_RULE_FILE: CssRuleFile = { path: "UI/site.css", css: `/* Adlaire-Design site chrome */
+export const SITE_RULE_FILE: CssRuleFile = {
+  path: "UI/site.css",
+  css: `/* Adlaire-Design site chrome */
 .adlaire-page {
   min-height: 100vh;
   background-color: var(--adlaire-surface-page);
@@ -216,4 +218,5 @@ export const SITE_RULE_FILE: CssRuleFile = { path: "UI/site.css", css: `/* Adlai
     font-size: 1.2rem;
   }
 }
-` } as const;
+`,
+} as const;

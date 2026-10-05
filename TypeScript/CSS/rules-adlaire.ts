@@ -1,6 +1,8 @@
 import type { CssRuleFile } from "./rules-types.ts";
 
-export const ADLAIRE_RULE_FILE: CssRuleFile = { path: "UI/adlaire.css", css: `/* Adlaire-Design color utilities */
+export const ADLAIRE_RULE_FILE: CssRuleFile = {
+  path: "UI/adlaire.css",
+  css: `/* Adlaire-Design color utilities */
 .adlaire-bg-primary {
   background-color: var(--adlaire-color-primary);
 }
@@ -72,4 +74,5 @@ export const ADLAIRE_RULE_FILE: CssRuleFile = { path: "UI/adlaire.css", css: `/*
 .adlaire-border-support {
   border-color: var(--adlaire-color-support);
 }
-` } as const;
+`,
+} as const;

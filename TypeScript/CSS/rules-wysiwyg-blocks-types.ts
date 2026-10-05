@@ -1,4 +1,5 @@
-export const WYSIWYG_BLOCKS_TYPES_CSS = `.adlaire-wysiwyg-block-heading .adlaire-wysiwyg-block-content {
+export const WYSIWYG_BLOCKS_TYPES_CSS =
+  `.adlaire-wysiwyg-block-heading .adlaire-wysiwyg-block-content {
   color: var(--adlaire-surface-accent-strong);
   font-weight: 700;
 }

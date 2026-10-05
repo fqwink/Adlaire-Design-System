@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_BUSINESS_PLANNING_CSS = `.adlaire-agenda-view,
+export const COMPONENTS_OPERATIONS_BUSINESS_PLANNING_CSS =
+  `.adlaire-agenda-view,
 .adlaire-time-slot-grid,
 .adlaire-resource-calendar,
 .adlaire-availability-matrix,

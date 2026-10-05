@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_WORKSPACE_BOARDS_CSS = `.adlaire-kanban-board {
+export const COMPONENTS_OPERATIONS_WORKSPACE_BOARDS_CSS =
+  `.adlaire-kanban-board {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   align-items: start;
 }

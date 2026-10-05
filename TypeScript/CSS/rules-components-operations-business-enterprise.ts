@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_BUSINESS_ENTERPRISE_CSS = `.adlaire-budget-panel,
+export const COMPONENTS_OPERATIONS_BUSINESS_ENTERPRISE_CSS =
+  `.adlaire-budget-panel,
 .adlaire-payment-schedule,
 .adlaire-shift-roster,
 .adlaire-skill-matrix,

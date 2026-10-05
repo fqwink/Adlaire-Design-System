@@ -1,4 +1,5 @@
-export const CONTENT_FOUNDATION_BASE_CSS = `/* Adlaire-Design content components */
+export const CONTENT_FOUNDATION_BASE_CSS =
+  `/* Adlaire-Design content components */
 .adlaire-renewal-notice,
 .renewal-notice {
   margin-bottom: 40px;

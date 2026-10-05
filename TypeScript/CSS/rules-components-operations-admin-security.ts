@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_ADMIN_SECURITY_CSS = `.adlaire-admin-security-overview,
+export const COMPONENTS_OPERATIONS_ADMIN_SECURITY_CSS =
+  `.adlaire-admin-security-overview,
 .adlaire-admin-session-list,
 .adlaire-admin-device-list,
 .adlaire-admin-access-request-list,

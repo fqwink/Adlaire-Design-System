@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_INDUSTRY_CIVIC_CSS = `.adlaire-eligibility-checklist,
+export const COMPONENTS_OPERATIONS_INDUSTRY_CIVIC_CSS =
+  `.adlaire-eligibility-checklist,
 .adlaire-case-status-timeline,
 .adlaire-service-counter-queue,
 .adlaire-permit-application-panel,

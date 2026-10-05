@@ -1,4 +1,5 @@
-export const COMPONENTS_OPERATIONS_ADMIN_STATES_CSS = `.adlaire-admin-empty-state,
+export const COMPONENTS_OPERATIONS_ADMIN_STATES_CSS =
+  `.adlaire-admin-empty-state,
 .adlaire-admin-error-state,
 .adlaire-admin-loading-state,
 .adlaire-admin-forbidden-state,

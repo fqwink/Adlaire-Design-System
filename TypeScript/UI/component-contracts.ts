@@ -33,12 +33,29 @@ export type ComponentContractArea =
   | "workflow"
   | "guidance";
 
-export type ComponentContractReviewSurface = "public-ui" | "admin-ui" | "editor-ui";
-export type ComponentContractReviewTier = "foundation" | "domain" | "integration";
-export type ComponentContractOwner = "public-system" | "admin-system" | "editor-system";
-export type ComponentContractDepth = "catalog" | "source" | "generated" | "behavior" | "sample";
+export type ComponentContractReviewSurface =
+  | "public-ui"
+  | "admin-ui"
+  | "editor-ui";
+export type ComponentContractReviewTier =
+  | "foundation"
+  | "domain"
+  | "integration";
+export type ComponentContractOwner =
+  | "public-system"
+  | "admin-system"
+  | "editor-system";
+export type ComponentContractDepth =
+  | "catalog"
+  | "source"
+  | "generated"
+  | "behavior"
+  | "sample";
 export type ComponentContractRisk = "low" | "medium" | "high";
-export type ComponentContractLifecycle = "stable" | "expanding" | "requires-review";
+export type ComponentContractLifecycle =
+  | "stable"
+  | "expanding"
+  | "requires-review";
 
 export interface ComponentContract {
   readonly id: string;
@@ -101,6 +118,25 @@ const INTEGRATION_AREAS: readonly ComponentContractArea[] = [
   "workflow",
 ] as const;
 
+const HIGH_RISK_BEHAVIOR_AREAS: readonly ComponentContractArea[] = [
+  "data",
+  "editor",
+  "forms",
+  "overlay",
+  "workflow",
+] as const;
+
+const MEDIUM_RISK_STATE_AREAS: readonly ComponentContractArea[] = [
+  "admin",
+  "cloud",
+  "collaboration",
+  "commerce",
+  "guidance",
+  "observability",
+  "platform",
+  "product",
+] as const;
+
 export const COMPONENT_CONTRACT_REQUIRED_COVERAGE: readonly string[] = [
   "catalog",
   "sample",
@@ -128,7 +164,7 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-split-pane-collapsed",
     ],
     hooks: [],
-    ariaRequirements: ["aria-labelledby=\"quality-title\""],
+    ariaRequirements: ['aria-labelledby="quality-title"'],
     stateAttributes: ["adlaire-split-pane-collapsed"],
     requiredIcons: [],
     sampleSection: "quality-title",
@@ -146,7 +182,10 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "TypeScript/CSS/rules-content-extended-repository.ts",
     ],
     generatedCss: ["UI/components.css", "UI/content.css"],
-    behaviorSources: ["TypeScript/UI/components.ts", "TypeScript/UI/content.ts"],
+    behaviorSources: [
+      "TypeScript/UI/components.ts",
+      "TypeScript/UI/content.ts",
+    ],
     generatedBehavior: ["UI/components.js", "UI/content.js"],
     sample: "Samples/design/index.html",
     requiredClasses: [
@@ -157,13 +196,32 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-tab-panel",
       ".adlaire-timeline",
     ],
-    hooks: ["data-adlaire-code-copy", "data-adlaire-sort", "data-adlaire-tab", "data-adlaire-code-line", "data-adlaire-toc-link"],
-    ariaRequirements: ["aria-labelledby=\"generic-title\"", "aria-live=\"polite\""],
-    stateAttributes: ["data-adlaire-copied", "aria-sort", "data-adlaire-sort-state", "data-adlaire-sort-order", "aria-selected", "aria-current"],
+    hooks: [
+      "data-adlaire-code-copy",
+      "data-adlaire-sort",
+      "data-adlaire-tab",
+      "data-adlaire-code-line",
+      "data-adlaire-toc-link",
+    ],
+    ariaRequirements: ['aria-labelledby="generic-title"', 'aria-live="polite"'],
+    stateAttributes: [
+      "data-adlaire-copied",
+      "aria-sort",
+      "data-adlaire-sort-state",
+      "data-adlaire-sort-order",
+      "aria-selected",
+      "aria-current",
+    ],
     requiredIcons: [],
     sampleSection: "generic-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "admin-operations-core",
@@ -199,7 +257,7 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-admin-mobile-stack",
     ],
     hooks: [],
-    ariaRequirements: ["aria-labelledby=\"admin-title\""],
+    ariaRequirements: ['aria-labelledby="admin-title"'],
     stateAttributes: ["adlaire-admin-state-badge"],
     requiredIcons: [],
     sampleSection: "admin-title",
@@ -244,8 +302,14 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-page-select",
       "data-adlaire-saved-view-apply",
     ],
-    ariaRequirements: ["role=\"region\"", "aria-orientation=\"vertical\""],
-    stateAttributes: ["aria-selected=\"true\"", "aria-checked=\"true\"", "aria-current", "data-state=\"valid\"", "data-adlaire-selected-count"],
+    ariaRequirements: ['role="region"', 'aria-orientation="vertical"'],
+    stateAttributes: [
+      'aria-selected="true"',
+      'aria-checked="true"',
+      "aria-current",
+      'data-state="valid"',
+      "data-adlaire-selected-count",
+    ],
     requiredIcons: [],
     sampleSection: "advanced-ui-title",
     responsiveModes: ["desktop", "mobile"],
@@ -255,7 +319,9 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
     id: "business-operations-core",
     area: "business",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-business-planning.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-business-planning.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -271,18 +337,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-floor-select",
       "data-adlaire-policy-exception-toggle",
     ],
-    ariaRequirements: ["aria-labelledby=\"business-operations-title\"", "aria-label=\"Time slots\""],
-    stateAttributes: ["aria-selected=\"true\"", "aria-expanded=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="business-operations-title"',
+      'aria-label="Time slots"',
+    ],
+    stateAttributes: ['aria-selected="true"', 'aria-expanded="true"'],
     requiredIcons: [],
     sampleSection: "business-operations-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "enterprise-domain-core",
     area: "enterprise",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-business-enterprise.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-business-enterprise.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -298,18 +375,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-pipeline-stage-select",
       "data-adlaire-policy-acknowledgement",
     ],
-    ariaRequirements: ["aria-labelledby=\"enterprise-domain-title\"", "role=\"listbox\""],
-    stateAttributes: ["aria-selected=\"true\"", "aria-current=\"step\""],
+    ariaRequirements: [
+      'aria-labelledby="enterprise-domain-title"',
+      'role="listbox"',
+    ],
+    stateAttributes: ['aria-selected="true"', 'aria-current="step"'],
     requiredIcons: [],
     sampleSection: "enterprise-domain-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "strategic-operations-core",
     area: "strategic",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-business-governance.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-business-governance.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -325,18 +413,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-milestone-select",
       "data-adlaire-attestation-toggle",
     ],
-    ariaRequirements: ["aria-labelledby=\"strategic-operations-title\"", "aria-label=\"Confidence indicator\""],
-    stateAttributes: ["aria-pressed=\"true\"", "aria-current=\"step\""],
+    ariaRequirements: [
+      'aria-labelledby="strategic-operations-title"',
+      'aria-label="Confidence indicator"',
+    ],
+    stateAttributes: ['aria-pressed="true"', 'aria-current="step"'],
     requiredIcons: [],
     sampleSection: "strategic-operations-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "industry-operations-core",
     area: "industry",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-business-industry.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-business-industry.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -352,18 +451,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-care-plan-check",
       "data-adlaire-evidence-select",
     ],
-    ariaRequirements: ["aria-labelledby=\"industry-operations-title\"", "aria-label=\"Evidence list\""],
-    stateAttributes: ["aria-current=\"step\"", "aria-selected=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="industry-operations-title"',
+      'aria-label="Evidence list"',
+    ],
+    stateAttributes: ['aria-current="step"', 'aria-selected="true"'],
     requiredIcons: [],
     sampleSection: "industry-operations-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "customer-growth-support-core",
     area: "support",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-business-insights.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-business-insights.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -379,18 +489,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-success-playbook-check",
       "data-adlaire-report-parameter-select",
     ],
-    ariaRequirements: ["aria-labelledby=\"customer-growth-title\"", "aria-label=\"Support inbox\""],
-    stateAttributes: ["data-state=\"healthy\"", "aria-selected=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="customer-growth-title"',
+      'aria-label="Support inbox"',
+    ],
+    stateAttributes: ['data-state="healthy"', 'aria-selected="true"'],
     requiredIcons: [],
     sampleSection: "customer-growth-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "communication-notification-core",
     area: "communication",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-business-messaging.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-business-messaging.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -406,18 +527,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-quiet-hours-toggle",
       "data-adlaire-topic-preference-toggle",
     ],
-    ariaRequirements: ["aria-labelledby=\"communication-ops-title\"", "aria-label=\"Message composer\""],
-    stateAttributes: ["data-state=\"failed\"", "aria-checked=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="communication-ops-title"',
+      'aria-label="Message composer"',
+    ],
+    stateAttributes: ['data-state="failed"', 'aria-checked="true"'],
     requiredIcons: [],
     sampleSection: "communication-ops-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "content-publishing-localization-core",
     area: "publishing",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-industry-content.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-industry-content.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -433,18 +565,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-locale-select",
       "data-adlaire-moderation-decision",
     ],
-    ariaRequirements: ["aria-labelledby=\"content-publishing-title\"", "aria-label=\"Review gate panel\""],
-    stateAttributes: ["aria-selected=\"true\"", "aria-pressed=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="content-publishing-title"',
+      'aria-label="Review gate panel"',
+    ],
+    stateAttributes: ['aria-selected="true"', 'aria-pressed="true"'],
     requiredIcons: [],
     sampleSection: "content-publishing-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "device-fleet-edge-core",
     area: "device",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-industry-devices.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-industry-devices.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -460,18 +603,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-deployment-ring-select",
       "data-adlaire-handoff-check",
     ],
-    ariaRequirements: ["aria-labelledby=\"device-edge-title\"", "aria-label=\"Device registry table\""],
-    stateAttributes: ["data-state=\"degraded\"", "aria-checked=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="device-edge-title"',
+      'aria-label="Device registry table"',
+    ],
+    stateAttributes: ['data-state="degraded"', 'aria-checked="true"'],
     requiredIcons: [],
     sampleSection: "device-edge-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "travel-hospitality-event-core",
     area: "travel",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-industry-hospitality.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-industry-hospitality.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -487,18 +641,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-room-select",
       "data-adlaire-recovery-task-check",
     ],
-    ariaRequirements: ["aria-labelledby=\"travel-hospitality-event-title\"", "aria-label=\"Room inventory board\""],
-    stateAttributes: ["aria-selected=\"true\"", "aria-checked=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="travel-hospitality-event-title"',
+      'aria-label="Room inventory board"',
+    ],
+    stateAttributes: ['aria-selected="true"', 'aria-checked="true"'],
     requiredIcons: [],
     sampleSection: "travel-hospitality-event-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "public-civic-nonprofit-core",
     area: "civic",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-industry-civic.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-industry-civic.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -514,18 +679,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-permit-step-select",
       "data-adlaire-volunteer-shift-select",
     ],
-    ariaRequirements: ["aria-labelledby=\"public-civic-nonprofit-title\"", "aria-label=\"Document requirement list\""],
-    stateAttributes: ["aria-checked=\"true\"", "aria-selected=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="public-civic-nonprofit-title"',
+      'aria-label="Document requirement list"',
+    ],
+    stateAttributes: ['aria-checked="true"', 'aria-selected="true"'],
     requiredIcons: [],
     sampleSection: "public-civic-nonprofit-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "energy-utilities-sustainability-core",
     area: "energy",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-industry-utilities.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-industry-utilities.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -541,18 +717,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-outage-report-select",
       "data-adlaire-disclosure-check",
     ],
-    ariaRequirements: ["aria-labelledby=\"energy-utilities-sustainability-title\"", "aria-label=\"Demand response panel\""],
-    stateAttributes: ["data-state=\"active\"", "aria-selected=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="energy-utilities-sustainability-title"',
+      'aria-label="Demand response panel"',
+    ],
+    stateAttributes: ['data-state="active"', 'aria-selected="true"'],
     requiredIcons: [],
     sampleSection: "energy-utilities-sustainability-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "component-quality-composition-core",
     area: "quality",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-workflow-layout.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-workflow-layout.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -568,18 +755,29 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-bulk-selection-toggle",
       "data-adlaire-verification-check",
     ],
-    ariaRequirements: ["aria-labelledby=\"component-quality-composition-title\"", "aria-label=\"Verification checklist\""],
-    stateAttributes: ["aria-pressed=\"true\"", "aria-checked=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="component-quality-composition-title"',
+      'aria-label="Verification checklist"',
+    ],
+    stateAttributes: ['aria-pressed="true"', 'aria-checked="true"'],
     requiredIcons: [],
     sampleSection: "component-quality-composition-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "agent-automation-workbench-core",
     area: "agent",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-workflow-automation.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-workflow-automation.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -595,12 +793,21 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-approval-gate-toggle",
       "data-adlaire-notification-policy-toggle",
     ],
-    ariaRequirements: ["aria-labelledby=\"agent-automation-title\"", "aria-label=\"Agent task list\""],
-    stateAttributes: ["aria-pressed=\"false\"", "data-state=\"valid\""],
+    ariaRequirements: [
+      'aria-labelledby="agent-automation-title"',
+      'aria-label="Agent task list"',
+    ],
+    stateAttributes: ['aria-pressed="false"', 'data-state="valid"'],
     requiredIcons: [],
     sampleSection: "agent-automation-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "data-ai-operations-core",
@@ -618,7 +825,10 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-guardrail-panel",
     ],
     hooks: [],
-    ariaRequirements: ["aria-labelledby=\"icon-title\"", "aria-label=\"Guardrail panel\""],
+    ariaRequirements: [
+      'aria-labelledby="icon-title"',
+      'aria-label="Guardrail panel"',
+    ],
     stateAttributes: ["adlaire-dataset-card"],
     requiredIcons: ["Icons/adlaire-icon-content-dataset-record.svg"],
     sampleSection: "icon-title",
@@ -641,7 +851,7 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-notification-preference-list",
     ],
     hooks: [],
-    ariaRequirements: ["aria-labelledby=\"icon-title\"", "aria-current=\"true\""],
+    ariaRequirements: ['aria-labelledby="icon-title"', 'aria-current="true"'],
     stateAttributes: ["adlaire-notification-preference-list"],
     requiredIcons: ["Icons/adlaire-icon-content-onboarding-step.svg"],
     sampleSection: "icon-title",
@@ -652,7 +862,9 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
     id: "workspace-command-core",
     area: "workspace",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-operations-workspace-tabs.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-operations-workspace-tabs.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: ["TypeScript/UI/components.ts"],
     generatedBehavior: ["UI/components.js"],
@@ -676,12 +888,18 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-resizable-panel",
       "data-adlaire-resize-handle",
     ],
-    ariaRequirements: ["role=\"tablist\"", "aria-expanded=\"true\""],
+    ariaRequirements: ['role="tablist"', 'aria-expanded="true"'],
     stateAttributes: ["data-adlaire-panel-size", "hidden"],
     requiredIcons: [],
     sampleSection: "workspace-command-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "form-input-core",
@@ -740,12 +958,30 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-character-count",
       "data-adlaire-date-preset",
     ],
-    ariaRequirements: ["aria-live=\"polite\"", "role=\"switch\"", "role=\"radiogroup\"", "aria-label=\"Density\""],
-    stateAttributes: ["hidden", "aria-checked=\"true\"", "aria-pressed=\"true\"", "data-adlaire-field-dirty", "data-adlaire-field-touched", "data-adlaire-range-value"],
+    ariaRequirements: [
+      'aria-live="polite"',
+      'role="switch"',
+      'role="radiogroup"',
+      'aria-label="Density"',
+    ],
+    stateAttributes: [
+      "hidden",
+      'aria-checked="true"',
+      'aria-pressed="true"',
+      "data-adlaire-field-dirty",
+      "data-adlaire-field-touched",
+      "data-adlaire-range-value",
+    ],
     requiredIcons: [],
     sampleSection: "quality-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "overlay-feedback-core",
@@ -769,12 +1005,24 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-touch-target",
     ],
     hooks: ["data-adlaire-dismiss", "data-adlaire-toast-dismiss"],
-    ariaRequirements: ["role=\"dialog\"", "aria-modal=\"true\""],
-    stateAttributes: ["hidden", "is-open", "data-adlaire-overlay-depth", "data-adlaire-overlay-inert", "data-adlaire-dismiss-reason"],
+    ariaRequirements: ['role="dialog"', 'aria-modal="true"'],
+    stateAttributes: [
+      "hidden",
+      "is-open",
+      "data-adlaire-overlay-depth",
+      "data-adlaire-overlay-inert",
+      "data-adlaire-dismiss-reason",
+    ],
     requiredIcons: [],
     sampleSection: "overlay-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "accessibility", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "accessibility",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "github-platform-core",
@@ -794,7 +1042,7 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-github-commit-item",
     ],
     hooks: [],
-    ariaRequirements: ["aria-labelledby=\"git-title\""],
+    ariaRequirements: ['aria-labelledby="git-title"'],
     stateAttributes: ["adlaire-github-branch-badge"],
     requiredIcons: [
       "Icons/adlaire-icon-content-github-pull-request.svg",
@@ -831,12 +1079,21 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-connection-test-toggle",
       "data-adlaire-migration-step-toggle",
     ],
-    ariaRequirements: ["aria-labelledby=\"developer-platform-title\"", "aria-label=\"API explorer panel\""],
-    stateAttributes: ["aria-selected=\"true\"", "data-state=\"passed\""],
+    ariaRequirements: [
+      'aria-labelledby="developer-platform-title"',
+      'aria-label="API explorer panel"',
+    ],
+    stateAttributes: ['aria-selected="true"', 'data-state="passed"'],
     requiredIcons: ["Icons/adlaire-icon-content-api-contract.svg"],
     sampleSection: "developer-platform-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "theme-brand-core",
@@ -865,12 +1122,21 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-high-contrast-toggle",
       "data-adlaire-token-override-toggle",
     ],
-    ariaRequirements: ["aria-labelledby=\"theme-brand-customization-title\"", "aria-label=\"Theme workspace panel\""],
-    stateAttributes: ["aria-pressed=\"false\"", "data-state=\"ready\""],
+    ariaRequirements: [
+      'aria-labelledby="theme-brand-customization-title"',
+      'aria-label="Theme workspace panel"',
+    ],
+    stateAttributes: ['aria-pressed="false"', 'data-state="ready"'],
     requiredIcons: [],
     sampleSection: "theme-brand-customization-title",
     responsiveModes: ["desktop", "mobile"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
   {
     id: "cloud-infrastructure-core",
@@ -900,7 +1166,10 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-cloud-cost-summary",
     ],
     hooks: [],
-    ariaRequirements: ["aria-labelledby=\"cloud-title\"", "aria-label=\"Cloud topology map\""],
+    ariaRequirements: [
+      'aria-labelledby="cloud-title"',
+      'aria-label="Cloud topology map"',
+    ],
     stateAttributes: ["adlaire-cloud-resource-grid"],
     requiredIcons: ["Icons/adlaire-icon-content-cloud-service.svg"],
     sampleSection: "cloud-title",
@@ -911,7 +1180,9 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
     id: "collaboration-review-core",
     area: "collaboration",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-foundation-domains-collaboration.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-foundation-domains-collaboration.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: [],
     generatedBehavior: [],
@@ -929,8 +1200,11 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-signoff-panel",
     ],
     hooks: [],
-    ariaRequirements: ["aria-label=\"Review decision\"", "aria-label=\"Signoff panel\""],
-    stateAttributes: ["aria-label=\"Notification digest\""],
+    ariaRequirements: [
+      'aria-label="Review decision"',
+      'aria-label="Signoff panel"',
+    ],
+    stateAttributes: ['aria-label="Notification digest"'],
     requiredIcons: ["Icons/adlaire-icon-content-review-request.svg"],
     sampleSection: "icon-title",
     responsiveModes: ["desktop", "mobile"],
@@ -965,8 +1239,8 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-inventory-panel",
     ],
     hooks: [],
-    ariaRequirements: ["role=\"radiogroup\"", "aria-label=\"Commerce cart\""],
-    stateAttributes: ["aria-checked=\"true\""],
+    ariaRequirements: ['role="radiogroup"', 'aria-label="Commerce cart"'],
+    stateAttributes: ['aria-checked="true"'],
     requiredIcons: ["Icons/adlaire-icon-content-product-dashboard.svg"],
     sampleSection: "icon-title",
     responsiveModes: ["desktop", "mobile"],
@@ -976,7 +1250,9 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
     id: "observability-diagnostics-core",
     area: "observability",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-foundation-domains-observability.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-foundation-domains-observability.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: [],
     generatedBehavior: [],
@@ -996,7 +1272,10 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-remediation-panel",
     ],
     hooks: [],
-    ariaRequirements: ["aria-label=\"Health overview\"", "aria-label=\"Remediation panel\""],
+    ariaRequirements: [
+      'aria-label="Health overview"',
+      'aria-label="Remediation panel"',
+    ],
     stateAttributes: ["adlaire-alert-incident-list"],
     requiredIcons: ["Icons/adlaire-icon-content-diagnostic-run.svg"],
     sampleSection: "icon-title",
@@ -1007,7 +1286,9 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
     id: "workflow-governance-core",
     area: "workflow",
     catalog: "Docs/Generic_Component_Catalog",
-    cssSources: ["TypeScript/CSS/rules-components-foundation-domains-workflow.ts"],
+    cssSources: [
+      "TypeScript/CSS/rules-components-foundation-domains-workflow.ts",
+    ],
     generatedCss: ["UI/components.css"],
     behaviorSources: [],
     generatedBehavior: [],
@@ -1031,7 +1312,10 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       ".adlaire-control-status-grid",
     ],
     hooks: [],
-    ariaRequirements: ["aria-label=\"Condition builder\"", "aria-label=\"Access review panel\""],
+    ariaRequirements: [
+      'aria-label="Condition builder"',
+      'aria-label="Access review panel"',
+    ],
     stateAttributes: ["adlaire-control-status-grid"],
     requiredIcons: ["Icons/adlaire-icon-content-workflow-run.svg"],
     sampleSection: "icon-title",
@@ -1071,12 +1355,26 @@ export const COMPONENT_CONTRACTS: readonly ComponentContract[] = [
       "data-adlaire-wysiwyg-slash-item",
       "data-adlaire-wysiwyg-suggestion",
     ],
-    ariaRequirements: ["aria-labelledby=\"editor-title\"", "aria-expanded=\"true\""],
-    stateAttributes: ["data-adlaire-wysiwyg-mode", "data-adlaire-toolbar-group", "data-adlaire-disclosure-state", "aria-selected=\"true\""],
+    ariaRequirements: [
+      'aria-labelledby="editor-title"',
+      'aria-expanded="true"',
+    ],
+    stateAttributes: [
+      "data-adlaire-wysiwyg-mode",
+      "data-adlaire-toolbar-group",
+      "data-adlaire-disclosure-state",
+      'aria-selected="true"',
+    ],
     requiredIcons: [],
     sampleSection: "editor-title",
     responsiveModes: ["desktop", "tablet", "mobile", "reduced-motion"],
-    checkCoverage: ["catalog", "generated-css", "generated-javascript", "sample", "javascript-hook"],
+    checkCoverage: [
+      "catalog",
+      "generated-css",
+      "generated-javascript",
+      "sample",
+      "javascript-hook",
+    ],
   },
 ] as const;
 
@@ -1084,54 +1382,110 @@ export function componentContractIds(): readonly string[] {
   return COMPONENT_CONTRACTS.map((contract) => contract.id);
 }
 
-export function componentContractsByArea(area: ComponentContractArea): readonly ComponentContract[] {
+export function componentContractsByArea(
+  area: ComponentContractArea,
+): readonly ComponentContract[] {
   return COMPONENT_CONTRACTS.filter((contract) => contract.area === area);
 }
 
-export function componentContractReviewSurface(contract: ComponentContract): ComponentContractReviewSurface {
+export function componentContractReviewSurface(
+  contract: ComponentContract,
+): ComponentContractReviewSurface {
   if (contract.catalog === "Docs/Admin_UI_Catalog") return "admin-ui";
-  if (contract.catalog === "Docs/WYSIWYG_Editor_UI_Catalog" || contract.area === "editor") return "editor-ui";
+  if (
+    contract.catalog === "Docs/WYSIWYG_Editor_UI_Catalog" ||
+    contract.area === "editor"
+  ) return "editor-ui";
   return "public-ui";
 }
 
-export function componentContractReviewTier(contract: ComponentContract): ComponentContractReviewTier {
+export function componentContractReviewTier(
+  contract: ComponentContract,
+): ComponentContractReviewTier {
   if (FOUNDATION_AREAS.includes(contract.area)) return "foundation";
   if (INTEGRATION_AREAS.includes(contract.area)) return "integration";
   return "domain";
 }
 
-export function componentContractOwner(contract: ComponentContract): ComponentContractOwner {
+export function componentContractOwner(
+  contract: ComponentContract,
+): ComponentContractOwner {
   if (contract.catalog === "Docs/Admin_UI_Catalog") return "admin-system";
-  if (contract.catalog === "Docs/WYSIWYG_Editor_UI_Catalog" || contract.area === "editor") return "editor-system";
+  if (
+    contract.catalog === "Docs/WYSIWYG_Editor_UI_Catalog" ||
+    contract.area === "editor"
+  ) return "editor-system";
   return "public-system";
 }
 
-export function componentContractDepth(contract: ComponentContract): readonly ComponentContractDepth[] {
+export function componentContractDepth(
+  contract: ComponentContract,
+): readonly ComponentContractDepth[] {
   const depth: ComponentContractDepth[] = ["catalog"];
-  if (contract.cssSources.length > 0 || contract.behaviorSources.length > 0) depth.push("source");
-  if (contract.generatedCss.length > 0 || contract.generatedBehavior.length > 0) depth.push("generated");
+  if (contract.cssSources.length > 0 || contract.behaviorSources.length > 0) {
+    depth.push("source");
+  }
+  if (
+    contract.generatedCss.length > 0 || contract.generatedBehavior.length > 0
+  ) depth.push("generated");
   if (contract.hooks.length > 0) depth.push("behavior");
-  if (contract.sample !== "" && contract.sampleSection !== "") depth.push("sample");
+  if (contract.sample !== "" && contract.sampleSection !== "") {
+    depth.push("sample");
+  }
   return depth;
 }
 
-export function componentContractRisk(contract: ComponentContract): ComponentContractRisk {
-  if (contract.hooks.length > 0 && (contract.area === "forms" || contract.area === "overlay" || contract.area === "editor" || contract.area === "data")) return "high";
-  if (contract.hooks.length > 0 || contract.requiredIcons.length > 0 || contract.responsiveModes.includes("reduced-motion")) return "medium";
+export function componentContractRisk(
+  contract: ComponentContract,
+): ComponentContractRisk {
+  const hasBehavior = contract.hooks.length > 0 ||
+    contract.generatedBehavior.length > 0;
+  const hasStatefulAccessibility = contract.ariaRequirements.length > 0 &&
+    contract.stateAttributes.length > 0;
+
+  if (
+    hasBehavior &&
+    hasStatefulAccessibility &&
+    HIGH_RISK_BEHAVIOR_AREAS.includes(contract.area)
+  ) return "high";
+  if (
+    hasBehavior &&
+    contract.generatedBehavior.length > 0 &&
+    contract.stateAttributes.length > 1
+  ) return "high";
+  if (
+    hasBehavior ||
+    contract.requiredIcons.length > 0 ||
+    contract.responsiveModes.includes("reduced-motion") ||
+    (hasStatefulAccessibility &&
+      MEDIUM_RISK_STATE_AREAS.includes(contract.area))
+  ) return "medium";
   return "low";
 }
 
-export function componentContractLifecycle(contract: ComponentContract): ComponentContractLifecycle {
-  const coverageGaps = COMPONENT_CONTRACT_REQUIRED_COVERAGE.filter((coverage) => !contract.checkCoverage.includes(coverage));
+export function componentContractLifecycle(
+  contract: ComponentContract,
+): ComponentContractLifecycle {
+  const coverageGaps = COMPONENT_CONTRACT_REQUIRED_COVERAGE.filter((coverage) =>
+    !contract.checkCoverage.includes(coverage)
+  );
   if (coverageGaps.length > 0) return "requires-review";
-  if (contract.checkCoverage.includes("generated-css") && (contract.generatedBehavior.length === 0 || contract.checkCoverage.includes("generated-javascript"))) return "stable";
+  if (
+    contract.checkCoverage.includes("generated-css") &&
+    (contract.generatedBehavior.length === 0 ||
+      contract.checkCoverage.includes("generated-javascript"))
+  ) return "stable";
   return "expanding";
 }
 
-export function componentContractCoverageGaps(requiredCoverage: readonly string[] = COMPONENT_CONTRACT_REQUIRED_COVERAGE): readonly ComponentContractCoverageGap[] {
+export function componentContractCoverageGaps(
+  requiredCoverage: readonly string[] = COMPONENT_CONTRACT_REQUIRED_COVERAGE,
+): readonly ComponentContractCoverageGap[] {
   return COMPONENT_CONTRACTS.map((contract) => ({
     id: contract.id,
-    missingCoverage: requiredCoverage.filter((coverage) => !contract.checkCoverage.includes(coverage)),
+    missingCoverage: requiredCoverage.filter((coverage) =>
+      !contract.checkCoverage.includes(coverage)
+    ),
   })).filter((gap) => gap.missingCoverage.length > 0);
 }
 
@@ -1139,7 +1493,9 @@ export function componentContractsRequiringBehavior(): readonly ComponentContrac
   return COMPONENT_CONTRACTS.filter((contract) => contract.hooks.length > 0);
 }
 
-export function componentContractGovernanceRecords(requiredCoverage: readonly string[] = COMPONENT_CONTRACT_REQUIRED_COVERAGE): readonly ComponentContractGovernanceRecord[] {
+export function componentContractGovernanceRecords(
+  requiredCoverage: readonly string[] = COMPONENT_CONTRACT_REQUIRED_COVERAGE,
+): readonly ComponentContractGovernanceRecord[] {
   return COMPONENT_CONTRACTS.map((contract) => ({
     id: contract.id,
     owner: componentContractOwner(contract),
@@ -1148,12 +1504,18 @@ export function componentContractGovernanceRecords(requiredCoverage: readonly st
     risk: componentContractRisk(contract),
     lifecycle: componentContractLifecycle(contract),
     depth: componentContractDepth(contract),
-    coverageGaps: requiredCoverage.filter((coverage) => !contract.checkCoverage.includes(coverage)),
+    coverageGaps: requiredCoverage.filter((coverage) =>
+      !contract.checkCoverage.includes(coverage)
+    ),
   }));
 }
 
 export function componentContractPlatformSupport(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.responsiveModes)));
+  return Array.from(
+    new Set(
+      COMPONENT_CONTRACTS.flatMap((contract) => contract.responsiveModes),
+    ),
+  );
 }
 
 export function componentContractAccessibilityRecords(): readonly ComponentContractAccessibilityRecord[] {
@@ -1166,29 +1528,51 @@ export function componentContractAccessibilityRecords(): readonly ComponentContr
 }
 
 export function componentContractRequiredClasses(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.requiredClasses)));
+  return Array.from(
+    new Set(
+      COMPONENT_CONTRACTS.flatMap((contract) => contract.requiredClasses),
+    ),
+  );
 }
 
 export function componentContractHooks(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.hooks)));
+  return Array.from(
+    new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.hooks)),
+  );
 }
 
 export function componentContractAriaRequirements(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.ariaRequirements)));
+  return Array.from(
+    new Set(
+      COMPONENT_CONTRACTS.flatMap((contract) => contract.ariaRequirements),
+    ),
+  );
 }
 
 export function componentContractStateAttributes(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.stateAttributes)));
+  return Array.from(
+    new Set(
+      COMPONENT_CONTRACTS.flatMap((contract) => contract.stateAttributes),
+    ),
+  );
 }
 
 export function componentContractRequiredIcons(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.requiredIcons)));
+  return Array.from(
+    new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.requiredIcons)),
+  );
 }
 
 export function componentContractSampleSections(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.map((contract) => contract.sampleSection)));
+  return Array.from(
+    new Set(COMPONENT_CONTRACTS.map((contract) => contract.sampleSection)),
+  );
 }
 
 export function componentContractResponsiveModes(): readonly string[] {
-  return Array.from(new Set(COMPONENT_CONTRACTS.flatMap((contract) => contract.responsiveModes)));
+  return Array.from(
+    new Set(
+      COMPONENT_CONTRACTS.flatMap((contract) => contract.responsiveModes),
+    ),
+  );
 }

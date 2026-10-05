@@ -1,6 +1,8 @@
 import type { CssRuleFile } from "./rules-types.ts";
 
-export const BASE_RULE_FILE: CssRuleFile = { path: "UI/base.css", css: `/* Adlaire-Design base styles */
+export const BASE_RULE_FILE: CssRuleFile = {
+  path: "UI/base.css",
+  css: `/* Adlaire-Design base styles */
 *,
 *::before,
 *::after {
@@ -118,4 +120,5 @@ a:hover {
   border-color: var(--adlaire-surface-accent);
   color: var(--adlaire-surface-accent);
 }
-` } as const;
+`,
+} as const;

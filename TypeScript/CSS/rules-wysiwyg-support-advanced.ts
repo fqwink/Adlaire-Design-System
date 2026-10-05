@@ -1,4 +1,5 @@
-export const WYSIWYG_SUPPORT_ADVANCED_CSS = `/* Priority C: advanced support UI */
+export const WYSIWYG_SUPPORT_ADVANCED_CSS =
+  `/* Priority C: advanced support UI */
 .adlaire-wysiwyg-assist-menu {
   display: flex;
   flex-wrap: wrap;

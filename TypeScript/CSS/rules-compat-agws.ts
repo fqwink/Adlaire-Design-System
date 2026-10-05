@@ -1,6 +1,8 @@
 import type { CssRuleFile } from "./rules-types.ts";
 
-export const COMPAT_AGWS_RULE_FILE: CssRuleFile = { path: "UI/compat-agws.css", css: `/* Adlaire-Design specification layer */
+export const COMPAT_AGWS_RULE_FILE: CssRuleFile = {
+  path: "UI/compat-agws.css",
+  css: `/* Adlaire-Design specification layer */
 #top,
 #company,
 #terms,
@@ -36,4 +38,5 @@ export const COMPAT_AGWS_RULE_FILE: CssRuleFile = { path: "UI/compat-agws.css", 
 [for] {
   font: inherit;
 }
-` } as const;
+`,
+} as const;

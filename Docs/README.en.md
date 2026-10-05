@@ -32,7 +32,7 @@ Reader guides may summarize these documents, but they do not override them.
 ## Development Rules
 
 - Deno TypeScript is the implementation source for generated CSS and generated JavaScript.
-- Deno execution for validation is fixed to Local Docker Deno validation, not host `deno`.
+- Deno execution for validation is fixed to Local Docker Deno validation, not host `deno`, and includes `deno fmt --check` for the `TypeScript/` source tree.
 - The repository does not use `npm packages`, `package.json`, npm-compatible lockfiles, `node_modules`, Node.js-dependent tooling, or external frontend frameworks.
 - It also does not use external frontend build configuration files, CSS preprocessors, minified bundles, `dist/`, or `build/`.
 - Development, build, generation, check, and release-check structured configuration is JSON-only. YAML is not a technology selection for those scopes.
@@ -52,7 +52,7 @@ The full contract definitions live in `Docs/Master_Spec`; the repository invento
 Primary contracts in `Docs/Master_Spec` include:
 
 - Development configuration contract; Generated output placement contract; TypeScript source inventory contract; Source/output/sample boundary contract.
-- CSS target manifest contract; Generated JavaScript pair contract; Generated JavaScript parity contract; JavaScript public surface contract.
+- CSS target manifest contract; Generated JavaScript pair contract; Generated JavaScript parity contract; Generated JavaScript integrity contract; JavaScript public surface contract.
 - Sample asset/load contract; Editor runtime module registry contract; Interaction audit contract; Deno unit test target coverage; Validation mode contract.
 
 ## Generated JavaScript Pairs
@@ -64,6 +64,8 @@ Primary contracts in `Docs/Master_Spec` include:
 | `TypeScript/UI/content.ts` | `UI/content.js` |
 | `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` |
 | `TypeScript/Editor/index.ts` | `EditorUI/editor.js` |
+
+`TypeScript/JavaScript/manifest.ts` and `TypeScript/JavaScript/index.ts` define the Deno-backed generated JavaScript integrity check for these outputs.
 
 ## Checks
 
@@ -98,7 +100,7 @@ GitHub uses PRs to `main`, merge commits only, automatic head-branch deletion, m
 
 Checks use family-labelled diagnostics. Work is complete only when validation reaches zero known check failures and zero unresolved bugs.
 
-Complete Deno release evidence requires Local Docker Deno validation, including the Deno-backed generated CSS parity check, Deno type-check target coverage, and Deno unit test execution.
+Complete Deno release evidence requires Local Docker Deno validation, including the Deno-backed generated CSS parity check, Deno-backed generated JavaScript integrity check, Deno type-check target coverage, and Deno unit test execution.
 
 ## Samples And Visual Baseline
 
@@ -110,4 +112,4 @@ Samples remain sample-support material.
 
 `Samples/sample-current.png` is the Visual Baseline reference screenshot.
 Reference screenshot changes require the related source or contract change in the same review unit.
-The checked Visual Baseline hash, byte size, and Visual Baseline dimensions stay in `Tools/check/adlaire-design-contracts.json`.
+The checked Visual Baseline hash, byte size, Visual Baseline dimensions, and Visual Baseline capture procedure stay in `Tools/check/adlaire-design-contracts.json`.

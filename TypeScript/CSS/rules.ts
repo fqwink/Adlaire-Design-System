@@ -1,4 +1,9 @@
-export type { CssDeclaration, CssDeclarationValue, CssRule, CssRuleFile } from "./rules-types.ts";
+export type {
+  CssDeclaration,
+  CssDeclarationValue,
+  CssRule,
+  CssRuleFile,
+} from "./rules-types.ts";
 
 import { ADLAIRE_RULE_FILE } from "./rules-adlaire.ts";
 import { BASE_RULE_FILE } from "./rules-base.ts";
