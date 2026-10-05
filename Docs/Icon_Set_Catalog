@@ -1,6 +1,8 @@
-# Adlaire-Design Icon Set Catalog
+# Adlaire-Design-System Icon Set Catalog
 
-This catalog governs the official 1520 SVG icons stored in `Icons/`.
+This catalog governs the official 1520 SVG icons stored in `Icons/` for Adlaire-Design-System.
+
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
 
 The icon set contains exactly 1520 SVG files. The file system is the implementation inventory; this catalog defines governance, category rules, usage rules, and verification rules.
 

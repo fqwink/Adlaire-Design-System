@@ -390,6 +390,8 @@ find "$ROOT/Docs" -type f \
   ! -name 'Editor_Master_Spec' \
   ! -name 'Component_Contract_Matrix' \
   ! -name 'Document_Index' \
+  ! -name 'README.en.md' \
+  ! -name 'README.ja.md' \
   ! -name 'Generic_Component_Catalog' \
   ! -name 'Admin_UI_Catalog' \
   ! -name 'WYSIWYG_Editor_UI_Catalog' \

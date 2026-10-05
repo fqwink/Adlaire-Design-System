@@ -1,12 +1,14 @@
-# Adlaire-Design Component Contract Matrix
+# Adlaire-Design-System Component Contract Matrix
 
-This matrix maps component families to the documents, source files, generated files, JavaScript hooks, samples, and checks that keep each contract synchronized.
+This matrix maps Adlaire-Design-System component families to the documents, source files, generated files, JavaScript hooks, samples, and checks that keep each contract synchronized.
+
+The current repository name is `Adlaire-Design`. The formal system name is `Adlaire-Design-System`.
 
 `Docs/Master_Spec` remains the higher-level source of truth. This file is a navigation and verification matrix, not a separate implementation authority.
 
-The Generated JavaScript pair contract keeps the listed Deno TypeScript source, generated JavaScript output, generated file header, and documentation coverage synchronized for each behavior surface. The JavaScript public surface contract keeps delegated UI initialization and `window.AdlaireEditor` exposure check-covered. The Sample asset/load contract keeps sample CSS and JavaScript loading aligned with the generated outputs. The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts`, generated CSS outputs, CSS target metadata, JSON `tokenCategories`, first-line headers, public CSS order, and sample loading synchronized. The Editor runtime module registry contract keeps JSON `editorRuntimeModules`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts`, `Docs/Editor_Master_Spec`, and `EditorUI/editor.js` synchronized. The Deno type-check target coverage keeps the normal TypeScript type-check entrypoints explicit and check-covered before Local Docker Deno validation.
+Contract definitions live in `Docs/Master_Spec`. This matrix records which catalog or specification owner, Deno TypeScript source, generated CSS/JavaScript output, JavaScript hook surface, sample coverage, and check coverage must move together for each family.
 
-`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, Local Docker Deno validation image and digest, the Deno complete validation gate, Deno required failure message, the bug-fix-zero validation principle, Generated JavaScript parity contract terms, grouped repositoryInventory, TypeScript source inventory, generated CSS/JavaScript inventories, CSS target metadata, JSON `tokenCategories`, JSON `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract coverage, Interaction audit contract coverage, and the Visual Baseline hash.
+`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest that makes this matrix check-covered.
 
 `TypeScript/UI/component-contracts.ts` records representative UI component contracts as TypeScript source metadata. It does not replace this matrix; it gives checks and implementation review a typed source for high-risk synchronized families, generated CSS/JavaScript files, ARIA requirements, state attributes, required icons, sample sections, responsive modes, review surface, review tier, contract owner, contract depth, contract risk, contract lifecycle, platform support, accessibility records, behavior-required contracts, governance records, and required coverage gaps.
 

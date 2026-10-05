@@ -4,26 +4,40 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 ## Governance
 
-| Path | Role |
-| --- | --- |
-| `AGENTS.md` | Work rules, approval rules, and the required startup synchronization of rulebook reading plus Git consistency checks. |
-| `README.md` | Repository overview and command entry points. |
-| `LICENSE` | License text. |
-| `Docs/Master_Spec` | Overall source of truth. |
-| `Docs/Editor_Master_Spec` | Editor and WYSIWYG Editor UI source of truth. |
-| `Docs/Component_Contract_Matrix` | Component family synchronization matrix. |
-| `Docs/Pending_Tasks` | Unfinished task list only. |
-| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest for Deno validation, Local Docker Deno validation image and digest, Deno complete validation gate, Deno required failure message, bug-fix-zero validation principle, Generated JavaScript parity contract terms, grouped repositoryInventory, TypeScript source inventory, generated CSS/JavaScript inventories, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum contract coverage, Interaction audit contract coverage, and Visual Baseline hash requirements. |
+| Path | Owner role | Index role |
+| --- | --- | --- |
+| `AGENTS.md` | Work rules | Approval rules, startup synchronization, Git consistency, and PR boundaries. |
+| `README.md` | Language gateway | Compact English/Japanese entry point and checked contract anchor. |
+| `Docs/README.en.md` | Reader guide | English navigation guide; no new authority layer. |
+| `Docs/README.ja.md` | Reader guide | Japanese navigation guide; no new authority layer. |
+| `Docs/Master_Spec` | Overall source of truth | Contract definitions and system-level governance. |
+| `Docs/Editor_Master_Spec` | Editor source of truth | Structured editor runtime and WYSIWYG Editor UI details. |
+| `Docs/Component_Contract_Matrix` | Synchronization matrix | Component-family owner, source, generated output, sample, and check mapping. |
+| `Docs/Pending_Tasks` | Task source | Unfinished task and pending implementation rows only. |
+| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest | Check-covered paths, terms, inventories, Deno gates, and Visual Baseline hash requirements. |
+| `LICENSE` | License text | License boundary. |
+
+## Reading Order
+
+| Step | Purpose | Read |
+| --- | --- | --- |
+| 1 | Work permission and startup rules | `AGENTS.md` |
+| 2 | Language entry and quick orientation | `README.md`, then `Docs/README.en.md` or `Docs/README.ja.md` |
+| 3 | Source-of-truth contract definitions | `Docs/Master_Spec` |
+| 4 | Editor-specific authority | `Docs/Editor_Master_Spec` |
+| 5 | Component synchronization | `Docs/Component_Contract_Matrix` |
+| 6 | Catalog ownership | `Docs/*_Catalog` |
+| 7 | Validation details | `Tools/check/check-adlaire-design.sh`, `Tools/check/adlaire-design-contracts.json` |
 
 ## Catalogs
 
 | Path | Role |
 | --- | --- |
-| `Docs/Generic_Component_Catalog` | Generic public UI, content UI, form UI, advanced input UI, design-system operations UI, layout UI, Git Provider UI. |
-| `Docs/Admin_UI_Catalog` | Admin-only UI. |
-| `Docs/WYSIWYG_Editor_UI_Catalog` | WYSIWYG Editor UI. |
-| `Docs/Icon_Set_Catalog` | Official icon set governance. |
-| `Docs/Brand_Asset_Catalog` | Brand asset governance. |
+| `Docs/Generic_Component_Catalog` | Adlaire-Design-System generic public UI, content UI, form UI, advanced input UI, design-system operations UI, layout UI, and Git Provider UI catalog. |
+| `Docs/Admin_UI_Catalog` | Adlaire-Design-System Admin-only UI catalog. |
+| `Docs/WYSIWYG_Editor_UI_Catalog` | Adlaire-Design-System WYSIWYG Editor UI catalog. |
+| `Docs/Icon_Set_Catalog` | Adlaire-Design-System official icon set governance. |
+| `Docs/Brand_Asset_Catalog` | Adlaire-Design-System brand asset governance. |
 
 ## Runtime Outputs and Sources
 
@@ -43,17 +57,37 @@ The current repository name is `Adlaire-Design`. The formal system name is `Adla
 
 The TypeScript source inventory contract keeps every `TypeScript/**/*.ts` source file listed in `Tools/check/adlaire-design-contracts.json` and check-covered by one of the source registries: the CSS compiler registry, generated JavaScript pair contract, UI interaction contract metadata, UI component contract metadata, or editor runtime module registry.
 
-## CSS Target Manifest Contract
+## Documentation Structure Contract
 
-The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, generated CSS output files, CSS target metadata, first-line headers, public CSS order, sample loading, and documentation synchronized. JSON `tokenCategories` keeps token category boundaries synchronized with `TypeScript/CSS/tokens.ts`. Token targets are `Tokens/colors.css`, `Tokens/typography.css`, `Tokens/spacing.css`, `Tokens/layout.css`, `Tokens/motion.css`, `Tokens/layer.css`, `Tokens/breakpoints.css`, `Tokens/surface.css`, `Tokens/status.css`, and `Tokens/effects.css`. Public UI targets are `UI/adlaire.css`, `UI/base.css`, `UI/grid.css`, `UI/layout.css`, `UI/components.css`, `UI/site.css`, `UI/forms.css`, `UI/content.css`, `UI/utilities.css`, and `UI/compat-agws.css`. Editor UI CSS output is `EditorUI/wysiwyg.css`.
+The Documentation structure contract keeps `README.md` as the compact language gateway, `Docs/README.en.md` and `Docs/README.ja.md` as aligned reader guides, `Docs/Master_Spec` as the overall source of truth, and `Docs/Document_Index` as the repository inventory. This index names locations and ownership boundaries; it does not redefine contracts owned by `Docs/Master_Spec`.
 
-## Development Configuration And Output Placement Contracts
+## Contract Location Map
 
-The Development configuration contract keeps development, build, generation, check, and release-check settings JSON-only and rejects YAML as a technology selection for those scopes. It also rejects npm, Node, npm-compatible package manager files, and external frontend build tool configuration.
+| Contract | Owner | Indexed locations |
+| --- | --- | --- |
+| Documentation Structure Contract | `Docs/Master_Spec` | `README.md`, `Docs/README.en.md`, `Docs/README.ja.md`, `Docs/Document_Index` |
+| Development configuration contract | `Docs/Master_Spec` | JSON-only settings; no YAML, npm, Node, npm-compatible package manager files, or external frontend build configuration. |
+| Generated output placement contract | `Docs/Master_Spec` | Generated CSS/JS paths in `Tools/check/adlaire-design-contracts.json`; sample-support files in `Samples/design/`. |
+| TypeScript source inventory contract | `Docs/Master_Spec` | `TypeScript/**/*.ts`, Deno type-check target coverage, Generated JavaScript pair sources, and CSS compiler source registries. |
+| Source/output/sample boundary contract | `Docs/Master_Spec` | `TypeScript/` source, `Tokens/`, `UI/`, `EditorUI/` generated outputs, and `Samples/` support material. |
+| CSS target manifest contract | `Docs/Master_Spec` | `TypeScript/CSS/manifest.ts`, CSS target metadata, generated CSS inventory, public CSS order, `tokenCategories`, and sample loading. |
+| Generated JavaScript pair contract | `Docs/Master_Spec` | Pair table below, generated JavaScript inventory, generated headers, and required documentation coverage. |
+| Generated JavaScript parity contract | `Docs/Master_Spec` | Parity terms in `Tools/check/adlaire-design-contracts.json`, TypeScript sources, and generated JavaScript outputs. |
+| JavaScript public surface contract | `Docs/Master_Spec` | `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, `EditorUI/editor.js`, and `window.AdlaireEditor`. |
+| Sample asset/load contract | `Docs/Master_Spec` | `Samples/design/index.html`, `Samples/design/sample.css`, `Samples/design/sample.js`, and manifest sample load order. |
+| Editor runtime module registry contract | `Docs/Editor_Master_Spec` | `editorRuntimeModules`, `TypeScript/Editor/*.ts`, `TypeScript/Editor/index.ts`, and `EditorUI/editor.js`. |
+| Interaction audit contract | `Docs/Master_Spec` | `TypeScript/UI/interaction-contracts.ts`, `UI_INTERACTION_CONTRACTS`, and derived audit records. |
+| Validation mode contract | `Docs/Master_Spec` | Normal check, release check, Local Docker Deno validation, stale merged branch reporting, and family-labelled diagnostics. |
 
-The Generated output placement contract keeps repository CSS and JavaScript files limited to the generated output paths in the JSON inventory, plus the sample-support files `Samples/design/sample.css` and `Samples/design/sample.js`.
+## Output Inventory Map
 
-The Source/output/sample boundary contract keeps TypeScript sources, generated CSS/JavaScript outputs, and sample-support material in their separate repository roles.
+| Inventory | Checked locations |
+| --- | --- |
+| Token CSS | `Tokens/colors.css`, `Tokens/typography.css`, `Tokens/spacing.css`, `Tokens/layout.css`, `Tokens/motion.css`, `Tokens/layer.css`, `Tokens/breakpoints.css`, `Tokens/surface.css`, `Tokens/status.css`, `Tokens/effects.css` |
+| Public UI CSS | `UI/adlaire.css`, `UI/base.css`, `UI/grid.css`, `UI/layout.css`, `UI/components.css`, `UI/site.css`, `UI/forms.css`, `UI/content.css`, `UI/utilities.css`, `UI/compat-agws.css` |
+| Editor UI CSS | `EditorUI/wysiwyg.css` |
+| Generated JavaScript | `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, `EditorUI/editor.js` |
+| Sample support | `Samples/design/index.html`, `Samples/design/sample.css`, `Samples/design/sample.js`, `Samples/sample-current.png` |
 
 ## Generated JavaScript Pair Contract
 
@@ -65,13 +99,7 @@ The Source/output/sample boundary contract keeps TypeScript sources, generated C
 | `TypeScript/EditorUI/wysiwyg.ts` | `EditorUI/wysiwyg.js` |
 | `TypeScript/Editor/index.ts` | `EditorUI/editor.js` |
 
-The Generated JavaScript pair contract keeps each Deno TypeScript source, generated JavaScript file, generated file header, and documentation row synchronized. The Deno type-check target coverage keeps the normal type-check target list explicit and check-covered before Local Docker Deno validation.
-
-`Tools/check/adlaire-design-contracts.json` lists the TypeScript source inventory, generated JavaScript pairs, CSS target metadata, JSON `tokenCategories`, JSON `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, and parity terms checked against both TypeScript source and generated output. The TypeScript source inventory is synchronized with actual `TypeScript/**/*.ts` files, Deno targets, Generated JavaScript pair sources, and CSS compiler required files. The generated CSS inventory is synchronized with `TypeScript/CSS/manifest.ts`, the generated JavaScript inventory is synchronized with Generated JavaScript pairs, and the Sample asset/load order is synchronized with `Samples/design/index.html`. The Interaction audit contract keeps audit records derived one-to-one from `UI_INTERACTION_CONTRACTS`.
-
-The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` loadable without bundling and keeps `window.AdlaireEditor` exposed by the structured editor runtime.
-
-The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, JSON `editorRuntimeModules`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts`, and `EditorUI/editor.js` synchronized as the editor runtime module registry.
+The Generated JavaScript pair contract keeps each Deno TypeScript source, generated JavaScript file, generated file header, and documentation row synchronized. Detailed definitions remain in `Docs/Master_Spec`; this index records the checked pair locations.
 
 ## Assets and Samples
 
@@ -92,8 +120,20 @@ The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, JSO
 
 | Path | Role |
 | --- | --- |
-| `Tools/check/check-adlaire-design.sh` | Repository, document, catalog, generated CSS, Local Docker Deno validation, Deno-backed generated CSS parity check, Deno type-check target coverage, generated JavaScript hooks, Development configuration contract, Generated output placement contract, TypeScript source inventory contract, Source/output/sample boundary contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, CSS variable, sample coverage, asset inventory, documentation governance, local Git consistency, ignored local artifact policy, stale merged branch, and release checks. |
-| `Tools/check/adlaire-design-contracts.json` | JSON contract manifest consumed by the check for Deno targets, Local Docker Deno validation image and digest, Deno complete validation gate, Deno required failure message, bug-fix-zero validation principle, Generated JavaScript parity terms, grouped repositoryInventory, TypeScript source inventory, generated CSS/JavaScript inventories, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract counts, Interaction audit contract coverage, and Visual Baseline documentation requirements. |
+| `Tools/check/check-adlaire-design.sh` | Shell runner for normal and release validation, Local Docker Deno validation, local Git consistency, documentation governance, generated output parity, and stale merged branch reporting. |
+| `Tools/check/adlaire-design-contracts.json` | JSON check contract manifest for check-covered paths, Deno gates, parity terms, repository inventories, asset/documentation governance, and Visual Baseline requirements. |
+
+The shell runner covers:
+
+- Development configuration contract, Generated output placement contract, TypeScript source inventory contract, and Source/output/sample boundary contract.
+- Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, and Editor runtime module registry contract.
+- Normal validation, release-readiness checks, local Git consistency, ignored local artifact policy, and stale merged branch reporting.
+
+The manifest records:
+
+- Deno type-check target coverage, the Deno complete validation gate, Deno required failure message, and bug-fix-zero validation principle.
+- Generated JavaScript parity contract terms, `repositoryInventory`, generated CSS inventory, generated JavaScript inventory, and CSS target metadata.
+- `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Interaction audit contract coverage, and Visual Baseline hash requirements.
 
 ## Operational Quality
 
