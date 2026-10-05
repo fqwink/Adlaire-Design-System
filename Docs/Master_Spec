@@ -111,6 +111,8 @@ CSS load order for public surfaces is:
 
 `Tokens/colors.css`, `Tokens/typography.css`, `Tokens/spacing.css`, `Tokens/layout.css`, `Tokens/motion.css`, `Tokens/layer.css`, `Tokens/breakpoints.css`, `Tokens/surface.css`, `Tokens/status.css`, `Tokens/effects.css`, then `UI/adlaire.css`, `UI/base.css`, `UI/grid.css`, `UI/layout.css`, `UI/components.css`, `UI/site.css`, `UI/forms.css`, `UI/content.css`, `UI/utilities.css`, `UI/compat-agws.css`.
 
+The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, generated CSS output files, generated first-line headers, public CSS order, sample loading, and documentation synchronized as one output registry.
+
 The Sample asset/load contract keeps `Samples/design/index.html` aligned with this CSS order, then loads `EditorUI/wysiwyg.css` and `Samples/design/sample.css` after the public CSS contract.
 
 ## JavaScript Model
@@ -204,6 +206,8 @@ WYSIWYG Editor UI is part of Adlaire-Design-System. Editor details are governed 
 
 The editor model is a safe structured content editing foundation with command, document, selection, history, validation, validation summary, save state, publish state, readOnly transition, checkpoint, event, and type modules under `TypeScript/Editor/`.
 
+The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts` re-exports, `EditorUI/editor.js`, and checks synchronized whenever runtime modules change.
+
 WYSIWYG UI contracts include toolbar group state, slash menu keyboard navigation, suggestion selection, suggestion card, save banner, lock banner, block reorder, comment, warning, readonly, disabled, locked, and accessibility panel states.
 
 ## Icons and Brand
@@ -238,7 +242,7 @@ sh Tools/check/check-adlaire-design.sh --release-check
 
 The release check assumes the local Git consistency baseline, `git fetch backup --prune`, local `main` synchronized with `backup/main`, no stale merged local or `backup/*` remote-tracking branches, matching merged branch cleanup, and no patches outside `backup/main`.
 
-Checks verify required class families, forbidden dependency/build artifacts, the JSON development and build configuration baseline, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, local Git configuration drift, stale merged branches, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, the JSON development and build configuration baseline, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, local Git configuration drift, stale merged branches, and post-merge release readiness.
 
 The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before the optional Deno command is invoked. When the `deno` command is available, the normal check also runs the Deno type check for TypeScript sources and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check must emit a family-labelled skip message and the report must not claim Deno type or generated CSS parity verification for that environment.
 
