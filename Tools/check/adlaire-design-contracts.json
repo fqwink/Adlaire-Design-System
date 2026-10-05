@@ -4,6 +4,7 @@
     "completeEvidenceRequiresDeno": true,
     "requiredEnv": "ADLAIRE_REQUIRE_DENO",
     "skipDiagnostic": "[Deno validation] deno command not found; skipped Deno type check and Deno-backed generated CSS parity check.",
+    "requiredFailureMessage": "ADLAIRE_REQUIRE_DENO=1 requires deno for complete TypeScript and generated CSS parity evidence.",
     "typeCheckTargets": [
       "TypeScript/CSS/index.ts",
       "TypeScript/UI/components.ts",
@@ -112,7 +113,593 @@
       "Docs/Component_Contract_Matrix"
     ]
   },
+  "generatedCssTargets": [
+    {
+      "path": "Tokens/colors.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design color tokens */"
+    },
+    {
+      "path": "Tokens/typography.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design typography tokens */"
+    },
+    {
+      "path": "Tokens/spacing.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design spacing tokens */"
+    },
+    {
+      "path": "Tokens/layout.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design layout tokens */"
+    },
+    {
+      "path": "Tokens/motion.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design motion tokens */"
+    },
+    {
+      "path": "Tokens/layer.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design layer tokens */"
+    },
+    {
+      "path": "Tokens/breakpoints.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design breakpoint tokens */"
+    },
+    {
+      "path": "Tokens/surface.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design surface tokens */"
+    },
+    {
+      "path": "Tokens/status.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design status tokens */"
+    },
+    {
+      "path": "Tokens/effects.css",
+      "kind": "token",
+      "firstLine": "/* Adlaire-Design effect tokens */"
+    },
+    {
+      "path": "UI/adlaire.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design color utilities */"
+    },
+    {
+      "path": "UI/base.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design base styles */"
+    },
+    {
+      "path": "UI/grid.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design grid utilities */"
+    },
+    {
+      "path": "UI/layout.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design public layout */"
+    },
+    {
+      "path": "UI/components.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design public components */"
+    },
+    {
+      "path": "UI/site.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design site chrome */"
+    },
+    {
+      "path": "UI/forms.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design form components */"
+    },
+    {
+      "path": "UI/content.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design content components */"
+    },
+    {
+      "path": "UI/utilities.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design utility classes */"
+    },
+    {
+      "path": "UI/compat-agws.css",
+      "kind": "ui",
+      "firstLine": "/* Adlaire-Design specification layer */"
+    },
+    {
+      "path": "EditorUI/wysiwyg.css",
+      "kind": "editor-ui",
+      "firstLine": "/* Adlaire-Design WYSIWYG editor */"
+    }
+  ],
+  "tokenCategories": {
+    "Tokens/colors.css": "color",
+    "Tokens/typography.css": "typography",
+    "Tokens/spacing.css": "spacing",
+    "Tokens/layout.css": "layout",
+    "Tokens/motion.css": "motion",
+    "Tokens/layer.css": "layer",
+    "Tokens/breakpoints.css": "breakpoint",
+    "Tokens/surface.css": "surface",
+    "Tokens/status.css": "status",
+    "Tokens/effects.css": "effects"
+  },
+  "editorRuntimeModules": [
+    {
+      "file": "TypeScript/Editor/commands.ts",
+      "module": "commands.ts",
+      "responsibility": "Command definitions and command execution.",
+      "requiredExports": [
+        "export function applyCommand"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/core.ts",
+      "module": "core.ts",
+      "responsibility": "Editor creation and runtime coordination.",
+      "requiredExports": [
+        "export class HeadlessEditorController",
+        "export function createEditor"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/document.ts",
+      "module": "document.ts",
+      "responsibility": "Structured document data and block operations.",
+      "requiredExports": [
+        "export class ToolRegistry",
+        "export class BlockRegistry",
+        "function handlePaste",
+        "export function normalizeDocument",
+        "export function isSafeHref"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/events.ts",
+      "module": "events.ts",
+      "responsibility": "Runtime events.",
+      "requiredExports": [
+        "export class EventBus",
+        "export function editorError"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/history.ts",
+      "module": "history.ts",
+      "responsibility": "Undo and redo history, including history reset for document replacement.",
+      "requiredExports": [
+        "export class History",
+        "clear(): void"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/index.ts",
+      "module": "index.ts",
+      "responsibility": "Public TypeScript entry point.",
+      "requiredExports": [
+        "export const AdlaireEditor"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/selection.ts",
+      "module": "selection.ts",
+      "responsibility": "Selection model.",
+      "requiredExports": [
+        "export function normalizeSelection",
+        "export function sameSelection"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/types.ts",
+      "module": "types.ts",
+      "responsibility": "Shared editor types.",
+      "requiredExports": [
+        "export interface EditorDocument",
+        "export interface EditorController",
+        "getSaveState(): SaveState",
+        "getPublishState(): PublishState",
+        "getValidationSummary(): ValidationSummary",
+        "setReadOnly(readOnly: boolean): void",
+        "checkpoint(label: string): HistoryCheckpoint",
+        "completeSave(state?: Partial<SaveState>): SaveState",
+        "failSave(error: string): SaveState",
+        "completePublish(state?: Partial<PublishState>): PublishState",
+        "failPublish(error: string): PublishState"
+      ]
+    },
+    {
+      "file": "TypeScript/Editor/validation.ts",
+      "module": "validation.ts",
+      "responsibility": "Document, command, and selection validation.",
+      "requiredExports": [
+        "export function validateDocument",
+        "export async function validateDocumentAsync"
+      ]
+    }
+  ],
+  "assetInventory": {
+    "iconCount": 1520,
+    "iconFilePattern": "^adlaire-icon-(navigation|action|status|content|editor|media|form)-.+\\.svg$",
+    "requiredBrandAssets": [
+      "Brand/adlaire-logo-primary.svg",
+      "Brand/adlaire-logo-mark.svg",
+      "Brand/adlaire-ogp-default.png",
+      "Brand/adlaire-image-brand-overview.webp"
+    ],
+    "brandFilePattern": "^adlaire-(logo|image|ogp|icon|brand)-.+\\.(svg|png|webp)$",
+    "brandSupportFiles": [
+      ".gitkeep",
+      "README.md"
+    ]
+  },
+  "documentationGovernance": {
+    "requiredTerms": [
+      "Adlaire-Design-System",
+      "Deno TypeScript",
+      "npm packages",
+      "Component_Contract_Matrix",
+      "TypeScript/UI/component-contracts.ts",
+      "TypeScript/UI/interaction-contracts.ts",
+      "Representative UI component contract metadata",
+      "Samples are supporting",
+      "official 1520 SVG icons",
+      "startup synchronization",
+      "matching merged branch",
+      "local Git consistency baseline",
+      "merge commits only",
+      "stale merged branch",
+      "family-labelled diagnostics",
+      "Deno-backed generated CSS parity check",
+      "Deno type-check target coverage",
+      "Deno complete validation gate",
+      "Generated JavaScript pair contract",
+      "Generated JavaScript parity contract",
+      "Interaction audit contract",
+      "JavaScript public surface contract",
+      "Sample asset/load contract",
+      "CSS target manifest contract",
+      "CSS target metadata",
+      "Editor runtime module registry contract",
+      "editorRuntimeModules",
+      "JSON check contract manifest",
+      "repositoryInventory",
+      "tokenCategories",
+      "assetInventory",
+      "documentationGovernance",
+      "generated CSS inventory",
+      "generated JavaScript inventory",
+      "Deno required failure message",
+      "Visual Baseline hash",
+      "Complete Deno release evidence",
+      "Development configuration contract",
+      "Generated output placement contract",
+      "TypeScript source inventory contract",
+      "Source/output/sample boundary contract",
+      "Ignored local artifact policy",
+      "Token category boundaries",
+      "Token family usage discipline",
+      "Category naming",
+      "Brand asset inventory is checked",
+      "Visual Baseline",
+      "Reference screenshot changes require",
+      "output file unit",
+      "check-covered contract",
+      "Catalog Governance",
+      "Pending Tasks"
+    ]
+  },
   "repositoryInventory": {
+    "rootFiles": [
+      "AGENTS.md",
+      "README.md",
+      "LICENSE"
+    ],
+    "documents": [
+      "Docs/Master_Spec",
+      "Docs/Editor_Master_Spec",
+      "Docs/Component_Contract_Matrix",
+      "Docs/Document_Index",
+      "Docs/Generic_Component_Catalog",
+      "Docs/Admin_UI_Catalog",
+      "Docs/WYSIWYG_Editor_UI_Catalog",
+      "Docs/Icon_Set_Catalog",
+      "Docs/Brand_Asset_Catalog",
+      "Docs/Pending_Tasks"
+    ],
+    "brandFiles": [
+      "Brand/README.md"
+    ],
+    "sampleSupport": [
+      "Samples/README.md",
+      "Samples/sample-current.png",
+      "Samples/design/index.html",
+      "Samples/design/sample.css",
+      "Samples/design/sample.js"
+    ],
+    "tooling": [
+      "Tools/check/check-adlaire-design.sh",
+      "Tools/check/adlaire-design-contracts.json"
+    ],
+    "generatedCss": [
+      "Tokens/colors.css",
+      "Tokens/typography.css",
+      "Tokens/spacing.css",
+      "Tokens/layout.css",
+      "Tokens/motion.css",
+      "Tokens/layer.css",
+      "Tokens/breakpoints.css",
+      "Tokens/surface.css",
+      "Tokens/status.css",
+      "Tokens/effects.css",
+      "UI/adlaire.css",
+      "UI/base.css",
+      "UI/grid.css",
+      "UI/layout.css",
+      "UI/components.css",
+      "UI/site.css",
+      "UI/forms.css",
+      "UI/content.css",
+      "UI/utilities.css",
+      "UI/compat-agws.css",
+      "EditorUI/wysiwyg.css"
+    ],
+    "generatedJavaScript": [
+      "UI/components.js",
+      "UI/forms.js",
+      "UI/content.js",
+      "EditorUI/wysiwyg.js",
+      "EditorUI/editor.js"
+    ],
+    "sampleLoadOrder": {
+      "stylesheets": [
+        "Tokens/colors.css",
+        "Tokens/typography.css",
+        "Tokens/spacing.css",
+        "Tokens/layout.css",
+        "Tokens/motion.css",
+        "Tokens/layer.css",
+        "Tokens/breakpoints.css",
+        "Tokens/surface.css",
+        "Tokens/status.css",
+        "Tokens/effects.css",
+        "UI/adlaire.css",
+        "UI/base.css",
+        "UI/grid.css",
+        "UI/layout.css",
+        "UI/components.css",
+        "UI/site.css",
+        "UI/forms.css",
+        "UI/content.css",
+        "UI/utilities.css",
+        "UI/compat-agws.css",
+        "EditorUI/wysiwyg.css",
+        "Samples/design/sample.css"
+      ],
+      "scripts": [
+        "UI/components.js",
+        "UI/forms.js",
+        "UI/content.js",
+        "EditorUI/editor.js",
+        "EditorUI/wysiwyg.js",
+        "Samples/design/sample.js"
+      ]
+    },
+    "typescriptSources": {
+      "css": [
+        "TypeScript/CSS/emit.ts",
+        "TypeScript/CSS/index.ts",
+        "TypeScript/CSS/manifest.ts",
+        "TypeScript/CSS/rules-adlaire.ts",
+        "TypeScript/CSS/rules-base.ts",
+        "TypeScript/CSS/rules-compat-agws.ts",
+        "TypeScript/CSS/rules-components-foundation-core-announcements.ts",
+        "TypeScript/CSS/rules-components-foundation-core-base.ts",
+        "TypeScript/CSS/rules-components-foundation-core-controls.ts",
+        "TypeScript/CSS/rules-components-foundation-core-data.ts",
+        "TypeScript/CSS/rules-components-foundation-core-flow.ts",
+        "TypeScript/CSS/rules-components-foundation-core-media.ts",
+        "TypeScript/CSS/rules-components-foundation-core-status.ts",
+        "TypeScript/CSS/rules-components-foundation-core.ts",
+        "TypeScript/CSS/rules-components-foundation-domains-collaboration.ts",
+        "TypeScript/CSS/rules-components-foundation-domains-commerce.ts",
+        "TypeScript/CSS/rules-components-foundation-domains-data.ts",
+        "TypeScript/CSS/rules-components-foundation-domains-observability.ts",
+        "TypeScript/CSS/rules-components-foundation-domains-product.ts",
+        "TypeScript/CSS/rules-components-foundation-domains-workflow.ts",
+        "TypeScript/CSS/rules-components-foundation-domains.ts",
+        "TypeScript/CSS/rules-components-foundation-media-app.ts",
+        "TypeScript/CSS/rules-components-foundation-media-base.ts",
+        "TypeScript/CSS/rules-components-foundation-media-cards.ts",
+        "TypeScript/CSS/rules-components-foundation-media-governance.ts",
+        "TypeScript/CSS/rules-components-foundation-media-operations.ts",
+        "TypeScript/CSS/rules-components-foundation-media.ts",
+        "TypeScript/CSS/rules-components-foundation-support-cards.ts",
+        "TypeScript/CSS/rules-components-foundation-support-filters.ts",
+        "TypeScript/CSS/rules-components-foundation-support-layout.ts",
+        "TypeScript/CSS/rules-components-foundation-support-pagination.ts",
+        "TypeScript/CSS/rules-components-foundation-support-panels.ts",
+        "TypeScript/CSS/rules-components-foundation-support.ts",
+        "TypeScript/CSS/rules-components-foundation.ts",
+        "TypeScript/CSS/rules-components-operations-admin-actions.ts",
+        "TypeScript/CSS/rules-components-operations-admin-delivery.ts",
+        "TypeScript/CSS/rules-components-operations-admin-governance.ts",
+        "TypeScript/CSS/rules-components-operations-admin-layout.ts",
+        "TypeScript/CSS/rules-components-operations-admin-lifecycle.ts",
+        "TypeScript/CSS/rules-components-operations-admin-observability.ts",
+        "TypeScript/CSS/rules-components-operations-admin-security.ts",
+        "TypeScript/CSS/rules-components-operations-admin-states.ts",
+        "TypeScript/CSS/rules-components-operations-admin.ts",
+        "TypeScript/CSS/rules-components-operations-business-enterprise.ts",
+        "TypeScript/CSS/rules-components-operations-business-governance.ts",
+        "TypeScript/CSS/rules-components-operations-business-industry.ts",
+        "TypeScript/CSS/rules-components-operations-business-insights.ts",
+        "TypeScript/CSS/rules-components-operations-business-messaging.ts",
+        "TypeScript/CSS/rules-components-operations-business-planning.ts",
+        "TypeScript/CSS/rules-components-operations-business.ts",
+        "TypeScript/CSS/rules-components-operations-data-bottom-sheet.ts",
+        "TypeScript/CSS/rules-components-operations-data-dialogs.ts",
+        "TypeScript/CSS/rules-components-operations-data-grid.ts",
+        "TypeScript/CSS/rules-components-operations-data-inspection.ts",
+        "TypeScript/CSS/rules-components-operations-data-navigation.ts",
+        "TypeScript/CSS/rules-components-operations-data-search.ts",
+        "TypeScript/CSS/rules-components-operations-data-tree.ts",
+        "TypeScript/CSS/rules-components-operations-data.ts",
+        "TypeScript/CSS/rules-components-operations-industry-civic.ts",
+        "TypeScript/CSS/rules-components-operations-industry-content.ts",
+        "TypeScript/CSS/rules-components-operations-industry-devices.ts",
+        "TypeScript/CSS/rules-components-operations-industry-hospitality.ts",
+        "TypeScript/CSS/rules-components-operations-industry-utilities.ts",
+        "TypeScript/CSS/rules-components-operations-industry.ts",
+        "TypeScript/CSS/rules-components-operations-workflow-automation.ts",
+        "TypeScript/CSS/rules-components-operations-workflow-layout.ts",
+        "TypeScript/CSS/rules-components-operations-workflow-records.ts",
+        "TypeScript/CSS/rules-components-operations-workflow.ts",
+        "TypeScript/CSS/rules-components-operations-workspace-assets.ts",
+        "TypeScript/CSS/rules-components-operations-workspace-boards.ts",
+        "TypeScript/CSS/rules-components-operations-workspace-menus.ts",
+        "TypeScript/CSS/rules-components-operations-workspace-metrics.ts",
+        "TypeScript/CSS/rules-components-operations-workspace-publishing.ts",
+        "TypeScript/CSS/rules-components-operations-workspace-tabs.ts",
+        "TypeScript/CSS/rules-components-operations-workspace.ts",
+        "TypeScript/CSS/rules-components-operations.ts",
+        "TypeScript/CSS/rules-components-overlays-carousel.ts",
+        "TypeScript/CSS/rules-components-overlays-catalog.ts",
+        "TypeScript/CSS/rules-components-overlays-responsive.ts",
+        "TypeScript/CSS/rules-components-overlays-surfaces.ts",
+        "TypeScript/CSS/rules-components-overlays-tooltip.ts",
+        "TypeScript/CSS/rules-components-overlays.ts",
+        "TypeScript/CSS/rules-components-platform-cloud.ts",
+        "TypeScript/CSS/rules-components-platform-developer.ts",
+        "TypeScript/CSS/rules-components-platform-github.ts",
+        "TypeScript/CSS/rules-components-platform-states.ts",
+        "TypeScript/CSS/rules-components-platform-surfaces.ts",
+        "TypeScript/CSS/rules-components-platform-theme.ts",
+        "TypeScript/CSS/rules-components-platform.ts",
+        "TypeScript/CSS/rules-components.ts",
+        "TypeScript/CSS/rules-content-catalog-alerts.ts",
+        "TypeScript/CSS/rules-content-catalog-aliases.ts",
+        "TypeScript/CSS/rules-content-catalog-contact.ts",
+        "TypeScript/CSS/rules-content-catalog-legal.ts",
+        "TypeScript/CSS/rules-content-catalog-news.ts",
+        "TypeScript/CSS/rules-content-catalog-sidebar.ts",
+        "TypeScript/CSS/rules-content-catalog.ts",
+        "TypeScript/CSS/rules-content-extended-activity.ts",
+        "TypeScript/CSS/rules-content-extended-knowledge.ts",
+        "TypeScript/CSS/rules-content-extended-markdown.ts",
+        "TypeScript/CSS/rules-content-extended-repository.ts",
+        "TypeScript/CSS/rules-content-extended-responsive.ts",
+        "TypeScript/CSS/rules-content-extended-toc.ts",
+        "TypeScript/CSS/rules-content-extended.ts",
+        "TypeScript/CSS/rules-content-foundation-base.ts",
+        "TypeScript/CSS/rules-content-foundation-news.ts",
+        "TypeScript/CSS/rules-content-foundation-organization.ts",
+        "TypeScript/CSS/rules-content-foundation-patterns.ts",
+        "TypeScript/CSS/rules-content-foundation-tabs.ts",
+        "TypeScript/CSS/rules-content-foundation-timeline.ts",
+        "TypeScript/CSS/rules-content-foundation.ts",
+        "TypeScript/CSS/rules-content-interactions-desktop.ts",
+        "TypeScript/CSS/rules-content-interactions-mobile.ts",
+        "TypeScript/CSS/rules-content-interactions-sorting.ts",
+        "TypeScript/CSS/rules-content-interactions-tablet.ts",
+        "TypeScript/CSS/rules-content-interactions.ts",
+        "TypeScript/CSS/rules-content.ts",
+        "TypeScript/CSS/rules-forms-composite-calendar.ts",
+        "TypeScript/CSS/rules-forms-composite-date-time.ts",
+        "TypeScript/CSS/rules-forms-composite-filters.ts",
+        "TypeScript/CSS/rules-forms-composite-input-groups.ts",
+        "TypeScript/CSS/rules-forms-composite-selects.ts",
+        "TypeScript/CSS/rules-forms-composite-tokens.ts",
+        "TypeScript/CSS/rules-forms-composite.ts",
+        "TypeScript/CSS/rules-forms-foundation-base.ts",
+        "TypeScript/CSS/rules-forms-foundation-buttons.ts",
+        "TypeScript/CSS/rules-forms-foundation-checks.ts",
+        "TypeScript/CSS/rules-forms-foundation-controls.ts",
+        "TypeScript/CSS/rules-forms-foundation-notices.ts",
+        "TypeScript/CSS/rules-forms-foundation-submit.ts",
+        "TypeScript/CSS/rules-forms-foundation.ts",
+        "TypeScript/CSS/rules-forms-upload-danger.ts",
+        "TypeScript/CSS/rules-forms-upload-files.ts",
+        "TypeScript/CSS/rules-forms-upload-settings.ts",
+        "TypeScript/CSS/rules-forms-upload-toggles.ts",
+        "TypeScript/CSS/rules-forms-upload.ts",
+        "TypeScript/CSS/rules-forms-validation-admin.ts",
+        "TypeScript/CSS/rules-forms-validation-aliases.ts",
+        "TypeScript/CSS/rules-forms-validation-builder.ts",
+        "TypeScript/CSS/rules-forms-validation-fields.ts",
+        "TypeScript/CSS/rules-forms-validation-responsive.ts",
+        "TypeScript/CSS/rules-forms-validation-stepper.ts",
+        "TypeScript/CSS/rules-forms-validation.ts",
+        "TypeScript/CSS/rules-forms.ts",
+        "TypeScript/CSS/rules-grid.ts",
+        "TypeScript/CSS/rules-layout.ts",
+        "TypeScript/CSS/rules-site.ts",
+        "TypeScript/CSS/rules-types.ts",
+        "TypeScript/CSS/rules-utilities.ts",
+        "TypeScript/CSS/rules-wysiwyg-blocks-core.ts",
+        "TypeScript/CSS/rules-wysiwyg-blocks-menus.ts",
+        "TypeScript/CSS/rules-wysiwyg-blocks-mobile.ts",
+        "TypeScript/CSS/rules-wysiwyg-blocks-preview.ts",
+        "TypeScript/CSS/rules-wysiwyg-blocks-states.ts",
+        "TypeScript/CSS/rules-wysiwyg-blocks-types.ts",
+        "TypeScript/CSS/rules-wysiwyg-blocks.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions-banners.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions-blocks.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions-collaboration.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions-drag.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions-feedback.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions-panels.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions-states.ts",
+        "TypeScript/CSS/rules-wysiwyg-extensions.ts",
+        "TypeScript/CSS/rules-wysiwyg-shell-frame.ts",
+        "TypeScript/CSS/rules-wysiwyg-shell-header.ts",
+        "TypeScript/CSS/rules-wysiwyg-shell.ts",
+        "TypeScript/CSS/rules-wysiwyg-support-advanced.ts",
+        "TypeScript/CSS/rules-wysiwyg-support-editing.ts",
+        "TypeScript/CSS/rules-wysiwyg-support-mobile.ts",
+        "TypeScript/CSS/rules-wysiwyg-support-motion.ts",
+        "TypeScript/CSS/rules-wysiwyg-support-panels.ts",
+        "TypeScript/CSS/rules-wysiwyg-support-tablet.ts",
+        "TypeScript/CSS/rules-wysiwyg-support.ts",
+        "TypeScript/CSS/rules-wysiwyg-toolbar-disabled.ts",
+        "TypeScript/CSS/rules-wysiwyg-toolbar-focus.ts",
+        "TypeScript/CSS/rules-wysiwyg-toolbar-layout.ts",
+        "TypeScript/CSS/rules-wysiwyg-toolbar-tools.ts",
+        "TypeScript/CSS/rules-wysiwyg-toolbar.ts",
+        "TypeScript/CSS/rules-wysiwyg.ts",
+        "TypeScript/CSS/rules.ts",
+        "TypeScript/CSS/targets.ts",
+        "TypeScript/CSS/tokens.ts"
+      ],
+      "ui": [
+        "TypeScript/UI/component-contracts.ts",
+        "TypeScript/UI/components.ts",
+        "TypeScript/UI/content.ts",
+        "TypeScript/UI/forms.ts",
+        "TypeScript/UI/interaction-contracts.ts"
+      ],
+      "editorUi": [
+        "TypeScript/EditorUI/wysiwyg.ts"
+      ],
+      "editor": [
+        "TypeScript/Editor/commands.ts",
+        "TypeScript/Editor/core.ts",
+        "TypeScript/Editor/document.ts",
+        "TypeScript/Editor/events.ts",
+        "TypeScript/Editor/history.ts",
+        "TypeScript/Editor/index.ts",
+        "TypeScript/Editor/selection.ts",
+        "TypeScript/Editor/types.ts",
+        "TypeScript/Editor/validation.ts"
+      ]
+    },
     "requiredFiles": [
       "AGENTS.md",
       "README.md",
@@ -134,7 +721,33 @@
       "Samples/design/sample.css",
       "Samples/design/sample.js",
       "Tools/check/check-adlaire-design.sh",
-      "Tools/check/adlaire-design-contracts.json"
+      "Tools/check/adlaire-design-contracts.json",
+      "Tokens/colors.css",
+      "Tokens/typography.css",
+      "Tokens/spacing.css",
+      "Tokens/layout.css",
+      "Tokens/motion.css",
+      "Tokens/layer.css",
+      "Tokens/breakpoints.css",
+      "Tokens/surface.css",
+      "Tokens/status.css",
+      "Tokens/effects.css",
+      "UI/adlaire.css",
+      "UI/base.css",
+      "UI/grid.css",
+      "UI/layout.css",
+      "UI/components.css",
+      "UI/site.css",
+      "UI/forms.css",
+      "UI/content.css",
+      "UI/utilities.css",
+      "UI/compat-agws.css",
+      "EditorUI/wysiwyg.css",
+      "UI/components.js",
+      "UI/forms.js",
+      "UI/content.js",
+      "EditorUI/wysiwyg.js",
+      "EditorUI/editor.js"
     ],
     "requiredDirectories": [
       "Docs",
