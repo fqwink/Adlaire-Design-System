@@ -74,256 +74,7 @@ require_class_in_doc() {
   fi
 }
 
-for path in \
-  AGENTS.md \
-  README.md \
-  LICENSE \
-  Docs/Master_Spec \
-  Docs/Editor_Master_Spec \
-  Docs/Component_Contract_Matrix \
-  Docs/Document_Index \
-  Docs/Generic_Component_Catalog \
-  Docs/Admin_UI_Catalog \
-  Docs/WYSIWYG_Editor_UI_Catalog \
-  Docs/Icon_Set_Catalog \
-  Docs/Brand_Asset_Catalog \
-  Docs/Pending_Tasks \
-  Tools/check/adlaire-design-contracts.json \
-  Brand/README.md \
-  Samples/README.md \
-  Samples/design/index.html \
-  Samples/design/sample.css \
-  Samples/design/sample.js \
-  Tokens/colors.css \
-  Tokens/typography.css \
-  Tokens/spacing.css \
-  Tokens/layout.css \
-  Tokens/motion.css \
-  Tokens/layer.css \
-  Tokens/breakpoints.css \
-  Tokens/surface.css \
-  Tokens/status.css \
-  Tokens/effects.css \
-  UI/adlaire.css \
-  UI/base.css \
-  UI/grid.css \
-  UI/layout.css \
-  UI/components.css \
-  UI/components.js \
-  UI/site.css \
-  UI/forms.css \
-  UI/forms.js \
-  UI/content.css \
-  UI/content.js \
-  UI/utilities.css \
-  UI/compat-agws.css \
-  EditorUI/wysiwyg.css \
-  EditorUI/wysiwyg.js \
-  EditorUI/editor.js \
-  TypeScript/CSS/tokens.ts \
-  TypeScript/CSS/rules.ts \
-  TypeScript/CSS/rules-types.ts \
-  TypeScript/CSS/rules-adlaire.ts \
-  TypeScript/CSS/rules-base.ts \
-  TypeScript/CSS/rules-grid.ts \
-  TypeScript/CSS/rules-layout.ts \
-  TypeScript/CSS/rules-components.ts \
-  TypeScript/CSS/rules-components-foundation.ts \
-  TypeScript/CSS/rules-components-foundation-core.ts \
-  TypeScript/CSS/rules-components-foundation-core-base.ts \
-  TypeScript/CSS/rules-components-foundation-core-controls.ts \
-  TypeScript/CSS/rules-components-foundation-core-status.ts \
-  TypeScript/CSS/rules-components-foundation-core-data.ts \
-  TypeScript/CSS/rules-components-foundation-core-announcements.ts \
-  TypeScript/CSS/rules-components-foundation-core-flow.ts \
-  TypeScript/CSS/rules-components-foundation-core-media.ts \
-  TypeScript/CSS/rules-components-foundation-media.ts \
-  TypeScript/CSS/rules-components-foundation-media-base.ts \
-  TypeScript/CSS/rules-components-foundation-media-cards.ts \
-  TypeScript/CSS/rules-components-foundation-media-governance.ts \
-  TypeScript/CSS/rules-components-foundation-media-operations.ts \
-  TypeScript/CSS/rules-components-foundation-media-app.ts \
-  TypeScript/CSS/rules-components-foundation-domains.ts \
-  TypeScript/CSS/rules-components-foundation-domains-product.ts \
-  TypeScript/CSS/rules-components-foundation-domains-commerce.ts \
-  TypeScript/CSS/rules-components-foundation-domains-data.ts \
-  TypeScript/CSS/rules-components-foundation-domains-collaboration.ts \
-  TypeScript/CSS/rules-components-foundation-domains-workflow.ts \
-  TypeScript/CSS/rules-components-foundation-domains-observability.ts \
-  TypeScript/CSS/rules-components-foundation-support.ts \
-  TypeScript/CSS/rules-components-foundation-support-cards.ts \
-  TypeScript/CSS/rules-components-foundation-support-panels.ts \
-  TypeScript/CSS/rules-components-foundation-support-layout.ts \
-  TypeScript/CSS/rules-components-foundation-support-pagination.ts \
-  TypeScript/CSS/rules-components-foundation-support-filters.ts \
-  TypeScript/CSS/rules-components-overlays.ts \
-  TypeScript/CSS/rules-components-overlays-surfaces.ts \
-  TypeScript/CSS/rules-components-overlays-carousel.ts \
-  TypeScript/CSS/rules-components-overlays-tooltip.ts \
-  TypeScript/CSS/rules-components-overlays-responsive.ts \
-  TypeScript/CSS/rules-components-overlays-catalog.ts \
-  TypeScript/CSS/rules-components-operations.ts \
-  TypeScript/CSS/rules-components-operations-admin.ts \
-  TypeScript/CSS/rules-components-operations-admin-layout.ts \
-  TypeScript/CSS/rules-components-operations-admin-states.ts \
-  TypeScript/CSS/rules-components-operations-admin-actions.ts \
-  TypeScript/CSS/rules-components-operations-admin-governance.ts \
-  TypeScript/CSS/rules-components-operations-admin-delivery.ts \
-  TypeScript/CSS/rules-components-operations-admin-lifecycle.ts \
-  TypeScript/CSS/rules-components-operations-admin-observability.ts \
-  TypeScript/CSS/rules-components-operations-admin-security.ts \
-  TypeScript/CSS/rules-components-operations-data.ts \
-  TypeScript/CSS/rules-components-operations-data-navigation.ts \
-  TypeScript/CSS/rules-components-operations-data-dialogs.ts \
-  TypeScript/CSS/rules-components-operations-data-search.ts \
-  TypeScript/CSS/rules-components-operations-data-tree.ts \
-  TypeScript/CSS/rules-components-operations-data-grid.ts \
-  TypeScript/CSS/rules-components-operations-data-inspection.ts \
-  TypeScript/CSS/rules-components-operations-data-bottom-sheet.ts \
-  TypeScript/CSS/rules-components-operations-workspace.ts \
-  TypeScript/CSS/rules-components-operations-workspace-tabs.ts \
-  TypeScript/CSS/rules-components-operations-workspace-menus.ts \
-  TypeScript/CSS/rules-components-operations-workspace-boards.ts \
-  TypeScript/CSS/rules-components-operations-workspace-metrics.ts \
-  TypeScript/CSS/rules-components-operations-workspace-assets.ts \
-  TypeScript/CSS/rules-components-operations-workspace-publishing.ts \
-  TypeScript/CSS/rules-components-operations-business.ts \
-  TypeScript/CSS/rules-components-operations-business-planning.ts \
-  TypeScript/CSS/rules-components-operations-business-enterprise.ts \
-  TypeScript/CSS/rules-components-operations-business-governance.ts \
-  TypeScript/CSS/rules-components-operations-business-industry.ts \
-  TypeScript/CSS/rules-components-operations-business-insights.ts \
-  TypeScript/CSS/rules-components-operations-business-messaging.ts \
-  TypeScript/CSS/rules-components-operations-industry.ts \
-  TypeScript/CSS/rules-components-operations-industry-content.ts \
-  TypeScript/CSS/rules-components-operations-industry-devices.ts \
-  TypeScript/CSS/rules-components-operations-industry-hospitality.ts \
-  TypeScript/CSS/rules-components-operations-industry-civic.ts \
-  TypeScript/CSS/rules-components-operations-industry-utilities.ts \
-  TypeScript/CSS/rules-components-operations-workflow.ts \
-  TypeScript/CSS/rules-components-operations-workflow-layout.ts \
-  TypeScript/CSS/rules-components-operations-workflow-records.ts \
-  TypeScript/CSS/rules-components-operations-workflow-automation.ts \
-  TypeScript/CSS/rules-components-platform.ts \
-  TypeScript/CSS/rules-components-platform-developer.ts \
-  TypeScript/CSS/rules-components-platform-theme.ts \
-  TypeScript/CSS/rules-components-platform-states.ts \
-  TypeScript/CSS/rules-components-platform-github.ts \
-  TypeScript/CSS/rules-components-platform-cloud.ts \
-  TypeScript/CSS/rules-components-platform-surfaces.ts \
-  TypeScript/CSS/rules-site.ts \
-  TypeScript/CSS/rules-forms.ts \
-  TypeScript/CSS/rules-forms-foundation.ts \
-  TypeScript/CSS/rules-forms-foundation-base.ts \
-  TypeScript/CSS/rules-forms-foundation-controls.ts \
-  TypeScript/CSS/rules-forms-foundation-checks.ts \
-  TypeScript/CSS/rules-forms-foundation-buttons.ts \
-  TypeScript/CSS/rules-forms-foundation-notices.ts \
-  TypeScript/CSS/rules-forms-foundation-submit.ts \
-  TypeScript/CSS/rules-forms-composite.ts \
-  TypeScript/CSS/rules-forms-composite-filters.ts \
-  TypeScript/CSS/rules-forms-composite-input-groups.ts \
-  TypeScript/CSS/rules-forms-composite-date-time.ts \
-  TypeScript/CSS/rules-forms-composite-selects.ts \
-  TypeScript/CSS/rules-forms-composite-tokens.ts \
-  TypeScript/CSS/rules-forms-composite-calendar.ts \
-  TypeScript/CSS/rules-forms-upload.ts \
-  TypeScript/CSS/rules-forms-upload-files.ts \
-  TypeScript/CSS/rules-forms-upload-settings.ts \
-  TypeScript/CSS/rules-forms-upload-toggles.ts \
-  TypeScript/CSS/rules-forms-upload-danger.ts \
-  TypeScript/CSS/rules-forms-validation.ts \
-  TypeScript/CSS/rules-forms-validation-fields.ts \
-  TypeScript/CSS/rules-forms-validation-admin.ts \
-  TypeScript/CSS/rules-forms-validation-stepper.ts \
-  TypeScript/CSS/rules-forms-validation-builder.ts \
-  TypeScript/CSS/rules-forms-validation-responsive.ts \
-  TypeScript/CSS/rules-forms-validation-aliases.ts \
-  TypeScript/CSS/rules-content.ts \
-  TypeScript/CSS/rules-content-foundation.ts \
-  TypeScript/CSS/rules-content-foundation-base.ts \
-  TypeScript/CSS/rules-content-foundation-patterns.ts \
-  TypeScript/CSS/rules-content-foundation-organization.ts \
-  TypeScript/CSS/rules-content-foundation-timeline.ts \
-  TypeScript/CSS/rules-content-foundation-tabs.ts \
-  TypeScript/CSS/rules-content-foundation-news.ts \
-  TypeScript/CSS/rules-content-extended.ts \
-  TypeScript/CSS/rules-content-extended-toc.ts \
-  TypeScript/CSS/rules-content-extended-knowledge.ts \
-  TypeScript/CSS/rules-content-extended-repository.ts \
-  TypeScript/CSS/rules-content-extended-markdown.ts \
-  TypeScript/CSS/rules-content-extended-activity.ts \
-  TypeScript/CSS/rules-content-extended-responsive.ts \
-  TypeScript/CSS/rules-content-catalog.ts \
-  TypeScript/CSS/rules-content-catalog-aliases.ts \
-  TypeScript/CSS/rules-content-catalog-news.ts \
-  TypeScript/CSS/rules-content-catalog-sidebar.ts \
-  TypeScript/CSS/rules-content-catalog-contact.ts \
-  TypeScript/CSS/rules-content-catalog-legal.ts \
-  TypeScript/CSS/rules-content-catalog-alerts.ts \
-  TypeScript/CSS/rules-content-interactions.ts \
-  TypeScript/CSS/rules-content-interactions-sorting.ts \
-  TypeScript/CSS/rules-content-interactions-desktop.ts \
-  TypeScript/CSS/rules-content-interactions-tablet.ts \
-  TypeScript/CSS/rules-content-interactions-mobile.ts \
-  TypeScript/CSS/rules-utilities.ts \
-  TypeScript/CSS/rules-compat-agws.ts \
-  TypeScript/CSS/rules-wysiwyg.ts \
-  TypeScript/CSS/rules-wysiwyg-shell.ts \
-  TypeScript/CSS/rules-wysiwyg-shell-frame.ts \
-  TypeScript/CSS/rules-wysiwyg-shell-header.ts \
-  TypeScript/CSS/rules-wysiwyg-toolbar.ts \
-  TypeScript/CSS/rules-wysiwyg-toolbar-layout.ts \
-  TypeScript/CSS/rules-wysiwyg-toolbar-tools.ts \
-  TypeScript/CSS/rules-wysiwyg-toolbar-focus.ts \
-  TypeScript/CSS/rules-wysiwyg-toolbar-disabled.ts \
-  TypeScript/CSS/rules-wysiwyg-blocks.ts \
-  TypeScript/CSS/rules-wysiwyg-blocks-core.ts \
-  TypeScript/CSS/rules-wysiwyg-blocks-menus.ts \
-  TypeScript/CSS/rules-wysiwyg-blocks-preview.ts \
-  TypeScript/CSS/rules-wysiwyg-blocks-types.ts \
-  TypeScript/CSS/rules-wysiwyg-blocks-states.ts \
-  TypeScript/CSS/rules-wysiwyg-blocks-mobile.ts \
-  TypeScript/CSS/rules-wysiwyg-support.ts \
-  TypeScript/CSS/rules-wysiwyg-support-editing.ts \
-  TypeScript/CSS/rules-wysiwyg-support-panels.ts \
-  TypeScript/CSS/rules-wysiwyg-support-advanced.ts \
-  TypeScript/CSS/rules-wysiwyg-support-motion.ts \
-  TypeScript/CSS/rules-wysiwyg-support-tablet.ts \
-  TypeScript/CSS/rules-wysiwyg-support-mobile.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions-panels.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions-drag.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions-feedback.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions-blocks.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions-states.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions-collaboration.ts \
-  TypeScript/CSS/rules-wysiwyg-extensions-banners.ts \
-  TypeScript/CSS/targets.ts \
-  TypeScript/CSS/emit.ts \
-  TypeScript/CSS/manifest.ts \
-  TypeScript/CSS/index.ts \
-  TypeScript/UI/components.ts \
-  TypeScript/UI/component-contracts.ts \
-  TypeScript/UI/interaction-contracts.ts \
-  TypeScript/UI/forms.ts \
-  TypeScript/UI/content.ts \
-  TypeScript/EditorUI/wysiwyg.ts \
-  TypeScript/Editor/core.ts \
-  TypeScript/Editor/document.ts \
-  TypeScript/Editor/commands.ts \
-  TypeScript/Editor/selection.ts \
-  TypeScript/Editor/history.ts \
-  TypeScript/Editor/validation.ts \
-  TypeScript/Editor/events.ts \
-  TypeScript/Editor/types.ts \
-  TypeScript/Editor/index.ts; do
-  require_path "$path"
-done
-
-for path in Docs Tokens UI EditorUI TypeScript TypeScript/CSS TypeScript/UI TypeScript/EditorUI TypeScript/Editor Icons Brand Samples Samples/design Tools/check; do
-  require_dir "$path"
-done
+require_path "$CONTRACT_MANIFEST"
 
 DENO_TYPECHECK_TARGETS=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
 require "json"
@@ -355,6 +106,7 @@ deno = manifest.fetch("denoValidation")
 abort("[Contract manifest] Deno validation must require Deno for complete release evidence.") unless deno.fetch("completeEvidenceRequiresDeno") == true
 abort("[Contract manifest] Deno skip diagnostic must be family-labelled.") unless deno.fetch("skipDiagnostic").start_with?("[Deno validation]")
 abort("[Contract manifest] Deno requiredEnv must be ADLAIRE_REQUIRE_DENO.") unless deno.fetch("requiredEnv") == "ADLAIRE_REQUIRE_DENO"
+abort("[Contract manifest] Deno required failure message must mention complete TypeScript and generated CSS parity evidence.") unless deno.fetch("requiredFailureMessage").include?("complete TypeScript and generated CSS parity evidence")
 
 targets = deno.fetch("typeCheckTargets")
 abort("[Contract manifest] Deno type-check targets must not be empty.") if targets.empty?
@@ -391,7 +143,109 @@ abort("[Contract manifest] requiredContractDocs must not be empty.") if contract
 require_unique_values(contract_docs, "required contract doc")
 contract_docs.each { |path| require_existing_file(root, path, "required contract doc") }
 
+css_targets = manifest.fetch("generatedCssTargets")
+abort("[Contract manifest] generatedCssTargets must not be empty.") if css_targets.empty?
+require_unique_values(css_targets.map { |target| target.fetch("path") }, "generated CSS target path")
+css_targets.each do |target|
+  %w[path kind firstLine].each do |field|
+    abort("[Contract manifest] generatedCssTargets entry missing #{field}.") if target.fetch(field).to_s.empty?
+  end
+  abort("[Contract manifest] generatedCssTargets invalid kind: #{target.fetch("kind")}") unless %w[token ui editor-ui].include?(target.fetch("kind"))
+  require_existing_file(root, target.fetch("path"), "generatedCssTargets path")
+end
+
+token_categories = manifest.fetch("tokenCategories")
+abort("[Contract manifest] tokenCategories must not be empty.") if token_categories.empty?
+require_unique_values(token_categories.keys, "token category path")
+token_categories.each do |path, category|
+  require_existing_file(root, path, "token category path")
+  abort("[Contract manifest] tokenCategories keys must be token CSS files: #{path}") unless path.start_with?("Tokens/") && path.end_with?(".css")
+  abort("[Contract manifest] tokenCategories category must not be empty: #{path}") if category.to_s.empty?
+end
+token_target_paths = css_targets.select { |target| target.fetch("kind") == "token" }.map { |target| target.fetch("path") }.sort
+abort("[Contract manifest] tokenCategories must match token generatedCssTargets.") unless token_categories.keys.sort == token_target_paths
+
+editor_runtime_modules = manifest.fetch("editorRuntimeModules")
+abort("[Contract manifest] editorRuntimeModules must not be empty.") if editor_runtime_modules.empty?
+require_unique_values(editor_runtime_modules.map { |entry| entry.fetch("file") }, "editor runtime module file")
+require_unique_values(editor_runtime_modules.map { |entry| entry.fetch("module") }, "editor runtime module name")
+editor_runtime_modules.each do |entry|
+  %w[file module responsibility requiredExports].each do |field|
+    abort("[Contract manifest] editorRuntimeModules entry missing #{field}.") if entry.fetch(field).to_s.empty?
+  end
+  abort("[Contract manifest] editorRuntimeModules file must be inside TypeScript/Editor: #{entry.fetch("file")}") unless entry.fetch("file").start_with?("TypeScript/Editor/") && entry.fetch("file").end_with?(".ts")
+  abort("[Contract manifest] editorRuntimeModules module must match file basename: #{entry.fetch("module")}") unless File.basename(entry.fetch("file")) == entry.fetch("module")
+  require_existing_file(root, entry.fetch("file"), "editor runtime module file")
+  required_exports = entry.fetch("requiredExports")
+  abort("[Contract manifest] editorRuntimeModules #{entry.fetch("module")} requiredExports must not be empty.") if required_exports.empty?
+  abort("[Contract manifest] editorRuntimeModules #{entry.fetch("module")} requiredExports must not contain empty terms.") if required_exports.any?(&:empty?)
+  require_unique_values(required_exports, "editor runtime module required export #{entry.fetch("module")}")
+end
+
+asset_inventory = manifest.fetch("assetInventory")
+abort("[Contract manifest] assetInventory iconCount must be positive.") unless asset_inventory.fetch("iconCount").positive?
+abort("[Contract manifest] assetInventory iconFilePattern must not be empty.") if asset_inventory.fetch("iconFilePattern").empty?
+abort("[Contract manifest] assetInventory brandFilePattern must not be empty.") if asset_inventory.fetch("brandFilePattern").empty?
+required_brand_assets = asset_inventory.fetch("requiredBrandAssets")
+abort("[Contract manifest] assetInventory requiredBrandAssets must not be empty.") if required_brand_assets.empty?
+require_unique_values(required_brand_assets, "required brand asset")
+required_brand_assets.each { |path| require_existing_file(root, path, "required brand asset") }
+brand_support_files = asset_inventory.fetch("brandSupportFiles")
+require_unique_values(brand_support_files, "brand support file")
+
+documentation_governance = manifest.fetch("documentationGovernance")
+documentation_terms = documentation_governance.fetch("requiredTerms")
+abort("[Contract manifest] documentationGovernance requiredTerms must not be empty.") if documentation_terms.empty?
+require_unique_values(documentation_terms, "documentation governance required term")
+abort("[Contract manifest] documentationGovernance requiredTerms must include JSON check contract manifest.") unless documentation_terms.include?("JSON check contract manifest")
+
 inventory = manifest.fetch("repositoryInventory")
+inventory_file_groups = %w[rootFiles documents brandFiles sampleSupport tooling generatedCss generatedJavaScript]
+inventory_file_groups.each do |group|
+  values = inventory.fetch(group)
+  abort("[Contract manifest] repositoryInventory #{group} must not be empty.") if values.empty?
+  require_unique_values(values, "repositoryInventory #{group}")
+  values.each { |path| require_existing_file(root, path, "repositoryInventory #{group}") }
+end
+typescript_sources_by_group = inventory.fetch("typescriptSources")
+typescript_source_groups = %w[css ui editorUi editor]
+missing_ts_groups = typescript_source_groups - typescript_sources_by_group.keys
+extra_ts_groups = typescript_sources_by_group.keys - typescript_source_groups
+abort("[Contract manifest] repositoryInventory typescriptSources missing groups: #{missing_ts_groups.join(", ")}") unless missing_ts_groups.empty?
+abort("[Contract manifest] repositoryInventory typescriptSources has unknown groups: #{extra_ts_groups.join(", ")}") unless extra_ts_groups.empty?
+typescript_group_prefixes = {
+  "css" => "TypeScript/CSS/",
+  "ui" => "TypeScript/UI/",
+  "editorUi" => "TypeScript/EditorUI/",
+  "editor" => "TypeScript/Editor/",
+}
+typescript_sources = typescript_source_groups.flat_map do |group|
+  values = typescript_sources_by_group.fetch(group)
+  abort("[Contract manifest] repositoryInventory typescriptSources #{group} must not be empty.") if values.empty?
+  abort("[Contract manifest] repositoryInventory typescriptSources #{group} must be sorted.") unless values == values.sort
+  require_unique_values(values, "repositoryInventory typescriptSources #{group}")
+  values.each do |path|
+    abort("[Contract manifest] repositoryInventory typescriptSources #{group} must be TypeScript files: #{path}") unless path.start_with?(typescript_group_prefixes.fetch(group)) && path.end_with?(".ts")
+    require_existing_file(root, path, "repositoryInventory typescriptSources #{group}")
+  end
+  values
+end
+require_unique_values(typescript_sources, "repositoryInventory TypeScript source")
+actual_ts_sources = Dir.chdir(root) { Dir.glob("TypeScript/**/*.ts").sort }
+missing_ts_sources = actual_ts_sources - typescript_sources
+extra_ts_sources = typescript_sources - actual_ts_sources
+abort("[Contract manifest] repositoryInventory typescriptSources missing actual sources: #{missing_ts_sources.join(", ")}") unless missing_ts_sources.empty?
+abort("[Contract manifest] repositoryInventory typescriptSources has missing files: #{extra_ts_sources.join(", ")}") unless extra_ts_sources.empty?
+missing_deno_inventory = targets - typescript_sources
+abort("[Contract manifest] Deno type-check targets missing from TypeScript source inventory: #{missing_deno_inventory.join(", ")}") unless missing_deno_inventory.empty?
+missing_pair_inventory = pairs.map { |pair| pair.fetch("source") } - typescript_sources
+abort("[Contract manifest] generated JavaScript pair sources missing from TypeScript source inventory: #{missing_pair_inventory.join(", ")}") unless missing_pair_inventory.empty?
+editor_inventory_sources = typescript_sources_by_group.fetch("editor")
+editor_runtime_sources = editor_runtime_modules.map { |entry| entry.fetch("file") }
+missing_editor_modules = editor_inventory_sources - editor_runtime_sources
+extra_editor_modules = editor_runtime_sources - editor_inventory_sources
+abort("[Contract manifest] editorRuntimeModules missing TypeScript editor sources: #{missing_editor_modules.join(", ")}") unless missing_editor_modules.empty?
+abort("[Contract manifest] editorRuntimeModules has non-inventory sources: #{extra_editor_modules.join(", ")}") unless extra_editor_modules.empty?
 required_files = inventory.fetch("requiredFiles")
 required_directories = inventory.fetch("requiredDirectories")
 abort("[Contract manifest] repositoryInventory requiredFiles must not be empty.") if required_files.empty?
@@ -400,6 +254,61 @@ require_unique_values(required_files, "repository required file")
 require_unique_values(required_directories, "repository required directory")
 required_files.each { |path| require_existing_file(root, path, "repository required file") }
 required_directories.each { |path| require_existing_directory(root, path, "repository required directory") }
+
+grouped_required_files = inventory_file_groups.flat_map { |group| inventory.fetch(group) }
+missing_grouped_files = grouped_required_files - required_files
+extra_required_files = required_files - grouped_required_files
+abort("[Contract manifest] repositoryInventory requiredFiles missing grouped files: #{missing_grouped_files.join(", ")}") unless missing_grouped_files.empty?
+abort("[Contract manifest] repositoryInventory requiredFiles has ungrouped files: #{extra_required_files.join(", ")}") unless extra_required_files.empty?
+
+css_manifest = File.read(File.join(root, "TypeScript/CSS/manifest.ts"))
+css_manifest_targets = css_manifest.scan(/path: "([^"]+\.css)"/).flatten
+generated_css = inventory.fetch("generatedCss")
+css_target_paths = css_targets.map { |target| target.fetch("path") }
+missing_css_targets = generated_css - css_target_paths
+extra_css_targets = css_target_paths - generated_css
+abort("[Contract manifest] generatedCssTargets missing generatedCss entries: #{missing_css_targets.join(", ")}") unless missing_css_targets.empty?
+abort("[Contract manifest] generatedCssTargets has non-generatedCss entries: #{extra_css_targets.join(", ")}") unless extra_css_targets.empty?
+abort("[Contract manifest] generatedCssTargets order must match repositoryInventory generatedCss.") unless css_target_paths == generated_css
+missing_css_inventory = css_manifest_targets - generated_css
+extra_css_inventory = generated_css - css_manifest_targets
+abort("[Contract manifest] repositoryInventory generatedCss missing CSS_TARGETS: #{missing_css_inventory.join(", ")}") unless missing_css_inventory.empty?
+abort("[Contract manifest] repositoryInventory generatedCss has non-CSS_TARGETS: #{extra_css_inventory.join(", ")}") unless extra_css_inventory.empty?
+
+generated_javascript = inventory.fetch("generatedJavaScript")
+pair_generated_outputs = pairs.map { |pair| pair.fetch("generated") }
+missing_js_inventory = pair_generated_outputs - generated_javascript
+extra_js_inventory = generated_javascript - pair_generated_outputs
+abort("[Contract manifest] repositoryInventory generatedJavaScript missing pair outputs: #{missing_js_inventory.join(", ")}") unless missing_js_inventory.empty?
+abort("[Contract manifest] repositoryInventory generatedJavaScript has non-pair outputs: #{extra_js_inventory.join(", ")}") unless extra_js_inventory.empty?
+
+sample_load_order = inventory.fetch("sampleLoadOrder")
+sample_stylesheets = sample_load_order.fetch("stylesheets")
+sample_scripts = sample_load_order.fetch("scripts")
+abort("[Contract manifest] repositoryInventory sampleLoadOrder stylesheets must not be empty.") if sample_stylesheets.empty?
+abort("[Contract manifest] repositoryInventory sampleLoadOrder scripts must not be empty.") if sample_scripts.empty?
+require_unique_values(sample_stylesheets, "repositoryInventory sampleLoadOrder stylesheet")
+require_unique_values(sample_scripts, "repositoryInventory sampleLoadOrder script")
+sample_stylesheets.each do |path|
+  abort("[Contract manifest] repositoryInventory sampleLoadOrder stylesheet must be CSS: #{path}") unless path.end_with?(".css")
+  require_existing_file(root, path, "repositoryInventory sampleLoadOrder stylesheet")
+end
+sample_scripts.each do |path|
+  abort("[Contract manifest] repositoryInventory sampleLoadOrder script must be JavaScript: #{path}") unless path.end_with?(".js")
+  require_existing_file(root, path, "repositoryInventory sampleLoadOrder script")
+end
+expected_sample_stylesheets = generated_css + ["Samples/design/sample.css"]
+missing_sample_stylesheets = expected_sample_stylesheets - sample_stylesheets
+extra_sample_stylesheets = sample_stylesheets - expected_sample_stylesheets
+abort("[Contract manifest] repositoryInventory sampleLoadOrder stylesheets missing files: #{missing_sample_stylesheets.join(", ")}") unless missing_sample_stylesheets.empty?
+abort("[Contract manifest] repositoryInventory sampleLoadOrder stylesheets has unexpected files: #{extra_sample_stylesheets.join(", ")}") unless extra_sample_stylesheets.empty?
+abort("[Contract manifest] repositoryInventory sampleLoadOrder stylesheets must follow generatedCss order then sample CSS.") unless sample_stylesheets == expected_sample_stylesheets
+expected_sample_scripts = generated_javascript + ["Samples/design/sample.js"]
+missing_sample_scripts = expected_sample_scripts - sample_scripts
+extra_sample_scripts = sample_scripts - expected_sample_scripts
+abort("[Contract manifest] repositoryInventory sampleLoadOrder scripts missing files: #{missing_sample_scripts.join(", ")}") unless missing_sample_scripts.empty?
+abort("[Contract manifest] repositoryInventory sampleLoadOrder scripts has unexpected files: #{extra_sample_scripts.join(", ")}") unless extra_sample_scripts.empty?
+abort("[Contract manifest] repositoryInventory sampleLoadOrder scripts must load sample JavaScript last.") unless sample_scripts.last == "Samples/design/sample.js"
 
 visual = manifest.fetch("visualBaseline")
 reference = visual.fetch("reference")
@@ -436,6 +345,15 @@ require "json"
 root = ENV.fetch("ROOT")
 manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
 puts manifest.fetch("denoValidation").fetch("requiredEnv")
+RUBY
+)
+
+DENO_REQUIRED_FAILURE_MESSAGE=$(ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+puts manifest.fetch("denoValidation").fetch("requiredFailureMessage")
 RUBY
 )
 
@@ -497,8 +415,8 @@ fi
 require_text "AGENTS.md" "構造化設定ファイルはJSONに統一" "Development configuration policy"
 require_text "Docs/Master_Spec" "JSON is the only structured file format for development, build, generation, check, and release-check settings" "Development configuration policy"
 require_text "Docs/Master_Spec" "The Development configuration contract forbids YAML as a technology selection for development, build, generation, check, and release-check configuration" "Development configuration policy"
-require_text "Docs/Master_Spec" "The Generated output placement contract allows CSS and JavaScript files only at the explicit generated and sample-support paths listed in this specification" "Generated output placement contract"
-require_text "Docs/Master_Spec" "The TypeScript source inventory contract keeps every TypeScript source file check-covered" "TypeScript source inventory contract"
+require_text "Docs/Master_Spec" "The Generated output placement contract allows CSS and JavaScript files only at the generated and sample-support paths listed in the JSON inventory" "Generated output placement contract"
+require_text "Docs/Master_Spec" "The TypeScript source inventory contract keeps every TypeScript source file listed in the JSON source inventory and check-covered" "TypeScript source inventory contract"
 require_text "Docs/Master_Spec" "The Source/output/sample boundary contract keeps TypeScript sources, generated outputs, and sample-support files separate" "Source/output/sample boundary contract"
 
 find "$ROOT" \
@@ -561,40 +479,19 @@ if [ -s "$TMP_DIR/forbidden-generated-output-artifacts" ]; then
   exit 1
 fi
 
-cat >"$TMP_DIR/allowed-css-js-files" <<'LIST'
-EditorUI/editor.js
-EditorUI/wysiwyg.css
-EditorUI/wysiwyg.js
-Samples/design/sample.css
-Samples/design/sample.js
-Tokens/breakpoints.css
-Tokens/colors.css
-Tokens/effects.css
-Tokens/layer.css
-Tokens/layout.css
-Tokens/motion.css
-Tokens/spacing.css
-Tokens/status.css
-Tokens/surface.css
-Tokens/typography.css
-UI/adlaire.css
-UI/base.css
-UI/compat-agws.css
-UI/components.css
-UI/components.js
-UI/content.css
-UI/content.js
-UI/forms.css
-UI/forms.js
-UI/grid.css
-UI/layout.css
-UI/site.css
-UI/utilities.css
-LIST
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby >"$TMP_DIR/allowed-css-js-files" <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+inventory = manifest.fetch("repositoryInventory")
+sample_support_assets = inventory.fetch("sampleSupport").select { |path| path.end_with?(".css", ".js") }
+allowed = inventory.fetch("generatedCss") + inventory.fetch("generatedJavaScript") + sample_support_assets
+puts allowed.uniq.sort
+RUBY
 
 (cd "$ROOT" && find . -type f \( -name '*.css' -o -name '*.js' \) ! -path './.git/*' | sed 's#^\./##' | sort) >"$TMP_DIR/current-css-js-files"
-sort "$TMP_DIR/allowed-css-js-files" >"$TMP_DIR/allowed-css-js-files-sorted"
-comm -23 "$TMP_DIR/current-css-js-files" "$TMP_DIR/allowed-css-js-files-sorted" >"$TMP_DIR/unexpected-css-js-files"
+comm -23 "$TMP_DIR/current-css-js-files" "$TMP_DIR/allowed-css-js-files" >"$TMP_DIR/unexpected-css-js-files"
 
 if [ -s "$TMP_DIR/unexpected-css-js-files" ]; then
   echo "[Generated output placement contract] unexpected CSS or JavaScript files:" >&2
@@ -2059,19 +1956,13 @@ if grep -R -n -E 'from "\.\./|from "\./CSS|from "\./UI|from "\./EditorUI' "$ROOT
   fail "Editor runtime boundary" "TypeScript/Editor modules must stay inside the editor runtime boundary."
 fi
 
-ROOT="$ROOT" ruby <<'RUBY'
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
 root = ENV.fetch("ROOT")
-expected_files = %w[
-  TypeScript/Editor/commands.ts
-  TypeScript/Editor/core.ts
-  TypeScript/Editor/document.ts
-  TypeScript/Editor/events.ts
-  TypeScript/Editor/history.ts
-  TypeScript/Editor/index.ts
-  TypeScript/Editor/selection.ts
-  TypeScript/Editor/types.ts
-  TypeScript/Editor/validation.ts
-].sort
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+editor_modules = manifest.fetch("editorRuntimeModules")
+expected_files = editor_modules.map { |entry| entry.fetch("file") }.sort
 actual_files = Dir.chdir(root) { Dir.glob("TypeScript/Editor/*.ts").sort }
 unless actual_files == expected_files
   delta = ((expected_files - actual_files) + (actual_files - expected_files)).join(", ")
@@ -2091,42 +1982,23 @@ module_registry_docs.each do |doc|
 end
 
 editor_spec = File.read(File.join(root, "Docs/Editor_Master_Spec"))
-expected_module_rows = {
-  "core.ts" => "Editor creation and runtime coordination.",
-  "document.ts" => "Structured document data and block operations.",
-  "commands.ts" => "Command definitions and command execution.",
-  "selection.ts" => "Selection model.",
-  "history.ts" => "Undo and redo history, including history reset for document replacement.",
-  "validation.ts" => "Document, command, and selection validation.",
-  "events.ts" => "Runtime events.",
-  "types.ts" => "Shared editor types.",
-  "index.ts" => "Public TypeScript entry point.",
-}
-expected_module_rows.each do |module_name, responsibility|
+editor_modules.each do |entry|
+  module_name = entry.fetch("module")
+  responsibility = entry.fetch("responsibility")
   row = "| `#{module_name}` | #{responsibility} |"
   abort("[Editor runtime module registry contract] Docs/Editor_Master_Spec missing module row: #{module_name}") unless editor_spec.include?(row)
 end
 
-exports = {
-  "TypeScript/Editor/commands.ts" => ["export function applyCommand"],
-  "TypeScript/Editor/core.ts" => ["export class HeadlessEditorController", "export function createEditor"],
-  "TypeScript/Editor/document.ts" => ["export class ToolRegistry", "export class BlockRegistry", "function handlePaste", "export function normalizeDocument", "export function isSafeHref"],
-  "TypeScript/Editor/events.ts" => ["export class EventBus", "export function editorError"],
-  "TypeScript/Editor/history.ts" => ["export class History", "clear(): void"],
-  "TypeScript/Editor/selection.ts" => ["export function normalizeSelection", "export function sameSelection"],
-  "TypeScript/Editor/types.ts" => ["export interface EditorDocument", "export interface EditorController", "getSaveState(): SaveState", "getPublishState(): PublishState", "getValidationSummary(): ValidationSummary", "setReadOnly(readOnly: boolean): void", "checkpoint(label: string): HistoryCheckpoint", "completeSave(state?: Partial<SaveState>): SaveState", "failSave(error: string): SaveState", "completePublish(state?: Partial<PublishState>): PublishState", "failPublish(error: string): PublishState"],
-  "TypeScript/Editor/validation.ts" => ["export function validateDocument", "export async function validateDocumentAsync"],
-}
-
-exports.each do |file, markers|
+editor_modules.each do |entry|
+  file = entry.fetch("file")
   text = File.read(File.join(root, file))
-  markers.each do |marker|
+  entry.fetch("requiredExports").each do |marker|
     abort("[Editor runtime structural check] missing #{marker} in #{file}") unless text.include?(marker)
   end
 end
 
 index_text = File.read(File.join(root, "TypeScript/Editor/index.ts"))
-%w[commands core document events history selection types validation].each do |name|
+editor_modules.map { |entry| entry.fetch("module").delete_suffix(".ts") }.reject { |name| name == "index" }.each do |name|
   abort("[Editor runtime structural check] index.ts must re-export #{name}.ts") unless index_text.include?(%Q(export * from "./#{name}.ts"))
 end
 RUBY
@@ -3482,6 +3354,10 @@ abort("[UI interaction contract metadata] UI_INTERACTION_CONTRACTS below manifes
 
 allowed_surfaces = %w[components forms content wysiwyg]
 allowed_events = %w[click input change keydown]
+generated_javascript_pairs = manifest.fetch("generatedJavaScriptPairs")
+generated_pair_keys = generated_javascript_pairs.map { |pair| [pair.fetch("source"), pair.fetch("generated")] }
+expected_interaction_pair_keys = generated_pair_keys.reject { |_source, generated| generated == "EditorUI/editor.js" }
+interaction_pair_keys = []
 hooks = []
 
 contract_lines.each do |line|
@@ -3496,6 +3372,9 @@ contract_lines.each do |line|
 
   source_path = paths.fetch(source_key) { abort("[UI interaction contract metadata] #{hook} unknown source alias: #{source_key}") }
   generated_path = paths.fetch(generated_key) { abort("[UI interaction contract metadata] #{hook} unknown generated alias: #{generated_key}") }
+  pair_key = [source_path, generated_path]
+  abort("[UI interaction contract metadata] #{hook} source/generated pair missing from contract manifest: #{source_path} -> #{generated_path}") unless generated_pair_keys.include?(pair_key)
+  interaction_pair_keys << pair_key
   source_pathname = File.join(root, source_path)
   generated_pathname = File.join(root, generated_path)
   abort("[UI interaction contract metadata] #{hook} missing source file: #{source_path}") unless File.file?(source_pathname)
@@ -3518,6 +3397,8 @@ hook_counts = Hash.new(0)
 hooks.each { |hook| hook_counts[hook] += 1 }
 duplicates = hook_counts.select { |_hook, count| count > 1 }.keys
 abort("[UI interaction contract metadata] duplicate hook contracts: #{duplicates.join(", ")}") unless duplicates.empty?
+missing_interaction_pairs = expected_interaction_pair_keys - interaction_pair_keys.uniq
+abort("[UI interaction contract metadata] generated JavaScript pairs without interaction contracts: #{missing_interaction_pairs.map { |source, generated| "#{source} -> #{generated}" }.join(", ")}") unless missing_interaction_pairs.empty?
 
 audit_interface = source.match(/export interface UIInteractionAuditRecord \{\n(.*?)^\}/m)
 abort("[UI interaction audit contract] UIInteractionAuditRecord interface missing.") unless audit_interface
@@ -3573,61 +3454,39 @@ pairs.each do |pair|
 end
 RUBY
 
-ROOT="$ROOT" ruby <<'RUBY'
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
 root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+sample_load_order = manifest.fetch("repositoryInventory").fetch("sampleLoadOrder")
 sample = File.join(root, "Samples/design/index.html")
 html = File.read(sample)
 sample_dir = File.dirname(sample)
 
-expected_styles = %w[
-  ../../Tokens/colors.css
-  ../../Tokens/typography.css
-  ../../Tokens/spacing.css
-  ../../Tokens/layout.css
-  ../../Tokens/motion.css
-  ../../Tokens/layer.css
-  ../../Tokens/breakpoints.css
-  ../../Tokens/surface.css
-  ../../Tokens/status.css
-  ../../Tokens/effects.css
-  ../../UI/adlaire.css
-  ../../UI/base.css
-  ../../UI/grid.css
-  ../../UI/layout.css
-  ../../UI/components.css
-  ../../UI/site.css
-  ../../UI/forms.css
-  ../../UI/content.css
-  ../../UI/utilities.css
-  ../../UI/compat-agws.css
-  ../../EditorUI/wysiwyg.css
-  ./sample.css
-]
+def repository_paths_for_sample_hrefs(root, sample_dir, hrefs, label)
+  hrefs.map do |relative|
+    resolved = File.expand_path(relative, sample_dir)
+    unless resolved.start_with?(root + File::SEPARATOR) && File.file?(resolved)
+      abort("[Sample asset/load contract] sample #{label} reference missing repository file: #{relative}")
+    end
+    resolved.delete_prefix(root + File::SEPARATOR)
+  end
+end
 
-expected_scripts = %w[
-  ../../UI/components.js
-  ../../UI/forms.js
-  ../../UI/content.js
-  ../../EditorUI/editor.js
-  ../../EditorUI/wysiwyg.js
-  ./sample.js
-]
+expected_styles = sample_load_order.fetch("stylesheets")
+expected_scripts = sample_load_order.fetch("scripts")
 
-styles = html.scan(/<link rel="stylesheet" href="([^"]+)">/).flatten
+style_hrefs = html.scan(/<link rel="stylesheet" href="([^"]+)">/).flatten
+styles = repository_paths_for_sample_hrefs(root, sample_dir, style_hrefs, "stylesheet")
 abort("[Sample asset/load contract] Samples/design/index.html stylesheet order mismatch: #{styles.join(", ")}") unless styles == expected_styles
 
 scripts = html.scan(/<script src="([^"]+)"([^>]*)><\/script>/)
-script_sources = scripts.map(&:first)
+script_hrefs = scripts.map(&:first)
+script_sources = repository_paths_for_sample_hrefs(root, sample_dir, script_hrefs, "script")
 abort("[Sample asset/load contract] Samples/design/index.html script order mismatch: #{script_sources.join(", ")}") unless script_sources == expected_scripts
 missing_defer = scripts.reject { |_source, attributes| attributes.include?("defer") }.map(&:first)
 abort("[Sample asset/load contract] sample scripts must all use defer: #{missing_defer.join(", ")}") unless missing_defer.empty?
-
-(styles + script_sources).each do |relative|
-  resolved = File.expand_path(relative, sample_dir)
-  unless resolved.start_with?(root + File::SEPARATOR) && File.file?(resolved)
-    abort("[Sample asset/load contract] sample references missing repository file: #{relative}")
-  end
-end
 
 public_surface_markers = {
   "UI/components.js" => [
@@ -3701,21 +3560,15 @@ done
 
 if command -v ruby >/dev/null 2>&1; then
   ROOT="$ROOT" ruby - <<'RUBY'
+require "json"
+
 root = ENV.fetch("ROOT")
+contract_manifest = JSON.parse(File.read(File.join(root, "Tools/check/adlaire-design-contracts.json")))
+typescript_sources_by_group = contract_manifest.fetch("repositoryInventory").fetch("typescriptSources")
+expected_ts_sources = typescript_sources_by_group.values.flatten.uniq.sort
 
 token_source = File.read(File.join(root, "TypeScript/CSS/tokens.ts"))
-expected_token_categories = {
-  "Tokens/colors.css" => "color",
-  "Tokens/typography.css" => "typography",
-  "Tokens/spacing.css" => "spacing",
-  "Tokens/layout.css" => "layout",
-  "Tokens/motion.css" => "motion",
-  "Tokens/layer.css" => "layer",
-  "Tokens/breakpoints.css" => "breakpoint",
-  "Tokens/surface.css" => "surface",
-  "Tokens/status.css" => "status",
-  "Tokens/effects.css" => "effects",
-}
+expected_token_categories = contract_manifest.fetch("tokenCategories")
 
 token_outputs = token_source.scan(/\{ path: "(Tokens\/[^"]+\.css)", category: "([^"]+)", css: `(.*?)`\s*\}/m)
 source_token_files = token_outputs.map { |output, _category, _css| output }.sort
@@ -3739,29 +3592,9 @@ required_files = required_block[1].scan(/"([^"]+)"/).flatten.sort
 target_entries = manifest.scan(/\{ path: "([^"]+)", kind: "([^"]+)", firstLine: "([^"]+)", sourceModules: \[([^\]]*)\], migrated: (true|false) \}/)
 abort("[CSS compiler registry] missing CSS_TARGETS entries in TypeScript/CSS/manifest.ts") if target_entries.empty?
 
-expected_css_targets = [
-  ["Tokens/colors.css", "token", "/* Adlaire-Design color tokens */"],
-  ["Tokens/typography.css", "token", "/* Adlaire-Design typography tokens */"],
-  ["Tokens/spacing.css", "token", "/* Adlaire-Design spacing tokens */"],
-  ["Tokens/layout.css", "token", "/* Adlaire-Design layout tokens */"],
-  ["Tokens/motion.css", "token", "/* Adlaire-Design motion tokens */"],
-  ["Tokens/layer.css", "token", "/* Adlaire-Design layer tokens */"],
-  ["Tokens/breakpoints.css", "token", "/* Adlaire-Design breakpoint tokens */"],
-  ["Tokens/surface.css", "token", "/* Adlaire-Design surface tokens */"],
-  ["Tokens/status.css", "token", "/* Adlaire-Design status tokens */"],
-  ["Tokens/effects.css", "token", "/* Adlaire-Design effect tokens */"],
-  ["UI/adlaire.css", "ui", "/* Adlaire-Design color utilities */"],
-  ["UI/base.css", "ui", "/* Adlaire-Design base styles */"],
-  ["UI/grid.css", "ui", "/* Adlaire-Design grid utilities */"],
-  ["UI/layout.css", "ui", "/* Adlaire-Design public layout */"],
-  ["UI/components.css", "ui", "/* Adlaire-Design public components */"],
-  ["UI/site.css", "ui", "/* Adlaire-Design site chrome */"],
-  ["UI/forms.css", "ui", "/* Adlaire-Design form components */"],
-  ["UI/content.css", "ui", "/* Adlaire-Design content components */"],
-  ["UI/utilities.css", "ui", "/* Adlaire-Design utility classes */"],
-  ["UI/compat-agws.css", "ui", "/* Adlaire-Design specification layer */"],
-  ["EditorUI/wysiwyg.css", "editor-ui", "/* Adlaire-Design WYSIWYG editor */"],
-]
+expected_css_targets = contract_manifest.fetch("generatedCssTargets").map do |target|
+  [target.fetch("path"), target.fetch("kind"), target.fetch("firstLine")]
+end
 
 actual_css_targets = target_entries.map { |path, kind, first_line, _modules_text, migrated| [path, kind, first_line, migrated] }
 expected_css_targets_with_migration = expected_css_targets.map { |row| row + ["true"] }
@@ -3810,6 +3643,8 @@ abort("[CSS compiler registry] sourceModules missing from CSS_COMPILER_REQUIRED_
 actual_rule_sources = Dir.chdir(root) { Dir.glob("TypeScript/CSS/rules*.ts").sort }
 missing_required_rules = actual_rule_sources - required_files
 abort("[CSS compiler registry] rules source files missing from CSS_COMPILER_REQUIRED_FILES: #{missing_required_rules.join(", ")}") unless missing_required_rules.empty?
+missing_css_required_inventory = required_files - expected_ts_sources
+abort("[TypeScript source inventory contract] CSS compiler required files missing from JSON source inventory: #{missing_css_required_inventory.join(", ")}") unless missing_css_required_inventory.empty?
 
 allowed_registry_helpers = [
   "TypeScript/CSS/rules-types.ts",
@@ -3817,27 +3652,6 @@ allowed_registry_helpers = [
 unregistered_rule_sources = actual_rule_sources - compiler_source_modules - allowed_registry_helpers
 abort("[CSS compiler registry] rules source files missing from CSS_TARGETS sourceModules: #{unregistered_rule_sources.join(", ")}") unless unregistered_rule_sources.empty?
 
-expected_ts_sources = (required_files + %w[
-  TypeScript/CSS/manifest.ts
-  TypeScript/CSS/emit.ts
-  TypeScript/CSS/index.ts
-  TypeScript/CSS/targets.ts
-  TypeScript/UI/components.ts
-  TypeScript/UI/component-contracts.ts
-  TypeScript/UI/interaction-contracts.ts
-  TypeScript/UI/forms.ts
-  TypeScript/UI/content.ts
-  TypeScript/EditorUI/wysiwyg.ts
-  TypeScript/Editor/commands.ts
-  TypeScript/Editor/core.ts
-  TypeScript/Editor/document.ts
-  TypeScript/Editor/events.ts
-  TypeScript/Editor/history.ts
-  TypeScript/Editor/index.ts
-  TypeScript/Editor/selection.ts
-  TypeScript/Editor/types.ts
-  TypeScript/Editor/validation.ts
-]).uniq.sort
 actual_ts_sources = Dir.chdir(root) { Dir.glob("TypeScript/**/*.ts").sort }
 ts_source_delta = (expected_ts_sources - actual_ts_sources) + (actual_ts_sources - expected_ts_sources)
 abort("[TypeScript source inventory contract] TypeScript source inventory mismatch: #{ts_source_delta.join(", ")}") unless expected_ts_sources == actual_ts_sources
@@ -3909,49 +3723,41 @@ abort("[Token family usage discipline] generated UI CSS missing token families: 
 RUBY
 fi
 
-ICON_COUNT="$(find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | wc -l | tr -d ' ')"
-if [ "$ICON_COUNT" -ne 1520 ]; then
-  fail "Icon inventory" "Icons/ must contain exactly 1520 official SVG icons. Found: $ICON_COUNT"
-fi
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
 
-find "$ROOT/Icons" -type f ! -name 'adlaire-icon-*.svg' ! -name '.gitkeep' -print >"$TMP_DIR/unexpected-icons"
-if [ -s "$TMP_DIR/unexpected-icons" ]; then
-  echo "[Icon inventory] Icons/ contains unexpected files:" >&2
-  cat "$TMP_DIR/unexpected-icons" >&2
-  exit 1
-fi
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+asset_inventory = manifest.fetch("assetInventory")
 
-find "$ROOT/Icons" -type f -name 'adlaire-icon-*.svg' | while IFS= read -r icon_file; do
-  icon_name=$(basename "$icon_file")
-  case "$icon_name" in
-    adlaire-icon-navigation-*.svg|adlaire-icon-action-*.svg|adlaire-icon-status-*.svg|adlaire-icon-content-*.svg|adlaire-icon-editor-*.svg|adlaire-icon-media-*.svg|adlaire-icon-form-*.svg)
-      ;;
-    *)
-      fail "Icon inventory" "icon filename must use an approved category: $icon_name"
-      ;;
-  esac
-done
+icon_pattern = Regexp.new(asset_inventory.fetch("iconFilePattern"))
+icons = Dir.glob(File.join(root, "Icons", "adlaire-icon-*.svg")).sort
+expected_icon_count = asset_inventory.fetch("iconCount")
+abort("[Icon inventory] Icons/ must contain exactly #{expected_icon_count} official SVG icons. Found: #{icons.length}") unless icons.length == expected_icon_count
 
-for asset in \
-  Brand/adlaire-logo-primary.svg \
-  Brand/adlaire-logo-mark.svg \
-  Brand/adlaire-ogp-default.png \
-  Brand/adlaire-image-brand-overview.webp; do
-  require_path "$asset"
-done
+unexpected_icons = Dir.glob(File.join(root, "Icons", "*")).reject do |path|
+  name = File.basename(path)
+  File.directory?(path) || name == ".gitkeep" || name.match?(icon_pattern)
+end
+abort("[Icon inventory] Icons/ contains unexpected files: #{unexpected_icons.map { |path| path.delete_prefix(root + File::SEPARATOR) }.join(", ")}") unless unexpected_icons.empty?
+
+invalid_icons = icons.map { |path| File.basename(path) }.reject { |name| name.match?(icon_pattern) }
+abort("[Icon inventory] icon filename must use an approved category: #{invalid_icons.join(", ")}") unless invalid_icons.empty?
+
+asset_inventory.fetch("requiredBrandAssets").each do |asset|
+  abort("[Brand asset inventory] missing required brand asset: #{asset}") unless File.file?(File.join(root, asset))
+end
+
+brand_support_files = asset_inventory.fetch("brandSupportFiles")
+brand_pattern = Regexp.new(asset_inventory.fetch("brandFilePattern"))
+unexpected_brand_files = Dir.glob(File.join(root, "Brand", "*")).reject do |path|
+  name = File.basename(path)
+  File.directory?(path) || brand_support_files.include?(name) || name.match?(brand_pattern)
+end
+abort("[Brand asset inventory] brand asset has an unsupported name or extension: #{unexpected_brand_files.map { |path| File.basename(path) }.join(", ")}") unless unexpected_brand_files.empty?
+RUBY
 
 require_path "Samples/sample-current.png"
-
-find "$ROOT/Brand" -maxdepth 1 -type f ! -name '.gitkeep' ! -name 'README.md' | while IFS= read -r brand_file; do
-  brand_name=$(basename "$brand_file")
-  case "$brand_name" in
-    adlaire-logo-*.svg|adlaire-image-*.png|adlaire-image-*.webp|adlaire-ogp-*.png|adlaire-ogp-*.webp|adlaire-icon-*.svg|adlaire-brand-*.svg|adlaire-brand-*.png|adlaire-brand-*.webp)
-      ;;
-    *)
-      fail "Brand asset inventory" "brand asset has an unsupported name or extension: $brand_name"
-      ;;
-  esac
-done
 
 ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" DENO_TYPECHECK_TARGETS="$DENO_TYPECHECK_TARGETS" ruby <<'RUBY'
 require "json"
@@ -3974,54 +3780,19 @@ abort("[Deno type-check target coverage] unexpected targets: #{extra.join(", ")}
 abort("[Deno type-check target coverage] targets missing files: #{missing_files.join(", ")}") unless missing_files.empty?
 RUBY
 
-for doc_term in \
-  'Adlaire-Design-System' \
-  'Deno TypeScript' \
-  'npm packages' \
-  'Component_Contract_Matrix' \
-  'TypeScript/UI/component-contracts.ts' \
-  'TypeScript/UI/interaction-contracts.ts' \
-  'Representative UI component contract metadata' \
-  'Samples are supporting' \
-  'official 1520 SVG icons' \
-  'startup synchronization' \
-  'matching merged branch' \
-  'local Git consistency baseline' \
-  'merge commits only' \
-  'stale merged branch' \
-  'family-labelled diagnostics' \
-  'Deno-backed generated CSS parity check' \
-  'Deno type-check target coverage' \
-  'Deno complete validation gate' \
-  'Generated JavaScript pair contract' \
-  'Generated JavaScript parity contract' \
-  'Interaction audit contract' \
-  'JavaScript public surface contract' \
-  'Sample asset/load contract' \
-  'CSS target manifest contract' \
-  'Editor runtime module registry contract' \
-  'JSON check contract manifest' \
-  'repositoryInventory' \
-  'Visual Baseline hash' \
-  'Development configuration contract' \
-  'Generated output placement contract' \
-  'TypeScript source inventory contract' \
-  'Source/output/sample boundary contract' \
-  'Ignored local artifact policy' \
-  'Token category boundaries' \
-  'Token family usage discipline' \
-  'Category naming' \
-  'Brand asset inventory is checked' \
-  'Visual Baseline' \
-  'Reference screenshot changes require' \
-  'output file unit' \
-  'check-covered contract' \
-  'Catalog Governance' \
-  'Pending Tasks'; do
-  if ! grep -R -F -- "$doc_term" "$ROOT/README.md" "$ROOT/Docs" "$ROOT/Samples/README.md" "$ROOT/Brand/README.md" >/dev/null 2>&1; then
-    fail "Documentation governance" "documentation missing required governance term: $doc_term"
-  fi
-done
+ROOT="$ROOT" CONTRACT_MANIFEST="$CONTRACT_MANIFEST" ruby <<'RUBY'
+require "json"
+
+root = ENV.fetch("ROOT")
+manifest = JSON.parse(File.read(File.join(root, ENV.fetch("CONTRACT_MANIFEST"))))
+required_terms = manifest.fetch("documentationGovernance").fetch("requiredTerms")
+governance_docs = ["README.md", "Samples/README.md", "Brand/README.md"] + Dir.chdir(root) { Dir.glob("Docs/*").sort }
+document_text = governance_docs.map do |path|
+  File.read(File.join(root, path))
+end.join("\n")
+missing_terms = required_terms.reject { |term| document_text.include?(term) }
+abort("[Documentation governance] documentation missing required governance terms: #{missing_terms.join(", ")}") unless missing_terms.empty?
+RUBY
 
 if grep -R -n -E 'TODO|FIXME|未修正|未完了タスク|保留' "$ROOT/README.md" "$ROOT/Docs" "$ROOT/Samples/README.md" "$ROOT/Brand/README.md" >/dev/null 2>&1; then
   fail "Documentation governance" "documentation must not contain unresolved task markers."
@@ -4054,7 +3825,7 @@ if [ -n "$DENO_BIN" ]; then
   (cd "$ROOT" && "$DENO_BIN" run --allow-read TypeScript/CSS/index.ts check-generated-css)
 else
   if [ "$(printenv "$DENO_REQUIRED_ENV" 2>/dev/null || true)" = "1" ]; then
-    fail "Deno validation" "$DENO_REQUIRED_ENV=1 requires deno for complete TypeScript and generated CSS parity evidence."
+    fail "Deno validation" "$DENO_REQUIRED_FAILURE_MESSAGE"
   fi
   echo "$DENO_SKIP_DIAGNOSTIC" >&2
 fi

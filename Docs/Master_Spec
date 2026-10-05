@@ -61,11 +61,11 @@ The Development configuration contract forbids YAML as a technology selection fo
 
 The same contract forbids npm, Node, npm-compatible package managers, and external frontend build tool configuration. `package.json`, lockfiles for npm-compatible package managers, `node_modules/`, npm registry configuration, webpack, Vite, Rollup, Parcel, PostCSS, Tailwind, Babel, Gulp, Grunt, tsup, and esbuild configuration files must not be introduced.
 
-The Generated output placement contract allows CSS and JavaScript files only at the explicit generated and sample-support paths listed in this specification. Generated CSS paths are `Tokens/*.css`, `UI/*.css`, and `EditorUI/wysiwyg.css`. Generated JavaScript paths are `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, and `EditorUI/editor.js`. Sample-support CSS and JavaScript paths are limited to `Samples/design/sample.css` and `Samples/design/sample.js`.
+The Generated output placement contract allows CSS and JavaScript files only at the generated and sample-support paths listed in the JSON inventory. Generated CSS paths are `Tokens/*.css`, `UI/*.css`, and `EditorUI/wysiwyg.css`. Generated JavaScript paths are `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, and `EditorUI/editor.js`. Sample-support CSS and JavaScript paths are limited to `Samples/design/sample.css` and `Samples/design/sample.js`.
 
 Generated output names must not introduce `dist/`, `build/`, `Dist/`, `Build/`, minified CSS/JavaScript files, bundled CSS/JavaScript files, or alternate generated output directories.
 
-The TypeScript source inventory contract keeps every TypeScript source file check-covered. CSS generator sources must be listed by the CSS compiler registry, UI behavior sources must be listed by the JavaScript pair and interaction contracts, and structured editor sources must be listed by the editor runtime module registry.
+The TypeScript source inventory contract keeps every TypeScript source file listed in the JSON source inventory and check-covered. CSS generator sources must be listed by the CSS compiler registry, UI behavior sources must be listed by the JavaScript pair and interaction contracts, and structured editor sources must be listed by the editor runtime module registry.
 
 The Source/output/sample boundary contract keeps TypeScript sources, generated outputs, and sample-support files separate. `TypeScript/` owns source, `Tokens/`, `UI/`, and `EditorUI/` own generated outputs, and `Samples/` owns non-authoritative confirmation material only.
 
@@ -100,7 +100,7 @@ Token CSS is generated from `TypeScript/CSS/tokens.ts`.
 | `Tokens/status.css` | Status and semantic alias variables. |
 | `Tokens/effects.css` | Radius, shadow, overlay, transition, animation, and auxiliary effect variables. |
 
-Token category boundaries are explicit: each `TOKEN_FILES` entry in `TypeScript/CSS/tokens.ts` must use the category that matches its output path. Color, typography, spacing, layout, motion, layer, breakpoint, surface, status, and effects categories must not drift across generated token files.
+Token category boundaries are explicit: each `TOKEN_FILES` entry in `TypeScript/CSS/tokens.ts` must use the category that matches its output path and the JSON `tokenCategories` inventory. Color, typography, spacing, layout, motion, layer, breakpoint, surface, status, and effects categories must not drift across generated token files.
 
 Token family usage discipline is explicit: shared generated CSS must keep using spacing, layout, surface, semantic/status, radius, shadow, motion, and transition token families. Direct color literals are prohibited in `UI/` and `EditorUI/`, and file-local component variables must remain explicitly allowlisted in repository checks.
 
@@ -128,7 +128,7 @@ CSS load order for public surfaces is:
 
 The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, generated CSS output files, generated first-line headers, public CSS order, sample loading, and documentation synchronized as one output registry.
 
-The Sample asset/load contract keeps `Samples/design/index.html` aligned with this CSS order, then loads `EditorUI/wysiwyg.css` and `Samples/design/sample.css` after the public CSS contract.
+The Sample asset/load contract keeps `Samples/design/index.html` aligned with the JSON sample load order for public CSS, WYSIWYG CSS, generated JavaScript, and sample-only support files.
 
 ## JavaScript Model
 
@@ -221,7 +221,7 @@ WYSIWYG Editor UI is part of Adlaire-Design-System. Editor details are governed 
 
 The editor model is a safe structured content editing foundation with command, document, selection, history, validation, validation summary, save state, publish state, readOnly transition, checkpoint, event, and type modules under `TypeScript/Editor/`.
 
-The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts` re-exports, `EditorUI/editor.js`, and checks synchronized whenever runtime modules change.
+The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, JSON `editorRuntimeModules`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts` re-exports, `EditorUI/editor.js`, and checks synchronized whenever runtime modules change.
 
 WYSIWYG UI contracts include toolbar group state, slash menu keyboard navigation, suggestion selection, suggestion card, save banner, lock banner, block reorder, comment, warning, readonly, disabled, locked, and accessibility panel states.
 
@@ -261,13 +261,17 @@ The release check must run on local `main`. It assumes the local Git consistency
 
 The Ignored local artifact policy allows only `.DS_Store` and `Work/` as ignored local artifacts during release readiness checks. Additional ignored artifacts must either become tracked source material, be removed, or be explicitly governed before release.
 
-Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, ignored local artifact policy, local Git configuration drift, stale merged branches, and post-merge release readiness.
+Checks verify required class families, forbidden dependency/build artifacts, the Development configuration contract, the Generated output placement contract, the TypeScript source inventory contract, the Source/output/sample boundary contract, direct UI color literals, accessibility hooks, required JavaScript hooks across source and generated files, the Generated JavaScript pair contract, the JavaScript public surface contract, the Sample asset/load contract, the CSS target manifest contract, the Editor runtime module registry contract, token source/generated CSS consistency, token file inventory consistency, duplicate token definitions, UI source/generated CSS consistency, undefined CSS variable usage, incomplete WYSIWYG selectors, interaction contract coverage, sample coverage, `assetInventory`, `documentationGovernance`, ignored local artifact policy, local Git consistency drift, stale merged branches, and post-merge release readiness.
 
 The Deno type-check target coverage keeps the normal Deno type-check target list explicit and check-covered before the optional Deno command is invoked. When the `deno` command is available, the normal check also runs the Deno type check for TypeScript sources and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check must emit a family-labelled skip message and the report must not claim Deno type or generated CSS parity verification for that environment.
 
-`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, the Deno complete validation gate, Generated JavaScript parity contract terms, repositoryInventory, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, or reference screenshot hash drift.
+`Tools/check/adlaire-design-contracts.json` is the JSON check contract manifest for Deno validation targets, the Deno complete validation gate, the Deno required failure message, Generated JavaScript parity contract terms, grouped repositoryInventory, TypeScript source inventory, generated CSS inventory, generated JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, minimum component and interaction contract coverage, Interaction audit contract coverage, and Visual Baseline requirements. The check fails if the manifest, documentation, TypeScript source, generated outputs, or reference screenshot hash drift.
 
-The Deno complete validation gate is opt-in through `ADLAIRE_REQUIRE_DENO=1`. Without that environment variable, a host without `deno` emits the family-labelled skip diagnostic; with it, Deno absence fails the check.
+The Deno complete validation gate is opt-in through `ADLAIRE_REQUIRE_DENO=1`. Without that environment variable, a host without `deno` emits the family-labelled skip diagnostic; with it, Deno absence fails the check using the manifest Deno required failure message.
+
+The TypeScript source inventory in `Tools/check/adlaire-design-contracts.json` must match every `TypeScript/**/*.ts` source file and cover Deno type-check targets, Generated JavaScript pair sources, and CSS compiler required files. The generated CSS inventory and CSS target metadata in the same manifest must match `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, first-line headers, and generated CSS files. The generated JavaScript inventory must match the Generated JavaScript pair contract, every UI interaction source/generated pair must be represented by a Generated JavaScript pair, the Sample asset/load order must match `Samples/design/index.html`, `assetInventory` must match icons and brand assets, and `documentationGovernance` must match the documented governance terms.
+
+Complete Deno-backed release evidence requires running the release check on a host with Deno available and `ADLAIRE_REQUIRE_DENO=1`. A release check without Deno remains useful for repository, document, manifest, Git, and generated output governance, but it must not be reported as Deno-backed TypeScript or generated CSS parity evidence.
 
 Check failures use family-labelled diagnostics so the broken contract area is visible before reading the full failure details.
 

@@ -46,13 +46,13 @@ This repository owns design tokens, generated CSS, generated JavaScript, WYSIWYG
 
 ## Generated Output Placement
 
-The Generated output placement contract keeps repository CSS and JavaScript files limited to explicit generated outputs and sample-support files. Generated CSS is limited to `Tokens/*.css`, `UI/*.css`, and `EditorUI/wysiwyg.css`. Generated JavaScript is limited to `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, and `EditorUI/editor.js`.
+The Generated output placement contract keeps repository CSS and JavaScript files limited to the JSON generated output inventory and sample-support files. Generated CSS is limited to `Tokens/*.css`, `UI/*.css`, and `EditorUI/wysiwyg.css`. Generated JavaScript is limited to `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/wysiwyg.js`, and `EditorUI/editor.js`.
 
 `Samples/design/sample.css` and `Samples/design/sample.js` are sample-support files only. They are not generated design-system outputs and must not become source-of-truth files.
 
 ## Source Boundaries
 
-The TypeScript source inventory contract keeps every `TypeScript/**/*.ts` source file check-covered by the CSS compiler registry, JavaScript behavior contracts, interaction metadata, or editor runtime registry.
+The TypeScript source inventory contract keeps every `TypeScript/**/*.ts` source file listed in the JSON source inventory and check-covered by the CSS compiler registry, JavaScript behavior contracts, interaction metadata, or editor runtime registry.
 
 The Source/output/sample boundary contract keeps `TypeScript/` as source, `Tokens/`, `UI/`, and `EditorUI/` as generated outputs, and `Samples/` as non-authoritative confirmation material.
 
@@ -60,7 +60,7 @@ The Source/output/sample boundary contract keeps `TypeScript/` as source, `Token
 
 The Generated JavaScript pair contract keeps each TypeScript source, generated JavaScript output, generated file header, and documentation row synchronized.
 
-`Tools/check/adlaire-design-contracts.json` records the check-side contract manifest for Deno validation targets, the Deno complete validation gate, Generated JavaScript parity contract terms, minimum component and interaction contract coverage, repositoryInventory, and the Visual Baseline hash and byte size. It is JSON because development, build, generation, check, and release-check configuration is JSON-only.
+`Tools/check/adlaire-design-contracts.json` records the check-side contract manifest for Deno validation targets, the Deno complete validation gate, Deno required failure message, Generated JavaScript parity contract terms, minimum component and interaction contract coverage, grouped repositoryInventory, TypeScript source inventory, generated CSS/JavaScript inventory, CSS target metadata, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, Sample asset/load order, and the Visual Baseline hash and byte size. It is JSON because development, build, generation, check, and release-check configuration is JSON-only.
 
 | Source | Generated output |
 | --- | --- |
@@ -72,15 +72,15 @@ The Generated JavaScript pair contract keeps each TypeScript source, generated J
 
 ## Sample And JavaScript Surface
 
-The Sample asset/load contract keeps `Samples/design/index.html` aligned with the public CSS order, WYSIWYG CSS, generated JavaScript order, and sample-only support files.
+The Sample asset/load contract keeps `Samples/design/index.html` aligned with the JSON sample load order for public CSS, WYSIWYG CSS, generated JavaScript, and sample-only support files.
 
 The JavaScript public surface contract keeps `UI/components.js`, `UI/forms.js`, `UI/content.js`, `EditorUI/editor.js`, and `EditorUI/wysiwyg.js` loadable without bundling. The structured editor runtime exposes `window.AdlaireEditor`.
 
 ## CSS And Editor Registries
 
-The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, generated CSS outputs, first-line headers, public CSS order, sample loading, and documentation synchronized.
+The CSS target manifest contract keeps `TypeScript/CSS/manifest.ts` `CSS_TARGETS`, generated CSS outputs, CSS target metadata, first-line headers, public CSS order, sample loading, and documentation synchronized. `tokenCategories` keeps token output paths and token categories check-covered.
 
-The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts` re-exports, generated `EditorUI/editor.js`, and checks synchronized.
+The Editor runtime module registry contract keeps `Docs/Editor_Master_Spec`, `editorRuntimeModules`, the flat `TypeScript/Editor/*.ts` file set, `TypeScript/Editor/index.ts` re-exports, generated `EditorUI/editor.js`, and checks synchronized. `assetInventory` governs the official icon count, icon filename categories, and required brand assets.
 
 ## Checks
 
@@ -92,11 +92,11 @@ Run the normal repository check:
 sh Tools/check/check-adlaire-design.sh
 ```
 
-The normal check verifies the Development configuration contract, Generated output placement contract, TypeScript source inventory contract, Source/output/sample boundary contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
+The normal check verifies the Development configuration contract, Generated output placement contract, TypeScript source inventory contract, Source/output/sample boundary contract, Generated JavaScript pair contract, JavaScript public surface contract, Sample asset/load contract, CSS target manifest contract, Editor runtime module registry contract, `documentationGovernance`, and Deno type-check target coverage. When `deno` is available, the normal check runs Deno type checking and the Deno-backed generated CSS parity check through `TypeScript/CSS/index.ts check-generated-css`. When `deno` is unavailable, the check emits a skip message and Deno-backed verification must not be claimed for that environment.
 
-The same check reads `Tools/check/adlaire-design-contracts.json` for Deno type-check targets, Generated JavaScript parity contract terms, minimum component and interaction contract counts, repositoryInventory, and Visual Baseline documentation requirements. `ADLAIRE_REQUIRE_DENO=1` turns Deno availability into a complete-validation gate instead of a skip.
+The same check reads `Tools/check/adlaire-design-contracts.json` for Deno type-check targets, the Deno required failure message, Generated JavaScript parity contract terms, minimum component and interaction contract counts, grouped repositoryInventory, TypeScript source inventory synchronized with `TypeScript/**/*.ts`, generated CSS inventory and CSS target metadata synchronized with `TypeScript/CSS/manifest.ts`, generated JavaScript inventory synchronized with pair contracts, Sample asset/load order, `tokenCategories`, `editorRuntimeModules`, `assetInventory`, `documentationGovernance`, and Visual Baseline documentation requirements. `ADLAIRE_REQUIRE_DENO=1` turns Deno availability into a complete-validation gate instead of a skip.
 
-Run the release check only from local `main`, after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift, unexpected ignored local artifacts under the Ignored local artifact policy, and stale merged local or `backup/*` remote-tracking branches:
+Run the release check only from local `main`, after PR merge, remote pruning, merged branch cleanup, and local `main` synchronization. It also rejects local Git configuration drift, unexpected ignored local artifacts under the Ignored local artifact policy, and stale merged local or `backup/*` remote-tracking branches. Complete Deno-backed release evidence requires running it on a Deno host with `ADLAIRE_REQUIRE_DENO=1`:
 
 ```sh
 sh Tools/check/check-adlaire-design.sh --release-check
